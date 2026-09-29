@@ -1,0 +1,1239 @@
+/*
+ * Copyright 2020 Adobe. All rights reserved.
+ * This file is licensed to you under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License. You may obtain a copy
+ * of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+@import url('policies.css');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Metric-matched stand-in for Manrope.
+
+   Manrope is served with font-display: swap from fonts.css, which loadFonts()
+   requests at the end of loadEager — so the first paint has no Manrope and
+   falls back to the generic sans-serif (Arial on Windows, Helvetica on macOS).
+   Arial is ~2% narrower with different vertical metrics, so the swap re-wrapped
+   any copy sitting near a line boundary. In the hero-form that flipped the
+   title from two lines to one: the card shrank 28px and, because
+   .hero-form-panel-wrapper is centred with translateY(-50%), the whole panel
+   moved 14px while the page below it shifted too.
+
+   This face costs nothing to load (src: local only) and lives here rather than
+   in fonts.css on purpose — styles.css is render-blocking, so the very first
+   frame already uses the corrected metrics and the later swap to the real
+   Manrope changes no geometry at all.
+
+   Derived from Manrope-Regular.ttf: unitsPerEm 2000, hhea ascender 2132,
+   descender -600, lineGap 0, and a measured Manrope/Arial advance-width ratio
+   of 1.0213. ascent/descent are divided by that ratio because size-adjust
+   scales the overridden metrics too. Regenerate if the font file changes. */
+@font-face {
+  font-family: manrope-fallback;
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
+  size-adjust: 102.13%;
+  ascent-override: 104.38%;
+  descent-override: 29.37%;
+  line-gap-override: 0%;
+}
+
+:root {
+  /* colors - Asian Paints brand */
+  --background-color: #fff;
+  --light-color: #f8f8f8;
+  --dark-color: #232426;
+  --text-color: #222;
+  --link-color: #431a80;
+  --link-hover-color: #7345b3;
+
+  /* brand colors */
+  --primary-color: #431a80;
+  --primary-color-light: #7345b3;
+  --accent-color: #fcaf17;
+  --accent-color-hover: #e59d15;
+  --yellow: #fff4cc;
+  --grey: #f5f5f5;
+  --dark-grey: #6b6b6b;
+  --black: #000;
+  --navy-blue: #011c5f;
+  --cream-bg: #fefcf7;
+  --dark-cream-bg: #ece5d7;
+  ;
+  --text-color-muted: #666;
+  --text-color-dark: #1a1a1a;
+  --gradient-brand: linear-gradient(270deg, rgb(248 161 46), rgb(190 42 29) 50.07%, rgb(69 33 108) 98.1%);
+
+  /* fonts — manrope-fallback (defined above) sits between Manrope and the
+     generic so the pre-swap render already has Manrope's metrics. Without it
+     the swap re-wraps text and moves the layout once per cold load. */
+  --body-font-family: 'Manrope', manrope-fallback, sans-serif;
+  --heading-font-family: 'Manrope', manrope-fallback, sans-serif;
+
+  /* body sizes */
+  --body-font-size-m: 22px;
+  --body-font-size-s: 19px;
+  --body-font-size-xs: 17px;
+
+  /* heading sizes */
+  --heading-font-size-xxl: 55px;
+  --heading-font-size-xl: 44px;
+  --heading-font-size-l: 34px;
+  --heading-font-size-m: 27px;
+  --heading-font-size-s: 24px;
+  --heading-font-size-xs: 22px;
+
+  /* Header height - mobile first: 40px brand bar + 28px B2B row + 56px main header = 124px */
+  --nav-height: 124px;
+  --header-height: var(--nav-height);
+}
+
+@media (width >=900px) {
+  :root {
+    /* body sizes */
+    --body-font-size-m: 18px;
+    --body-font-size-s: 16px;
+    --body-font-size-xs: 14px;
+
+    /* heading sizes */
+    --heading-font-size-xxl: 45px;
+    --heading-font-size-xl: 36px;
+    --heading-font-size-l: 28px;
+    --heading-font-size-m: 22px;
+    --heading-font-size-s: 20px;
+    --heading-font-size-xs: 18px;
+  }
+}
+
+@media (width >=992px) {
+  :root {
+    /* Desktop header: 40px brand bar + 60px main header + 40px nav bar = 140px */
+    --nav-height: 140px;
+  }
+}
+
+body {
+  display: none;
+  margin: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-size: var(--body-font-size-m);
+  line-height: 1.6;
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #fefdf9;
+}
+
+body::-webkit-scrollbar,
+html::-webkit-scrollbar {
+  width: 5px;
+}
+
+body::-webkit-scrollbar-track-piece,
+html::-webkit-scrollbar-track-piece {
+  background: #fefdf9;
+}
+
+body::-webkit-scrollbar-thumb,
+html::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+}
+
+/* font-size/line-height are repeated from the `body` rule above on purpose.
+   Bootstrap's reboot sets `body { font-size: 1rem; line-height: 1.5 }` at the
+   same (0,0,1) specificity as our `body` rule, and its <link> lands after this
+   stylesheet on the first user interaction (see loadDelayed in scripts.js) — so
+   it would win the tie and resize every inheriting element on the page at once,
+   moving whatever sits above and below each block. Declaring the same values
+   here at (0,1,1) keeps them ours regardless of stylesheet order. Same tactic
+   the h1-h6 block below documents. */
+body.appear {
+  display: block;
+  font-family: var(--heading-font-family);
+  font-size: var(--body-font-size-m);
+  line-height: 1.6;
+}
+
+header {
+  /* Fixed header - all styles here to prevent CLS when block CSS loads */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+
+  /* 40px brand bar + 60px main header + 40px nav bar = 140px */
+  height: 140px;
+
+  /*
+   * Do not use contain:strict + overflow:hidden here: they establish a paint box that
+   * clips position:fixed descendants inside the header block. The brand bar uses
+   * translateY when “scrolled”, which then disappears entirely locally.
+   */
+  contain: none;
+  overflow: visible;
+}
+
+@media (width < 992px) {
+  header {
+    /* Mobile: 40px brand bar + 28px B2B row + 56px main header = 124px (nav bar hidden) */
+    height: 124px;
+  }
+}
+
+/* Push main content down to account for fixed header */
+main {
+  margin-top: var(--header-height);
+}
+
+header .header {
+  visibility: hidden;
+
+  /* Fixed height to prevent CLS during block decoration */
+  height: 100%;
+  min-height: inherit;
+}
+
+footer .footer {
+  visibility: hidden;
+}
+
+header .header[data-block-status="loaded"],
+footer .footer[data-block-status="loaded"] {
+  visibility: visible;
+}
+
+/* Reserve minimum footer space to reduce CLS */
+footer {
+  min-height: 200px;
+}
+
+/* Reserve minimum card height on the .cards.grid mobile layout so the
+   .section.video-container does not collapse before card images decode.
+   PSI flagged 0.218 CLS on /paint-products/interior-wall-paints from
+   the unsized card images (1134x522 intrinsic, rendered ~190px on
+   mobile). The card image CSS keeps `aspect-ratio: auto` so it still
+   fills the parent via object-fit: cover — this rule only puts a floor
+   on the parent so the layout reserves height before image load. */
+@media (max-width: 768px) {
+  main .cards.grid>ul>li {
+    min-height: 190px;
+  }
+}
+
+/* Heading values mirror Bootstrap 5.3 reboot exactly. Bootstrap CSS is
+   deferred until first user interaction (see loadDelayed in scripts.js)
+   and its <link> lands after this one, so its reboot rules win these
+   equal-specificity ties anyway — using the same values here means
+   nothing shifts when it arrives. font-family and scroll-margin are
+   ours; reboot does not set them. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-family: var(--heading-font-family);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--bs-heading-color, inherit);
+  scroll-margin: 40px;
+}
+
+h1 {
+  font-size: calc(1.375rem + 1.5vw);
+}
+
+h2 {
+  font-size: calc(1.325rem + 0.9vw);
+}
+
+h3 {
+  font-size: calc(1.3rem + 0.6vw);
+}
+
+h4 {
+  font-size: calc(1.275rem + 0.3vw);
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+@media (width >= 1200px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  h3 {
+    font-size: 1.75rem;
+  }
+
+  h4 {
+    font-size: 1.5rem;
+  }
+}
+
+code,
+pre {
+  font-size: var(--body-font-size-s);
+}
+
+pre {
+  padding: 16px;
+  border-radius: 8px;
+  background-color: var(--light-color);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* Qualified with `html` purely for specificity. Reboot sets
+   `p { margin-top: 0; margin-bottom: 1rem }` at (0,0,1) and loads after this
+   file, so a bare `p` selector here would lose the tie and every paragraph on
+   the page would re-space the moment Bootstrap arrives. `html p` is (0,0,2):
+   enough to hold off reboot, still low enough that any block's `.block p` rule
+   (0,1,1) keeps overriding it as before. */
+html p,
+html dl,
+html ol,
+html ul,
+html pre,
+html blockquote {
+  margin-top: 0.8em;
+  margin-bottom: 0.25em;
+}
+
+main>div {
+  margin: 40px 16px;
+}
+
+input,
+textarea,
+select,
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  font: inherit;
+}
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  margin: 0;
+  line-height: inherit;
+}
+
+button::-moz-focus-inner {
+  border: 0;
+}
+
+/* links */
+a:any-link {
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--link-hover-color);
+}
+
+/* Secondary button - outline style */
+a.button.secondary,
+button.secondary {
+  background-color: transparent;
+  border: 1px solid var(--dark-color);
+  color: var(--dark-color);
+}
+
+a.button.secondary:hover,
+a.button.secondary:focus,
+button.secondary:hover,
+button.secondary:focus {
+  background-color: var(--dark-color);
+  color: var(--background-color);
+}
+
+/* Accent/Yellow button */
+a.button.accent,
+button.accent {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--dark-color);
+}
+
+a.button.accent:hover,
+a.button.accent:focus,
+button.accent:hover,
+button.accent:focus {
+  background-color: var(--accent-color-hover);
+  border-color: var(--accent-color-hover);
+}
+
+main img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+}
+
+/* sections */
+main>.section {
+  margin: 40px 0;
+}
+
+main>.section>div {
+  max-width: none;
+  margin: auto;
+  padding: 0;
+}
+
+main>.section:first-of-type {
+  margin-top: 0;
+}
+
+/* Constrained width for default content (text, etc.) */
+main>.section>.default-content-wrapper {
+  margin: auto;
+  padding: 0 30px;
+}
+
+@media (max-width: 990px) {
+  main>.section>.default-content-wrapper {
+    padding: 0 15px;
+  }
+}
+
+/* section metadata */
+main .section.light,
+main .section.highlight {
+  background-color: var(--light-color);
+  margin: 0;
+  padding: 40px 0;
+}
+
+/* Hide page metadata block */
+.metadata {
+  display: none;
+}
+
+main .section.dark {
+  background-color: var(--dark-color);
+  color: white;
+  margin: 0;
+  padding: 40px 0;
+}
+
+main .section.cream {
+  background: var(--cream-bg);
+}
+
+main .section.dark-cream {
+  background: var(--dark-cream-bg);
+}
+
+/* Yellow section - Asian Paints */
+main .section.yellow {
+  background-color: var(--yellow);
+  color: var(--text-color);
+  margin: 0;
+  padding: 60px 0;
+}
+
+/* Grey section - Asian Paints */
+main .section.grey {
+  background-color: var(--grey);
+  color: var(--text-color);
+  margin: 0;
+  padding: 60px 0;
+}
+
+/* Center align section - Asian Paints */
+
+/* Desktop (default) */
+.section.align-center {
+  text-align: center;
+}
+
+/* Mobile override */
+@media (max-width: 767px) {
+  .section.align-center {
+    text-align: left;
+  }
+}
+
+/* Adding section metadata for spacing*/
+
+main .section.sectionpadding {
+  padding-right: 4%;
+  padding-left: 4%;
+}
+
+main .section.section-padding-top {
+  padding-top: 100px;
+}
+
+main .section.section-padding-top-15 {
+  padding-top: 15px;
+}
+
+main .section.text-grey {
+  color: rgb(93, 79, 67);
+}
+
+main .section .default-content-wrapper #how-to-hire-an-asian-paints-contractor+p+ol li:first-child a,
+main .section.rte-section .default-content-wrapper a[href*="contractors/painting-contractors.html"] {
+  color: #00e !important;
+  text-decoration: underline !important;
+}
+
+
+main .section .default-content-wrapper a[href*="https://www.asianpaints.com/"] {
+    color: #00e !important;
+    text-decoration: underline !important;
+}
+
+main .section.zero-margin {
+  margin: 0 !important;
+}
+
+
+main .section.textpadding {
+  padding-left: 1.3%;
+}
+
+/* Adding CTA Styling here*/
+/* ============================================
+   READ T&C — AEM CTA migrated styles (EDS fix)
+   ============================================ */
+
+main .section.read-tc-cta {
+  text-align: center;
+}
+
+main .section.read-tc-cta .button-container {
+  margin: 0;
+}
+
+/* Base button */
+main .section.read-tc-cta .button-container>a.button,
+main .section.read-tc-cta .button-container>a.button:link,
+main .section.read-tc-cta .button-container>a.button:visited {
+  display: inline-flex;
+  /* better centering than inline-block */
+  align-items: center;
+  justify-content: center;
+  width: 270px;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  background-color: #431a80;
+  border: 1px solid #431a80;
+  color: #fff;
+
+  font-family: Manrope, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.86px;
+  line-height: 16px;
+
+  padding: 16px 20px;
+  border-radius: 2px;
+  text-transform: uppercase;
+
+  margin: 0 auto;
+
+  /* Neutralize common EDS effects */
+  background-image: none;
+  box-shadow: none;
+  filter: none;
+  transform: none;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+  position: relative;
+  /* for pseudo-element control */
+  overflow: hidden;
+  /* avoids odd overlays bleeding */
+}
+
+/* Kill pseudo-element overlays that often create that “black block” on hover */
+main .section.read-tc-cta .button-container>a.button::before,
+main .section.read-tc-cta .button-container>a.button::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Hover (match live hover shade — adjust if needed) */
+main .section.read-tc-cta .button-container>a.button:hover {
+  background-color: #5a2bb3 !important;
+  /* <-- Image 2 looks lighter than base */
+  border-color: #5a2bb3 !important;
+  color: #fff !important;
+
+  box-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+  background-image: none !important;
+}
+
+/* Focus states (EDS often uses focus-visible styles that can look like hover artifacts) */
+main .section.read-tc-cta .button-container>a.button:focus,
+main .section.read-tc-cta .button-container>a.button:focus-visible {
+  outline: 2px solid rgba(90, 43, 179, 0.45) !important;
+  outline-offset: 3px !important;
+  box-shadow: none !important;
+}
+
+.embed-container .default-content-wrapper p.button-container:last-of-type {
+  margin-top: 40px;
+}
+
+.embed-container .default-content-wrapper p.button-container:last-of-type a.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-width: 0;
+  gap: 8px;
+  height: 34px;
+  margin: 0;
+  padding: 10px 14px;
+  border: 1px solid #232426;
+  border-radius: 45px;
+  background: transparent;
+  color: #232426;
+  font-family: Manrope, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 16px;
+  text-decoration: none;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.embed-container .default-content-wrapper p.button-container:last-of-type a.button:hover {
+  background: #fff7e8;
+  border-color: #232426;
+  color: #232426;
+}
+
+.embed-container .default-content-wrapper p.button-container:last-of-type a.button:focus,
+.embed-container .default-content-wrapper p.button-container:last-of-type a.button:focus-visible {
+  background: #feeecf;
+  border-color: #232426;
+  color: #232426;
+  outline: none;
+}
+
+.embed-container .default-content-wrapper p.button-container:last-of-type a.button::after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  background: url('https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global/resources/images/download-icon.svg') no-repeat center / contain;
+}
+
+main .section.dark h2,
+main .section.dark h3 {
+  color: white;
+}
+
+main .section.dark p {
+  color: rgb(255 255 255 / 90%);
+}
+
+/* Form styling in dark sections */
+main .section.dark strong {
+  color: white;
+  display: block;
+  margin-top: 16px;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+main .section.dark em {
+  color: rgb(255 255 255 / 70%);
+  font-style: normal;
+  display: block;
+  padding: 12px;
+  background-color: rgb(255 255 255 / 10%);
+  border-radius: 6px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  margin-bottom: 16px;
+}
+
+.section.hidden {
+  display: none;
+}
+
+/* Full-width standalone banner images (linked images outside blocks) */
+main>.section>.default-content-wrapper>p>a:only-child {
+  display: block;
+  width: 100%;
+}
+
+main>.section>.default-content-wrapper>p>a:only-child>picture {
+  display: block;
+  width: 100%;
+}
+
+main>.section>.default-content-wrapper>p>a:only-child>picture>img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Remove max-width constraint for sections containing only banner images */
+main>.section>.default-content-wrapper:has(> p > a:only-child > picture) {
+  max-width: none;
+  padding: 0;
+}
+
+/* Full-width standalone images (non-linked images like GIFs) */
+/* stylelint-disable no-descending-specificity */
+main>.section>.default-content-wrapper>p>picture:only-child,
+main>.section>.default-content-wrapper>picture:only-child {
+  display: block;
+  width: 100%;
+}
+
+main>.section>.default-content-wrapper>p>picture:only-child>img,
+main>.section>.default-content-wrapper>picture:only-child>img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Reserve space for standalone images before AEM edge JS sets dimensions */
+main>.section>.default-content-wrapper>p>picture:only-child>img:not([data-ar-set]),
+main>.section>.default-content-wrapper>picture:only-child>img:not([data-ar-set]) {
+  min-height: 46vw;
+}
+
+/* Remove max-width constraint for sections containing only standalone images */
+main>.section:has(> .default-content-wrapper:only-child > p:only-child > picture:only-child),
+main>.section:has(> .default-content-wrapper:only-child > picture:only-child) {
+  margin: 0;
+  padding: 0;
+}
+
+main>.section:has(> .default-content-wrapper:only-child > p:only-child > picture:only-child)>.default-content-wrapper,
+main>.section:has(> .default-content-wrapper:only-child > picture:only-child)>.default-content-wrapper {
+  max-width: none;
+  padding: 0;
+}
+
+/* stylelint-enable no-descending-specificity */
+
+/* SEO/Default content typography - match Asian Paints original */
+main>.section>.default-content-wrapper h2 {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: normal;
+  color: #222;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+/*
+ * Use section metadata style=center-heading for centered headings
+ * instead of content-dependent ID selectors
+ */
+main>.section.center-heading>.default-content-wrapper h2 {
+  text-align: center;
+}
+
+main>.section.center-heading>.default-content-wrapper h2+p {
+  text-align: center;
+}
+
+main>.section>.default-content-wrapper h3 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #222;
+  margin-top: 1.2em;
+  margin-bottom: 0.4em;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main>.section>.default-content-wrapper p {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.57;
+  color: #222;
+  margin-bottom: 0;
+}
+
+/* Why Choose Us section - desktop center, mobile left */
+@media (width >=992px) {
+  #why-choose-us {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 35.2px;
+    color: #000;
+    margin-bottom: 10px;
+  }
+
+  #why-choose-us + p {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 35.2px;
+  }
+}
+
+@media (width <=991px) {
+  #why-choose-us {
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 27.32px;
+    text-align: start;
+    margin-bottom: 15px;
+    margin-top: 10px;
+    color: #000;
+  }
+
+  #why-choose-us + p {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 21px;
+    text-align: start;
+    margin-bottom: 20px;
+  }
+}
+
+main>.section>.default-content-wrapper ul,
+main>.section>.default-content-wrapper ol {
+  font-size: 14px;
+  line-height: 1.57;
+  color: #222;
+  padding-left: 1.5em;
+}
+
+main>.section>.default-content-wrapper li {
+  margin-bottom: 0.5em;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main>.section>.default-content-wrapper a:any-link {
+  color: #06c;
+}
+
+main .section.contractors-rte-live>.default-content-wrapper {
+  padding-right: 4%;
+  padding-left: 4%;
+}
+
+main .section.contractors-rte-live>.default-content-wrapper h2 {
+  font-family: Manrope, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: normal;
+  color: #222;
+  margin: 40px 0 18px;
+}
+
+main .section.contractors-rte-live>.default-content-wrapper h3 {
+  font-family: Manrope, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 22px;
+  color: #222;
+  margin: 20px 0 10px;
+}
+
+main .section.contractors-rte-live>.default-content-wrapper :is(b, strong) {
+  font-weight: 700;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main .section.contractors-rte-live>.default-content-wrapper p,
+main .section.contractors-rte-live>.default-content-wrapper li {
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: .5px;
+  color: #222;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main .section.contractors-rte-live>.default-content-wrapper p {
+  margin: 0 0 18px;
+}
+
+main .section.contractors-rte-live>.default-content-wrapper a[href*="colour-catalogue"],
+main .section.contractors-rte-live>.default-content-wrapper a[href*="why-is-waterproof-coating-necessary-for-homes"],
+main .section.contractors-rte-live>.default-content-wrapper a[href*="waterproofing-products"],
+main .section.contractors-rte-live>.default-content-wrapper a[href*="interior-textures"],
+main .section.contractors-rte-live>.default-content-wrapper a[href*="/home.html"],
+main .section.contractors-rte-live>.default-content-wrapper a[href*="asianpaints.com"] {
+  color: #0000EE !important;
+  text-decoration: underline !important;
+}
+
+main .section.contractors-rte-live>.default-content-wrapper ol,
+main .section.contractors-rte-live>.default-content-wrapper ul {
+  padding-left: 24px;
+  margin: 0 0 16px;
+}
+
+main .section.contractors-rte-live>.default-content-wrapper ol {
+  list-style-type: disc;
+}
+
+main .section.contractors-rte-live>.default-content-wrapper #step-by-step-home-painting-process~ol {
+  list-style-type: decimal;
+  padding-left: 40px;
+}
+
+main .section.contractors-rte-live>.default-content-wrapper li {
+  margin-bottom: 8px;
+}
+
+main .section.contractors-rte-live>.default-content-wrapper ol>h3 {
+  margin: 0 0 10px;
+}
+
+main .section.contractors-rte-live>.default-content-wrapper ol>h3>li,
+main .section.contractors-rte-live>.default-content-wrapper ol>li>p>:is(b, strong):first-child,
+main .section.contractors-rte-live>.default-content-wrapper ul>li>h3 {
+  font-family: Manrope, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 22px;
+  letter-spacing: normal;
+  color: #222;
+}
+
+main .section.contractors-rte-live>.default-content-wrapper ol>li::marker {
+  font-weight: 700;
+  color: #222;
+}
+
+main .section.contractors-rte-live>.default-content-wrapper ol>h3>li::marker {
+  font-weight: 700;
+  color: #222;
+}
+
+main .section.contractors-rte-live>.default-content-wrapper #step-by-step-home-painting-process~ol>li::marker {
+  font-weight: 400;
+}
+
+main .section.contractors-rte-live>.default-content-wrapper ol>h3+p,
+main .section.contractors-rte-live>.default-content-wrapper li>h3+p {
+  margin-top: 0;
+}
+
+@media (width <=991px) {
+  main .section.contractors-rte-live>.default-content-wrapper {
+    padding-right: 4.5%;
+    padding-left: 4.5%;
+  }
+
+  .section-padding-desk-mob {
+    padding-top: 30px;
+  }
+}
+
+.section-padding-desk-mob {
+  padding-top: 60px;
+}
+
+@media (width >=992px) {
+  main .section.contractors-rte-live>.default-content-wrapper h2 {
+    font-size: 30px;
+    line-height: 34px;
+    margin: 40px 0 18px;
+  }
+
+  main .section.contractors-rte-live>.default-content-wrapper h3 {
+    font-size: 20px;
+    line-height: 22px;
+  }
+
+  main .section.contractors-rte-live>.default-content-wrapper ol>h3>li,
+  main .section.contractors-rte-live>.default-content-wrapper ol>li>p>:is(b, strong):first-child,
+  main .section.contractors-rte-live>.default-content-wrapper ul>li>h3 {
+    font-size: 20px;
+    line-height: 22px;
+  }
+
+  main .section.royale-seo-content-container {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+main>.section:has(.embed-wrapper) {
+  max-width: 100%;
+  text-align: center;
+}
+
+main>.section:has(.embed-wrapper)>.default-content-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+main>.section:has(.embed-wrapper)>.default-content-wrapper:last-of-type a {
+  /* Pixel-perfect: black */
+  text-decoration: underline;
+  font-weight: bolder;
+  display: inline;
+}
+
+main>.section:has(.embed-wrapper)>.default-content-wrapper:last-of-type a:hover {
+  color: var(--primary-color);
+}
+
+.align-center {
+  display: grid;
+  text-align: center;
+}
+
+@media (min-width: 992px) and (max-width:1099px) {
+    body {
+        zoom:.7;
+        --body-zoom: .7; /* lets viewport-unit sizes undo the zoom */
+    }
+}
+
+@media (min-width: 1100px) and (max-width:1199px) {
+    body {
+        zoom:.75;
+        --body-zoom: .75; /* lets viewport-unit sizes undo the zoom */
+    }
+}
+
+@media (min-width: 1200px) and (max-width:1279px) {
+    body {
+        zoom:.8;
+        --body-zoom: .8; /* lets viewport-unit sizes undo the zoom */
+    }
+}
+
+@media (min-width: 1280px) and (max-width:1365px) {
+    body {
+        zoom:.85;
+        --body-zoom: .85; /* lets viewport-unit sizes undo the zoom */
+    }
+}
+
+@media (min-width: 1366px) and (max-width:1439px) {
+    body {
+        zoom:.9;
+        --body-zoom: .9; /* lets viewport-unit sizes undo the zoom */
+    }
+}
+
+@media (min-width: 1440px) {
+    body {
+        zoom:1
+    }
+  }
+
+@media (width <=600px) {
+  main .section.no-padding-mob {
+    padding: 0;
+  }
+}
+
+/* animation start */
+@keyframes move-from-bottom-to-top {
+  1% {
+    bottom: -250px
+  }
+
+  to {
+    bottom: 0;
+    opacity: 1
+  }
+}
+
+@keyframes fade-from-bottom-to-top {
+  to {
+    opacity: 1
+  }
+}
+
+.allow-bottom-up-animation {
+  opacity: 0
+}
+
+.animate-bottom-to-top {
+  display: block;
+  opacity: 0;
+  position: relative;
+  animation: move-from-bottom-to-top 1.5s forwards
+}
+
+.animate-fade-to-top {
+  display: block;
+  opacity: 0;
+  position: relative;
+  animation: fade-from-bottom-to-top 1.5s ease-in forwards
+}
+
+/* end animation styles */
+
+/* title styles for inspiration page */
+.default-content-wrapper #ideas-gallery {
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 36.4px;
+  color: rgb(93, 79, 67);
+
+  @media (max-width: 990px) {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+/* common styles to hide exitintent popup questions */
+body.hide-exit-intent-form-questions .modal.block .book-free-site-visit-dialog .lead-form-fields .question-panel {
+  display: none;
+}
+
+/* modal backdrop - hand-picked from Bootstrap since bootstrap.css loads
+   after user interaction on the page */
+.modal-backdrop {
+  --bs-backdrop-zindex: 1050;
+  --bs-backdrop-bg: #000;
+  --bs-backdrop-opacity: 0.5;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--bs-backdrop-zindex);
+  width: 100% !important;
+  height: 100% !important;
+  background-color: var(--bs-backdrop-bg);
+}
+
+.modal-backdrop.fade {
+  opacity: 0;
+}
+
+.modal-backdrop.show {
+  opacity: var(--bs-backdrop-opacity);
+}
+
+.modal-dialog {
+    --bs-modal-width: 500px;
+    --bs-modal-margin: 0.5rem;
+
+    position: relative;
+    width: auto;
+    margin: var(--bs-modal-margin);
+    pointer-events: none;
+}
+
+@media (min-width: 576px) {
+    .modal-dialog {
+        max-width: var(--bs-modal-width);
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+.modal-content {
+    --bs-modal-color: var(--text-color);
+    --bs-modal-bg: var(--background-color);
+    --bs-modal-border-width: 1px;
+    --bs-modal-border-color: rgb(0 0 0 / 17.5%);
+    --bs-modal-border-radius: 0.5rem;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    color: var(--bs-modal-color);
+    pointer-events: auto;
+    background-color: var(--bs-modal-bg);
+    background-clip: padding-box;
+    border: var(--bs-modal-border-width) solid var(--bs-modal-border-color);
+    border-radius: var(--bs-modal-border-radius);
+    outline: 0;
+}
+
+/* hideExitIntentCTA for inspiration page adde */
+body.hideExitIntentCTA .header-main .header-main-inner .header-cta {
+  display: none;
+}
+
+.zoomout{
+    zoom:0.8;
+}
+
+img, svg {
+    vertical-align: middle;
+}
+
+@media (max-width: 990px) {
+    .section.justify-left {
+        justify-self: left;
+    }
+}
+
+#faqs{
+    margin: 0px;
+}
+
+#waterproofing-solutions{
+    margin-bottom: 15px;
+}
+
+#kaamyabi-ke-rang-colours-of-success{
+    font-size: 32px;
+    font-weight: 800;
+    text-align: center;
+    color: #1a1a1a;
+    line-height: 35.2px;
+    font-family: var(--heading-font-family);
+
+    @media (max-width: 990px) {
+        font-size: 24px;
+        line-height: 28px;
+        font-weight: 800;
+    }
+}
+
+@media (max-width: 990px) {
+    .d-show {
+      display: none !important;
+    }
+}
+@media(min-width: 991px) {
+    .m-show {
+      display: none !important;
+    }
+}

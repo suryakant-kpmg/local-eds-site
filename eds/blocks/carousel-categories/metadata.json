@@ -1,0 +1,40 @@
+{
+  "variantName": "carousel-categories",
+  "baseBlock": "city-carousel",
+  "version": "1.0.0",
+  "created": "2026-01-28T15:48:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.asianpaints.com/services/interior-design-solutions.html",
+    "originPage": "Interior Design Solutions page",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "category-navigation",
+    "imagePattern": "square"
+  },
+  "contentPattern": {
+    "structure": "image + category name",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "product category carousels",
+      "horizontal scrolling category lists",
+      "quick navigation carousels",
+      "icon/image based navigation"
+    ],
+    "notSuitableFor": [
+      "hero carousels",
+      "large image slideshows",
+      "content-heavy carousels"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["content/services/interior-design-solutions"],
+    "reuseCount": 1,
+    "lastUsed": "2026-01-28T15:48:00.000Z"
+  }
+}

@@ -1,0 +1,221 @@
+/* =============================================
+   SERVICE MATRIX
+   Header (heading + intro) above a grid of image cards.
+   Mobile: two-column masonry; desktop: three-column grid.
+   ============================================= */
+
+.service-matrix {
+  --sm-card-radius: 10px;
+  --sm-text: #23242b;
+
+  color: var(--sm-text);
+}
+
+/* ---------- HEADER ---------- */
+.service-matrix .service-matrix-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.service-matrix .service-matrix-heading,
+.service-matrix .service-matrix-heading h1,
+.service-matrix .service-matrix-heading h2,
+.service-matrix .service-matrix-heading p {
+  margin: 0;
+  font-weight: 400;
+  max-width: 90%;
+  font-size: 34px;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: var(--sm-text);
+}
+
+/* the heading is split into lines in JS; on mobile they simply flow as one
+   sentence, on desktop they stack with the second line pushed in */
+
+.service-matrix .service-matrix-intro {
+  max-width: 79%;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 25px;
+  letter-spacing: 0;
+  color: #3b3d40;
+}
+
+.service-matrix .service-matrix-intro p {
+  margin: 0;
+}
+
+/* ---------- CARD GRID ---------- */
+.service-matrix .service-matrix-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px; /* mobile: 10px between the two columns */
+}
+
+/* ---------- CARD ---------- */
+.service-matrix .service-matrix-card {
+  position: relative;
+  display: block;
+  aspect-ratio: 162 / 249; /* mobile card proportions (162x249) */
+  overflow: hidden;
+  border-radius: var(--sm-card-radius);
+  color: #fff;
+  text-decoration: none;
+  isolation: isolate;
+}
+
+/* Stagger the two mobile columns so the second column sits a little lower.
+   Use transform (not margin) so the offset doesn't inflate the grid row
+   height and open up large vertical gaps between rows. */
+.service-matrix .service-matrix-card:nth-child(even) {
+  transform: translateY(40px);
+}
+
+.service-matrix .service-matrix-card-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+
+.service-matrix .service-matrix-card-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.service-matrix .service-matrix-card-title {
+  max-width: 50%;
+  margin: 0;
+  padding: 16px 16px 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: #fff;
+}
+
+/* mobile: fills the brown band at the bottom of the image (~28% of the card)
+   and centres the text vertically so 2- and 3-line copy both sit mid-band */
+.service-matrix .service-matrix-card-desc {
+  position: absolute;
+  inset: auto 28px 0;
+  display: flex;
+  align-items: center;
+  height: 28%;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* small phones: tighter side insets so the copy has room to wrap */
+@media (width <= 400px) {
+  .service-matrix .service-matrix-card-desc {
+    inset: auto 17px 0;
+  }
+}
+
+/* arrow indicator top-right — mobile: a plain white arrow with no circle */
+.service-matrix .service-matrix-card-arrow {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+}
+
+.service-matrix .service-matrix-card-arrow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="black" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat center / 12.46px 12.46px; /* glyph renders at 6.23x6.23 */
+}
+
+/* =============================================
+   TABLET / DESKTOP
+   ============================================= */
+@media (width >= 900px) {
+  .service-matrix .service-matrix-header {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 28px;
+  }
+
+  .service-matrix .service-matrix-heading,
+  .service-matrix .service-matrix-heading h1,
+  .service-matrix .service-matrix-heading h2,
+  .service-matrix .service-matrix-heading p {
+    font-size: 64px;
+    line-height: 1.05;
+  }
+
+  .service-matrix .service-matrix-heading {
+    flex: 0 1 auto;
+  }
+
+  .service-matrix .service-matrix-heading-line {
+    display: block;
+  }
+
+  .service-matrix .service-matrix-heading-line + .service-matrix-heading-line {
+    padding-left: 1.35em;
+  }
+
+  .service-matrix .service-matrix-intro {
+    flex: 0 0 360px;
+    padding-top: 8px;
+    font-size: 20px;
+    line-height: 40px;
+  }
+
+  .service-matrix .service-matrix-cards {
+    grid-template-columns: repeat(3, 1fr); /* 3 cards in a row */
+    gap: 20px; /* desktop: 20px between cards */
+  }
+
+  .service-matrix .service-matrix-card {
+    aspect-ratio: 413 / 500; /* desktop card proportions (413x500) */
+  }
+
+  /* even columns are not staggered on desktop */
+  .service-matrix .service-matrix-card:nth-child(even) {
+    transform: none;
+  }
+
+  .service-matrix .service-matrix-card-title {
+    padding: 20px 20px 0;
+    font-size: 40px;
+    font-weight: 800;
+  }
+
+  .service-matrix .service-matrix-card-desc {
+    inset: auto 0 0;
+    display: block;
+    max-width: 90%;
+    height: 85px;
+    padding: 7px 22px 18px;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 28px;
+    color: #fff;
+  }
+
+  /* desktop: the arrow sits inside a 45x45 white circle with a dark glyph */
+  .service-matrix .service-matrix-card-arrow {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 90%);
+  }
+
+  .service-matrix .service-matrix-card-arrow::after {
+    background: var(--sm-text);
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="black" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+    mask-size: 18px 18px;
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Cards Textures",
+  "description": "Horizontal card grid with texture backgrounds and hover reveal design showing paint bucket, description, and CTA",
+  "source": "https://www.asianpaints.com/products/paints-and-textures/interior-walls/royale-play.html",
+  "created": "2026-02-02",
+  "variant": "cards-textures",
+  "usage": [
+    "/content/products/paints-and-textures/interior-walls/royale-play"
+  ]
+}

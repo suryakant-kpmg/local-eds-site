@@ -1,0 +1,34 @@
+{
+  "name": "Cards Action",
+  "description": "Circular action cards with icons, titles, descriptions, and CTA buttons. Used for quick links to different sections or features.",
+  "variants": [
+    {
+      "name": "default",
+      "description": "4 circular cards in a horizontal grid layout"
+    }
+  ],
+  "model": {
+    "fields": [
+      {
+        "name": "image",
+        "type": "image",
+        "description": "Circular icon/image for the card"
+      },
+      {
+        "name": "title",
+        "type": "text",
+        "description": "Card title (use **bold** in markdown)"
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "description": "Short description text"
+      },
+      {
+        "name": "cta",
+        "type": "link",
+        "description": "Call to action button"
+      }
+    ]
+  }
+}

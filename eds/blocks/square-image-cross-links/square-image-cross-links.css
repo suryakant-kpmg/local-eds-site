@@ -1,0 +1,170 @@
+.square-image-cross-links {
+    width: 100%;
+}
+
+.square-image-cross-links__wrapper {
+    width: 100%;
+}
+
+.square-image-cross-links__header {
+    margin-bottom: 18px;
+}
+
+.square-image-cross-links__heading {
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.2;
+    font-size: 24px;
+    color: #111;
+}
+
+/* ======================
+   MOBILE GRID
+   ====================== */
+.square-image-cross-links__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+}
+
+.square-image-cross-links__item {
+    margin-bottom: 30px;
+}
+
+.square-image-cross-links__card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ======================
+   IMAGE BASE
+   ====================== */
+.square-image-cross-links__media {
+    width: 100%;
+}
+
+.square-image-cross-links__media picture,
+.square-image-cross-links__media img {
+    display: block;
+    width: 100%;
+}
+
+.square-image-cross-links__media img {
+    height: auto;
+}
+
+/* ======================
+   BODY
+   ====================== */
+.square-image-cross-links__body {
+    padding-top: 10px;
+}
+
+.square-image-cross-links__title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.square-image-cross-links__title {
+    margin: 0;
+    letter-spacing: 1.08px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 16px;
+    color: #111;
+}
+
+/* ✅ Arrow fix */
+.square-image-cross-links__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #111;
+}
+
+.sicls-arrow-icon {
+    display: block;
+}
+
+.square-image-cross-links__desc {
+    margin: 6px 0 0;
+    font-size: 14px;
+    line-height: 1.45;
+    color: #000;
+}
+
+/* ======================
+   MOBILE CTA
+   ====================== */
+.square-image-cross-links__mobile-cta {
+    display: inline-block;
+    margin-top: 0px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #5e25b2;
+}
+
+/* ======================
+   DESKTOP FLEX (AEM parity)
+   ====================== */
+@media (min-width: 768px) {
+
+    .square-image-cross-links__list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0;
+    }
+
+    .square-image-cross-links__item {
+        flex-basis: 30%;
+        margin-right: 3.3%;
+    }
+
+    .square-image-cross-links__item:nth-child(3n) {
+        margin-right: 0;
+    }
+
+    /* ✅ kill purple hover */
+    .square-image-cross-links__card:hover,
+    .square-image-cross-links__card:focus {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .square-image-cross-links__card:hover
+    .square-image-cross-links__arrow,
+    .square-image-cross-links__card:focus
+    .square-image-cross-links__arrow {
+        color: #111;
+    }
+
+    .square-image-cross-links__mobile-cta {
+        display: none;
+    }
+}
+
+/* ======================
+   DESKTOP IMAGE BEHAVIOUR
+   ====================== */
+@media (min-width: 1024px) {
+
+    .square-image-cross-links__media picture,
+    .square-image-cross-links__media picture img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .square-image-cross-links__title {
+        font-size: 20px;
+    }
+}

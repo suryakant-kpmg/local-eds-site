@@ -1,0 +1,171 @@
+.section.service-banner-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.section.service-banner-container .wrapper {
+    display: grid;
+    grid-template-columns: 62% 40.5%;
+    align-items: center;
+    background-color: #f8f8f8;
+}
+
+.section.service-banner-container .wrapper .banner img {
+    width: 100%;
+}
+
+.section.service-banner-container .wrapper .content {
+    padding: 50px;
+}
+
+.section.service-banner-container .wrapper .content h3 {
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    color: #222;
+    font-weight: 500;
+    max-width: 95%;
+}
+
+.section.service-banner-container .wrapper .content h2 {
+    font-size: 30px;
+    line-height: 34px;
+    color: #222;
+    font-weight: 600;
+    letter-spacing: normal;
+    margin-bottom: 10px;
+}
+
+.section.service-banner-container .wrapper .content p a {
+    font-size: 13px;
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid #5e25b2;
+    width: auto;
+    display: inline;
+    padding: 0;
+    line-height: 12px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    padding-bottom: 2px;
+    color: #3b3b3b;
+    font-weight: 600;
+}
+
+@media screen and (max-width:992px) {
+
+    .section.service-banner-container .wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .section.service-banner-container .wrapper .content {
+        padding: 22px;
+    }
+
+    .section.service-banner-container .wrapper .content h3 {
+        font-size: 12px;
+        margin-bottom: 15px;
+    }
+
+    .section.service-banner-container .wrapper .content h2 {
+        font-size: 22px;
+        margin-bottom: 15px;
+        line-height: 24px;
+    }
+
+    .section.service-banner-container .wrapper .content p a {
+        font-size: 12px;
+    }
+}
+
+@media screen and (min-width:992px) {
+    .section.service-banner-container {
+        max-width: 100%;
+        width: 100%;
+        padding: 0 4%;
+    }
+}
+
+/* =============================================
+   Start: Store locator variant
+   Used when the block is authored as "service-banner (store-locator-variant)".
+   Right-hand content: large heading, body copy, solid purple CTA button.
+   ============================================= */
+/* heading may be authored as h2 or h3 (h3 is the small eyebrow in the default style) */
+.section.service-banner-container .service-banner.store-locator-variant .wrapper .content h2,
+.section.service-banner-container .service-banner.store-locator-variant .wrapper .content h3 {
+    max-width: none;
+    margin: 0 0 10px;
+    font-size: 30px;
+    line-height: 34px;
+    font-weight: 600;
+    letter-spacing: normal;
+    color: #222;
+}
+
+.section.service-banner-container .service-banner.store-locator-variant .wrapper .content p {
+    margin: 0 0 15px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 28px;
+    letter-spacing: 1px;
+    color: #222;
+}
+
+.section.service-banner-container .service-banner.store-locator-variant .wrapper .content p:last-child {
+    margin-bottom: 0;
+}
+
+.section.service-banner-container .service-banner.store-locator-variant .wrapper .content p a {
+    display: inline-block;
+    padding: 16px 20px;
+    border: 1px solid #431a80;
+    border-radius: 2px;
+    background: #431a80;
+    color: #fff;
+    font-size: 13px;
+    line-height: 22px;
+    font-weight: 600;
+    letter-spacing: .86px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.section.service-banner-container .service-banner.store-locator-variant .wrapper .content p a:hover {
+    border-color: #5e25b2;
+    background: #5e25b2;
+}
+
+@media screen and (max-width:992px) {
+
+    .section.service-banner-container .service-banner.store-locator-variant .wrapper .content h2,
+    .section.service-banner-container .service-banner.store-locator-variant .wrapper .content h3 {
+        margin-bottom: 12px;
+        font-size: 22px;
+        line-height: 24px;
+        font-weight: 700;
+        letter-spacing: normal;
+    }
+
+    .section.service-banner-container .service-banner.store-locator-variant .wrapper .content p {
+        margin-bottom: 20px;
+        font-size: 12px;
+        line-height: 24px;
+        letter-spacing: 0;
+    }
+
+    .section.service-banner-container .service-banner.store-locator-variant .wrapper .content p a {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 9px 20px;
+        font-size: 12px;
+        line-height: 12px;
+        letter-spacing: .77px;
+        text-align: center;
+    }
+}
+
+/* =============================================
+   End: Store locator variant
+   ============================================= */

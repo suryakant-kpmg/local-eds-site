@@ -1,0 +1,770 @@
+/* =============================================
+   WALL PAINT TOOL
+   A 3-step guided flow rendered inside one block:
+     Step 1 - heading (left) + mandatory questions (right)
+     Step 2 - lead-capture form on a white card
+     Step 3 - recommendations (placeholder)
+   Only one step is visible at a time; the active step is chosen by the
+   `data-screen` attribute the JS sets on .wallpaint-tool (see STEP VISIBILITY).
+   Each step fits within the viewport with no vertical scroll on mobile/desktop.
+   ============================================= */
+
+.wallpaint-tool {
+  /* --wpt-bg-desktop / --wpt-bg-mobile are set inline by the JS from the
+     authored image row and shared across all steps. */
+  --wpt-accent: #f0a500;
+  --wpt-proceed-bg: linear-gradient(90deg, #f0a500 0%, #e08a00 100%);
+  --wpt-radio-size: 20px;
+
+  color: #fff;
+  background-image: var(--wpt-bg-mobile);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+/* remove default section padding so the banner is edge-to-edge */
+.wallpaint-tool-container .wallpaint-tool-wrapper {
+  max-width: none;
+}
+
+/* ---------- STEP VISIBILITY & LAYOUT ----------
+   Every step is hidden by default; the rule further down re-shows only the one
+   matching the block's current data-screen value. All steps stay in the DOM so
+   form state survives navigating back and forth. */
+.wallpaint-tool .wallpainttool-screen {
+  position: relative;
+  box-sizing: border-box;
+  display: none;
+  flex-direction: column;
+  gap: 24px;
+  min-height: 60vh;
+  padding: 32px 20px;
+}
+
+/* step 2 centres its card */
+.wallpaint-tool .wallpainttool-screen-2 {
+  align-items: center;
+  justify-content: center;
+}
+
+.wallpaint-tool[data-screen="1"] .wallpainttool-screen-1,
+.wallpaint-tool[data-screen="2"] .wallpainttool-screen-2,
+.wallpaint-tool[data-screen="3"] .wallpainttool-screen-3 {
+  display: flex;
+}
+
+/* ---------- LEFT: HEADING ---------- */
+.wallpaint-tool .wallpainttool-left {
+  display: flex;
+  align-items: center;
+}
+
+.wallpaint-tool .surface-layout-text-section {
+  outline: none;
+}
+
+.wallpaint-tool .surface-layout-text-section p {
+  margin: 0;
+  font-weight: 800;
+  font-size: clamp(28px, 7vw, 34px);
+  line-height: 1.15;
+}
+
+.wallpaint-tool .color-text {
+  color: var(--wpt-accent);
+}
+
+/* ---------- RIGHT: QUESTIONS ---------- */
+.wallpaint-tool .wallpainttool-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.wallpaint-tool .wallpainttool-question {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.wallpaint-tool .wallpainttool-question-title {
+  padding: 0;
+  margin: 0 0 12px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.wallpaint-tool .wallpainttool-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+}
+
+/* radio option (text answers) */
+.wallpaint-tool .wallpainttool-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.wallpaint-tool .wallpainttool-option input[type="radio"] {
+  appearance: none;
+  margin: 0;
+  width: var(--wpt-radio-size);
+  height: var(--wpt-radio-size);
+  border: 1px solid #fff;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 20%);
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.wallpaint-tool .wallpainttool-option input[type="radio"]:checked {
+  border-color: #fff;
+
+  /* 10px gold gradient dot (linear #ffc63c -> #ffa20c) centered over the translucent base */
+  background:
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23ffc63c"/><stop offset="1" stop-color="%23ffa20c"/></linearGradient></defs><circle cx="5" cy="5" r="5" fill="url(%23g)"/></svg>') center / 10px 10px no-repeat,
+    rgb(255 255 255 / 20%);
+}
+
+.wallpaint-tool .wallpainttool-option input[type="radio"]:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ---------- FINISH SWATCH QUESTION ---------- */
+.wallpaint-tool .wallpainttool-question-swatch .wallpainttool-options {
+  gap: 12px;
+}
+
+.wallpaint-tool .wallpainttool-question-swatch .wallpainttool-option {
+  position: relative;
+  padding: 14px 18px;
+  border: 1.5px solid transparent;
+  border-radius: 10px;
+  background: rgb(255 255 255 / 12%);
+  gap: 12px;
+}
+
+.wallpaint-tool .wallpainttool-question-swatch .wallpainttool-option:has(input:checked) {
+  background: rgb(255 255 255 / 12%);
+  border-color: rgb(255 255 255 / 90%);
+}
+
+/* the radio itself is hidden for swatches; the whole card is the control */
+.wallpaint-tool .wallpainttool-question-swatch .wallpainttool-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wallpaint-tool .wallpainttool-swatch {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.wallpaint-tool .wallpainttool-swatch-gloss {
+  background: linear-gradient(125.46deg, #d29d2d 17.03%, #e6d6b5 53.51%, #d29d2d 84.59%);
+}
+
+.wallpaint-tool .wallpainttool-swatch-semi-gloss {
+  background: linear-gradient(125.46deg, #d29d2d 17.03%, #debd79 53.51%, #d29d2d 84.59%);
+}
+
+.wallpaint-tool .wallpainttool-swatch-matt {
+  background: linear-gradient(125.46deg, #d29d2d 17.03%, #d5ae5c 84.59%);
+}
+
+/* ---------- PROCEED ---------- */
+.wallpaint-tool .wallpainttool-proceed {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  height: 38px;
+  margin-top: 4px;
+  padding: 14px 20px;
+  border: 0.5px solid #fff;
+  border-radius: 45px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--wpt-proceed-bg);
+  opacity: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.wallpaint-tool .wallpainttool-proceed::after {
+  content: "";
+  width: 18px;
+  height: 18px;
+  background: currentcolor;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11h12.17l-5.59-5.59L12 4l8 8-8 8-1.41-1.41L16.17 13H4z"/></svg>') no-repeat center / contain;
+}
+
+.wallpaint-tool .wallpainttool-proceed:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Step 1 CTA: gold gradient with black label/arrow; transparent + white on hover */
+.wallpaint-tool .wallpainttool-screen-1 .wallpainttool-proceed {
+  color: #000;
+  background: var(--gradient, linear-gradient(180deg, #fec940, #f90));
+}
+
+.wallpaint-tool .wallpainttool-screen-1 .wallpainttool-proceed:not(:disabled):hover {
+  color: #fff;
+  background: transparent;
+  border-color: #fff;
+}
+
+/* =============================================
+   STEP 2: LEAD FORM
+   ============================================= */
+.wallpaint-tool .wallpainttool-form2-header {
+  margin-bottom: 24px;
+  color: #fff;
+  text-align: center;
+}
+
+.wallpaint-tool .wallpainttool-form2-title {
+  margin: 0 0 8px;
+  font-size: clamp(24px, 5vw, 40px);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.wallpaint-tool .wallpainttool-form2-sub {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  opacity: 0.95;
+}
+
+.wallpaint-tool .wallpainttool-card {
+  width: 100%;
+  max-width: 720px;
+  box-sizing: border-box;
+}
+
+.wallpaint-tool .wallpainttool-form2 {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+  border-radius: 5px;
+  background: #fff;
+  color: #333;
+}
+
+.wallpaint-tool .wallpainttool-fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.wallpaint-tool .wallpainttool-field {
+  min-width: 0;
+}
+
+.wallpaint-tool .wallpainttool-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.wallpaint-tool .wallpainttool-control {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 56px;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.wallpaint-tool .wallpainttool-control:focus-within {
+  border-color: var(--wpt-accent);
+}
+
+.wallpaint-tool .wallpainttool-tel-prefix {
+  padding: 0 14px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #555;
+  border-right: 1px solid #d9d9d9;
+}
+
+.wallpaint-tool .wallpainttool-control input {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  padding: 0 16px;
+  font: inherit;
+  font-size: 16px;
+  color: #333;
+  background: transparent;
+  border: 0;
+  outline: none;
+}
+
+.wallpaint-tool .wallpainttool-control input:user-invalid {
+  color: #b00020;
+}
+
+.wallpaint-tool .wallpainttool-whatsapp {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  font-size: 15px;
+  color: #333;
+  cursor: pointer;
+}
+
+.wallpaint-tool .wallpainttool-whatsapp input[type="checkbox"] {
+  appearance: none;
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  border: 1px solid #c4c4c4;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.wallpaint-tool .wallpainttool-whatsapp input[type="checkbox"]:checked {
+  border-color: #75787b;
+  background: #75787b
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>')
+    no-repeat center / 12px 12px;
+}
+
+.wallpaint-tool .wallpainttool-whatsapp input[type="checkbox"]:focus-visible {
+  outline: 2px solid #75787b;
+  outline-offset: 2px;
+}
+
+.wallpaint-tool .wallpainttool-form2-questions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+/* dark-on-light overrides for the questions inside the white card */
+.wallpaint-tool .wallpainttool-form2 .wallpainttool-question-title {
+  color: #232426;
+  font-size: 15px;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.wallpaint-tool .wallpainttool-form2 .wallpainttool-option {
+  color: #333;
+}
+
+.wallpaint-tool .wallpainttool-form2 .wallpainttool-option input[type="radio"] {
+  border-color: #bbb;
+  background: #fff;
+}
+
+.wallpaint-tool .wallpainttool-form2 .wallpainttool-option input[type="radio"]:checked {
+  border-color: var(--wpt-accent);
+}
+
+.wallpaint-tool .wallpainttool-consent {
+  margin: 0 0 20px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #555;
+}
+
+.wallpaint-tool .wallpainttool-consent a {
+  color: #1a3fb0;
+  text-decoration: underline;
+}
+
+.wallpaint-tool .wallpainttool-proceed-2 {
+  align-self: center;
+  gap: 19px;
+  height: auto;
+  margin: 0 auto;
+  padding: 10.5px 20px;
+  border-radius: 45px;
+  font-size: 14px;
+  color: #000;
+  background: var(--gradient, linear-gradient(180deg, #fec940, #f90));
+}
+
+.wallpaint-tool .wallpainttool-proceed-2::after {
+  background: #000;
+}
+
+.wallpaint-tool .wallpainttool-proceed-2:not(:disabled):hover {
+  color: #000;
+  background: transparent;
+  border-color: #000;
+}
+
+/* =============================================
+   STEP 3: RESULTS
+   ============================================= */
+.wallpaint-tool .wallpainttool-result {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+  color: #fff;
+}
+
+/* ---------- LEFT ---------- */
+.wallpaint-tool .wallpainttool-restart {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.wallpaint-tool .wallpainttool-restart-icon {
+  width: 18px;
+  height: 18px;
+  background: currentcolor;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z"/></svg>') no-repeat center / contain;
+}
+
+.wallpaint-tool .wallpainttool-result-title {
+  margin: 0;
+  font-size: clamp(28px, 6vw, 34px);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.wallpaint-tool .wallpainttool-result-subtitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.wallpaint-tool .wallpainttool-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
+}
+
+.wallpaint-tool .wallpainttool-inputs li {
+  position: relative;
+}
+
+.wallpaint-tool .wallpainttool-inputs li:not(:first-child)::before {
+  content: "•";
+  margin-right: 24px;
+  opacity: 0.6;
+}
+
+.wallpaint-tool .wallpainttool-download {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 24px;
+  border-radius: 12px;
+  background: rgb(0 0 0 / 25%);
+}
+
+.wallpaint-tool .wallpainttool-download-text {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16.39px;
+}
+
+.wallpaint-tool .wallpainttool-download-tab {
+  color: var(--wpt-accent);
+  font-weight: 700;
+}
+
+/* outlined pill: transparent bg, white border, white label + download icon */
+.wallpaint-tool .wallpainttool-download-cta {
+  flex: 0 0 auto;
+  color: #fff;
+  background: transparent;
+  border: 1px solid #fff;
+}
+
+.wallpaint-tool .wallpainttool-download-cta::after {
+  /* replace the default arrow with a download glyph */
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3v10.17l3.59-3.58L17 11l-5 5-5-5 1.41-1.41L12 13.17V3zM5 19h14v2H5z"/></svg>') no-repeat center / contain;
+}
+
+/* ---------- RIGHT ---------- */
+.wallpaint-tool .wallpainttool-tabs {
+  display: inline-flex;
+  gap: 6px;
+  width: fit-content;
+}
+
+.wallpaint-tool .wallpainttool-tab {
+  padding: 8px 20px;
+  font-size: 20px;
+  font-weight: 300;
+  color: rgb(239 239 239 / 38%); /* #EFEFEF60 */
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.wallpaint-tool .wallpainttool-tab.is-active {
+  color: #fff;
+  font-weight: 800;
+  background: rgb(116 31 52 / 68%); /* #741f34ad */
+}
+
+.wallpaint-tool .wallpainttool-products-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21.86px;
+}
+
+.wallpaint-tool .wallpainttool-products {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ---------- PRODUCT CARD ---------- */
+.wallpaint-tool .wallpainttool-product {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 10px 20px 13px;
+  border: 1px solid #efefef;
+  border-radius: 8px;
+  background: #fff;
+  color: #232426;
+}
+
+.wallpaint-tool .wallpainttool-product-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.wallpaint-tool .wallpainttool-product-head img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.wallpaint-tool .wallpainttool-product-name {
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 19.86px;
+  color: #161515;
+}
+
+.wallpaint-tool .wallpainttool-product-sublabel {
+  margin: 8px 0 0;
+  padding-bottom: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14.4px;
+  color: gray;
+}
+
+.wallpaint-tool .wallpainttool-product-tags {
+  margin: 4px 0 0;
+  padding-left: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16.39px;
+}
+
+.wallpaint-tool .wallpainttool-product-price {
+  margin: 2px 0 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16.39px;
+}
+
+.wallpaint-tool .wallpainttool-product-link {
+  margin-top: 4px;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 15.3px;
+  color: #e05f27;
+  text-decoration: none;
+}
+
+.wallpaint-tool .wallpainttool-product hr {
+  width: 100%;
+  margin: 12px 0 4px;
+  border: 0;
+  border-top: 1px solid #c4c4c4;
+}
+
+.wallpaint-tool .wallpainttool-wf {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wallpaint-tool .wallpainttool-wf img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.wallpaint-tool .wallpainttool-wf strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14.4px;
+}
+
+/* =============================================
+   TABLET / DESKTOP
+   ============================================= */
+@media (width >= 900px) {
+  .wallpaint-tool {
+    background-image: var(--wpt-bg-desktop);
+  }
+
+  .wallpaint-tool .wallpainttool-screen-1 {
+    flex-direction: row;
+    align-items: center;
+    gap: 4%;
+    min-height: 70vh;
+    max-height: 88vh;
+    padding: 40px 5%;
+  }
+
+  .wallpaint-tool .wallpainttool-left,
+  .wallpaint-tool .wallpainttool-right {
+    flex: 1 1 50%;
+  }
+
+  .wallpaint-tool .surface-layout-text-section p {
+    font-size: clamp(40px, 4vw, 60px);
+  }
+
+  .wallpaint-tool .wallpainttool-question-title {
+    font-size: 20px;
+  }
+
+  .wallpaint-tool .wallpainttool-form {
+    gap: 32px;
+  }
+
+  .wallpaint-tool .wallpainttool-screen-2 {
+    min-height: 70vh;
+    max-height: 92vh;
+    padding: 40px 5%;
+  }
+
+  .wallpaint-tool .wallpainttool-screen-3 {
+    min-height: 70vh;
+    padding: 48px 5%;
+  }
+
+  .wallpaint-tool .wallpainttool-result {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 4%;
+  }
+
+  .wallpaint-tool .wallpainttool-result-left {
+    flex: 0 0 40%;
+    min-width: 0;
+  }
+
+  .wallpaint-tool .wallpainttool-result-right {
+    flex: 1 1 58%;
+    min-width: 0;
+  }
+
+  .wallpaint-tool .wallpainttool-result-title {
+    font-size: clamp(40px, 3.4vw, 52px);
+  }
+
+  .wallpaint-tool .wallpainttool-products {
+    flex-flow: row wrap;
+    gap: 12px;
+  }
+
+  .wallpaint-tool .wallpainttool-products .wallpainttool-product {
+    flex: 0 0 32%;
+  }
+
+  .wallpaint-tool .wallpainttool-fields {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .wallpaint-tool .wallpainttool-form2-questions {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .wallpaint-tool .wallpainttool-form2-title {
+    font-size: 32px;
+    line-height: 35.2px;
+    font-weight: 800;
+  }
+
+  .wallpaint-tool .wallpainttool-form2-sub {
+    font-size: 16px;
+    line-height: 21.86px;
+    font-weight: 500;
+  }
+
+  /* keep each Step 2 question's options on a single line in the narrow column */
+  .wallpaint-tool .wallpainttool-form2 .wallpainttool-question-title {
+    font-size: 14px;
+  }
+
+  .wallpaint-tool .wallpainttool-form2-questions .wallpainttool-options {
+    flex-wrap: nowrap;
+    gap: 10px 16px;
+  }
+
+  .wallpaint-tool .wallpainttool-form2-questions .wallpainttool-option {
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .wallpaint-tool .wallpainttool-consent {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}

@@ -1,0 +1,382 @@
+.popular-shades-container {
+  padding: 0 !important;
+}
+
+.popular-shades-container .popular-shades-wrapper,
+.popular-shades-container .default-content-wrapper,
+.popular-shades-container .popular-shades.block {
+  max-width: 100% !important;
+  width: 100%;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.popular-shades {
+  width: 100%;
+  /* background: #f5f5f3; */
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.popular-shades__wrapper {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  min-height: 720px;
+}
+
+.popular-shades__media {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0 0 20px;
+}
+
+.popular-shades__swiper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.popular-shades__slide {
+  width: 100%;
+}
+
+.popular-shades__image-wrap {
+  width: 100%;
+  min-height: 520px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  /* background: #f5f5f3; */
+  padding-left: 40px;
+  height: 482px;
+}
+
+.popular-shades__picture,
+.popular-shades__picture img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.popular-shades__content {
+  width: 420px;
+  flex: 0 0 420px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding-top: 7%;
+  padding-left: 2%;
+}
+
+.popular-shades__title {
+  margin: 0 0 28px;
+  font-size: clamp(46px, 5vw, 80px);
+  line-height: 70.4px;
+  font-weight: 700;
+  letter-spacing: .62px;
+  color: #111;
+}
+
+.popular-shades__title .gradient-text {
+  background: linear-gradient(90deg, #6f2c91 0%, #c53334 50%, #f08a24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.popular-shades__description {
+  margin: 0 0 36px;
+  font-size: 16px;
+  line-height: 22px;
+  color: #222;
+  font-weight: 500;
+  max-width: 80%;
+}
+
+.popular-shades__cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: fit-content;
+  height: 38px;
+  padding: 10px 24px;
+  border: 1px solid #2d2d2d;
+  border-radius: 999px;
+  text-decoration: none;
+  color: #2d2d2d;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  margin-top: 20px;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.popular-shades__cta:hover {
+  background: #fff7e8;
+  border: 1px solid #232426;
+  color: inherit;
+}
+
+.popular-shades__cta-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.popular-shades__swatches {
+  width: 100%;
+  margin-top: -35px;
+  /* padding: 0 38px; */
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.popular-shades__swatch-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 12px;
+  /* margin: 0;
+  padding: 0; */
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+}
+
+.popular-shades__swatch-list::-webkit-scrollbar {
+  display: none;
+}
+
+.popular-shades__swatch-item {
+  flex: 0 0 auto;
+  width: 72px;
+  min-width: 72px;
+  margin: 0;
+  padding: 0;
+}
+
+.popular-shades__swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: #3b3b3b;
+}
+
+.popular-shades__swatch-chip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 80px;
+  /* border-radius: 18px 18px 0 0; */
+  border-top-right-radius: 16px;
+  padding: 12px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.popular-shades__swatch-check {
+  display: none;
+  width: 18px;
+  height: 18px;
+}
+
+.popular-shades__swatch.is-active .popular-shades__swatch-check {
+  display: block;
+}
+
+.popular-shades__swatch-meta {
+  display: block;
+  width: 100%;
+  padding-top: 10px;
+  white-space: normal;
+}
+
+.popular-shades__swatch-name {
+  display: block;
+  font-size: 14px;
+  line-height: 1.35;
+  font-weight: 500;
+  color: #3f3f3f;
+  text-align: center;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  color: #1d1d1f;
+}
+
+.popular-shades__swatch-number {
+  display: block;
+  margin-top: 2px;
+  font-size: 14px;
+  line-height: 1.3;
+  text-align: center;
+  font-size: 10px;
+  line-height: 9px;
+  margin-top: 3px;
+}
+
+.popular-shades__swatch.is-active .popular-shades__swatch-name,
+.popular-shades__swatch.is-active .popular-shades__swatch-number {
+  color: #222;
+}
+
+@media (max-width: 1199px) {
+  .popular-shades__content {
+    width: 360px;
+    flex-basis: 360px;
+    padding: 64px 40px;
+  }
+
+  .popular-shades__image-wrap {
+    min-height: 460px;
+  }
+}
+
+@media (max-width: 991px) {
+
+  .popular-shades-container .popular-shades-wrapper .popular-shades.block .button-container {
+    order: 3;
+  }
+  .popular-shades__wrapper {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .popular-shades__content {
+    order: 1;
+    width: 100%;
+    flex: 0 0 auto;
+    padding: 12px 12px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .popular-shades__media {
+    order: 2;
+    padding-bottom: 16px;
+  }
+
+  .popular-shades__title {
+    margin: 0 0 8px;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 35.2px;
+    letter-spacing: .62px;
+  }
+
+  .popular-shades__description {
+    max-width: 100%;
+    line-height: 15.03px;
+    margin: 0 0 14px;
+    font-size: 11px;
+    color: #222;
+    letter-spacing: .62px;
+  }
+
+  .popular-shades__image-wrap {
+    min-height: unset;
+    height: auto;
+    aspect-ratio: auto;
+    background: transparent;
+    padding: 0 30px;
+  }
+
+  .popular-shades__picture,
+  .popular-shades__picture img {
+    width: 100%;
+    height: auto;
+  }
+
+  .popular-shades__picture img {
+    object-fit: contain;
+  }
+
+  .popular-shades__swatches {
+    padding: 0 10px;
+    margin-top: 10px;
+  }
+
+  .popular-shades__swatch-list {
+    gap: 8px;
+  }
+
+  .popular-shades__swatch-item {
+    width: auto;
+    height: auto;
+  }
+
+  .popular-shades__swatch-chip {
+    /* width: 56px;
+    height: 60px; */
+    /* border-radius: 14px 14px 0 0; */
+    padding: 8px;
+  }
+
+  .popular-shades__swatch-check {
+    width: 16px;
+    height: 16px;
+  }
+
+  .popular-shades__swatch-meta {
+    padding-top: 8px;
+  }
+
+  .popular-shades__swatch-name {
+    font-size: 11px;
+    line-height: 1.25;
+  }
+
+  .popular-shades__swatch-number {
+    margin-top: 2px;
+    font-size: 10px;
+    line-height: 1.2;
+  }
+
+  .popular-shades__cta {
+    margin: 16px auto 0;
+    min-height: 40px;
+    padding: 10px 18px;
+    font-size: 14px;
+    gap: 10px;
+  }
+
+  .popular-shades__cta-icon {
+    font-size: 16px;
+  }
+}
+
+@media (min-width:992px) {
+  .popular-shades-container {
+    padding-top: 60px !important;
+  }
+  .popular-shades__media {
+    width: 69%;
+    flex: unset;
+    min-width: unset;
+  }
+
+  .popular-shades__content {
+    width: 30%;
+    flex: unset;
+  }
+}

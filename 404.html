@@ -2,70 +2,386 @@
 <html>
 
 <head>
-  <meta
-    http-equiv="Content-Security-Policy"
-    content="script-src 'nonce-aem' 'strict-dynamic' 'unsafe-inline' http: https:; base-uri 'self'; object-src 'none';"
-    move-to-http-header="true"
-  >
   <title>Page not found</title>
-  <script nonce="aem" type="text/javascript">
+  <script type="text/javascript">
     window.isErrorPage = true;
     window.errorCode = '404';
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta property="og:title" content="Page not found">
-  <script nonce="aem" src="/scripts/scripts.js" type="module"></script>
-  <script nonce="aem" type="module">
-    window.addEventListener('load', () => {
-      if (document.referrer) {
-        const { origin, pathname } = new URL(document.referrer);
-        if (origin === window.location.origin) {
-          const backBtn = document.createElement('a');
-          backBtn.classList.add('button', 'error-button-back');
-          backBtn.href = pathname;
-          backBtn.textContent = 'Go back';
-          backBtn.title = 'Go back';
-          const btnContainer = document.querySelector('.button-container');
-          btnContainer.append(backBtn);
-        }
-      }
-    });
-  </script>
-  <script nonce="aem" type="module">
-    import { sampleRUM } from '/scripts/aem.js';
+  <meta property="og:title" content="bharat wwadw found">
+  <link rel="preload" href="/eds/fonts/Manrope-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/eds/fonts/Manrope-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/eds/fonts/Manrope-ExtraBold.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="/eds/scripts/aem.js" type="module"></script>
+  <script src="/eds/scripts/scripts.js" type="module"></script>
+  <link rel="stylesheet" href="/eds/styles/styles.css"/>
+  <link rel="stylesheet" href="/eds/styles/fonts.css"/>
+  <link rel="stylesheet" href="https://www.asianpaints.com/content/dam/asian_paints/static-pages/404-files/404-new.css"/>
+
+  <script type="module">
+    import { sampleRUM } from '/eds/scripts/aem.js';
     sampleRUM('404', { source: document.referrer });
   </script>
-  <link rel="stylesheet" href="/styles/styles.css">
   <style>
+    /*
+     * All values below extracted from live asianpaints.com/1234.html via
+     * getComputedStyle() + DevTools. Sources: 404-new.css, clientlib-pluginjs,
+     * clientlib-baselanding-commonheader, clientlib-emptypage.
+     */
+
+    *, *::after, *::before {
+      box-sizing: border-box;
+    }
+
+    /* Kill every styles.css rule that hits 404 content */
     main.error {
-      min-height: calc(100vh - var(--nav-height));
+      display: block;
+      width: 100%;
+      max-width: none;
+      margin-top: var(--header-height);
+      margin-right: 0;
+      margin-bottom: 0;
+      margin-left: 0;
+      padding: 0;
+    }
+
+    main.error h1,
+    main.error h2,
+    main.error h3 {
+      margin-top: 0;
+      margin-bottom: 0;
+      font-weight: inherit;
+      font-size: inherit;
+      line-height: inherit;
+      scroll-margin: 0;
+    }
+
+    main.error p {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    main.error img {
+      width: auto;
+      max-width: none;
+    }
+
+    main.error a:any-link {
+      color: inherit;
+    }
+
+    /* ── .errorPage_404 (outer wrapper) ── */
+    .errorPage_404 {
+      display: flex;
+      position: relative;
+      width: 100vw !important;
+      max-width: none !important;
+      margin: 0 0 30px !important;
+      overflow: hidden;
+      font-family: Manrope, var(--heading-font-family), sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+      color: #222;
+    }
+
+    .errorPage_404::before {
+      content: '';
+      position: absolute;
+      top: -15%;
+      right: -8%;
+      width: min(55vw, 720px);
+      height: min(90vh, 900px);
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, #ede7f6 0%, #f3f0fa 45%, rgba(243, 240, 250, 0) 72%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── .errorPage-Wrap (row) ── */
+    .errorPage_404 .errorPage-Wrap {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      width: 100vw !important;
+      max-width: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      justify-content: flex-start;
+    }
+
+    /* ── .textDescWidth (text column) ── */
+    .errorPage_404 .errorPage-Wrap .textDescWidth {
+      display: block;
+    }
+
+    .alignCenter--vertical {
       display: flex;
       align-items: center;
     }
 
-    main.error .error-number {
+    /* ── .leftRightPad40 ── */
+    .errorPage_404 .leftRightPad40 {
+      padding-right: 0;
+      padding-left: 48px !important;
+    }
+
+    /* ── .textDesc_404 ── */
+    .errorPage_404 .textDesc_404 {
+      width: 100%;
+      margin-top: 210px;
+      text-align: left;
+    }
+
+    /* ── h1 — computed: 60px/60px desktop, 30px/40px mobile ── */
+    .errorPage_404 .textDesc_404 h1 {
+      font-family: Manrope, var(--heading-font-family), sans-serif;
+      font-weight: 700;
+      letter-spacing: normal;
+      font-size: 60px;
+      line-height: 60px;
+      color: #222;
+      margin: 0 0 0.5rem;
+      padding: 0;
+      text-decoration: none;
+    }
+
+    .errorPage_404 .textDesc_404 h1 span {
+      display: block;
+    }
+
+    /* ── p — computed: 14px/22px, weight 400, spacing 0.5px ── */
+    .errorPage_404 .textDesc_404 p {
+      font-family: Manrope, var(--heading-font-family), sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+      letter-spacing: 0.5px;
+      color: #222;
+      margin: 0 0 32px;
+      padding: 0;
+    }
+
+    /* ── .buttonWrap_404 span — inline-flex so buttons sit side by side ── */
+    .errorPage_404 .buttonWrap_404 span {
+      display: inline-flex;
+    }
+
+    /* ── .button_404 — computed from live: apFontBold → Manrope 700 ── */
+    .errorPage_404 .errorPage-Wrap .buttonWrap_404 span .button_404 {
+      font-family: Manrope, var(--heading-font-family), sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 16px;
+      letter-spacing: 0.86px;
+      color: #512b8b;
+      text-transform: uppercase;
+      text-decoration: none;
+      text-align: center;
+      display: block;
+      min-width: 195px;
+      width: auto;
+      padding: 16px 20px;
+      margin-right: 21px;
+      border: 1px solid #512b8b;
+      border-radius: 2px;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .errorPage_404 .errorPage-Wrap .buttonWrap_404 span .button_404:hover {
+      background: #512b8b;
+      border-color: #512b8b;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    /* ── .imagewrap_404 — desktop: 60%, margin-top -130px ── */
+    .errorPage_404 .errorPage-Wrap .imagewrap_404 {
+      width: 60%;
+    }
+
+    .errorPage_404 .imagewrap_404 {
+      position: relative;
+      z-index: 1;
+      margin-top: -130px;
+    }
+
+    /* ── img inside imagewrap — width 100% ── */
+    .errorPage_404 .errorPage-Wrap .imagewrap_404 img {
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+      border-style: none;
+    }
+
+    .errorPage_404 .errorPage-Wrap .imagewrap_404 picture {
+      display: block;
       width: 100%;
     }
 
-    main.error .error-number text {
-      font-family: monospace;
+    .errorPage_404 .errorPage-Wrap .imagewrap_404 picture img {
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+      border-style: none;
+    }
+
+    /* ── .textDescWidth desktop — 40% ── */
+    .errorPage_404 .errorPage-Wrap .textDescWidth {
+      width: 40%;
+    }
+
+    /* ================================================================
+     *  MOBILE: max-width 991px (from 404-new.css computed values)
+     * ================================================================ */
+    @media (min-width: 320px) and (max-width: 991px) {
+      .errorPage_404 .errorPage-Wrap .textDescWidth {
+        width: 100%;
+      }
+
+      .errorPage_404 .errorPage-Wrap .imagewrap_404 {
+        width: 100%;
+        order: -1;
+      }
+
+      .errorPage_404 .leftRightPad40 {
+        padding: 0;
+      }
+
+      .errorPage_404 .textDesc_404 {
+        order: 2;
+        text-align: center;
+        margin-top: 30px;
+      }
+
+      .errorPage_404 .textDesc_404 h1 {
+        font-size: 30px;
+        line-height: 40px;
+      }
+
+      .errorPage_404 .textDesc_404 p {
+        width: 80%;
+        margin: 20px auto 30px;
+      }
+
+      .errorPage_404 .imagewrap_404 {
+        margin-top: -170px;
+      }
+
+      .errorPage_404 .imagewrap_404 img {
+        padding-top: 80px;
+      }
+
+      .errorPage_404 .errorPage-Wrap .buttonWrap_404 span .button_404 {
+        padding: 16px 5px;
+        min-width: 161px;
+        margin-right: 5px;
+      }
+
+      .errorPage_404::before {
+        opacity: 0.85;
+        right: -15%;
+      }
+    }
+
+    /* ── Recently Viewed strip ── */
+    .ap404-recently-viewed {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px 24px;
+      border-bottom: 1px solid #e0e0e0;
+      font-family: Manrope, var(--heading-font-family), sans-serif;
+    }
+
+    @media (min-width: 900px) {
+      .ap404-recently-viewed {
+        padding: 0 90px 32px;
+      }
+    }
+
+    @media (min-width: 1800px) {
+      .errorPage_404 .textDesc_404 {
+        margin-top: 780px;
+      }
+    }
+
+    .ap404-recently-viewed__head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px 24px;
+    }
+
+    .ap404-recently-viewed .popular-tags-header {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+      color: #141414;
+    }
+
+    .ap404-recently-viewed .rightAlign .ctaText {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #512b8b;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .ap404-recently-viewed .rightAlign .ctaText:hover {
+      color: #3d2068;
+    }
+
+    .ap404-recently-viewed__tiles {
+      min-height: 48px;
+      margin-top: 20px;
     }
   </style>
-  <link rel="stylesheet" href="/styles/lazy-styles.css">
 </head>
 
 <body>
   <header></header>
   <main class="error">
-    <div class="section">
-      <svg viewBox="1 0 38 18" class="error-number">
-        <text x="0" y="17">404</text>
-      </svg>
-      <h2 class="error-message">Page Not Found</h2>
-      <p class="button-container">
-        <a href="/" class="button secondary error-button-home">Go home</a>
-      </p>
+    <div class="errorPage_404 error-page">
+      <div class="errorPage-Wrap">
+        <div class="alignCenter--vertical leftRightPad40 textDescWidth">
+          <div class="textDesc_404">
+            <h1>
+              <span>Oops!</span>
+              <span>the page</span>
+              <span>does not exist</span>
+            </h1>
+            <p>bharat be outdated or have been archived!</p>
+            <div class="buttonWrap_404">
+              <span>
+                <a class="ctaText button_404" href="https://www.asianpaints.com/" style="text-align:center;">Go to homepage</a>
+                <a class="ctaText button_404" href="https://www.asianpaints.com/online-shop.html" style="text-align:center;">Shop Online</a>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="imagewrap_404" aria-hidden="true">
+          <picture>
+            <source srcset="/eds/icons/404-illustration.png" type="image/png">
+            <img src="/eds/icons/404-illustration.png" alt="Asian Paints 404 illustration" loading="eager">
+          </picture>
+        </div>
+      </div>
     </div>
+
+    <section class="popularTags plp-popular-tags__border-bottom ap404-recently-viewed" aria-labelledby="recently-viewed-heading">
+      <div class="ap404-recently-viewed__head">
+        <h2 id="recently-viewed-heading" class="popular-tags-header">Recently Viewed</h2>
+        <div class="rightAlign">
+          <a tabindex="0" href="https://www.asianpaints.com/home.html" target="_blank" rel="noopener noreferrer" class="ctaText">VIEW ALL</a>
+        </div>
+      </div>
+      <div class="ap404-recently-viewed__tiles" aria-hidden="true"></div>
+    </section>
   </main>
   <footer></footer>
 </body>

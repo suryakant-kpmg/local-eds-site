@@ -1,0 +1,119 @@
+/* Title */
+.section.designer-collection-inspiration-container:has(.designer-collection-inspiration)>.default-content-wrapper {
+  text-align: center;
+}
+.section.get-inspired-container:has(.get-inspired)>.default-content-wrapper h2#get-inspired {
+    font-weight: 800;
+}
+.section.designer-collection-inspiration-container:has(.designer-collection-inspiration)>.default-content-wrapper h2 {
+    font-size: 40px;
+    font-weight: 800;
+    margin: 0 0 40px;
+    text-align: center;
+    color: #222;
+
+    @media (min-width: 320px) and (max-width: 991px) {
+        font-size: 20px;
+        line-height: 27.32px;
+    }
+}
+
+.designer-collection-inspiration {
+    display: flex;
+    gap: 25px;
+    padding: 0 16px;
+    flex-direction: column;
+
+    @media (min-width: 1024px) {
+        flex-direction: row;
+        gap: 40px;
+        padding: 0 40px;
+    }
+}
+
+.designer-collection-inspiration > div {
+    width: 100%;
+    position: relative;
+    height: 222px;
+    transition: width 0.35s ease-in-out;
+
+    @media (min-width: 1024px) {
+        height: 400px;
+        width: 50%;
+    }
+}
+
+@media (min-width: 991px) {
+  /* default state */
+  .designer-collection-inspiration > div a {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+    top: 55px !important;
+    bottom: unset !important;
+    left: unset !important;
+    right: 35px !important;
+}
+
+  /* when container is hovered, hide all CTAs first */
+  .designer-collection-inspiration:hover > div a {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  /* then show CTA only for the hovered card */
+  .designer-collection-inspiration:hover > div:hover a {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.designer-collection-inspiration > div:hover {
+    @media (min-width: 1024px) {
+        width: 75%;
+    }
+}
+
+.designer-collection-inspiration > div > div {
+    height: 222px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    transition: opacity 0.35s ease-in-out;
+    opacity: 0;
+    border-radius: 12px;
+
+    @media (min-width: 1024px) {
+        height: 400px;
+    }
+}
+
+.designer-collection-inspiration > div > div:first-child {
+    opacity: 1;
+}
+
+.designer-collection-inspiration > div > div:hover {
+    @media (min-width: 1024px) {
+        opacity: 1;
+    }
+}
+
+.designer-collection-inspiration > div a {
+    border: none;
+    color: #000;
+    background: #fcaf17;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    position: absolute;
+    border-radius: 45px;
+    padding: 7px 20px;
+    top: unset;
+    bottom: 10px;
+    left: 10px;
+    right: unset;
+}
+
+.designer-collection-inspiration .link-icon {
+    filter: invert(1);
+}

@@ -1,0 +1,213 @@
+{
+  "definitions": [
+    {
+      "title": "Hero Form",
+      "id": "hero-form",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Hero Form",
+              "model": "hero-form",
+              "classes": "",
+              "node": "",
+              "campaignId": "",
+              "alignment": "",
+              "redirectionUrl": "",
+              "heroBgDesktop": "",
+              "heroBgMobile": "",
+              "heroBgAlt": "",
+              "formTitle": "<p>Let our experts help you!</p>",
+              "ctaLabel": "Get recommended contractor",
+              "whatsappConsentText": "Update me on WhatsApp",
+              "disclaimerHtml": "",
+              "emptyFieldErrorMessage": "Field is required",
+              "mobileNumberErrorMessage": "Phone number is invalid",
+              "pincodeErrorMessage": "Enter a valid 6 digit Zip Code",
+              "thankYouLeftSuccessHeading": "Thank you!",
+              "thankYouLeftSuccessDescription": "We will contact you shortly.",
+              "thankYouLeftErrorHeading": "Something went wrong",
+              "thankYouLeftErrorDescription": "Please try again later.",
+              "thankYouRightHeading": "",
+              "thankYouRightSubHeadingOne": "",
+              "thankYouRightSubHeadingTwo": "",
+              "thankYouBgDesktop": "",
+              "thankYouBgMobile": "",
+              "exploreCtaLabel": "",
+              "exploreCtaLink": ""
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "hero-form",
+      "fields": [
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "classes",
+          "label": "Style"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "alignment",
+          "label": "Form Alignment (optional)"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "node",
+          "label": "Resource Path / Node (optional)"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "campaignId",
+          "label": "Campaign Id (optional)"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "redirectionUrl",
+          "label": "Redirect URL after submit (optional)"
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "heroBgDesktop",
+          "label": "Hero Background (Desktop)",
+          "multi": false
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "heroBgMobile",
+          "label": "Hero Background (Mobile)",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "heroBgAlt",
+          "label": "Hero Background Alt (optional)"
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "formTitle",
+          "label": "Form Title"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "ctaLabel",
+          "label": "Submit CTA Label"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "whatsappConsentText",
+          "label": "WhatsApp Consent Text"
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "disclaimerHtml",
+          "label": "Disclaimer (HTML)"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "emptyFieldErrorMessage",
+          "label": "Error: Empty field"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "mobileNumberErrorMessage",
+          "label": "Error: Mobile number"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "pincodeErrorMessage",
+          "label": "Error: Pincode"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "thankYouLeftSuccessHeading",
+          "label": "Thank You (Left) Success Heading"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "thankYouLeftSuccessDescription",
+          "label": "Thank You (Left) Success Description"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "thankYouLeftErrorHeading",
+          "label": "Thank You (Left) Error Heading"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "thankYouLeftErrorDescription",
+          "label": "Thank You (Left) Error Description"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "thankYouRightHeading",
+          "label": "Thank You (Right) Heading"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "thankYouRightSubHeadingOne",
+          "label": "Thank You (Right) Subheading 1"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "thankYouRightSubHeadingTwo",
+          "label": "Thank You (Right) Subheading 2"
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "thankYouBgDesktop",
+          "label": "Thank You Background (Desktop)",
+          "multi": false
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "thankYouBgMobile",
+          "label": "Thank You Background (Mobile)",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "exploreCtaLabel",
+          "label": "Thank You CTA Label (optional)"
+        },
+        {
+          "component": "aem-content",
+          "valueType": "string",
+          "name": "exploreCtaLink",
+          "label": "Thank You CTA Link (optional)"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

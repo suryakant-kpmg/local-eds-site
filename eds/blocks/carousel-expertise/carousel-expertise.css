@@ -1,0 +1,199 @@
+/* Carousel Expertise Block - Variant Five (Four Image in Row) */
+.carousel-expertise-container {
+    padding: 0;
+    max-width: 100%;
+}
+
+.carousel-expertise {
+    padding: 20px 0;
+    background: transparent;
+}
+
+.fourimageinrow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-left: 60px;
+    padding-right: 55px;
+    margin: 0 auto;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+ .carousel-expertise-container .default-content-wrapper h2#areas-of-expertise {
+    font-size: 32px;
+    line-height: 35.2px;
+ }
+@media (width <= 991px) {
+    .carousel-expertise-container .default-content-wrapper {
+        text-align: center;
+    }
+    .carousel-expertise-container .default-content-wrapper h2#areas-of-expertise {
+        margin: 35px 0 10px 0;
+        font-size: 20px;
+        line-height: 22px;
+        font-weight: 700;
+        color: #222 ;
+    }
+    .carousel-expertise {
+        padding: 20px;
+    }
+  .fourimageinrow {
+    flex-wrap: nowrap;
+    padding-left: 0;
+    padding-right: 16px;
+    gap: 0;
+  }
+  .fourimageinrow.swiper {
+           padding: 0 17% 0 0;
+  }
+ .carousel-expertise-container .swiper-pagination {
+    position: relative;
+    text-align: left;
+ }
+ .carousel-expertise-container .swiper-pagination .swiper-pagination-bullet-active {
+    background: #4d4d4d !important;
+    width: 19px !important;
+    opacity: 1 !important;
+    border-radius: 6px;
+ }
+
+}
+
+@media (width > 992px) {
+    .section.carousel-expertise-container {
+        margin: 0 0 50px;
+        padding-bottom: 50px;
+    }
+    .carousel-expertise-container .default-content-wrapper  p{
+        margin-bottom: 0;
+    }
+    .fourimageinrow .fourimageinrow-imagewithtext,
+    .fourimageinrow .fourimageinrow-img {
+        height: auto;
+    }
+}
+
+@media (width >= 768px) and (width <= 1024px) {
+    .fourimageinrow {
+        padding-left: 50px;
+        padding-right: 45px;
+    }
+}
+
+.fourimageinrow .fourimageinrow-wraper {
+    position: relative;
+    width: 23.6%;
+    overflow: hidden;
+    border-radius: 8px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+
+@media (width >= 768px) and (width <= 1024px) {
+    .fourimageinrow .fourimageinrow-wraper {
+        width: 23.3%;
+    }
+}
+
+.fourimageinrow .fourimageinrow-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .6s ease;
+    display: block;
+}
+
+.fourimageinrow .fourimageinrow-wraper:hover .fourimageinrow-img {
+    transform: scale(1.1);
+}
+
+.fourimageinrow .fourimageinrow-imagewithtext {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    outline: none;
+}
+
+/* No gradient overlay */
+
+.fourimageinrow .fourimageinrow-titlewitharrow {
+    position: absolute;
+    bottom: 19px;
+    left: 16px;
+    width: 85%;
+    z-index: 2;
+}
+
+@media (width >= 768px) and (width <= 1024px) {
+    .fourimageinrow .fourimageinrow-titlewitharrow {
+        width: 88%;
+        left: 12px;
+    }
+}
+
+.fourimageinrow .fourimageinrow-imgtitle {
+    color: #fff;
+    float: left;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 33.6px;
+    font-family: Manrope, sans-serif;
+}
+
+@media (width >= 768px) and (width <= 1024px) {
+    .fourimageinrow .fourimageinrow-imgtitle {
+        font-size: 20px;
+    }
+}
+
+.fourimageinrow .fourimageinrow-imgarrow {
+    float: right;
+    position: absolute;
+    right: 0;
+    top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fourimageinrow .fourimageinrow-imagewithtext.focus-visible-auto-imp:focus-visible .fourimageinrow-img {
+    transform: scale(1.1);
+}
+
+.fourimageinrow .fourimageinrow-imagewithtext.focus-visible-auto-imp:focus-visible {
+    outline-style: solid !important;
+    outline-color: inherit !important;
+    outline-width: 1px !important;
+}
+/* Mobile Swiper Fix */
+.fourimageinrow.swiper {
+  overflow: hidden;
+}
+
+.fourimageinrow .swiper-slide {
+  width: 100% !important;
+  /* flex-shrink: 0; */
+}
+
+
+
+/* Desktop Layout Restore */
+@media (min-width: 768px) {
+  .fourimageinrow .swiper-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    transform: none !important;
+  }
+
+  .fourimageinrow .swiper-slide {
+    width: 25% !important;
+  }
+}
+
+/* Pagination */
+.fourimageinrow-pagination {
+  margin-top: 16px;
+  text-align: center;
+}

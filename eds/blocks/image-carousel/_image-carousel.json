@@ -1,0 +1,33 @@
+{
+  "definitions": [
+    {
+      "title": "Carousel",
+      "id": "carousel",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Carousel",
+              "model": "carousel",
+              "config_autoplay": "false",
+              "config_interval": "5000",
+              "config_variant": "bannerWithGreybackground"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "carousel",
+      "fields": [
+        { "component": "text", "name": "config_variant", "label": "Variant CSS class", "valueType": "string" },
+        { "component": "text", "name": "config_autoplay", "label": "Autoplay (true/false)", "valueType": "string" },
+        { "component": "text", "name": "config_interval", "label": "Interval (ms)", "valueType": "string" }
+      ]
+    }
+  ],
+  "filters": []
+}

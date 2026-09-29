@@ -1,0 +1,225 @@
+/* Form Consultation Block - Matches Asian Paints original design */
+
+/* Light background, underline inputs, full-width purple button */
+
+/* Section container - light grey background to contrast with white card */
+.section.form-consultation-container {
+  background-color: #f5f5f5;
+  padding: 40px 24px;
+}
+
+@media (width >= 900px) {
+  .section.form-consultation-container {
+    padding: 60px 40px;
+  }
+}
+
+/* Block container - white card appearance */
+.form-consultation {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 45px 50px;
+  background-color: #fff;
+  border-radius: 0;
+  box-shadow: 0 8px 12px rgb(0 0 0 / 5%);
+}
+
+/* Title section */
+.form-consultation .form-consultation-header {
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.form-consultation .form-consultation-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #222;
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+
+@media (width >= 900px) {
+  .form-consultation .form-consultation-title {
+    font-size: 28px;
+  }
+}
+
+.form-consultation .form-consultation-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Form container */
+.form-consultation .form-consultation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Input fields - underline style */
+.form-consultation .form-consultation-field {
+  position: relative;
+  margin-bottom: 0;
+}
+
+.form-consultation .form-consultation-input {
+  width: 100%;
+  padding: 16px 0;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  background-color: transparent;
+  color: #222;
+  font-size: 14px;
+  font-family: var(--body-font-family);
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.form-consultation .form-consultation-input::placeholder {
+  color: #999;
+}
+
+.form-consultation .form-consultation-input:focus {
+  outline: none;
+  border-bottom-color: rgb(67 26 128);
+}
+
+/* Mobile field with prefix */
+.form-consultation .form-consultation-mobile-field {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.form-consultation .form-consultation-mobile-prefix {
+  padding: 16px 8px 16px 0;
+  color: #222;
+  font-size: 14px;
+  font-family: var(--body-font-family);
+  white-space: nowrap;
+}
+
+.form-consultation .form-consultation-mobile-field .form-consultation-input {
+  border-bottom: none;
+  flex: 1;
+}
+
+.form-consultation .form-consultation-mobile-field:focus-within {
+  border-bottom-color: rgb(67 26 128);
+}
+
+/* WhatsApp checkbox */
+.form-consultation .form-consultation-whatsapp {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 20px 0 8px;
+}
+
+.form-consultation .form-consultation-checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.form-consultation .form-consultation-checkbox {
+  width: 20px;
+  height: 20px;
+  accent-color: rgb(67 26 128);
+  cursor: pointer;
+}
+
+.form-consultation .form-consultation-checkbox-label {
+  color: #222;
+  font-size: 14px;
+  font-family: var(--body-font-family);
+  line-height: 1.4;
+}
+
+/* Disclaimer */
+.form-consultation .form-consultation-disclaimer {
+  font-size: 12px;
+  color: rgb(67 26 128);
+  line-height: 1.5;
+  margin: 8px 0 16px;
+  font-family: var(--body-font-family);
+}
+
+/* Radio button groups */
+.form-consultation .form-consultation-radio-group {
+  margin: 16px 0;
+}
+
+.form-consultation .form-consultation-radio-label {
+  display: block;
+  font-size: 14px;
+  color: #222;
+  margin-bottom: 10px;
+  font-family: var(--body-font-family);
+}
+
+.form-consultation .form-consultation-radio-options {
+  display: flex;
+  gap: 24px;
+}
+
+.form-consultation .form-consultation-radio-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.form-consultation .form-consultation-radio {
+  width: 18px;
+  height: 18px;
+  accent-color: rgb(67 26 128);
+  cursor: pointer;
+}
+
+.form-consultation .form-consultation-radio-text {
+  font-size: 14px;
+  color: #222;
+  font-family: var(--body-font-family);
+}
+
+/* Submit button - full width purple */
+.form-consultation .form-consultation-submit {
+  width: 100%;
+  padding: 16px 20px;
+  background-color: rgb(67 26 128);
+  color: #fff;
+  border: 1px solid rgb(67 26 128);
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.86px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--body-font-family);
+  margin-top: 16px;
+}
+
+.form-consultation .form-consultation-submit:hover {
+  background-color: rgb(87 46 148);
+  border-color: rgb(87 46 148);
+}
+
+/* Responsive - Mobile */
+@media (width <= 600px) {
+  .form-consultation {
+    padding: 0 16px;
+  }
+
+  .form-consultation .form-consultation-title {
+    font-size: 22px;
+  }
+
+  .form-consultation .form-consultation-radio-options {
+    gap: 16px;
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "breadcrumb",
+  "title": "Breadcrumb",
+  "description": "Author breadcrumb labels and links",
+  "authoring": {
+    "type": "table",
+    "columns": [
+      {
+        "name": "Label",
+        "valueType": "text"
+      },
+      {
+        "name": "Link",
+        "valueType": "link"
+      }
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "templates": [
+    {
+      "name": "Royale Play Product Page",
+      "urls": [
+        "https://www.asianpaints.com/products/paints-and-textures/interior-walls/royale-play.html"
+      ],
+      "description": "Product landing page featuring texture paint collections with hero carousel, trending items, collection galleries, video embeds, roots promo section, texture category tabs, and FAQ accordion",
+      "blocks": [
+        {
+          "name": "carousel-hero",
+          "instances": [
+            ".bannercarousel",
+            ".js-carouselWithText",
+            ".carouselWithText"
+          ]
+        },
+        {
+          "name": "carousel-collections",
+          "instances": [
+            ".imageaccordion .img-side-by-side"
+          ]
+        },
+        {
+          "name": "cards-gallery",
+          "instances": [
+            ".imageGrid",
+            ".imageGrid-wraper"
+          ]
+        },
+        {
+          "name": "embed-media",
+          "instances": [
+            ".imageBanner-fullwidth"
+          ]
+        },
+        {
+          "name": "columns-promo",
+          "instances": [
+            ".trendingArticlesSec .trendingItem"
+          ]
+        },
+        {
+          "name": "tabs-categories",
+          "instances": [
+            ".main-seven-image-accordion-container .child-card"
+          ]
+        },
+        {
+          "name": "accordion-faq",
+          "instances": [
+            ".faq",
+            ".faqComponent",
+            "#faqInfoId"
+          ]
+        }
+      ]
+    }
+  ]
+}

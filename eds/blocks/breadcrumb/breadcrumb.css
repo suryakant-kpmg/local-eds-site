@@ -1,0 +1,162 @@
+/* Qualified as .breadcrumb.block, never a bare .breadcrumb.
+
+   Bootstrap 5 ships its own .breadcrumb component
+   (display: flex; padding: 0; margin-bottom: 1rem) at the same (0,1,0)
+   specificity as this selector, and its stylesheet is fetched on the first
+   user interaction (see loadDelayed in scripts.js) — so it landed after this
+   file and won the tie. The block collapsed from 54px to 30px the moment the
+   visitor clicked anything, and because this block and the hero-form share a
+   section, the hero-form jumped 8px up mid-click.
+
+   The block root always carries both classes, so (0,2,0) holds the values
+   here whatever the stylesheet order. display is pinned for the same reason —
+   Bootstrap would otherwise make this flex. */
+.breadcrumb.block {
+  display: block;
+  background: transparent !important;
+  margin-bottom: 0;
+  padding: 0.75rem 0;
+  @media (width <= 991px) {
+    display: none !important;
+  }
+}
+
+main > .section:has(.breadcrumb) .breadcrumb-wrapper {
+  padding: 0 0 0 4%;
+}
+
+main > .section:has(.breadcrumb):has(.hero-form) {
+  margin: 0;
+}
+
+main > .section:has(.breadcrumb):has(.hero-form) .breadcrumb-wrapper {
+  position: relative;
+  z-index: 3;
+  margin-bottom: -54px;
+  padding: 0 0 0 4%;
+}
+
+.breadcrumb ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 9px 0;
+}
+
+.breadcrumb ul li {
+  display: inline-flex;
+  align-items: center;
+}
+
+.breadcrumb ul li:not(:last-child)::after {
+  content: ">";
+  position: relative;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.breadcrumb ul li a,
+.breadcrumb ul li span {
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 9px;
+}
+
+.breadcrumb .slash-icon ul {
+  gap: 8px;
+  padding-bottom: 0;
+}
+
+.breadcrumb .slash-icon ul li a,
+.breadcrumb .slash-icon ul li span {
+  color: rgb(0 0 0 / 48%) !important;
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+}
+
+.breadcrumb .slash-icon ul li:last-child span[aria-current="page"] {
+  color: rgb(0 0 0 / 85%) !important;
+  font-weight: 500;
+}
+
+.breadcrumb .slash-icon ul li a {
+  text-decoration: none;
+}
+
+.breadcrumb .slash-icon ul li:not(:last-child) a {
+  padding-right: 8px;
+}
+
+.breadcrumb .slash-icon ul li:not(:last-child)::after {
+  content: "/";
+  color: rgb(0 0 0 / 48%);
+  font-family: Manrope, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+@media (width <= 991px) {
+  main > .section:has(.breadcrumb) .breadcrumb-wrapper {
+    padding: 0 16px;
+  }
+
+  main > .section:has(.breadcrumb):has(.hero-form) .breadcrumb-wrapper {
+    margin-bottom: -40px;
+    padding: 0 16px;
+  }
+
+  .breadcrumb {
+    padding: 0.5rem 0;
+  }
+
+  .breadcrumb .slash-icon ul li a,
+  .breadcrumb .slash-icon ul li span {
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+/* breadcumb for interior-wall-paints */
+.breadcrumb-container.cards-container .breadcrumb-wrapper {
+  padding-left: 0 !important;
+}
+
+.breadcrumb-container.cards-container {
+  position: relative;
+}
+
+.breadcrumb-container.cards-container .breadcrumb-wrapper {
+  transform: translate(0px, -52px);
+}
+
+.breadcrumb-container.cards-container .breadcrumb-wrapper .breadcrumb.block nav ul li a {
+  color: #5d4f43 !important;
+}
+
+.breadcrumb-container.cards-container .breadcrumb-wrapper .breadcrumb.block nav ul li:last-child span[aria-current="page"] {
+  color: #97836a !important;
+}
+
+/* inspiration */
+.section.breadcrumb-container .breadcrumb-wrapper:has(.breadcrumb.inspiration) {
+  padding-left: 2% !important;
+  padding-top: 10px;
+}
+
+.section.breadcrumb-container .breadcrumb-wrapper:has(.breadcrumb.inspiration) nav ul li a {
+  color: #5d4f43 !important;
+}
+.section.breadcrumb-container .breadcrumb-wrapper:has(.breadcrumb.inspiration) nav ul li:last-child span[aria-current="page"] {
+  color: #5d4f43 !important;
+}
+.section.breadcrumb-container .breadcrumb-wrapper:has(.breadcrumb.inspiration) nav ul li:not(:last-child):after{
+    font-weight: 400;
+    line-height: 16px;
+    color: #cfc4ab;
+}

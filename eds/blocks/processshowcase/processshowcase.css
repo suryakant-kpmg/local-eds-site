@@ -1,0 +1,409 @@
+/*
+ * processshowcase — tabbed process/step showcase.
+ *
+ * AUTHORING (Google Doc / Word table). First row is the section header
+ * (title | subtitle). Every following row is one of three kinds:
+ *   Step card : [ Tab name | Image | Step label | Step title | Description ]
+ *   Video     : [ Tab name | Video thumbnail(s) | video | YouTube URL ]
+ *   CTA       : [ cta | Cluster image | Stat count | Stat label | Action link ]
+ * Cards/videos sharing the same "Tab name" are grouped under one tab, in the
+ * order the tabs first appear. The video renders after that tab's cards. The
+ * "cta" row is section-level and renders once, below the panels.
+ *
+ * The video thumbnail cell accepts ONE image (used at every size) or TWO — the
+ * first is the mobile thumbnail, the second the desktop one; the block builds a
+ * responsive <picture> so desktop swaps in at >=768px.
+ *
+ *   +-------------------------------------------------------------------------+
+ *   | processshowcase                                                         |
+ *   +---------------------------+---------------------------------------------+
+ *   | See how we transform ...  | Watch every stage of your ...               |
+ *   +----------------+----------+-----------+------------+--------------------+
+ *   | Pre-Painting   | <img>    | Step 01   | Visit ...  | Easily ...         |
+ *   | Pre-Painting   | <img>    | Step 05   | Quotation  | You receive ...    |
+ *   | Pre-Painting   | <img>    | video     | https://youtu.be/ZvMqh8_qTx0    |
+ *   | Work in Process| <img>    | Step 01   | Assoc ...  | On-site ...        |
+ *   | cta            | <img>    | 10Lakhs + | Satisfied  | [Get a FREE...](/) |
+ *   +----------------+----------+-----------+------------+--------------------+
+ *
+ * VARIANTS (add as classes on the block, e.g. "processshowcase (center)"):
+ *   (none required) — tabs auto-center on desktop, scroll horizontally on mobile.
+ */
+
+.processshowcase .processshowcase-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.processshowcase .processshowcase-title {
+  margin: 0;
+  font-size: var(--heading-font-size-s);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.processshowcase .processshowcase-subtitle {
+  margin: 6px 0 0;
+  font-size: var(--body-font-size-xs);
+  color: var(--dark-color);
+}
+
+/* --- tabs --- */
+.processshowcase .processshowcase-tabs {
+  display: flex;
+  gap: 28px;
+  justify-content: flex-start;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  border-bottom: 1px solid #eaeaea;
+  margin-bottom: 20px;
+}
+
+.processshowcase .processshowcase-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.processshowcase .processshowcase-tab {
+  position: relative;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 6px 2px 12px;
+  border: 0;
+  background: transparent;
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-xs);
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0.55;
+}
+
+.processshowcase .processshowcase-tab[aria-selected="true"] {
+  opacity: 1;
+}
+
+.processshowcase .processshowcase-tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 48px;
+  height: 2px;
+  background-color: var(--text-color);
+}
+
+.processshowcase .processshowcase-tab:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+  opacity: 1;
+}
+
+/* --- cards (horizontal scroll on mobile) --- */
+.processshowcase .processshowcase-cards {
+  display: flex;
+  gap: 12px;
+  margin: 0;
+  padding: 0 0 8px;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.processshowcase .processshowcase-cards::-webkit-scrollbar {
+  display: none;
+}
+
+.processshowcase .processshowcase-card {
+  flex: 0 0 auto;
+  width: 150px;
+}
+
+.processshowcase .processshowcase-card-image {
+  border-radius: 5px;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.processshowcase .processshowcase-card-image img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.processshowcase .processshowcase-card-body {
+  padding-top: 8px;
+}
+
+.processshowcase .processshowcase-step {
+  display: block;
+  font-size: 10px;
+  font-weight: 300;
+  color: var(--dark-color);
+}
+
+.processshowcase .processshowcase-card-title {
+  margin: 2px 0 4px;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-xs);
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--text-color);
+}
+
+.processshowcase .processshowcase-card-desc {
+  margin: 0;
+  font-size: var(--body-font-size-xs);
+  line-height: 1.35;
+  color: var(--dark-color);
+}
+
+/* --- per-tab video thumbnail --- */
+.processshowcase .processshowcase-video {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px 10px 0 0;
+  overflow: hidden;
+  background: var(--light-color);
+  cursor: pointer;
+  line-height: 0;
+  position: relative;
+}
+
+.processshowcase .processshowcase-video img {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+}
+
+/* play glyph overlay */
+.processshowcase .processshowcase-video::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 55%) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>') no-repeat center / 24px 24px;
+}
+
+.processshowcase .processshowcase-video:hover::after,
+.processshowcase .processshowcase-video:focus-visible::after {
+  background-color: rgb(0 0 0 / 75%);
+}
+
+.processshowcase .processshowcase-video:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
+/* --- section CTA --- */
+.processshowcase .processshowcase-cta {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0 0 10px 10px;
+  overflow: hidden;
+}
+
+.processshowcase .processshowcase-cta-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background-color: #000;
+}
+
+.processshowcase .processshowcase-cta-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.processshowcase .processshowcase-cta-count {
+  font-size: var(--heading-font-size-s);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #fff;
+}
+
+.processshowcase .processshowcase-cta-label {
+  font-size: var(--body-font-size-xs);
+  color: #b0b1b3;
+}
+
+.processshowcase .processshowcase-cta-cluster {
+  margin-left: auto;
+  line-height: 0;
+}
+
+.processshowcase .processshowcase-cta-cluster img {
+  height: 32px;
+  width: auto;
+}
+
+.processshowcase .processshowcase-cta-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 24px;
+  background-color: #fdbf45;
+  color: #000;
+  font-weight: 800;
+  font-size: var(--body-font-size-s);
+  text-decoration: none;
+  text-align: center;
+}
+
+.processshowcase .processshowcase-cta-action::after {
+  content: "→";
+  font-weight: 400;
+}
+
+.processshowcase .processshowcase-cta-action:hover,
+.processshowcase .processshowcase-cta-action:focus-visible {
+  background-color: #eaad2f;
+  color: #000;
+  text-decoration: none;
+}
+
+/* --- video lightbox --- */
+.processshowcase .processshowcase-modal[hidden] {
+  display: none;
+}
+
+.processshowcase .processshowcase-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.processshowcase .processshowcase-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 80%);
+}
+
+.processshowcase .processshowcase-modal-dialog {
+  position: relative;
+  width: min(960px, 100%);
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.processshowcase .processshowcase-modal-frame,
+.processshowcase .processshowcase-modal-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.processshowcase .processshowcase-modal-close {
+  position: absolute;
+  top: -44px;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 90%);
+  color: #000;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.processshowcase .processshowcase-modal-close:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
+/* --- desktop --- */
+@media (width >=768px) {
+
+  .processshowcase .processshowcase-title {
+    font-size: var(--heading-font-size-xl);
+  }
+
+  .processshowcase .processshowcase-subtitle {
+    font-size: var(--body-font-size-s);
+  }
+
+  .processshowcase .processshowcase-tabs {
+    justify-content: center;
+    overflow-x: visible;
+    gap: 28px;
+  }
+
+  .processshowcase .processshowcase-tab {
+    font-size: var(--body-font-size-s);
+  }
+
+  /* all cards fill the row in equal columns */
+  .processshowcase .processshowcase-cards {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 24px;
+    overflow-x: visible;
+  }
+
+  .processshowcase .processshowcase-card {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+  }
+
+  .processshowcase .processshowcase-card-title {
+    font-size: var(--heading-font-size-xs);
+  }
+
+  .processshowcase .processshowcase-card-desc {
+    font-size: var(--body-font-size-s);
+  }
+
+  /* video + cta span the full section width (full-bleed rounded card) */
+  .processshowcase .processshowcase-video {
+    margin-top: 32px;
+  }
+
+  .processshowcase .processshowcase-cta {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .processshowcase .processshowcase-cta-stats {
+    flex: 1;
+    padding: 20px 40px;
+  }
+
+  .processshowcase .processshowcase-cta-count {
+    font-size: var(--heading-font-size-l);
+  }
+
+  .processshowcase .processshowcase-cta-label {
+    font-size: var(--body-font-size-s);
+  }
+
+  .processshowcase .processshowcase-cta-action {
+    flex: 0 0 auto;
+    padding: 0 48px;
+    font-size: var(--heading-font-size-xs);
+  }
+
+  .processshowcase .processshowcase-cta-cluster img {
+    height: 44px;
+  }
+}

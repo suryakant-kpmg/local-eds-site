@@ -1,0 +1,372 @@
+.section.carousel-trending-container {
+    margin: 0 !important;
+    font-family: Manrope, sans-serif;
+}
+
+.carousel-trending.block {
+    position: relative;
+}
+
+.carousel-trending .carousel-trending-header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    max-width: 75%;
+    margin: 0 auto;
+}
+
+.carousel-trending .carousel-trending-title {
+    background: linear-gradient(270deg, #f8a12e, #be2a1d 50.07%, #45216c 98.1%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 0;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 1.3rem;
+}
+
+.carousel-trending .carousel-trending-subtitle {
+    margin-top: 0;
+    margin-bottom: 2rem;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+.carousel-trending .carousel-trending-cta {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    border: 1px solid #232426;
+    border-radius: 45px;
+    color: #222;
+    padding: 8px 20px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.carousel-trending .carousel-trending-cta::after {
+    content: "";
+    background: url("/eds/icons/arrow-icon-new.svg") no-repeat;
+    width: 17px;
+    height: 20px;
+    filter: contrast(1000%) invert(100%) sepia(100%) saturate(10000%) hue-rotate(90deg);
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.carousel-trending .carousel-trending-cta:hover {
+    background: #fff7e8;
+    border: 1px solid #232426;
+}
+
+.carousel-trending .card-container {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.carousel-trending .card {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    max-height: 490px;
+    height: 490px;
+    transition: all .5s ease, opacity .2s ease;
+}
+
+.carousel-trending .card.no-link {
+    cursor: default;
+}
+
+.carousel-trending:hover .card:not(:hover) {
+    opacity: 0.6;
+}
+
+.carousel-trending:hover .card:hover {
+    transform: scale(1.02);
+}
+
+.carousel-trending .card a,
+.carousel-trending .card .card-inner {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+}
+
+.carousel-trending .card .card-img,
+.carousel-trending .card .card-img img,
+.carousel-trending .card picture {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.carousel-trending .card .card-img img {
+    object-fit: cover;
+}
+
+.carousel-trending .card .card-body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    margin: 0;
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    width: 100%;
+    display: block;
+    transition: 0.5s ease-in;
+    border-radius: 0 0 8px 8px;
+    background: rgba(0, 0, 0, 0.55);
+    padding: 18px 0;
+    transform: none;
+    font-weight: 600;
+    z-index: 3;
+}
+
+.carousel-trending .card .card-body p {
+    margin-bottom: 0;
+}
+
+/* Overlay for reveal animation */
+.carousel-trending .card .card-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(236, 229, 215);
+    z-index: 2;
+    pointer-events: none;
+    transform-origin: bottom;
+}
+
+/* Trigger animation */
+.carousel-trending .card .card-overlay.grow-image-bottom-to-top {
+    animation-name: grow;
+    animation-duration: 1.2s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease;
+    -webkit-animation-name: grow;
+    -webkit-animation-duration: 1.2s;
+    -webkit-animation-fill-mode: forwards;
+    -webkit-animation-timing-function: ease;
+}
+
+/* Reveal from bottom to top */
+@keyframes grow {
+    0% {
+        height: 100%;
+    }
+
+    1% {
+        height: 35%;
+    }
+
+    100% {
+        height: 0%;
+    }
+}
+
+@-webkit-keyframes grow {
+    0% {
+        height: 100%;
+    }
+
+    1% {
+        height: 35%;
+    }
+
+    100% {
+        height: 0%;
+    }
+}
+
+/* Tablet + Mobile */
+@media screen and (max-width: 992px) {
+    .section.carousel-trending-container {
+        padding-left: 16px;
+    }
+
+    .carousel-trending .carousel-trending-header {
+        max-width: 100%;
+    }
+
+    .carousel-trending .carousel-trending-title {
+        font-size: 20px;
+    }
+
+    .carousel-trending .carousel-trending-subtitle {
+        font-size: 14px;
+    }
+
+    .carousel-trending:hover .card:not(:hover) {
+        opacity: 1;
+    }
+
+    .carousel-trending.block .swiper {
+        overflow: hidden;
+    }
+
+    .carousel-trending.block .card {
+        max-height: none;
+    }
+
+    .carousel-trending.block .swiper-pagination {
+        position: absolute;
+        bottom: -35px;
+        left: 0;
+        text-align: left;
+    }
+
+    .carousel-trending.block .swiper-pagination .swiper-pagination-bullet {
+        width: 8px !important;
+        height: 8px !important;
+        margin-right: 3px;
+        transition: none;
+        overflow: inherit;
+        flex: 0;
+        color: #4d4d4d;
+        opacity: 0.25;
+    }
+
+    .carousel-trending.block .swiper-pagination .swiper-pagination-bullet.swiper-pagination-bullet-active {
+        background: #4d4d4d !important;
+        width: 18px !important;
+        opacity: 1 !important;
+        border-radius: 4px;
+    }
+
+    .carousel-trending .card {
+        height: 300px;
+    }
+}
+
+/* ==================== service-variant : start ==================== */
+.carousel-trending.service-variant .carousel-trending-header {
+    align-items: flex-start;
+    text-align: left;
+    max-width: 100%;
+    margin: 0 0 30px;
+}
+
+.carousel-trending.service-variant .carousel-trending-title {
+    background: none;
+    -webkit-text-fill-color: currentcolor;
+    color: #000;
+    font-size: 40px;
+    line-height: 42px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    /* -2% */
+    margin: 0 0 4px;
+}
+
+.carousel-trending.service-variant .carousel-trending-subtitle {
+    font-size: 20px;
+    line-height: 28px;
+    color: #75787b;
+    font-weight: 400;
+    letter-spacing: 0;
+    margin: 0;
+}
+
+.carousel-trending.service-variant .card-container {
+    gap: 20px;
+}
+
+.carousel-trending.service-variant .card {
+    height: 460px;
+    max-height: none;
+    border-radius: 16px;
+}
+
+/* Other cards keep full opacity while one card is hovered */
+.carousel-trending.service-variant:hover .card:not(:hover) {
+    opacity: 1;
+}
+
+/* Hover zoom on the image only - card and card-body stay in place */
+.carousel-trending.service-variant:hover .card:hover {
+    transform: none;
+}
+
+.carousel-trending.service-variant .card .card-img {
+    overflow: hidden;
+}
+
+.carousel-trending.service-variant .card .card-img img {
+    transition: .3s;
+}
+
+.carousel-trending.service-variant .card:hover .card-img img {
+    transform: scale(1.1);
+}
+
+/* No bottom-to-top reveal animation for this variant */
+.carousel-trending.service-variant .card .card-overlay {
+    display: none;
+}
+
+.carousel-trending.service-variant .card .card-body {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    width: auto;
+    min-height: 80px;
+    padding: 11px 16px;
+    border-radius: 10px;
+    background: #fff;
+    color: #222;
+    text-align: left;
+    font-size: 30px;
+    line-height: 110%;
+    font-weight: 400;
+    display: block;
+}
+
+/* Text wraps within ~75% of the box, leaving room for the arrow */
+.carousel-trending.service-variant .card .card-body-text {
+    max-width: 75%;
+}
+
+/* Arrow pinned to the bottom-right corner of the box */
+.carousel-trending.service-variant .card .card-body::after {
+    content: "";
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    width: 20px;
+    height: 20px;
+    background: url("/eds/icons/redirection-arrow-black.svg") no-repeat center / contain;
+}
+
+@media screen and (max-width: 992px) {
+    .section.carousel-trending-container:has(.carousel-trending.service-variant) {
+        padding-right: 0;
+    }
+
+    .carousel-trending.service-variant .carousel-trending-header {
+        margin-bottom: 20px;
+        padding-right: 16px;
+    }
+
+    .carousel-trending.service-variant .carousel-trending-title {
+        font-size: 26px;
+    }
+
+    .carousel-trending.service-variant .card {
+        height: 500px;
+    }
+}
+
+/* ==================== service-variant : end ==================== */

@@ -1,0 +1,358 @@
+{
+  "url": "https://www.asianpaints.com/",
+  "timestamp": "2025-12-02T07:40:52.951Z",
+  "paths": {
+    "documentPath": "/content/index",
+    "htmlFilePath": "/content/index.plain.html",
+    "mdFilePath": "/content/index.md",
+    "dirPath": "/content",
+    "filename": "index",
+    "previewPath": "/content/"
+  },
+  "screenshot": "migration-work/screenshot.png",
+  "html": {
+    "filePath": "migration-work/cleaned.html",
+    "size": 4843647
+  },
+  "metadata": {
+    "title": "Trusted Wall Painting, Home Painting & Waterproofing in India - Asian Paints ",
+    "viewport": "width=device-width, initial-scale=1.0, maximum-scale=5.0",
+    "fb:app_id": "2602220906657685",
+    "facebook-domain-verification": "0ygz534n3gqan3sfj822ntafiefcq8",
+    "p:domain_verify": "f72476ff7e004f638be0f07e3e41a324",
+    "og:title": "Trusted Wall Painting, Home Painting & Waterproofing in India - Asian Paints ",
+    "og:description": "Get hassle-free wall paint with one of the best paint colours by Asian Paint. Exclusive waterproofing solutions, interior wall paint, exterior house painting & paint colours by Asian Paints. ",
+    "og:url": "https://www.asianpaints.com/content/ap/en/home.html",
+    "description": "Get hassle-free wall paint with one of the best paint colours by Asian Paint. Exclusive waterproofing solutions, interior wall paint, exterior house painting & paint colours by Asian Paints. ",
+    "template": "asianpaints-homepage-template",
+    "google-site-verification": "-j2VnxIJ6LxFS2JEmAaFrJVvvABCzjadQs7PHnCToUM",
+    "robots": "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+    "canonical": "https://www.asianpaints.com",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Where can I find the nearest Asian Paints store?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can use our store locator tool on the website to find the nearest Asian Paints store. Simply enter your location to get a list of nearby stores."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I contact Asian Paints customer service?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can contact our customer service team by calling us on 1800-209-5678, or by emailing us directly at customercare@asianpaints.com. "
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I choose the right colour for my home?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Consider factors such as the room’s lighting, furniture, and your personal style. You can also explore our Colour Catalogue and Home Colour Guide for ideas."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I get help with colour selection from Asian Paints?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, our colour consultancy service is designed to help you choose the perfect shades for your home. "
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are the latest colour trends?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "To know the latest colour trends you can go through the Asian Paints colour of the year or even talk to our experts to get the perfect paint colour for your home. "
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I use the Asian Paints Colour Visualizer tool?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can use the Asian Paints  Colour Visualizer tool allows by clicking a photo of your room and try out different paint colours. Follow the instructions on our app to see how various shades will look in your space."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where can I find the paint calculator to estimate the amount of paint needed?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our paint calculator is available on the website. Enter the dimensions of your room, and it will estimate the amount of paint required for your project."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I choose the right paint finish for my walls?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Different finishes suit different needs. For example, matte finishes hide imperfections, while glossy finishes are durable and easy to clean. Explore our Home Painting Guide on the website or consult with our experts for advice."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I book a colour consultancy session?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can book a colour consultancy session through our website or by contacting our customer service team. We offer both online and in-person consultations at our stores."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I place an order for Asian Paints products?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Orders can be placed directly through our website, at an Asian Paints store, or by contacting our customer service team."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the delivery process for online orders?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Once you place an order, you will receive a confirmation email with delivery details. Our logistics team ensures timely and safe delivery of your products to your doorstep."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I track my order status?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, you can track your order status through your account on our website. You will also receive updates via email and SMS regarding the progress of your delivery."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I prepare a surface for painting?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Proper surface preparation involves cleaning, sanding, and priming. Refer to our detailed guide on the website for step-by-step instructions to ensure a smooth and durable finish."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the best way to clean and maintain painted walls?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Regular dusting and occasional cleaning with a damp cloth can keep your painted walls looking fresh. "
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I troubleshoot common painting issues (e.g., peeling, cracking)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "To address peeling or cracking paint, start by removing any loose or damaged paint with a scraper or sandpaper. Clean the area thoroughly, then apply a high-quality primer. Fill any deep cracks with putty and sand smooth. After priming, repaint with thin, even coats, allowing each layer to dry fully. Ensure you use quality products and prepare surfaces properly to prevent future issues. Control moisture by fixing leaks and managing humidity."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I stay updated on new products and offers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Subscribe to our newsletter, follow us on social media, and regularly check our website to stay informed about the latest products, promotions, and offers from Asian Paints."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What warranty do Asian Paints products come with?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Asian Paints products come with a warranty, the specific terms and conditions vary by product and can be found on our website.."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I claim a warranty or get support for a product issue?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "To claim a warranty or get support, contact our customer service team with your purchase details and the nature of the issue. We will guide you through the process and provide the necessary assistance. You can also go through our warranty section on the website. "
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are the terms and conditions for product returns?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can contact our customer service team or the dealer to understand the terms and conditions for a specific product return."
+          }
+        }
+      ]
+    }
+  },
+  "images": {
+    "count": 155,
+    "mapping": {
+      "https://www.asianpaints.com/content/dam/apcolourcatalogue/asset/ap-revamp/header-unification/ap_logo_black_revamp.svg": "./images/852b7e58fe78c70742954038920d751d.png",
+      "https://www.asianpaints.com/content/dam/apcolourcatalogue/asset/ap-revamp/header-unification/wt_logo_desk.svg": "./images/d9abb0795929b93ee9cddd12d8cb8894.png",
+      "https://www.asianpaints.com/content/dam/apcolourcatalogue/asset/ap-revamp/visual-search/search-with-image-icon-common.svg": "./images/9b27a6c18714016b38c385a6731df99c.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/header/profile-icon/profile-gray-brown.svg": "./images/a6a82c7695de00e8fb9aa2f737962356.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/header/search-icon/search-button-gray-brown.svg": "./images/904163416fc880c76d40f90380ccbb8b.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/header/home-icon/home-icon-desktop.svg": "./images/707a8f2c8516c0e9dc0d64b6b7712ead.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/home-ph2/banner/desktop/home-essentials/new-interior-decor-icon-desk.svg": "./images/57b55c4012718f0c2f152c6715db6ba6.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/home-ph2/banner/desktop/home-essentials/new-painting-services-icon-desk.svg": "./images/e42ab65a8804278270bf3e2c41c03f5a.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/header/search-icon/search-button.svg": "./images/2e0db5745add6d1b7419990c96ad8be9.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/home-ph2/banner/desktop/home-essentials/new-personalised-shades-icon-desk.svg": "./images/1168bd1f9e519dfd42972ffec42bb669.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/home-ph2/banner/desktop/home-essentials/new-painting-costs-icon-desk.svg": "./images/ee79bbe931810bfc74105de5c5df7bd0.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/home-ph2/banner/desktop/home-essentials/new-find-contractor-icon-desk.svg": "./images/85f25107ed0eb36e93a464589c068e0d.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/home-ph2/banner/desktop/home-essentials/new-waterproofing-costs-icon-desk.svg": "./images/9da9a02ff181c64bbe164a7a4a6b8147.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/footer/call-icon.svg": "./images/c73cf7a46732303226d2f3152f0f05dd.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/footer/email-icon.svg": "./images/d4886fc8ce6211c65d3950408660d01b.png",
+      "https://www.asianpaints.com/content/dam/apcolourcatalogue/splash-popup/desktop-ap-logo.svg": "./images/71afb078d8f9cfddb361d5e39c8815f1.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/cross-icon.svg": "./images/d98aa0d04f51178dc0673bc340431757.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/arrow-icon.svg": "./images/e0dd9525e8449572f205636f1dbb3797.png",
+      "https://static.asianpaints.com/content/dam/apcolourcatalogue/asset/ap-revamp/target-assets/otp/mob-edit-icon.png": "./images/383e358fdac1d687f06c58a20f962b03.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/circle-cross-transparent.svg": "./images/b7443849a8746fdabc3db3cfaf495289.png",
+      "https://static.asianpaints.com/content/dam/apcolourcatalogue/splash-popup/desktop-ap-logo.svg": "./images/27785e5b64cb53ee0de6ba782b6421d3.png",
+      "https://static.asianpaints.com/content/dam/apcolourcatalogue/splash-popup/desktop-bh-logo-png.webp": "./images/05051868cd321014dbf93950d8586cea.png",
+      "https://static.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/header/asian-paints-logo.webp": "./images/1402712ff466a6d20f52295862f9185c.png",
+      "https://static.asianpaints.com/content/dam/apcolourcatalogue/splash-popup/desktop-paint-textures-image.webp": "./images/c4d7207761a82f956249bf8927f11c68.png",
+      "https://static.asianpaints.com/content/dam/apcolourcatalogue/splash-popup/beautifulhomes-1280-720.webp": "./images/2e9552f43b6e50e37aa6d96e3af3b9a9.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/header/contractor-icon/contractor-icon-brown.svg": "./images/972bf25c338aebd0aaa0f2f97ef7979a.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/header/store-icon/store-icon-gray-brown.svg": "./images/64e6a62e60b84c70bb8d765d9ed1f1af.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/header/profile-icon/user-loggedin-profile-gray-brown.svg": "./images/74897b71ee1efe882871a2906ef3bf51.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/header/profile-icon/profile-black-icon.svg": "./images/74119d284def1807b60a3784bf9d00b1.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/header/profile-icon/wishlist-icon.svg": "./images/b57b53e5c053e8f28b682211b448dfaf.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/header/cart-icon/cart-button-gray-brown.svg": "./images/bdb76a6dcb8930e2178fe1d063971212.png",
+      "https://static.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global/resources/images/CloseIconForm.webp": "./images/baa42a90d8a126601c9e387c313493e6.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/bg-photo-image1-desk.webp": "./images/911b9ffc693c9df97386ee7e97943519.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/photo-image1-desk.webp": "./images/632a5def9c6ca979826c4408dc6f7583.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/featured-products/featured-product-royale-glitz-desk-updated.webp": "./images/1d70d125b29c9a1414e518a360ae2aed.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/featured-products/all-protek-desktop-updated.webp": "./images/3e738063aa973e4f894be26feda9777a.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/bg-photo-image2-desk.webp": "./images/ffa2da2d6ef363463140882b49cc5621.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/bg-photo-image3-desk.webp": "./images/72186a1e24a8ba22b9e7d94b1c2136ad.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/photo-image2-desk.webp": "./images/be1c363975be5059691a1f3688d47f79.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/photo-image3-desk.webp": "./images/e89cd46835f7e48d2112405d52fa892b.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/bg-photo-image4-desk.webp": "./images/893bb13b7cd5f7390f128fe66d2f5157.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/bg-photo-image5-desk.webp": "./images/b5faa9c85617fe7a7e5a1d8432723c4b.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global/resources/images/arrow-icon.svg": "./images/288dd40a269d6d1241ed056979a5ee20.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/footer/indian-flag.svg": "./images/a2c801305bce568fa7659348a74b642e.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/footer/arrow-down-thin-icon.svg": "./images/5323957e930938cac32abb5a4c72b61a.png",
+      "https://static.asianpaints.com/content/dam/apcolourcatalogue/asset/ap-revamp/header-unification/empty-cart-icon.webp": "./images/75747f9b3693067fe861b367db5eae85.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/components/content/whychooseus/clientlibs/resources/images/campaign-arrow.svg": "./images/ff0e0d69cf85d672b88aa3122504b147.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/components/content/colorslickgallery/clientlibs/resources/images/arrow-icon-desk.svg": "./images/52c14c4929eb7110783fa4d8632e229d.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/float-cta/bcci-campaign-colour-partner.png": "./images/d81592187f21ab8c9e41854b59d1ebf0.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/components/content/faq/clientlibs/resources/images/plus-icon.svg": "./images/120a2cade25a19d6a45502eb0ebf9401.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/components/content/faq/clientlibs/resources/images/down-icon.svg": "./images/8bc224ce2baae98d1b21ae4b695d6c82.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/components/content/multicarousel/clientlibs/resources/images/round-black-prev-icon.svg": "./images/681ce29274c4e750dd0e1c227fb7a123.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/components/content/bannerwithslider/clientlibs/resources/images/banner-arrow-next-icon.svg": "./images/9aa251b324c0a508a0cacaf8e6b35113.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/components/content/multicarousel/clientlibs/resources/images/round-black-next-icon.svg": "./images/ff8135c35dc5991a527b383dc80784d3.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/components/content/bannerwithslider/clientlibs/resources/images/banner-arrow-prev-icon.svg": "./images/4aeb37bb75b8c52198a09916f64cf4a3.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/components/content/faq/clientlibs/resources/images/cross-icon.svg": "./images/f176c0fcacef0ae2fbf558551830d850.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/components/content/multicarousel/clientlibs/resources/images/round-white-next-icon.svg": "./images/93173566273ecc7a72cbc625796db6e8.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/components/content/multicarousel/clientlibs/resources/images/round-white-prev-icon.svg": "./images/f1dec6acd5148e4beaeb3cdf01db6a58.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/photo-image4-desk.webp": "./images/cf2663f0158f051e90768b0556340d6d.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global/resources/images/Icons-Sprite-firstFold.webp": "./images/d477d7f613fe30620f04b6c2966a053f.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/bg-photo-image7-desk.webp": "./images/c83f7bac205fa8ba601223416e42746e.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/photo-image6-desk.webp": "./images/e6427167fd1fc60dfd01d7e7fc6549e8.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/sps-revamp/our-services/new-exterior3-desk.webp": "./images/71194f6bd627805e25ed0bc545716f64.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/sps-revamp/our-services/new-interior1-desk.webp": "./images/b296d47fa5c0278d32ad617c6b35d025.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/photo-image7-desk.webp": "./images/1882542dedb0c536ec31dee6e3fc433f.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/sps-revamp/our-services/new-waterproofing2-desk.webp": "./images/2b7a5b3180ff03ea6985481336fd3349.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/explore-beyond-colours/desktop/new-texture4.webp": "./images/d9324e257ad5f7160b8e91b199d257d0.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/photo-image5-desk.webp": "./images/b33d56d67d3bc16eb3cb51dd7b264bab.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/sps-revamp/our-services/new-wood4-desk.webp": "./images/340ef956b8a1a82252661a3f041c76c2.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/explore-beyond-colours/desktop/new-texture3.webp": "./images/60427bfd0e0b654707b029d6ac3612c3.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/photo-image8-desk.webp": "./images/c104a49dfd85971f805954ba606ba73b.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/bg-photo-image6-desk.webp": "./images/0d17e30bfc7d85f5b549dd5ae1c656e3.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global/resources/images/arrow-icon-thin.svg": "./images/5c8482bda6b98287d72ccba89d8fa198.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/explore-beyond-colours/desktop/new-texture1.webp": "./images/c06f2e9f8e868b0a23792a13a1eee525.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/explore-beyond-colours/desktop/new-texture2.webp": "./images/8a29076e48c00bf0238132c26173a60d.png",
+      "https://dpm.demdex.net/ibs:dpid=411&dpuuid=aS6X8gAAAB-ovQOi": "./images/bcc74de736bdbb6501aeeaf1e8b8948a.png",
+      "https://asianpaints.sc.omtrdc.net/b/ss/apaintasrpprod/1/JS-2.17.0-LEWM/s42211702124356?AQB=1&ndh=1&pf=1&t=2%2F11%2F2025%207%3A40%3A33%202%200&sdid=1A5BE7C9E4C9F286-7CF5BCCB761F4052&mid=71384841444300663582296647729815859833&aamlh=12&ce=UTF-8&ns=asianpaints&cdp=2&g=https%3A%2F%2Fwww.asianpaints.com%2F&cc=INR&events=event6&c6=D%3Dv6&v6=https%3A%2F%2Fwww.asianpaints.com%2F&v12=71384841444300663582296647729815859833&c54=D%3Dv54&v54=in%3A%3A&pe=lnk_o&pev2=Splash%20Impressions&s=1280x720&c=24&j=1.6&v=N&k=Y&bw=1280&bh=720&mcorgid=5FFF4CAB563CB2507F000101%40AdobeOrg&AQE=1": "./images/be5354864fb20f4984554bec9e0e0b1a.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/explore-beyond-colours/desktop/new-wallpaper3.webp": "./images/bdbd024489f11fc57d8aafa46b963bc8.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/explore-beyond-colours/desktop/new-wallpaper2.webp": "./images/1ae611a37a70ccb5219f3a8e00d71ae2.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/explore-beyond-colours/desktop/new-texture5.webp": "./images/978bca5ad2e1274b3632aecb45a160c6.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global/resources/images/checkout-loader.gif": "./images/e0c7de5e3ed4895adbef86b9f6a823f9.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/banner/desktop/new-banner-image1.webp": "./images/149ea39617e5df5bddee89d20375fc81.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/featured-products/ultima-protek-desktop-updated.webp": "./images/b42d87d2565b22bdd9ce4ae10647cf26.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/bg-photo-image8-desk.webp": "./images/da38ea0809f99f4846797d4d1ddf59ee.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/explore-beyond-colours/desktop/new-wallpaper4.webp": "./images/7ddb52af8c19e73679803c358e857cb9.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/explore-beyond-colours/desktop/new-wallpaper1.webp": "./images/29b4f0b682538e4c9562a476754450d8.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/float-cta/bcci-campaign-colour-partner-popup.png": "./images/168fa63b67773c7ba3c3bd8f59b876d0.png",
+      "https://cdn.cookielaw.org/logos/9de3e7bf-729d-431a-abb8-10a3eadbe49b/964cda78-b219-4601-9bf2-7a7c51527ad0/71c4869f-ff81-46b2-ad3c-146c6ab16ee0/asian-paint-logo.jpeg": "./images/96da59c9420f2be5ed443290f5f336cd.jpg",
+      "https://www.google.com/pagead/1p-user-list/988076575/?random=1764661234485&cv=11&fst=1764658800000&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45be5bi1v9121291948za200zb9189580700zd9189580700xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=103116026~103200004~104527906~104528501~104684208~104684211~115583767~115938465~115938469~116184927~116184929~116217636~116217638~116251938~116251940&u_w=1280&u_h=720&url=https%3A%2F%2Fwww.asianpaints.com%2F&frm=0&tiba=Trusted%20Wall%20Painting%2C%20Home%20Painting%20%26%20Waterproofing%20in%20India%20-%20Asian%20Paints&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=240152696.1764661234&uaa=arm&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Linux&uapv=5.10.104&uaw=0&_tu=IA&data=event%3Dgtag.config&rfmt=3&fmt=3&is_vtc=1&cid=CAQSjQEAwksa0Rhp2ZYHvBG8YM7XhV4lzr_0yr7WhKpgy7Uu6bvFymRL7oULe0h7_JaYv92SyW4rB2DLxWlWOOKSDx0LdlEa7cjMoAAI72Z3kzdUN2-EaCO2CW4uN379WK7ylFLfPQ93CAbF523Oa0lvqAKzLuSWHBwoJ8u9XCpNrsmvXyNzoG7gx5TpA9rbwM4&random=4129080717&rmt_tld=0&ipr=y": "./images/fe7262d752d1f72a4cd7e7db10a8cdba.png",
+      "https://adservice.google.com/ddm/fls/z/dc_pre=CP7cmbCznpEDFTWeSwUdD5kBkw;src=8404938;type=asian0;cat=asian0;ord=5118169553695;npa=0;auiddc=*;u1=undefined;pscdl=noapi;frm=0;_tu=IFA;gtm=45fe5bi1v9189580700za200zd9189580700xec;gcd=13l3l3l3l1l1;dma=0;dc_fmt=2;tag_exp=103116026~103200004~104527906~104528501~104684208~104684211~115583767~115616986~115938465~115938469~116184927~116184929~116217636~116217638;epver=2;dc_random=1764661234_wV5dLb7QevFnWeFCT2QNuh0uA7zVGfR6DA;_dc_test=1;~oref=https%3A%2F%2Fwww.asianpaints.com%2F": "./images/5470440b688d2847bf333cf887754c42.png",
+      "https://www.google.co.in/pagead/1p-user-list/988076575/?random=1764661234485&cv=11&fst=1764658800000&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45be5bi1v9121291948za200zb9189580700zd9189580700xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=103116026~103200004~104527906~104528501~104684208~104684211~115583767~115938465~115938469~116184927~116184929~116217636~116217638~116251938~116251940&u_w=1280&u_h=720&url=https%3A%2F%2Fwww.asianpaints.com%2F&frm=0&tiba=Trusted%20Wall%20Painting%2C%20Home%20Painting%20%26%20Waterproofing%20in%20India%20-%20Asian%20Paints&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=240152696.1764661234&uaa=arm&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Linux&uapv=5.10.104&uaw=0&_tu=IA&data=event%3Dgtag.config&rfmt=3&fmt=3&is_vtc=1&cid=CAQSjQEAwksa0Rhp2ZYHvBG8YM7XhV4lzr_0yr7WhKpgy7Uu6bvFymRL7oULe0h7_JaYv92SyW4rB2DLxWlWOOKSDx0LdlEa7cjMoAAI72Z3kzdUN2-EaCO2CW4uN379WK7ylFLfPQ93CAbF523Oa0lvqAKzLuSWHBwoJ8u9XCpNrsmvXyNzoG7gx5TpA9rbwM4&random=4129080717&rmt_tld=1&ipr=y": "./images/440b9a80847682d97466497686b3914a.png",
+      "https://asianpaints.sc.omtrdc.net/b/ss/apaintasrpprod/1/JS-2.17.0-LEWM/s46248255788726?AQB=1&ndh=1&pf=1&t=2%2F11%2F2025%207%3A40%3A34%202%200&mid=71384841444300663582296647729815859833&aamlh=12&ce=UTF-8&ns=asianpaints&cdp=2&pageName=in%3A%3A&g=https%3A%2F%2Fwww.asianpaints.com%2F&c.&inList=3.0&formatTime=2.0&getTimeBetweenEvents=3.0.1&.c&cc=INR&aamb=6G1ynYcLPuiQxYZrsz_pkqfLG9yMXBpb2zX5dvJdYQJzPXImdj0y&v2=New&c5=year%3D2025%20%7C%20month%3DDecember%20%7C%20date%3D2%20%7C%20day%3DTuesday%20%7C%20time%3D1%3A10%20PM&v5=D%3Dc5&c6=D%3Dv6&v6=https%3A%2F%2Fwww.asianpaints.com%2F&v9=not%20logged%20in&v12=71384841444300663582296647729815859833&c51=D%3Dv51&v51=21&c54=D%3Dv54&v54=in%3A%3A&s=1280x720&c=24&j=1.6&v=N&k=Y&bw=1280&bh=720&mcorgid=5FFF4CAB563CB2507F000101%40AdobeOrg&lrt=74&AQE=1": "./images/5042bf4ab6ec6459a6d948049ca7584d.png",
+      "https://cdn.cookielaw.org/logos/static/poweredBy_ot_logo.svg": "./images/cc1945f86a39ff14eefdf290c733c532.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-tools/your-ideal-wall-paint-products-desktop.webp": "./images/1de70e64077ba7f986d1b1c99fbff870.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-tools/perfect-wood-finish-products-desktop.webp": "./images/3ea599a0dc75af798d7215a74f24d54b.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-tools/colours-for-your-personality-desktop.webp": "./images/6234c892568b9be81bd6d58c600683ca.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-tools/visualise-with-colours-textures-wallpapers.webp": "./images/d5e140a3e0d22ab9ac2397cf908ab8a8.png",
+      "https://c.clarity.ms/c.gif?ctsa=mr&CtsSyncId=B02F8C7A4E47464EB35E703AC44A8D60&MUID=2C4E71B1F0946F593B596707F1586EE9": "./images/b1afe671c860149e866f9a749972db76.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/shade-tool/insignia.webp": "./images/ca4032cc3bcd436bb6f6a0755e1eae3b.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/shade-tool/royale.webp": "./images/87d719f47d047bcb86399c668e37e1b9.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/shade-tool/shvet.webp": "./images/53fcb7170a49a3abd33338f35e431b32.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/shade-tool/ultima.webp": "./images/8a575257153d9ec0e442a4385c3d0e06.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-tools/own-a-custom-shade-desktop.webp": "./images/4e951ec10738c89663edceedd72ac7ae.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/variant6/new-home-int-desk.webp": "./images/d52efe07877aad46fe410a8cefab87c1.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/variant6/modular-kitchen-dektop-updated.webp": "./images/5e803dd47ab6c5fac1957c26049a3be6.png",
+      "https://static.asianpaints.com/content/dam/apcolourcatalogue/asset/ap-revamp/waterproofing/landing-page/wht-our-clients-say/play-icon.webp": "./images/5078a7e93e6545f1d1ffd4b228d36139.png",
+      "https://static.asianpaints.com/content/dam/apcolourcatalogue/asset/ap-revamp/waterproofing/landing-page/wht-our-clients-say/wht-our-client-say-bg-logo.webp": "./images/63c04c48141c521fdef456d9d86284ab.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/variant6/new-painting-services-desk.webp": "./images/7753d61c228df6100a37020d47e24f6b.png",
+      "https://static.asianpaints.com/content/dam/asian_paints/home-ph2/find-a-store/new-find-a-store-desk.webp": "./images/2f31df145e2c1c73c8e4feda3b6892d4.png",
+      "https://static.asianpaints.com/content/dam/home-revamp/footer/bathsense.png": "./images/8e204642557b1f32df0eb812adde4056.png",
+      "https://static.asianpaints.com/content/dam/home-revamp/footer/projectsales.png": "./images/1d65fe8767e95b01189423b7b4f2cc7d.png",
+      "https://static.asianpaints.com/content/dam/home-revamp/footer/decorpro.png": "./images/28ac778510fcc9ed6412dd5a50df7392.png",
+      "https://static.asianpaints.com/content/dam/home-revamp/footer/ppg.png": "./images/c664e600f2d8874b0b47eda764188663.png",
+      "https://static.asianpaints.com/content/dam/home-revamp/footer/apPpg.png": "./images/36e7cfeab360704d2d27555a3c37418a.png",
+      "https://static.asianpaints.com/content/dam/home-revamp/footer/sleek.png": "./images/08c34deef92ccfd615d8c9764c01fcff.png",
+      "https://static.asianpaints.com/content/dam/home-revamp/footer/penta.png": "./images/f6ff8deaeaf87105741dc743e65a5935.png",
+      "https://static.asianpaints.com/content/dam/asianpaints/footer-icons/ap-logo-footer-1x.png": "./images/841deabf4c46eb3412c0f2303333eb73.png",
+      "https://static.asianpaints.com/content/dam/home-revamp/footer/qr-code-1.png": "./images/b54d9fc9f8664d75b4d7719edf0af2c5.png",
+      "https://static.asianpaints.com/content/dam/home-revamp/footer/qr-code-2.png": "./images/190eff1dbee35894b3fb5e55f20bc8ae.png",
+      "https://static.asianpaints.com/content/dam/asianpaints/footer-icons/social-media-icons/youtube.webp": "./images/eff2c34e7f743546fde26fdfa30baa77.png",
+      "https://static.asianpaints.com/content/dam/asianpaints/footer-icons/social-media-icons/facebook.webp": "./images/9a774045b68ac124bb7df08dedb490f7.png",
+      "https://static.asianpaints.com/content/dam/asianpaints/footer-icons/social-media-icons/instagram.webp": "./images/5e97f2afaaea80f018863bf5b14f5bdc.png",
+      "https://static.asianpaints.com/content/dam/asianpaints/footer-icons/social-media-icons/twitter.webp": "./images/cdc63bfdb58d6ce714a27a43b52e64f2.png",
+      "https://static.asianpaints.com/content/dam/asianpaints/footer-icons/social-media-icons/pinterest.webp": "./images/5b9157047dfe0c82e11ef19e8fa54b46.png",
+      "https://static.asianpaints.com/content/dam/home-revamp/footer/apple.png": "./images/07d8e0337319f4a5a97f6779e0c7d552.png",
+      "https://static.asianpaints.com/content/dam/home-revamp/footer/google-play.png": "./images/28de2e2d5c98ee71e002e3211433bc15.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Alex-Varghese-Kurian-desk.webp": "./images/3969eaac80ddae0ba88e84c0b74258d2.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Deepa-desk.webp": "./images/1a26e83fdc58124ea07f64e80bb30468.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Dr-Sachin-Kumble-desk.webp": "./images/70477c2d2b4657f65d3f43bd18e347ec.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Preeti-saha-desk.webp": "./images/f40c55a3adde9b75f16c7be7dd383a64.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/E.A-Varghese-desk.webp": "./images/6801bf2b169a5fece575aae2bd1ace9d.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Harsha-desk.webp": "./images/fde0f504e78edfada06409600db3eaaf.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Kavya-Vellaswamy-desk.webp": "./images/7df5d12de3d25b9a0b11a85ca23327b3.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Gargi-Mallick-desk.webp": "./images/ec8c9309f976a4747ba8530b7a941c26.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Priya-desk.webp": "./images/b193cead2bafdc17639ed469d5ee5d65.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Monica-Aggarwal-desk.webp": "./images/7e756f65ddb6d462061a4955ec6c88b9.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Leena-desk.webp": "./images/700e422b3ca72455b2ecdcaf06ab4593.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Suman-Dutta-desk.webp": "./images/1b4c10237e1d9a5a03e6c096f3b3e03a.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Sumit-Arora-desk.webp": "./images/e10747c3c2ca288c97180efd454755ba.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Susairaj-desk.webp": "./images/f039243a2a2102d49c37c2d81a17c5d2.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Ramesh-Bohani-desk.webp": "./images/8f6ee190ef0c2646f878ad1237d36a3a.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/MV-Prakash-desk.webp": "./images/e221b58ecdd8e95d17f189bae8f77955.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Saraswati-Singh-desk.webp": "./images/7b9854beedea87b4954f40da9ae1bf33.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Sunita-Chopra-desk.webp": "./images/71717c4f2a8dd3059a2ba80a307c7cc3.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Arun-Joshi-desk.webp": "./images/bc0d1e6eb1f560e514699f3979e84f1a.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Tushar-desk.webp": "./images/fd822157e8ccfcbf39f77f92442ccf1f.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Ashwin-desk.webp": "./images/d2c9d8b9f45e579c6b6e45ef75abf93f.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Dinesh-kumar-desk.webp": "./images/05f7476883da16b8fe8508b52b57606a.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Shagun-sharma-desk.webp": "./images/8112c780c08cf9e2c1614bf25ab9414a.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Damodar-shwetha-desk.webp": "./images/4c49511eed8d23680f7e79cb11b45543.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Vinod-Kumar-Srivastava-desk.webp": "./images/73b6fcc53d766f111e3b489b09cf1f30.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Srilekha-desk.webp": "./images/e195ecbe02be8010dc11f97478494fae.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Jagdish-desk.webp": "./images/aa3ffcf7b6f9d6ae3ac1327c2a94ca88.png",
+      "https://www.asianpaints.com/content/dam/asian_paints/sps-revamp/testimonials/Kalpana-desk.webp": "./images/6e4d79ef358bb200be1361259d71a193.png",
+      "https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/header/hamburger/hamburger.svg": "./images/07a6ea5129f9bc2f289e0b74a76cb72f.png"
+    },
+    "stats": {
+      "total": 171,
+      "converted": 139,
+      "skipped": 16,
+      "failed": 16,
+      "tooLarge": 0,
+      "limitReached": 0
+    }
+  }
+}

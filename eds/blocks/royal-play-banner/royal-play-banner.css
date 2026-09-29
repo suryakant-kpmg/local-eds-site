@@ -1,0 +1,553 @@
+.royal-play-banner-container{
+    margin: 0 !important;
+}
+
+
+.royal-play-banner {
+    position: relative;
+    width: 100%;
+}
+
+.royal-play-banner__carousel--desktop {
+    display: block;
+}
+
+.royal-play-banner__carousel--mobile {
+    display: none;
+}
+
+.royal-play-banner__swiper,
+.royal-play-banner__slide,
+.royal-play-banner__media,
+.royal-play-banner__image-wrap,
+.royal-play-banner__slide-inner,
+.royal-play-banner__mobile-image-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.royal-play-banner__image-wrap,
+.royal-play-banner__slide-inner,
+.royal-play-banner__mobile-image-wrap {
+    overflow: hidden;
+}
+
+.royal-play-banner picture,
+.royal-play-banner img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.royal-play-banner img {
+    object-fit: cover;
+}
+
+/* Slide 1 desktop zoom */
+.royal-play-banner__image--hero img {
+    transform-origin: right center;
+    animation: zoom-banner-img 2s ease-in-out forwards;
+}
+
+@keyframes zoom-banner-img {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.05);
+    }
+}
+
+/* Slide 1 overlay */
+.royal-play-banner__overlay {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 60%;
+    display: flex;
+    /* align-items: center; */
+    z-index: 2;
+    background: linear-gradient(270deg,
+            hsla(24, 28%, 66%, 0.01),
+            hsla(24, 28%, 66%, 0.44) 13.94%,
+            hsla(24, 28%, 66%, 0.66) 25.25%,
+            var(--bg-color, #c1a490) 42.64%);
+}
+
+.royal-play-banner__content {
+    /* padding: 40px 48px; */
+    /* max-width: 55%; */
+    max-width: 66.67%;
+    padding: 0 90px;
+}
+
+.royal-play-banner__logo {
+    margin-bottom: 24px;
+    display: flex;
+    align-items: anchor-center;
+    justify-content: center;
+}
+
+.royal-play-banner__logo picture,
+.royal-play-banner__logo img {
+    display: block;
+    max-width: 105px;
+    width: auto;
+    height: auto;
+}
+
+.royal-play-banner__title {
+    margin-bottom: 16px;
+}
+
+.royal-play-banner__title-line {
+    color: #fff;
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.1;
+    text-align: center;
+}
+
+.royal-play-banner__subtitle {
+    margin: 0 0 24px;
+    color: #232426;
+    font-size: 13px;
+    line-height: 18px;
+    letter-spacing: .5px;
+    font-weight: 500;
+}
+
+.royal-play-banner__actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.royal-play-banner__actions a:hover {
+    border: 1px solid #000;
+    background: #fff7e8;
+    color: #000;
+}
+
+/* CTA */
+.royal-play-banner__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-weight: 600;
+    min-height: 38px;
+    padding: 0 20px;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    text-align: center;
+}
+
+.royal-play-banner__cta--transparent {
+    border: 1px solid #232426;
+    border-radius: 45px;
+    background: transparent;
+    color: #232426;
+}
+
+.royal-play-banner__cta--default {
+    border-radius: 45px;
+    background: #232426;
+    color: #fff;
+    border: 1px solid #232426;
+}
+
+.royal-play-banner__cta--white {
+    background: #fff;
+    color: #232426;
+    border: 1px solid #fff;
+    border-radius: 45px;
+    font-size: 16px;
+    height: 50px;
+}
+
+.royal-play-banner__cta--white:hover {
+    border: 1px solid #000;
+    background: #fff7e8;
+    color: #000;
+}
+
+.royal-play-banner__cta .link-icon {
+    width: 20px;
+    height: 20px;
+    margin-left: 8px;
+    /* filter: invert(1); */
+}
+
+@media (min-width: 902px) {
+    .royal-play-banner__cta .link-icon {
+        filter: invert(1);
+    }
+        .royal-play-banner,
+        .royal-play-banner__carousel,
+        .royal-play-banner__swiper,
+        .royal-play-banner .swiper-wrapper,
+        .royal-play-banner .swiper-slide {
+            height: 640px;
+        }
+    
+        .royal-play-banner__logo {
+            margin: 50px 0 30px;
+        }
+        .royal-play-banner__logo picture {
+            max-width: unset;
+        }
+        .royal-play-banner__logo img {
+            width: 147px;
+            height: 150px;
+            max-width: unset;
+        }
+                                .royal-play-banner__title-line {
+                                    line-height: 38.4px;
+                                    font-weight: 800;
+                                    margin-bottom: 20px;
+                                    text-align: center;
+                                    font-size: 32px;
+                                    letter-spacing: 0.5px;
+                                    max-width: 75%;
+                                    margin-left: auto;
+                                    margin-right: auto;
+                                }
+        .royal-play-banner__subtitle {
+            font-size: 16px;
+            line-height: 21.86px;
+            color: #222222;
+            margin-bottom: 10px;
+        }
+
+}
+@media(min-width: 992px) and (max-width: 1600px) {
+       .royal-play-banner,
+.royal-play-banner__carousel,
+.royal-play-banner__swiper,
+.royal-play-banner .swiper-wrapper,
+.royal-play-banner .swiper-slide {
+    height: calc(100vh - 140px);
+}
+.royal-play-banner img {
+    object-fit: fill;
+}
+.royal-play-banner__title-line {
+    max-width: 95%;
+}
+}
+@media (min-width: 992px) and (max-width: 1099px) { 
+     .royal-play-banner,
+.royal-play-banner__carousel,
+.royal-play-banner__swiper,
+.royal-play-banner .swiper-wrapper,
+.royal-play-banner .swiper-slide {
+min-height: calc(142.857vh - 140px) !important;
+        height: calc(142.857vh - 140px) !important;
+}
+}
+@media (min-width: 1100px) and (max-width: 1199px) { 
+     .royal-play-banner,
+.royal-play-banner__carousel,
+.royal-play-banner__swiper,
+.royal-play-banner .swiper-wrapper,
+.royal-play-banner .swiper-slide {
+min-height: calc(133.333vh - 140px) !important;
+        height: calc(133.333vh - 140px) !important;
+}
+}
+@media (min-width: 1200px) and (max-width: 1279px) { 
+     .royal-play-banner,
+.royal-play-banner__carousel,
+.royal-play-banner__swiper,
+.royal-play-banner .swiper-wrapper,
+.royal-play-banner .swiper-slide {
+min-height: calc(125vh - 140px) !important;
+        height: calc(125vh - 140px) !important;
+}
+}
+@media (min-width: 1280px) and (max-width: 1365px) {
+         .royal-play-banner,
+.royal-play-banner__carousel,
+.royal-play-banner__swiper,
+.royal-play-banner .swiper-wrapper,
+.royal-play-banner .swiper-slide {
+            min-height: calc(117.647vh - 140px) !important;
+        height: calc(117.647vh - 140px) !important;
+}
+}
+@media (min-width: 1366px) and (max-width: 1439px) {
+         .royal-play-banner,
+.royal-play-banner__carousel,
+.royal-play-banner__swiper,
+.royal-play-banner .swiper-wrapper,
+.royal-play-banner .swiper-slide {
+            min-height: calc(111.111vh - 140px) !important;
+        height: calc(111.111vh - 140px) !important;
+}
+}
+@media (max-width: 901px) {
+    .royal-play-banner__slide:nth-of-type(2) .royal-play-banner__cta {
+        min-width: fit-content;
+        min-height: auto;
+        height: 100%;
+        padding: 0;
+        padding: 6px 10px;
+        font-size: 14px;
+        line-height: 21px;
+    }
+    .royal-play-banner__slide:nth-of-type(2) .royal-play-banner__cta .link-icon {
+        filter: invert(1);
+    }
+}
+/* Mobile hero */
+.royal-play-banner__mobile-logo {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 3;
+}
+
+.royal-play-banner__mobile-logo picture,
+.royal-play-banner__mobile-logo img {
+    display: block;
+    max-width: 110px;
+    width: auto;
+    height: auto;
+}
+
+.royal-play-banner__mobile-actions {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.royal-play-banner__mobile-actions .royal-play-banner__cta {
+    min-width: 160px;
+    color: #fff;
+    border: 1px solid #fff;
+}
+
+/* Regular slides */
+.royal-play-banner__slide-inner--desktop {
+    min-height: 520px;
+}
+
+.royal-play-banner__slide-logo {
+    position: absolute;
+    top: 35px;
+    left: 35px;
+    z-index: 3;
+}
+
+.royal-play-banner__slide-logo picture,
+.royal-play-banner__slide-logo img {
+    display: block;
+    max-width: 120px;
+    width: auto;
+    height: auto;
+}
+
+/* Center wrapper for title image + CTA */
+.royal-play-banner__slide-center {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    text-align: center;
+    pointer-events: none;
+}
+
+.royal-play-banner__slide-title-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.royal-play-banner__slide-title-image picture,
+.royal-play-banner__slide-title-image img {
+    display: block;
+    width: auto;
+    height: auto;
+}
+
+.royal-play-banner__slide-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: auto;
+}
+
+.royal-play-banner__slide-actions .royal-play-banner__cta {
+    min-width: 160px;
+}
+
+/* Desktop slide media fill */
+.royal-play-banner__slide-inner--desktop picture,
+.royal-play-banner__slide-inner--desktop img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Desktop pagination pill */
+.royal-play-banner .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 999px;
+    background: #fff;
+    box-sizing: border-box;
+    z-index: 5;
+}
+
+/* Desktop bullets */
+.royal-play-banner .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal .swiper-pagination-bullet {
+    margin: 0 !important;
+    width: 5px;
+    height: 5px;
+    background: #75787b;
+    opacity: 1;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+/* Extend touch target without changing visual size */
+.royal-play-banner .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal .swiper-pagination-bullet::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 24px;
+    min-height: 24px;
+}
+
+.royal-play-banner .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal .swiper-pagination-bullet.swiper-pagination-bullet-active {
+    width: 30px;
+    height: 8px;
+    border-radius: 999px;
+    background: #232426 !important;
+}
+
+/* Desktop arrows */
+.royal-play-banner .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal .custom-arrow {
+    width: 24px;
+    height: 24px;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    background-image: url('/eds/icons/arrow-icon-new.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px 14px;
+    cursor: pointer;
+    flex: 0 0 24px;
+    opacity: 1;
+    filter: invert(1);
+}
+
+.royal-play-banner .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal .custom-arrow-prev {
+    transform: rotate(180deg);
+}
+
+.royal-play-banner .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal .custom-arrow::after {
+    content: none !important;
+}
+
+
+/* Mobile */
+@media (max-width: 767px) {
+
+    .royal-play-banner,
+    .royal-play-banner__carousel,
+    .royal-play-banner__swiper,
+    .royal-play-banner .swiper-wrapper,
+    .royal-play-banner .swiper-slide {
+       /* height: calc(100vh - 80px) !important; */
+       height: 100%;
+    }
+
+    .royal-play-banner__carousel--desktop {
+        display: none;
+    }
+
+    .royal-play-banner__carousel--mobile {
+        display: block;
+    }
+
+    .royal-play-banner__overlay {
+        display: none;
+    }
+
+    .royal-play-banner picture,
+    .royal-play-banner img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .royal-play-banner__slide-center {
+        gap: 14px;
+        padding: 0 16px;
+    }
+
+    .royal-play-banner__slide-title-image picture,
+    .royal-play-banner__slide-title-image img {
+        max-width: 180px;
+    }
+
+    .royal-play-banner .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal {
+        bottom: 16px;
+        padding: 6px 10px;
+        gap: 8px;
+    }
+
+    .royal-play-banner .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal .custom-arrow {
+        width: 24px;
+        height: 24px;
+        background-size: 16px 16px;
+        flex: 0 0 24px;
+    }
+
+    .royal-play-banner .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal .swiper-pagination-bullet {
+        width: 8px;
+        height: 8px;
+    }
+
+    .royal-play-banner .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal .swiper-pagination-bullet.swiper-pagination-bullet-active {
+        width: 20px;
+        height: 6px;
+    }
+
+    .royal-play-banner__slide-logo img,
+    .royal-play-banner__mobile-logo img {
+        max-width: 55px;
+    }
+
+    .royal-play-banner__slide-actions .royal-play-banner__cta,
+    .royal-play-banner__mobile-actions .royal-play-banner__cta {
+        min-width: 160px;
+    }
+
+    .royal-play-banner__slide-inner--desktop {
+        min-height: auto;
+    }
+}

@@ -1,0 +1,74 @@
+.contact-email-outsourcing {
+  width: 100%;
+  color: #222;
+  padding: 65px 0 65px 90px;
+}
+
+.contact-email-outsourcing .contact-email-outsourcing-cin {
+  margin-bottom: 32px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* Card grid */
+.contact-email-outsourcing .contact-email-outsourcing-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.contact-email-outsourcing .contact-email-outsourcing-card {
+  padding: 12px 60px 12px 15px;
+  border-radius: 2px;
+  border: 1px solid #979797;
+  background: #fff;
+}
+
+.contact-email-outsourcing .contact-email-outsourcing-card p {
+  margin: 0 0 3px;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  color: #555;
+}
+
+.contact-email-outsourcing .contact-email-outsourcing-email {
+  text-decoration: none;
+  color: #222;
+}
+
+.contact-email-outsourcing .contact-email-outsourcing-email b {
+  font-size: 14px;
+  font-weight: 700;
+  overflow-wrap: break-word;
+}
+
+/* Tablet: two columns */
+@media (width >= 600px) {
+  .contact-email-outsourcing .contact-email-outsourcing-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop: content-width cards that wrap onto new rows */
+@media (width >= 900px) {
+  .contact-email-outsourcing .contact-email-outsourcing-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 20px;
+  }
+
+  .contact-email-outsourcing .contact-email-outsourcing-card {
+    flex: 0 0 auto;
+  }
+}
+@media (min-width: 320px) and (max-width: 991px) {
+  .contact-email-outsourcing {
+      padding: 0 10px;
+  }
+}

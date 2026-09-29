@@ -1,0 +1,282 @@
+/*
+ * colour-explorer — choose a shade from a swatch strip and preview it in place.
+ *
+ * AUTHORING (Google Doc / Word / DA table). One row per shade:
+ *
+ *   +-------------------------------------------------------------------------+
+ *   | colour-explorer                                                         |
+ *   +-------------------------------------------------------------------------+
+ *   | ## Popular Shades                                                       |
+ *   | Choose a Colour to see How it Looks on the Wall!                        |
+ *   +--------------+-------------+-------+---------+--------------------------+
+ *   | <mob><desk>  | Sun Screen  | 7868  | #F7F2DA | [details](url)           |
+ *   | <mob><desk>  | Cream Pie   | L152  | #F6F3E8 | [details](url)           |
+ *   | …one row per shade…                                                     |
+ *   +-------------------------------------------------------------------------+
+ *   | Didn't find the right shade for your home? …                            |
+ *   | [VIEW ALL COLOURS](/colour-catalogue)                                   |
+ *   +-------------------------------------------------------------------------+
+ *
+ * - Shade row: room image(s) | name | code | hex | link (kept for authors; not
+ *   rendered). The room image cell takes ONE image (all sizes) or TWO — first
+ *   mobile, second desktop (swaps in at >=992px). The swatch tile is pure CSS,
+ *   painted from the hex — no image.
+ * - Text-only rows are copy: before the shades = intro, after = footer. A link
+ *   alone in its paragraph becomes the CTA button.
+ * - Clicking a swatch swaps the room image in place (no visible caption, as on
+ *   the source); nothing navigates. The first shade is shown by default. The
+ *   previewed shade is announced to screen readers via a hidden live region.
+ *
+ * VARIANTS (add to the block name, e.g. "colour-explorer (one-row)"):
+ *   one-row — single-row swatch strip instead of two rows.
+ * The strip scrolls horizontally (scroll-snap) once shades exceed the width.
+ */
+
+.colour-explorer {
+  --colour-explorer-panel: #f0f0f0;
+  --colour-explorer-ink: #2a2a2a;
+  --colour-explorer-cta: #431a80;
+  --colour-explorer-cta-hover: #2f1259;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  color: var(--colour-explorer-ink);
+}
+
+/* pin every part to the single column: the panel ::before also sits in
+   column 1, and auto-placement would otherwise push parts into an implicit
+   (collapsed) column beside it */
+.colour-explorer > * {
+  grid-column: 1;
+}
+
+/* grey panel behind the swatches, starting halfway down the preview */
+.colour-explorer::before {
+  content: "";
+  grid-column: 1;
+  grid-row: 2 / 5;
+  margin-top: 41.6%;
+  background-color: var(--colour-explorer-panel);
+}
+
+/* --- intro + footer copy --- */
+.colour-explorer .colour-explorer-intro {
+  grid-row: 1;
+  margin-bottom: 16px;
+}
+
+.colour-explorer .colour-explorer-intro h2 {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.colour-explorer .colour-explorer-intro p,
+.colour-explorer .colour-explorer-footer p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.colour-explorer .colour-explorer-footer {
+  grid-row: 4;
+  padding: 8px 16px 30px;
+}
+
+.colour-explorer .colour-explorer-footer p.colour-explorer-cta-wrapper {
+  margin-top: 14px;
+}
+
+.colour-explorer a.colour-explorer-cta:any-link {
+  box-sizing: border-box;
+  display: inline-block;
+  min-height: 50px;
+  padding: 16px 30px;
+  border-radius: 2px;
+  background-color: var(--colour-explorer-cta);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.86px;
+  text-decoration: none;
+}
+
+.colour-explorer a.colour-explorer-cta:hover {
+  background-color: var(--colour-explorer-cta-hover);
+  color: #fff;
+  text-decoration: none;
+}
+
+.colour-explorer a.colour-explorer-cta:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
+/* --- preview --- */
+.colour-explorer .colour-explorer-preview {
+  grid-row: 2;
+  margin: 0;
+}
+
+.colour-explorer .colour-explorer-preview-media {
+  line-height: 0;
+}
+
+.colour-explorer .colour-explorer-preview-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto 673 / 560;
+  object-fit: cover;
+}
+
+/* screen-reader-only announcement of the previewed shade */
+.colour-explorer .colour-explorer-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --- swatch strip: horizontal scroll with snap, no JS carousel --- */
+.colour-explorer .colour-explorer-swatches {
+  grid-row: 3;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, auto);
+  grid-auto-columns: 74px;
+  gap: 16px 8px;
+  margin: 0;
+  padding: 24px 16px 8px;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 16px;
+}
+
+.colour-explorer.one-row .colour-explorer-swatches {
+  grid-template-rows: auto;
+}
+
+.colour-explorer .colour-explorer-swatches li {
+  scroll-snap-align: start;
+}
+
+.colour-explorer .colour-explorer-swatch {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+}
+
+.colour-explorer .colour-explorer-swatch:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: 3px;
+}
+
+.colour-explorer .colour-explorer-chip {
+  position: relative;
+  display: block;
+  aspect-ratio: 88 / 93;
+  overflow: hidden;
+  border-radius: 0 12px 0 0;
+  background-color: var(--colour-explorer-swatch, var(--light-color));
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 8%);
+}
+
+/* tick on the active swatch */
+.colour-explorer .colour-explorer-swatch[aria-pressed="true"] .colour-explorer-chip::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 36px;
+  height: 36px;
+  margin: auto;
+  border-radius: 50%;
+  background: #fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="%23222" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat center / 20px;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 20%);
+}
+
+.colour-explorer .colour-explorer-swatch-name {
+  overflow: hidden;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.colour-explorer .colour-explorer-swatch-code {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: 1px;
+}
+
+/* --- desktop: panel left, preview overlapping from the right --- */
+@media (width >= 992px) {
+  .colour-explorer {
+    grid-template-columns: minmax(0, 51.6fr) minmax(0, 7.9fr) minmax(0, 40.5fr);
+    grid-template-rows: 66px auto auto 1fr;
+  }
+
+  .colour-explorer::before {
+    grid-column: 1 / 3;
+    grid-row: 2 / 5;
+    margin-top: 0;
+  }
+
+  .colour-explorer .colour-explorer-intro {
+    grid-column: 1;
+    grid-row: 2;
+    margin: 0;
+    padding: 61px 32px 0 60px;
+  }
+
+  .colour-explorer .colour-explorer-intro h2 {
+    margin-bottom: 14px;
+    font-size: 30px;
+  }
+
+  .colour-explorer .colour-explorer-preview {
+    grid-column: 2 / 4;
+    grid-row: 1 / 5;
+    align-self: start;
+  }
+
+  .colour-explorer .colour-explorer-swatches {
+    grid-column: 1;
+    grid-row: 3;
+    grid-auto-columns: 88px;
+    gap: 20px 28px;
+    padding: 40px 32px 8px 60px;
+    scroll-padding-inline: 60px 32px;
+  }
+
+  .colour-explorer .colour-explorer-footer {
+    grid-column: 1;
+    grid-row: 4;
+    padding: 16px 32px 70px 60px;
+  }
+
+  .colour-explorer .colour-explorer-swatch-name,
+  .colour-explorer .colour-explorer-swatch-code {
+    font-size: 13px;
+  }
+}

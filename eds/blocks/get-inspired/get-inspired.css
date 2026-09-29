@@ -1,0 +1,328 @@
+/* Title */
+.section.get-inspired-container:has(.get-inspired)>.default-content-wrapper {
+    margin: 0;
+    padding-left: 30px;
+}
+
+.section.get-inspired-container:has(.get-inspired)>.default-content-wrapper h2 {
+    font-size: 40px;
+}
+
+@media (max-width: 990px) {
+    .section.get-inspired-container {
+        margin-top: 0;
+    }
+    .section.get-inspired-container:has(.get-inspired)>.default-content-wrapper h2#get-inspired {
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    .section.get-inspired-container:has(.get-inspired)>.default-content-wrapper {
+        padding-left: 15px;
+    }
+
+    .section.get-inspired-container:has(.get-inspired)>.default-content-wrapper h2 {
+        font-size: 32px;
+    }
+}
+
+.get-inspired p {
+    margin: 0;
+}
+
+/* Reserve space before JS hydrates the block to avoid CLS.
+   Raw authored markup stacks images vertically (very tall);
+   decorate() collapses it into a single-row swiper (~510px).
+   Hide raw children only while status is "loading" — if decorate
+   ever fails, the block falls back to visible raw content. */
+.get-inspired[data-block-status="loading"] > div {
+    visibility: hidden;
+}
+
+.get-inspired {
+    padding: 32px;
+    padding-top: 0;
+    padding-right: 0;
+    min-height: 540px;
+}
+
+@media (min-width: 990px) {
+    .get-inspired {
+        min-height: 560px;
+    }
+}
+
+@media (max-width: 990px) {
+    .get-inspired {
+        padding: 16px;
+        padding-top: 0;
+        min-height: unset;
+    }
+}
+
+.get-inspired a {
+    position: relative;
+    display: inline-block;
+}
+
+.get-inspired>div {
+    display: flex;
+}
+
+@media (max-width: 990px) {
+    .get-inspired>div {
+        flex-direction: column;
+    }
+}
+
+.get-inspired .tab-panel {
+    display: none;
+}
+
+.get-inspired .tab-panel.active {
+    display: block;
+}
+
+.get-inspired .tabs-content,
+.get-inspired .swiper-container-wrapper {
+    width: 100%;
+    position: relative;
+}
+
+.get-inspired .swiper {
+    overflow: hidden;
+}
+
+.get-inspired .swiper-wrapper {
+    display: flex;
+    align-items: stretch;
+}
+
+.get-inspired .tabs-nav {
+    min-width: 200px;
+    width: 200px;
+}
+
+@media (max-width: 990px) {
+    .get-inspired .tabs-nav {
+        width: auto;
+        display: flex;
+        gap: 24px;
+    }
+}
+
+.get-inspired .tab-btn {
+    background: none;
+    border: none;
+    width: auto;
+    display: block;
+    text-align: left;
+    position: relative;
+    font-weight: 400;
+    cursor: pointer;
+    color: #53565a;
+    margin-bottom: 32px;
+    font-size: 16px;
+    line-height: 24px;
+    padding: 5px 0;
+    transition: none;
+}
+
+@media (min-width: 990px) {
+    .get-inspired .tab-btn {
+        width: 100%;
+        font-size: 24px;
+        line-height: 36px;
+        padding: 10px 0;
+        transition: all 0.3s ease-in-out;
+        margin-bottom: 10px;
+    }
+}
+
+.get-inspired .tab-btn.active {
+    color: #232426;
+    font-weight: 700;
+}
+
+@media (min-width: 990px) {
+    .get-inspired .tab-btn.active {
+        font-weight: 800;
+    }
+}
+
+.get-inspired .tab-btn::after {
+    content: "";
+    background-color: transparent;
+    transition: background-color 0.5s ease;
+    height: 2px;
+    display: block;
+    width: 30%;
+}
+
+.get-inspired .tab-btn:hover::after {
+    border-radius: 7px;
+    bottom: 6px;
+    background-color: #232426;
+}
+
+.get-inspired .tab-btn.active::after {
+    content: "";
+    display: block;
+    border-radius: 10px;
+    width: 70%;
+    border-bottom: 2px solid #fcaf17;
+}
+
+@media (min-width: 990px) {
+    .get-inspired .tab-btn.active::after {
+        width: 30%;
+        border-bottom: 4px solid #232426;
+    }
+}
+
+.get-inspired .swiper-container-wrapper p {
+    display: inline-block;
+}
+
+.get-inspired .swiper-nav-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    position: absolute;
+    right: 32px;
+    top: -64px;
+}
+
+.get-inspired .swiper-button-prev,
+.get-inspired .swiper-button-next {
+    position: static;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+    background-position: center;
+    background-size: contain;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+@media (max-width: 990px) {
+
+    .get-inspired .swiper-button-prev,
+    .get-inspired .swiper-button-next {
+        display: none;
+    }
+}
+
+.get-inspired .swiper-navigation-icon {
+    display: none;
+}
+
+.get-inspired .swiper-button-prev {
+    background-image: url(/eds/icons/round-black-prev-icon.svg);
+    background-repeat: no-repeat;
+    width: 44px;
+    height: 44px;
+}
+
+.get-inspired .swiper-button-next {
+    background-image: url(/eds/icons/round-black-next-icon.svg);
+    background-repeat: no-repeat;
+    width: 44px;
+    height: 44px;
+}
+
+.get-inspired .swiper-pagination.swiper-pagination-horizontal {
+    bottom: -32px;
+    left: 0;
+    right: auto;
+    top: auto;
+    width: auto;
+}
+
+.get-inspired .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+    margin: 0 4px;
+    background: #d9d9d9;
+    opacity: 1;
+}
+
+.get-inspired .swiper-pagination-bullet-active {
+    width: 20px;
+    border-radius: 8px;
+    background: #4d4d4d;
+}
+
+.get-inspired .link-fwd {
+    position: absolute;
+    bottom: 30px;
+    color: #fff;
+    margin-left: 20px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+}
+
+.get-inspired .link-fwd span {
+    display: inline-block;
+    border: 1px solid transparent;
+}
+
+.get-inspired .link-fwd:hover span {
+    border-bottom: 1px solid currentColor;
+}
+
+.get-inspired img {
+    transition: transform 1.5s ease;
+}
+
+.get-inspired img:hover {
+    transform: scale(1.075);
+}
+
+.get-inspired .swiper-slide {
+    overflow: hidden;
+    border-radius: 8px;
+    flex-shrink: 0;
+    width: calc((100% - 16px) / 1.5);
+    max-width: 324px;
+}
+
+.get-inspired .swiper-slide a {
+    display: block;
+    width: 100%;
+}
+
+.get-inspired .swiper-slide picture {
+    display: block;
+    width: 100%;
+    aspect-ratio: 324 / 470;
+}
+
+.get-inspired .swiper-slide picture img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* Desktop fixed card width */
+@media (min-width: 1024px) {
+    .get-inspired .swiper-slide {
+        width: 324px !important;
+        flex-shrink: 0;
+    }
+
+    .get-inspired .tabs-content {
+        min-width: 0;
+    }
+}
+
+.swiper-pagination-wrapper {
+    display: block;
+}
+
+@media (min-width: 991px) {
+    .swiper-pagination-wrapper {
+        display: none;
+    }
+}

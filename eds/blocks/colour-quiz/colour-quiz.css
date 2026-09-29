@@ -1,0 +1,1067 @@
+/*
+ * colour-quiz — step-by-step colour quiz; results come from an authored sheet.
+ *
+ * AUTHORING (DA table). First cell of each row is a keyword:
+ *
+ *   | colour-quiz |                         |                  |          |             |       |
+ *   | background  | <mobile bg> <desktop bg>|                  |          |             |       |
+ *   | results     | [results](/colour-quiz-results.json) | Our expert recommendation… | Do it again |  |
+ *   | question    | space | What space are you considering for painting? | Unable to decide…¶Find your… | | |
+ *   | option      | Interior Walls | <image> | Interior |           |       |
+ *   | option      | Exterior Walls | <image> | Exterior |           |       |
+ *   | question    | room  | Select a room for painting | | space=Interior | zoom  |
+ *   | option      | Living Room    | <image> |          |             |       |
+ *   | question    | vibe  | Select the vibe you want in your room | | space=Interior | icons |
+ *   | …                                                                                         |
+ *
+ * - question: id | step label (shown in the step list) | display text
+ *   (optional; two paragraphs = small dark kicker + large headline) |
+ *   show if (`id=value`, several with `;`) | flags (`zoom`, `icons`).
+ * - option: label | image(s) | value (optional; defaults to the label). On
+ *   `zoom` questions the image cell takes up to three images: card image,
+ *   preview image for mobile (or all sizes), preview image for desktop
+ *   (>= 992px). Missing preview images fall back to the card image.
+ * - results: link to the results sheet | heading | restart button label.
+ *   Sheet columns: one per question id (blank or `*` = any) +
+ *   `shade 1 name`, `shade 1 code`, `shade 1 hex` … up to 6. Most specific
+ *   matching row wins.
+ *
+ * LEAD FORM (optional; mandatory last step before results when present):
+ *   | form    | One last step… | View Recommendations | <endpoint URL> | Our recommendations are just a click away. |
+ *   | field   | name | Name | Your Full Name | Username is not valid |
+ *   | field   | email | Email | Your Email | Email is invalid |
+ *   | field   | phone | Mobile Number | 10 digits | Phone number is invalid |
+ *   | field   | pincode | PIN Code | PIN Code | Enter a valid 6 digit Zip Code |
+ *   | choice  | painting-service | Are you looking for a home-painting service? | Yes, No | Field is required |
+ *   | consent | By proceeding, I authorize … [Terms & Conditions](…) and [Privacy Policy](…). |
+ * - form: step label | submit label | endpoint | label for a visitor who
+ *   already submitted this session (they get the button only).
+ * - The form POSTs `{ data: { name, email, phone: "+91…", pincode,
+ *   painting-service, quiz-<question id>…, page, submittedAt } }` as JSON to the
+ *   endpoint. No endpoint = nothing is sent (safe for previews).
+ *
+ * Typography and colours are the source's literal computed values, declared
+ * once below. The font stack is the source's exact stack (`Manrope`, no
+ * fallback) — this repo does not load Manrope (see HANDOFF.md).
+ */
+
+.colour-quiz {
+  /* source values (asianpaints.com .ccQuiz computed styles) */
+  --colour-quiz-font: "Manrope";
+  --colour-quiz-text: #222;
+  --colour-quiz-ink: #232426;
+  --colour-quiz-on-dark: #fff;
+  --colour-quiz-card-border: rgb(255 255 255 / 50%);
+  --colour-quiz-hover-border: #9747ff;
+  --colour-quiz-hover-bg: rgb(49 19 83 / 30%);
+  --colour-quiz-results-gradient: linear-gradient(251.66deg, rgb(65 71 155 / 0%) 28.48%, #080c4e 90.89%);
+  --colour-quiz-restart-bg: var(--light-color); /* #f8f8f8 — matches repo token */
+  --colour-quiz-restart-text: #000;
+  --colour-quiz-restart-border: #979797;
+  --colour-quiz-restart-hover: #fed440;
+  --colour-quiz-pill-bg: linear-gradient(180deg, #ffc63c 0%, #ffa20c 100%);
+  --colour-quiz-pill-text: #1d1d1f;
+
+  /* lead form (source .ccQuiz-end-form computed styles) */
+  --colour-quiz-form-bg: #fff;
+  --colour-quiz-form-label: #000;
+  --colour-quiz-form-required: #f00;
+  --colour-quiz-input-bg: #f9f9f9;
+  --colour-quiz-input-focus-bg: #f2f8ff;
+  --colour-quiz-input-border: #bdbdbd;
+  --colour-quiz-input-error: #f00;
+  --colour-quiz-error-text: #ed1c24;
+  --colour-quiz-choice-divider: #bedbff;
+  --colour-quiz-choice-checked: #7ad06d;
+  --colour-quiz-link: #00e;
+  --colour-quiz-submit-bg: #feb940;
+
+  font-family: var(--colour-quiz-font);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  color: var(--colour-quiz-text);
+}
+
+.colour-quiz button {
+  font: inherit;
+}
+
+/* --- quiz panel --- */
+.colour-quiz .colour-quiz-panel {
+  border-radius: 8px;
+  padding: 20px 22px 30px;
+  background: var(--colour-quiz-bg-mobile) center / cover no-repeat;
+}
+
+.colour-quiz .colour-quiz-panel[hidden],
+.colour-quiz .colour-quiz-results[hidden] {
+  display: none;
+}
+
+/* step list: answered steps (buttons) + current step number. On mobile the
+   current step pill sits in the same row as the answered steps and the
+   question wraps below; --colour-quiz-done (set by JS) is the number of
+   answered steps, each 22px + 13px gap wide. */
+.colour-quiz .colour-quiz-steps {
+  --colour-quiz-pill-offset: calc(var(--colour-quiz-done, 0) * 35px);
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 13px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.colour-quiz .colour-quiz-step-done {
+  display: flex;
+  align-items: center;
+  height: 40px;
+}
+
+.colour-quiz .colour-quiz-step-done button {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--colour-quiz-ink);
+  cursor: pointer;
+}
+
+.colour-quiz .colour-quiz-num {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  font-weight: 600;
+}
+
+.colour-quiz .colour-quiz-step-done .colour-quiz-num {
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--colour-quiz-ink);
+  border-radius: 20px;
+  font-size: 11px;
+  line-height: 22px;
+}
+
+.colour-quiz .colour-quiz-step-current .colour-quiz-num {
+  min-width: 28px;
+  margin-left: var(--colour-quiz-pill-offset);
+  height: 40px;
+  padding: 0 9px 0 7px;
+  border: 1px solid var(--colour-quiz-ink);
+  border-radius: 20px;
+  background-color: var(--colour-quiz-ink);
+  color: var(--colour-quiz-on-dark);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 22px;
+}
+
+.colour-quiz .colour-quiz-step-text {
+  display: none;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 19px;
+}
+
+.colour-quiz .colour-quiz-step-done button:hover .colour-quiz-num,
+.colour-quiz .colour-quiz-step-done button:focus-visible .colour-quiz-num {
+  background-color: var(--colour-quiz-ink);
+  color: var(--colour-quiz-on-dark);
+}
+
+.colour-quiz .colour-quiz-step-done button:hover .colour-quiz-step-text,
+.colour-quiz .colour-quiz-step-done button:focus-visible .colour-quiz-step-text {
+  color: var(--colour-quiz-on-dark);
+}
+
+.colour-quiz .colour-quiz-step-done button:focus-visible {
+  outline: 2px solid var(--colour-quiz-hover-border);
+  outline-offset: 2px;
+}
+
+/* current question heading: step pill + question text */
+.colour-quiz .colour-quiz-step-current {
+  width: 100%;
+}
+
+.colour-quiz .colour-quiz-steps:has(.colour-quiz-step-done) .colour-quiz-step-current {
+  margin-top: -40px;
+  pointer-events: none;
+}
+
+.colour-quiz .colour-quiz-step-current h2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 15px 14px;
+  margin: 0 0 30px;
+  font-family: var(--colour-quiz-font);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 30px;
+  color: var(--colour-quiz-ink);
+  scroll-margin: 80px;
+}
+
+.colour-quiz .colour-quiz-step-current h2:focus {
+  outline: none;
+}
+
+.colour-quiz .colour-quiz-title {
+  display: block;
+  flex: 1 0 100%;
+  min-width: 0;
+}
+
+.colour-quiz .colour-quiz-headline {
+  display: block;
+}
+
+/* intro step (kicker + headline) — source inline styles */
+.colour-quiz .colour-quiz-kicker {
+  display: block;
+  font-size: 20px;
+  line-height: 26px;
+  color: var(--colour-quiz-ink);
+}
+
+.colour-quiz .colour-quiz-kicker + .colour-quiz-headline {
+  margin-top: 6px;
+  font-size: 40px;
+  line-height: 40px;
+  color: var(--colour-quiz-on-dark);
+}
+
+/* --- options --- */
+
+/* mobile: the strip scrolls out to the panel's right edge */
+.colour-quiz .colour-quiz-options {
+  display: flex;
+  gap: 20px;
+  margin: 0 -22px 0 0;
+  padding: 0 22px 8px 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+/* plain image cards (no zoom button) sit 50px apart on the source */
+.colour-quiz .colour-quiz-options:not(.colour-quiz-options-icons, :has(.colour-quiz-zoom-button)) {
+  gap: 50px;
+}
+
+.colour-quiz .colour-quiz-options::-webkit-scrollbar {
+  display: none;
+}
+
+.colour-quiz .colour-quiz-options > li {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  scroll-snap-align: start;
+}
+
+.colour-quiz .colour-quiz-option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 123px;
+  height: 164px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--colour-quiz-card-border);
+  border-radius: 5px 60px 5px 5px;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s ease-out;
+}
+
+.colour-quiz .colour-quiz-option-media {
+  line-height: 0;
+}
+
+.colour-quiz .colour-quiz-option-media img {
+  box-sizing: border-box;
+  width: 100%;
+  height: 134px;
+  padding: 5px 5px 0;
+  border-radius: 0 60px 0 0;
+  object-fit: cover;
+}
+
+.colour-quiz .colour-quiz-option-label {
+  display: block;
+  padding: 5px;
+  color: var(--colour-quiz-on-dark);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  text-align: center;
+}
+
+.colour-quiz .colour-quiz-option:hover,
+.colour-quiz .colour-quiz-option:focus-visible,
+.colour-quiz .colour-quiz-option[aria-pressed="true"] {
+  border-color: var(--colour-quiz-hover-border);
+  background-color: var(--colour-quiz-hover-bg);
+}
+
+.colour-quiz .colour-quiz-option:focus-visible {
+  outline: 2px solid var(--colour-quiz-hover-border);
+  outline-offset: 2px;
+}
+
+.colour-quiz .colour-quiz-option:hover::after,
+.colour-quiz .colour-quiz-option:focus-visible::after,
+.colour-quiz .colour-quiz-option[aria-pressed="true"]::after {
+  content: "✓";
+  position: absolute;
+  top: 40%;
+  left: 40%;
+  width: 20%;
+  color: var(--colour-quiz-on-dark);
+  font-size: 30px;
+  line-height: 1;
+}
+
+/* icon cards (vibes) */
+.colour-quiz .colour-quiz-options-icons .colour-quiz-option {
+  height: 81px;
+  border-radius: 5px 30px 5px 5px;
+}
+
+.colour-quiz .colour-quiz-options-icons .colour-quiz-option-media img {
+  width: 22px;
+  height: 22px;
+  margin: 24px auto 3px;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* icon cards keep their border and show no tick on hover (as on the source) */
+.colour-quiz .colour-quiz-options-icons .colour-quiz-option:hover,
+.colour-quiz .colour-quiz-options-icons .colour-quiz-option:focus-visible {
+  border-color: var(--colour-quiz-card-border);
+}
+
+.colour-quiz .colour-quiz-options-icons .colour-quiz-option::after {
+  content: none;
+}
+
+/* image preview (zoom) button */
+.colour-quiz .colour-quiz-zoom-button {
+  align-self: center;
+  width: 32px;
+  height: 32px;
+  margin: 15px 0 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.colour-quiz .colour-quiz-zoom-button::before {
+  content: "";
+  display: block;
+  width: 22px;
+  height: 22px;
+  margin: auto;
+  background-color: var(--colour-quiz-on-dark);
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><path d="M13 3h6v6M19 3l-7 7M9 19H3v-6M3 19l7-7" fill="none" stroke="black" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat center / contain;
+}
+
+.colour-quiz .colour-quiz-zoom-button:focus-visible {
+  outline: 2px solid var(--colour-quiz-hover-border);
+  outline-offset: 2px;
+}
+
+/* --- lead form (last step) --- */
+.colour-quiz .colour-quiz-form-slot[hidden],
+.colour-quiz .colour-quiz-options[hidden] {
+  display: none;
+}
+
+.colour-quiz .colour-quiz-form {
+  box-sizing: border-box;
+  padding: 15px 20px 20px;
+  border-radius: 8px;
+  background-color: var(--colour-quiz-form-bg);
+}
+
+.colour-quiz .colour-quiz-form form {
+  margin: 0;
+}
+
+.colour-quiz .colour-quiz-form-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 5px 16px;
+}
+
+.colour-quiz .colour-quiz-field label {
+  display: block;
+  margin-bottom: 1px;
+  color: var(--colour-quiz-form-label);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 22px;
+}
+
+.colour-quiz .colour-quiz-required {
+  color: var(--colour-quiz-form-required);
+}
+
+.colour-quiz .colour-quiz-field-control {
+  display: flex;
+}
+
+.colour-quiz .colour-quiz-field input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 40px;
+  margin: 0;
+  padding: 1px 2px 1px 15px;
+  border: 1px solid var(--colour-quiz-input-border);
+  border-radius: 4px;
+  background-color: var(--colour-quiz-input-bg);
+  color: var(--colour-quiz-form-label);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 26.04px;
+}
+
+.colour-quiz .colour-quiz-field input:focus {
+  background-color: var(--colour-quiz-input-focus-bg);
+}
+
+.colour-quiz .colour-quiz-field input:focus-visible {
+  outline: 2px solid var(--colour-quiz-hover-border);
+  outline-offset: 1px;
+}
+
+.colour-quiz .colour-quiz-field.colour-quiz-field-error input {
+  border-color: var(--colour-quiz-input-error);
+}
+
+/* +91 prefix box joined to the mobile-number input */
+.colour-quiz .colour-quiz-field-prefix {
+  box-sizing: border-box;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  height: 40px;
+  padding: 0 7px 0 0;
+  border: 1px solid var(--colour-quiz-input-border);
+  border-right: 0;
+  border-radius: 4px 0 0 4px;
+  background-color: var(--colour-quiz-input-bg);
+  color: var(--colour-quiz-text);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.colour-quiz .colour-quiz-field .colour-quiz-field-prefix + input {
+  border-radius: 0 4px 4px 0;
+}
+
+.colour-quiz .colour-quiz-field-error .colour-quiz-field-prefix {
+  border-color: var(--colour-quiz-input-error);
+}
+
+/* India flag drawn in CSS (the source uses a sprite) */
+.colour-quiz .colour-quiz-flag {
+  width: 20px;
+  height: 20px;
+  margin: 0 6.5px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #000080 0 2px, transparent 2.5px),
+    linear-gradient(#f93 0 33.3%, #fff 33.3% 66.6%, #138808 66.6%);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%);
+}
+
+.colour-quiz .colour-quiz-field-message {
+  display: flex;
+  align-items: center;
+  height: 25px;
+  margin: 0;
+  padding: 5px 0;
+  box-sizing: border-box;
+  color: var(--colour-quiz-error-text);
+  font-size: 12px;
+  line-height: 22px;
+}
+
+/* single choice ("Are you looking for a home-painting service?") */
+.colour-quiz .colour-quiz-choice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 10px;
+  min-width: 0;
+  margin: 5px 0 0;
+  padding: 9px 10px 8px;
+  border: 0;
+  border-bottom: 1px solid var(--colour-quiz-choice-divider);
+}
+
+/* float stops the legend rendering in the border, so it lays out as a flex item */
+.colour-quiz .colour-quiz-choice legend {
+  float: left;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0;
+  color: var(--colour-quiz-text);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.colour-quiz .colour-quiz-choice-options {
+  display: flex;
+  gap: 10px;
+}
+
+.colour-quiz .colour-quiz-choice label {
+  position: relative;
+  display: flex;
+  margin: 1px 0;
+  border: 1px solid var(--colour-quiz-input-border);
+  border-radius: 40px;
+  cursor: pointer;
+}
+
+.colour-quiz .colour-quiz-choice-options input[type="radio"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.colour-quiz .colour-quiz-choice label span {
+  padding: 4px 19px;
+  border-radius: 30px;
+  background-color: var(--colour-quiz-form-bg);
+  color: var(--colour-quiz-text);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.colour-quiz .colour-quiz-choice label:hover,
+.colour-quiz .colour-quiz-choice label:focus-within {
+  border-color: var(--colour-quiz-choice-checked);
+}
+
+.colour-quiz .colour-quiz-choice label:has(input:focus-visible) {
+  outline: 2px solid var(--colour-quiz-hover-border);
+  outline-offset: 2px;
+}
+
+.colour-quiz .colour-quiz-choice input:checked + span {
+  background-color: var(--colour-quiz-choice-checked);
+  color: var(--colour-quiz-on-dark);
+}
+
+.colour-quiz .colour-quiz-choice .colour-quiz-field-message {
+  flex: 1 1 100%;
+}
+
+.colour-quiz .colour-quiz-consent {
+  margin: 10px 0;
+  color: var(--colour-quiz-text);
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 0.5px;
+}
+
+.colour-quiz .colour-quiz-consent p {
+  margin: 0;
+}
+
+.colour-quiz .colour-quiz-consent a:any-link {
+  color: var(--colour-quiz-link);
+  text-decoration: underline;
+}
+
+.colour-quiz .colour-quiz-form-error {
+  margin: 0;
+  color: var(--colour-quiz-error-text);
+  font-size: 12px;
+  line-height: 22px;
+}
+
+.colour-quiz .colour-quiz-form-error:empty {
+  display: none;
+}
+
+.colour-quiz .colour-quiz-submit {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 38px;
+  margin: 0;
+  padding: 11px 16px;
+  border: 0;
+  border-radius: 45px;
+  background-color: var(--colour-quiz-submit-bg);
+  color: var(--colour-quiz-text);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 0.86px;
+  cursor: pointer;
+}
+
+.colour-quiz .colour-quiz-submit:focus-visible {
+  outline: 2px solid var(--colour-quiz-hover-border);
+  outline-offset: 2px;
+}
+
+.colour-quiz .colour-quiz-submit[aria-busy="true"] {
+  cursor: progress;
+}
+
+.colour-quiz .colour-quiz-spinner {
+  display: none;
+}
+
+.colour-quiz .colour-quiz-submit[aria-busy="true"] .colour-quiz-spinner {
+  display: inline-block;
+  animation: colour-quiz-spin 1s linear infinite;
+}
+
+.colour-quiz .colour-quiz-spinner::before {
+  content: "↻" / "";
+}
+
+@keyframes colour-quiz-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .colour-quiz .colour-quiz-submit[aria-busy="true"] .colour-quiz-spinner {
+    animation: none;
+  }
+}
+
+.colour-quiz .colour-quiz-form-returning {
+  padding: 20px;
+}
+
+/* --- preview dialog (source #zoom-modal: full-width dark panel at the top
+   of the viewport over a 50% black backdrop; values are the source's) --- */
+.colour-quiz .colour-quiz-zoom {
+  --colour-quiz-zoom-bg: #373737;
+  --colour-quiz-zoom-border: rgb(0 0 0 / 20%);
+  --colour-quiz-zoom-backdrop: rgb(0 0 0 / 50%);
+  --colour-quiz-zoom-close-bg: rgb(0 0 0 / 70%);
+  --colour-quiz-zoom-close-border: #000;
+  --colour-quiz-zoom-arrow-ring: #dcdcdc;
+
+  position: fixed;
+  inset: 0 0 auto;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 13px 6px 0;
+  overflow: visible;
+  border: 1px solid var(--colour-quiz-zoom-border);
+  border-radius: 4.2px;
+  background-color: var(--colour-quiz-zoom-bg);
+  font-family: var(--colour-quiz-font);
+}
+
+.colour-quiz .colour-quiz-zoom::backdrop {
+  background-color: var(--colour-quiz-zoom-backdrop);
+}
+
+.colour-quiz .colour-quiz-zoom-title {
+  margin: 0 0 10px;
+  color: var(--colour-quiz-on-dark);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.colour-quiz .colour-quiz-zoom-media {
+  height: 174px;
+}
+
+/* fills the box keeping its proportions (the source stretches it; changed on request) */
+.colour-quiz .colour-quiz-zoom .colour-quiz-zoom-media picture,
+.colour-quiz .colour-quiz-zoom .colour-quiz-zoom-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.colour-quiz .colour-quiz-zoom .colour-quiz-zoom-media img {
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.colour-quiz .colour-quiz-zoom-close {
+  position: absolute;
+  top: 52px;
+  right: 5px;
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0 6px;
+  border: 1px solid var(--colour-quiz-zoom-close-border);
+  border-radius: 50%;
+  background-color: var(--colour-quiz-zoom-close-bg);
+  color: var(--colour-quiz-on-dark);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+  cursor: pointer;
+}
+
+/* prev / next: white circles with a dark arrow (the source uses 32px images) */
+.colour-quiz .colour-quiz-zoom-prev,
+.colour-quiz .colour-quiz-zoom-next {
+  position: absolute;
+  top: 50%;
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--colour-quiz-zoom-arrow-ring);
+  border-radius: 50%;
+  background: #fff no-repeat center / 18px;
+  cursor: pointer;
+}
+
+.colour-quiz .colour-quiz-zoom-prev {
+  left: 5px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><path d="M15 9H3M8 4 3 9l5 5" fill="none" stroke="%23222" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+}
+
+.colour-quiz .colour-quiz-zoom-next {
+  right: 5px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="%23222" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+}
+
+.colour-quiz .colour-quiz-zoom-single .colour-quiz-zoom-prev,
+.colour-quiz .colour-quiz-zoom-single .colour-quiz-zoom-next {
+  display: none;
+}
+
+.colour-quiz .colour-quiz-zoom-close:focus-visible,
+.colour-quiz .colour-quiz-zoom-prev:focus-visible,
+.colour-quiz .colour-quiz-zoom-next:focus-visible {
+  outline: 2px solid var(--colour-quiz-on-dark);
+  outline-offset: 2px;
+}
+
+/* --- results --- */
+
+/* the source uses the desktop artwork behind the results header at all widths */
+.colour-quiz .colour-quiz-results-header {
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 12px;
+  background: var(--colour-quiz-bg-desktop) center / cover no-repeat;
+}
+
+.colour-quiz .colour-quiz-results .colour-quiz-results-header h2 {
+  margin: 0 0 7px;
+  color: var(--colour-quiz-on-dark);
+  font-family: var(--colour-quiz-font);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  text-align: center;
+}
+
+.colour-quiz .colour-quiz-results .colour-quiz-results-header h2:focus {
+  outline: none;
+}
+
+.colour-quiz .colour-quiz-results-actions {
+  display: flex;
+  justify-content: space-around;
+  gap: 9px;
+  padding-top: 17px;
+}
+
+.colour-quiz .colour-quiz-restart-pill {
+  box-sizing: border-box;
+  height: 38px;
+  margin: 0;
+  padding: 11px 17px 11px 20px;
+  border: 0;
+  border-radius: 45px;
+  background: var(--colour-quiz-pill-bg);
+  color: var(--colour-quiz-pill-text);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 0.86px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.colour-quiz .colour-quiz-restart-pill:focus-visible {
+  outline: 2px solid var(--colour-quiz-on-dark);
+  outline-offset: 2px;
+}
+
+.colour-quiz .colour-quiz-shades {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 24px;
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.colour-quiz .colour-quiz-shade {
+  display: flex;
+  flex-direction: column;
+}
+
+.colour-quiz .colour-quiz-shade-chip {
+  display: block;
+  aspect-ratio: 123 / 134;
+  border-radius: 5px 60px 5px 5px;
+  background-color: var(--colour-quiz-shade, var(--light-color));
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 8%);
+}
+
+.colour-quiz .colour-quiz-shade-name {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 22px;
+  text-transform: capitalize;
+}
+
+.colour-quiz .colour-quiz-shade-code {
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.colour-quiz .colour-quiz-shades-empty {
+  grid-column: 1 / -1;
+  font-size: 14px;
+  text-align: center;
+}
+
+.colour-quiz .colour-quiz-results-cta {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 16px;
+}
+
+.colour-quiz .colour-quiz-restart {
+  box-sizing: border-box;
+  width: 212px;
+  margin: 0;
+  padding: 17px 10px;
+  border: 1px solid var(--colour-quiz-restart-border);
+  border-radius: 4px;
+  background: var(--colour-quiz-restart-bg);
+  color: var(--colour-quiz-restart-text);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 0.86px;
+  text-transform: none;
+  cursor: pointer;
+}
+
+.colour-quiz .colour-quiz-restart:hover,
+.colour-quiz .colour-quiz-restart:focus-visible {
+  background: var(--colour-quiz-restart-hover);
+  color: var(--colour-quiz-text);
+  box-shadow: none;
+}
+
+.colour-quiz .colour-quiz-restart:focus-visible {
+  outline: 2px solid var(--colour-quiz-hover-border);
+  outline-offset: 2px;
+}
+
+/* screen-reader-only live status */
+.colour-quiz .colour-quiz-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --- desktop: steps left, options right --- */
+@media (width >= 992px) {
+  .colour-quiz .colour-quiz-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 40px;
+    box-sizing: border-box;
+    min-height: 480px;
+    padding: 40px 115px 40px 80px;
+    border-radius: 12px;
+    background-image: var(--colour-quiz-bg-desktop);
+    background-position: left center;
+  }
+
+  .colour-quiz .colour-quiz-steps {
+    --colour-quiz-pill-offset: 0;
+
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .colour-quiz .colour-quiz-step-done {
+    height: auto;
+  }
+
+  .colour-quiz .colour-quiz-steps:has(.colour-quiz-step-done) .colour-quiz-step-current {
+    margin-top: 0;
+    pointer-events: auto;
+  }
+
+  .colour-quiz .colour-quiz-step-done .colour-quiz-num {
+    margin-right: 20px;
+  }
+
+  .colour-quiz .colour-quiz-step-text {
+    display: block;
+  }
+
+  .colour-quiz .colour-quiz-step-current h2 {
+    flex-wrap: nowrap;
+    align-items: start;
+    margin: 0;
+    font-size: 40px;
+    line-height: 40px;
+    color: var(--colour-quiz-on-dark);
+  }
+
+  .colour-quiz .colour-quiz-options {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 49px 50px;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .colour-quiz .colour-quiz-options-icons {
+    width: 469px;
+  }
+
+  .colour-quiz .colour-quiz-title {
+    flex: 1 1 auto;
+  }
+
+  .colour-quiz .colour-quiz-kicker {
+    line-height: 40px;
+  }
+
+  /* lead form: card on the right, mobile number and PIN side by side */
+  .colour-quiz .colour-quiz-panel-form {
+    padding: 28px 100px;
+  }
+
+  .colour-quiz .colour-quiz-form {
+    width: 437px;
+  }
+
+  .colour-quiz .colour-quiz-form-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .colour-quiz .colour-quiz-field:not(.colour-quiz-field-phone, .colour-quiz-field-pincode) {
+    grid-column: 1 / -1;
+  }
+
+  .colour-quiz .colour-quiz-consent {
+    font-size: 10px;
+    line-height: 14px;
+  }
+
+  /* preview dialog: desktop spacing and 500px-high image (source values) */
+  .colour-quiz .colour-quiz-zoom {
+    padding: 13px 40px 0;
+  }
+
+  .colour-quiz .colour-quiz-zoom-media {
+    height: 500px;
+  }
+
+  .colour-quiz .colour-quiz-zoom-close {
+    top: 56px;
+    right: 48px;
+  }
+
+  .colour-quiz .colour-quiz-zoom-prev {
+    left: 24px;
+  }
+
+  .colour-quiz .colour-quiz-zoom-next {
+    right: 24px;
+  }
+
+  .colour-quiz .colour-quiz-zoom-button {
+    align-self: flex-end;
+    margin-top: 10px;
+  }
+
+  .colour-quiz .colour-quiz-results-header {
+    min-height: 245px;
+    padding: 55px 0;
+    background-image: var(--colour-quiz-results-gradient), var(--colour-quiz-bg-desktop);
+  }
+
+  .colour-quiz .colour-quiz-results .colour-quiz-results-header h2 {
+    padding: 0 100px;
+    font-size: 40px;
+    line-height: 48px;
+  }
+
+  .colour-quiz .colour-quiz-results-cta {
+    gap: 17px;
+    padding: 50px 0 60px;
+  }
+
+  .colour-quiz .colour-quiz-restart {
+    width: 270px;
+    padding: 16px 10px;
+  }
+
+  .colour-quiz .colour-quiz-restart:hover,
+  .colour-quiz .colour-quiz-restart:focus-visible {
+    padding: 17px 10px;
+  }
+}

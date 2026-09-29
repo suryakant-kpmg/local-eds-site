@@ -1,0 +1,242 @@
+/* =============================
+   AP tokens (from globalStylesVariables)
+   Keep only what this block needs
+   ============================= */
+:root {
+    --ap-white: #fff;
+    --ap-background: #f8f8f8;
+    --ap-link-border: #8839ff;
+    --ap-dark-purple: #431a80;
+}
+
+/* =============================
+   Carousel base (EDS)
+   ============================= */
+.carousel.block {
+    position: relative;
+}
+
+.carousel__viewport {
+    overflow: hidden;
+    width: 100%;
+}
+
+.carousel__track {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    transform: translateX(0);
+    transition: transform 350ms ease;
+    will-change: transform;
+}
+
+.carousel--fade .carousel__track {
+    transition: none;
+}
+
+.carousel__slide {
+    flex: 0 0 100%;
+    position: relative;
+}
+
+.carousel--peek .carousel__slide {
+    flex: 0 0 93.5%; /* ~1.07 slides visible */
+}
+
+.carousel__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.carousel__prev { left: 10px; }
+.carousel__next { right: 10px; }
+
+.carousel__dots {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 14px;
+}
+
+.carousel__dot {
+    width: 10px;
+    height: 10px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(42, 42, 42, 0.22);
+    cursor: pointer;
+}
+
+.carousel__dot.is-active {
+    background: var(--ap-link-border);
+}
+
+/* =============================
+   Legacy banner styles (ported from your SCSS + matches existing compiled)
+   ============================= */
+
+/* .bannerWithGreybackground */
+.bannerWithGreybackground {
+    margin: 0 auto;
+    position: relative;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+/* forAllMobileScreen() */
+@media (min-width: 320px) and (max-width: 991px) {
+    .bannerWithGreybackground {
+        width: 100%;
+        margin: 0;
+        padding-bottom: 20px;
+    }
+}
+
+.bannerWithGreybackground .bannerTextDesc {
+    display: block !important;
+    width: 100%;
+    padding: 0 30px;
+    color: var(--ap-white);
+}
+
+.bannerWithGreybackground .image-component {
+    position: relative;
+    z-index: 9;
+    margin-top: 30px;
+    margin: auto;
+    width: 80%;
+    text-align: center;
+}
+
+/* forAllMobileScreen() */
+@media (min-width: 320px) and (max-width: 991px) {
+    .bannerWithGreybackground .image-component {
+        width: 90%;
+    }
+}
+
+/* Text styles */
+.bannerWithGreybackground .image-component .bannerTextDesc p {
+    font-size: 13px;
+    line-height: 1.85;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    color: var(--ap-white);
+    text-transform: uppercase;
+}
+
+.bannerWithGreybackground .image-component .bannerTextDesc h2 {
+    font-weight: 600;
+    font-size: 60px;
+    line-height: 1;
+}
+
+/* forAllMobileScreen() */
+@media (min-width: 320px) and (max-width: 991px) {
+    .bannerWithGreybackground .image-component .bannerTextDesc h2 {
+        font-size: 24px;
+    }
+}
+
+/* semi-mediumScreen() */
+@media (min-width: 768px) and (max-width: 991px) {
+    .bannerWithGreybackground .image-component .bannerTextDesc h2 {
+        font-size: 30px;
+    }
+}
+
+.bannerWithGreybackground .image-component .bannerTextDesc .textCompWrap {
+    text-align: center;
+}
+
+.bannerWithGreybackground .image-component .bannerTextDesc .textCompWrap .viewAllLink {
+    font-size: 13px;
+    border-bottom: 2px solid var(--ap-link-border);
+    text-decoration: none;
+    color: var(--ap-white);
+}
+
+/* grey background behind image */
+.bannerWithGreybackground .image-backgroundCT {
+    position: absolute;
+    width: 95%;
+    height: 65%;
+    top: 50%;
+    z-index: 0;
+    background-color: var(--ap-background);
+}
+
+/* smallScreen() */
+@media (min-width: 320px) and (max-width: 767px) {
+    .bannerWithGreybackground .image-backgroundCT { display: none; }
+}
+
+/* Banner image + text overlay */
+.bannerImgWithLeftTextComp {
+    height: auto;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.bannerImgWithLeftTextComp .full-banner-click {
+    width: 100%;
+}
+
+.bannerImgWithLeftTextComp img {
+    width: 100%;
+    transform: translate3d(0, 0, 0);
+}
+
+.prodBannerImage {
+    width: 100%;
+    height: auto;
+}
+
+/* Overlay block (legacy) */
+.bannerTextDesc {
+    position: absolute;
+    width: 60%;
+    padding: 0 60px;
+}
+
+/* smallScreen() */
+@media (min-width: 320px) and (max-width: 767px) {
+    .bannerTextDesc {
+        width: 100%;
+        padding: 0 15px;
+    }
+}
+
+/* semi-mediumScreen() */
+@media (min-width: 768px) and (max-width: 991px) {
+    .bannerTextDesc { width: 65%; }
+}
+
+/* mediumLargeScreen() (matches your mixin) */
+@media (min-width: 991px) and (max-width: 1200px) {
+    .bannerTextDesc { width: 62%; }
+}
+
+/* Clickable overlay like your jQuery sets */
+.imagebanner .bannerTextDesc { cursor: pointer; }
+
+/* Accessibility focus */
+.prodBannerImage img:focus-visible {
+    outline: 2px solid var(--ap-link-border);
+    outline-offset: 2px;
+}

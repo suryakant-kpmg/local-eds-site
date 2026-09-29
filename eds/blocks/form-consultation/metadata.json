@@ -1,0 +1,39 @@
+{
+  "variantName": "form-consultation",
+  "baseBlock": "form",
+  "version": "1.0.0",
+  "created": "2026-01-27T12:00:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.asianpaints.com/inspiration/ideas/colour-inspiration.html",
+    "originPage": "Colour inspiration page",
+    "blockPosition": "bottom"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "lead-capture",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "title + subtitle + form fields + checkbox + disclaimer + button",
+    "buttonCount": 1,
+    "imageCount": 0
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "consultation request forms",
+      "lead capture forms",
+      "contact forms on light backgrounds"
+    ],
+    "notSuitableFor": [
+      "forms on dark/colored backgrounds",
+      "multi-step forms",
+      "forms with complex layouts"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["content/inspiration/ideas/colour-inspiration"],
+    "reuseCount": 1,
+    "lastUsed": "2026-01-27T12:00:00.000Z"
+  }
+}

@@ -1,0 +1,175 @@
+.home-icon-content-wrapper {
+    position: relative;
+    gap: 10px;
+    width: calc(100% - 32px);
+    padding: 6px 12px 25px !important;
+    box-shadow: 0 4px 16px -2px #1018281A;
+    border-radius: 8px;
+    background-color: #fff;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+@media(max-width: 991px) {
+    .home-icon-content-wrapper {
+            margin: -25px auto 50px !important;
+    }
+}
+.home-icon-content-wrapper .default-content-wrapper #transform-your-space {
+    color: #df0f29;
+    font-weight: 300;
+    line-height: 50px;
+    width: 100%;
+    text-align: center;
+    letter-spacing: 0;
+    font-size: 26px;
+    margin: 0;
+}
+
+.home-icon-content-wrapper .homepage-icons-container-wrapper .homepage-icons-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 10px;
+    align-items: flex-start;
+}
+
+.home-icon-content-wrapper .homepage-icons-container-wrapper .homepage-icons-container a {
+    flex: 0 0 calc((100% - 20px) / 3);
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    position: relative;
+}
+
+.home-icon-content-wrapper .homepage-icons-container-wrapper .homepage-icons-container a:hover::after {
+    opacity: 1;
+}
+
+.home-icon-content-wrapper .homepage-icons-container-wrapper .homepage-icons-container a::after {
+    content: "";
+    width: 30px;
+    height: 30px;
+    background: #feda94;
+    position: absolute;
+    border-radius: 50%;
+    top: 0;
+    right: 30%;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+}
+
+.home-icon-content-wrapper .homepage-icons-container-wrapper .homepage-icons-container a figure {
+    row-gap: 10px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.home-icon-content-wrapper .homepage-icons-container-wrapper .homepage-icons-container a .icon-wrapper {
+    height: 43px;
+}
+
+.home-icon-content-wrapper .homepage-icons-container-wrapper .homepage-icons-container a .icon-wrapper img {
+    max-width: 50px;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+}
+
+.home-icon-content-wrapper .homepage-icons-container-wrapper .homepage-icons-container a figcaption {
+    font-size: 13px;
+    line-height: 22px;
+    font-weight: 400;
+    width: auto;
+    color: #222;
+}
+
+.home-icon-content-wrapper .homepage-icons-container-wrapper .homepage-icons-container a figcaption span {
+    display: block;
+}
+
+
+@media(min-width:992px) {
+    .home-icon-content-wrapper {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 60px;
+        padding: 30px 25px !important;
+        width: 30%;
+        gap: 30px;
+    }
+
+    .home-icon-content-wrapper .homepage-icons-container-wrapper .homepage-icons-container {
+        gap: 35px 20px;
+    }
+
+    .home-icon-content-wrapper .homepage-icons-container-wrapper .homepage-icons-container a {
+        flex: 0 0 calc((100% - 40px) / 3);
+    }
+
+    .home-icon-content-wrapper .homepage-icons-container-wrapper .homepage-icons-container a figure {
+        row-gap: 12px;
+    }
+
+    .home-icon-content-wrapper .homepage-icons-container-wrapper .homepage-icons-container a .icon-wrapper {
+        height: 51px;
+    }
+
+    .home-icon-content-wrapper .homepage-icons-container-wrapper .homepage-icons-container a .icon-wrapper img {
+        max-width: 53px;
+    }
+
+    .home-icon-content-wrapper .homepage-icons-container-wrapper .homepage-icons-container a figcaption {
+        font-size: 14px;
+    }
+
+    .home-icon-content-wrapper .default-content-wrapper #transform-your-space {
+        font-size: 60px;
+        line-height: 66px;
+        letter-spacing: 0;
+        width: 90%;
+        margin-top: 0;
+        /* margin-bottom: 0.25em; */
+        text-align: left;
+
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1440px) {
+    .home-icon-content-wrapper {
+        padding: 30px 25px !important;
+    }
+}
+
+@media(min-width: 1025px) and (max-width: 1440px) {
+    .home-icon-content-wrapper {
+        transform: translateY(-50%);
+        right: 60px;
+    }
+
+    .home-icon-content-wrapper .homepage-icons-container-wrapper .homepage-icons-container a figcaption {
+        font-size: 14px !important;
+    }
+}
+
+@media(min-width: 1101px) and (max-width: 1280px) {
+    .home-icon-content-wrapper {
+        width: 30% !important;
+    }
+}
+
+@media(min-width: 1281px) and (max-width: 1440px) {
+    .home-icon-content-wrapper {
+        width: 30% !important;
+        padding: 30px 25px !important;
+    }
+}
+
+@media (min-width: 1680px) {
+    .home-icon-content-wrapper .default-content-wrapper #transform-your-space {
+        width: 75%;
+    }
+}

@@ -1,0 +1,266 @@
+/* layout: media, controls and captions share one grid cell; thumbnails sit below on
+   mobile and overlay the bottom-right of the video on desktop */
+.video-switcher {
+  --video-switcher-radius: 10px;
+  --video-switcher-thumb: 70px;
+  --video-switcher-thumb-active: 90px;
+  --video-switcher-gap: 8px;
+  --video-switcher-inset: 20px;
+  --video-switcher-bottom: 30px;
+  --video-switcher-scrim: color-mix(in srgb, var(--text-color) 75%, transparent);
+  --video-switcher-dim: color-mix(in srgb, var(--text-color) 40%, transparent);
+  --video-switcher-on-media: var(--background-color);
+  --video-switcher-on-media-muted: color-mix(in srgb, var(--background-color) 75%, transparent);
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.video-switcher .video-switcher-media {
+  grid-area: 1 / 1;
+  position: relative;
+  aspect-ratio: 5 / 6;
+  overflow: hidden;
+  border-radius: var(--video-switcher-radius);
+  background-color: var(--dark-color);
+}
+
+.video-switcher .video-switcher-media::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 55%;
+  background: linear-gradient(0deg, var(--video-switcher-scrim), transparent);
+  pointer-events: none;
+}
+
+.video-switcher .video-switcher-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* controls */
+.video-switcher .video-switcher-controls {
+  grid-area: 1 / 1;
+  z-index: 1;
+  place-self: start end;
+  display: flex;
+  gap: var(--video-switcher-gap);
+  margin: 16px;
+}
+
+.video-switcher .video-switcher-controls button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 2px solid var(--video-switcher-on-media);
+  border-radius: 50%;
+  background-color: var(--video-switcher-dim);
+  color: var(--video-switcher-on-media);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.video-switcher .video-switcher-controls button:hover {
+  background-color: var(--video-switcher-scrim);
+}
+
+.video-switcher .video-switcher-controls svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* the source hides prev/next on small screens; thumbnails cover navigation there */
+.video-switcher .video-switcher-controls .video-switcher-prev,
+.video-switcher .video-switcher-controls .video-switcher-next {
+  display: none;
+}
+
+/* captions */
+.video-switcher .video-switcher-captions {
+  grid-area: 1 / 1;
+  z-index: 1;
+  align-self: end;
+  padding: 0 var(--video-switcher-inset) var(--video-switcher-bottom);
+  color: var(--video-switcher-on-media);
+}
+
+.video-switcher .video-switcher-caption > * {
+  margin: 0;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-xs);
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--video-switcher-on-media-muted);
+}
+
+.video-switcher .video-switcher-caption > .video-switcher-title {
+  margin-bottom: 8px;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-m);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--video-switcher-on-media);
+}
+
+.video-switcher .video-switcher-caption:not([hidden]) {
+  animation: video-switcher-caption-in 0.7s ease-out both;
+}
+
+/* thumbnails */
+.video-switcher .video-switcher-tabs {
+  grid-area: 2 / 1;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--video-switcher-gap);
+  min-height: var(--video-switcher-thumb-active);
+
+  /* padding keeps focus rings unclipped; negative margin keeps thumbnails aligned to the edge */
+  margin: 6px -4px 0;
+  padding: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.video-switcher .video-switcher-tab {
+  position: relative;
+  flex: none;
+  width: var(--video-switcher-thumb);
+  height: var(--video-switcher-thumb);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--video-switcher-radius);
+  overflow: hidden;
+  background-color: var(--light-color);
+  cursor: pointer;
+  transition: width 0.7s ease-in-out, height 0.7s ease-in-out;
+}
+
+.video-switcher .video-switcher-tab::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--video-switcher-dim);
+  transition: opacity 0.7s ease-in-out;
+}
+
+.video-switcher .video-switcher-tab:hover::after {
+  opacity: 0.5;
+}
+
+.video-switcher .video-switcher-tab[aria-selected='true'] {
+  width: var(--video-switcher-thumb-active);
+  height: var(--video-switcher-thumb-active);
+}
+
+.video-switcher .video-switcher-tab[aria-selected='true']::after {
+  opacity: 0;
+}
+
+.video-switcher .video-switcher-tab img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* focus: light + dark ring stays visible over video frames and on the page background */
+.video-switcher .video-switcher-controls button:focus-visible,
+.video-switcher .video-switcher-tabs .video-switcher-tab:focus-visible,
+.video-switcher .video-switcher-captions:focus-visible {
+  outline: 2px solid var(--background-color);
+  outline-offset: 0;
+  box-shadow: 0 0 0 4px var(--text-color);
+}
+
+@keyframes video-switcher-caption-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video-switcher .video-switcher-caption:not([hidden]) {
+    animation: none;
+  }
+
+  .video-switcher .video-switcher-tab,
+  .video-switcher .video-switcher-tab::after {
+    transition: none;
+  }
+}
+
+@media (width >= 992px) {
+  .video-switcher {
+    --video-switcher-radius: 20px;
+    --video-switcher-thumb: 100px;
+    --video-switcher-thumb-active: 120px;
+    --video-switcher-bottom: 56px;
+
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .video-switcher .video-switcher-media {
+    grid-column: 1 / -1;
+    aspect-ratio: auto;
+    height: 670px;
+  }
+
+  .video-switcher .video-switcher-controls {
+    grid-column: 1 / -1;
+    margin: 24px 28px;
+  }
+
+  .video-switcher .video-switcher-controls .video-switcher-prev,
+  .video-switcher .video-switcher-controls .video-switcher-next {
+    display: grid;
+  }
+
+  .video-switcher .video-switcher-captions {
+    grid-column: 1;
+    justify-self: end;
+    padding: 0 22px var(--video-switcher-bottom) 40px;
+    text-align: right;
+  }
+
+  .video-switcher .video-switcher-caption > * {
+    max-width: 438px;
+    margin-left: auto;
+    font-size: var(--heading-font-size-m);
+    line-height: 1.27;
+  }
+
+  .video-switcher .video-switcher-caption > .video-switcher-title {
+    max-width: none;
+    margin-bottom: 10px;
+    font-size: var(--heading-font-size-xxl);
+    line-height: 1;
+  }
+
+  .video-switcher .video-switcher-tabs {
+    grid-area: 1 / 2;
+    z-index: 1;
+    align-self: end;
+    align-items: flex-end;
+    min-height: 0;
+    margin: 0 26px calc(var(--video-switcher-bottom) - 4px) 0;
+  }
+}

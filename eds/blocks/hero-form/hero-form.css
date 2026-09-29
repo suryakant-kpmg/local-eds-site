@@ -1,0 +1,738 @@
+/* ============================================
+   Bootstrap Reboot neutralisation
+
+   Bootstrap 5 CSS is loaded lazily from a CDN on the first pointerdown
+   anywhere on the page (see loadDelayed() in scripts.js — it is deferred
+   deliberately to keep it out of the critical path). It lands after
+   styles.css, so its Reboot layer wins on bare element selectors and
+   silently re-lays out this block the moment the user first clicks
+   anything in it — clicking the WhatsApp consent checkbox makes the card
+   visibly jump once, then never again.
+
+   The rules below re-assert the site values Reboot would otherwise
+   override, scoped to .hero-form.block so they beat Bootstrap on
+   specificity regardless of stylesheet order. Keep them in sync with
+   styles.css. Only layout-affecting properties are listed.
+   ============================================ */
+
+/* Reboot: body { font-size: 1rem; line-height: 1.5 } — every descendant
+   inherits this, so re-declaring it on the block covers all of them. */
+.hero-form.block {
+  font-size: var(--body-font-size-m);
+  line-height: 1.6;
+}
+
+/* Reboot: p { margin-top: 0; margin-bottom: 1rem } — styles.css uses
+   0.8em/0.25em for these elements. Deliberately kept at (0,1,1)
+   specificity — enough to beat Reboot bare-element selectors, but not
+   the .title-section p / .disclaimer-section rules further down this
+   file, which must keep winning. Do not raise this to .hero-form.block p. */
+.hero-form p,
+.hero-form dl,
+.hero-form ol,
+.hero-form ul,
+.hero-form pre,
+.hero-form blockquote {
+  margin-top: 0.8em;
+  margin-bottom: 0.25em;
+}
+
+/* Reboot: label { display: inline-block } — the consent label and the
+   floating input labels are laid out as flex/absolute children here;
+   revert keeps the UA inline box the layout was measured against. */
+.hero-form.block label {
+  display: revert;
+}
+
+/* Reboot: input { margin: 0 } — unlike the form block, this checkbox is
+   a real in-flow flex item (width/height 0, opacity 0, NOT absolutely
+   positioned), so Reboot dropping its UA margins pulls the consent row
+   sideways. This is the visible jump on checkbox click. revert restores
+   the UA margins the layout was measured against. */
+.hero-form.block input[type="checkbox"],
+.hero-form.block input[type="radio"] {
+  margin: revert;
+}
+
+/* Reboot: legend { float: left; width: 100% } and
+   fieldset { min-width: 0 } — not used today, but neutralised so
+   authored disclaimer markup cannot reintroduce the shift. */
+.hero-form.block legend {
+  float: none;
+  width: auto;
+}
+
+.hero-form.block fieldset {
+  min-width: min-content;
+}
+
+/* ===== HERO ROOT – FULL BLEED ===== */
+.hero-form {
+    position: relative;
+    width: 100%;
+    min-height: 520px;
+    margin-left: 0;
+    margin-right: 0;
+    background: transparent;
+    overflow: hidden;
+}
+
+/* ===== BACKGROUND IMAGE – FULL WIDTH ===== */
+.hero-form-background {
+    inset: 0;
+}
+
+.hero-form-background picture,
+.hero-form-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* ===== FORM WRAPPER – OVERLAY ON RIGHT ===== */
+.hero-form-panel-wrapper {
+    position: absolute;
+    top: 50%;
+    right: 64px;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+
+/* ===== FORM CARD ===== */
+.hero-form .find-contractor-form-container {
+    background-color: #FEF9F2;
+    border-radius: 8px;
+    width: 518px;
+    max-width: 100%;
+    padding: 40px 35px;
+    box-sizing: border-box;
+}
+
+/* ===== TYPOGRAPHY & FORM STYLES ===== */
+.hero-form .title-section p {
+    font-weight: 800;
+    font-size: 32px;
+    line-height: 41.6px;
+    color: #2F2F2F;
+    margin: 0 0 20px;
+    letter-spacing: 0.5px;
+}
+
+.hero-form .mobile-input-section,
+.hero-form .pincode-input-section {
+    width: 100%;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.hero-form .input-label {
+    position: absolute;
+    font-size: 16px;
+    top: 14px;
+    left: 16px;
+    color: #75787B;
+    transition: all 0.2s ease-in-out;
+    pointer-events: none;
+    z-index: 2;
+    background: transparent;
+    padding: 0;
+}
+
+.hero-form .input-label.top {
+    top: -10px;
+    font-size: 12px;
+    background: #fff;
+    padding: 0 5px;
+    color: #2F2F2F;
+    font-weight: 500;
+}
+
+.hero-form .input-label.d-none {
+    display: none;
+}
+
+.hero-form input {
+    width: 100%;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #75787B;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    text-align: left;
+    color: #000;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+.hero-form input::placeholder {
+    color: #75787B;
+    font-weight: 400;
+}
+
+/* ===== BUTTONS & CTA ===== */
+.hero-form .hero-form-submit {
+    width: 100% !important;
+    padding: 14px 20px;
+    border-radius: 45px;
+    background: linear-gradient(180deg, #fec940, #f90) !important;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    color: #1e1e1e !important;
+    display: inline-flex !important;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: 38px;
+    text-decoration: none;
+    margin: 0;
+    box-sizing: border-box;
+    text-transform: none !important;
+
+    /* Bootstrap .btn (and Reboot) would set vertical-align: middle on the
+       button once Bootstrap lands; keep the baseline the layout was built on. */
+    vertical-align: baseline;
+}
+
+.hero-form .cta.animated-btn-yellow-onhover-black.round-corner-radius-button {
+    width: 100% !important;
+    margin: 0;
+    display: block;
+}
+
+.hero-form .hero-form-submit:focus,
+.hero-form .cta.animated-btn-yellow-onhover-black .hero-form-submit:focus,
+.hero-form .hero-form-submit:hover,
+.hero-form .cta.animated-btn-yellow-onhover-black .hero-form-submit:hover {
+    background: #fdbf45 !important;
+    border: none !important;
+    outline: none !important;
+    color: #1e1e1e !important;
+}
+
+.hero-form .arrow {
+    display: flex;
+    transition: all 0.2s ease-in;
+    width: 17px;
+    height: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-form .arrow::after {
+    content: "";
+    background: url('https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global/resources/images/arrow-icon.svg') no-repeat;
+    width: 17px;
+    height: 20px;
+    display: block;
+    background-size: 17px 20px;
+    background-position: center;
+    filter: contrast(1000%) invert(100%) sepia(100%) saturate(10000%) hue-rotate(90deg);
+}
+
+.hero-form .hero-form-submit:focus .arrow,
+.hero-form .hero-form-submit:hover .arrow {
+    transform: none;
+}
+
+/* ===== RESPONSIVE MOBILE ===== */
+@media (width < 900px) {
+    .hero-form {
+        width: 100%;
+        margin: 0;
+    }
+
+    .hero-form-panel-wrapper {
+        position: relative;
+        transform: none;
+        padding: 0;
+    }
+
+    .hero-form .find-contractor-form-container {
+        width: calc(100% - 32px);
+        padding: 25px 15px;
+        margin: -25px 80px 0;
+        transform: translateY(-40px);
+    }
+
+    .hero-form .title-section p {
+        font-size: 24px;
+        line-height: 33.6px;
+        text-align: center;
+        letter-spacing: 0.5px;
+    }
+
+    .hero-form .hero-form-submit {
+        padding: 12px 18px;
+    }
+}
+
+/* Errors */
+
+/* Taken out of flow on purpose. hero-form.js validates on blur: clicking the
+   consent checkmark (it is tabindex="0", so it takes focus) blurs whichever
+   field the user was in, onBlur() sees it empty and calls setError(), which
+   un-hides this row. In flow that grew the card by 24px, and because
+   .hero-form-panel-wrapper is centred with translateY(-50%) the whole card
+   also jumped up 12px — the movement seen when clicking the checkbox.
+
+   Absolutely positioned it renders in the 20px gap the parent section already
+   reserves via margin-bottom, so showing or hiding it costs no layout at all.
+   The parent sections are position:relative, so top:100% anchors here. */
+.hero-form .error-msg {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: -0.006em;
+    text-align: left;
+    color: #FF4D00;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.hero-form .error-msg::before {
+    content: url("https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/components/content/miniform/clientlibs/resources/image/circle-info-red.svg");
+    width: 15px;
+    height: 14px;
+    display: inline-block;
+}
+
+.hero-form .error-msg.d-none { display: none; }
+.hero-form .has-error .input-label { color: #FF4D00; }
+.hero-form .has-error input { border-color: #FF4D00; }
+
+/* WhatsApp consent custom checkbox */
+
+/* min-height, never a fixed height. The consent copy is authored and at the
+   card's 518px it lands right on the wrap boundary: with the fallback font it
+   is one line, and once Manrope swaps in (fonts.css uses font-display: swap,
+   loaded in the lazy phase) it becomes two — 33.6px of text in what used to be
+   a hard 20px row. The overflow spilled ~7px above and below, squeezing the
+   pincode field and the disclaimer, which is the space that "moved" the first
+   time round. Sizing to content makes the row correct at any line count.
+   align-items is flex-start so the checkmark (absolute, top:0) stays level
+   with the first line instead of the middle of a two-line block. */
+.hero-form .whatsapp-update-consent-section {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    cursor: pointer;
+    min-height: 20px;
+}
+
+/* Out of flow, the way .form.block .form-consent-input is in form.css. Left in
+   flow it is a zero-size flex item that still carries the UA checkbox margins
+   (3px 3px 3px 4px), so it pushed the label 7px right — and the label, not the
+   row, is what makes a click toggle. That left a 7px dead column at the row's
+   left edge: clicks there landed on the section div, which has no handler, so
+   the checkbox did not change. Harmless while the row was a hard 20px (the
+   checkmark span covered that column), but the row now grows with a wrapped
+   label, and the strip below the 20px checkmark was dead.
+
+   Out of flow, the label starts at the row's left edge and its padding covers
+   the whole checkmark column, so every point in the row toggles.
+   pointer-events: none keeps the invisible input from swallowing clicks. */
+.hero-form .whatsapp-update-consent-section input[type="checkbox"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.hero-form .whatsapp-consent-label {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16.8px;
+    text-align: left;
+    color: #2E2F32;
+
+    /* 28px of gap plus the 7px the hidden checkbox used to occupy in flow
+       (its UA margins). Keeps the text at exactly the same x as before that
+       input was taken out of flow above. */
+    padding-left: 35px;
+    cursor: pointer;
+    margin: 0;
+}
+
+/* pointer-events: none makes this box purely decorative, so every click in the
+   row — the square included — lands on the <label> underneath and toggles the
+   checkbox natively. Previously the span sat on top of the label and swallowed
+   clicks over the square, forwarding them only through hero-form.js's click
+   handler; anything that kept that handler from running (a decorate() error,
+   the span being re-rendered) left the square looking clickable but dead, while
+   the text next to it still worked. Native label activation has no such
+   failure mode, and it costs nothing: the span is not focusable-by-click here,
+   the real input is, and the keyboard path is untouched. */
+.hero-form .whatsapp-consent-checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    border-radius: 4px;
+    background: #fff;
+    border: 1px solid #292929;
+    pointer-events: none;
+}
+
+.hero-form .whatsapp-update-consent-section.is-checked .whatsapp-consent-checkmark {
+    background: #2BA45B;
+    border: none;
+}
+
+.hero-form .whatsapp-update-consent-section:has(input:checked) .whatsapp-consent-checkmark {
+    background: #2BA45B;
+    border: none;
+}
+
+.hero-form .whatsapp-update-consent-section.is-checked .whatsapp-consent-checkmark::after {
+    content: "";
+    width: 4px;
+    height: 9px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    position: absolute;
+    top: 18%;
+    left: 40%;
+    transform: rotate(45deg);
+    display: block;
+}
+
+.hero-form .whatsapp-update-consent-section:has(input:checked) .whatsapp-consent-checkmark::after {
+    content: "";
+    width: 4px;
+    height: 9px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    position: absolute;
+    top: 18%;
+    left: 40%;
+    transform: rotate(45deg);
+    display: block;
+}
+
+/* Disclaimer */
+.hero-form .disclaimer-section {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16.8px;
+    text-align: left;
+    color: #000;
+    opacity: 0.6;
+    margin-bottom: 20px;
+}
+
+.hero-form .disclaimer-section a {
+    color: #00e;
+    text-decoration: underline;
+    white-space: nowrap;
+}
+
+.hero-form .disclaimer-section a:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* Spinner */
+.hero-form .get-contractor-progress-status {
+    display: inline-block;
+    animation: heroform-spin 1s linear infinite;
+}
+
+.hero-form .get-contractor-progress-status.d-none { display: none; }
+
+@keyframes heroform-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Thank-you container */
+.hero-form .mf-thankyou-revamp-container {
+    padding: 75px 35px;
+    background: #fff;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.hero-form .mf__dismissible-container--head {
+    position: absolute;
+    top: 95px;
+    right: 55px;
+    z-index: 9;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.hero-form .mf__dismissible-container--head:hover {
+    background: #e0e0e2;
+}
+
+.hero-form .mf__dismissible-container--head img {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+@media (width <= 991px) {
+    .hero-form .mf__dismissible-container--head {
+        top: 20px;
+        right: 20px;
+        width: 32px;
+        height: 32px;
+        background: #EEEEEF;
+    }
+
+    .hero-form .mf__dismissible-container--head img {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+/* ===========================
+   THANK YOU (AMS port to EDS)
+   =========================== */
+
+/* When thank-you is shown, make wrapper full-width and remove overlay behavior */
+.hero-form.is-thankyou {
+    min-height: 429px;
+}
+
+.hero-form.is-thankyou .hero-form-panel-wrapper {
+    position: relative;
+    top: 0;
+    right: 0;
+    transform: none;
+    width: 100%;
+    padding: 0;
+}
+
+.hero-form.is-thankyou .hero-form-background {
+    display: none;
+}
+
+@media (width <= 991px) {
+    .hero-form .mf-thankyou-revamp-container {
+        padding: 0;
+    }
+}
+
+.hero-form .mf-close-icon {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.hero-form .mf-revamp-thankyou {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.hero-form .mf-revamp-thankyou-left {
+    background: #f5f5f5;
+    flex: 0 0 33.3333%;
+    max-width: 33.3333%;
+    min-height: 429px;
+    position: relative;
+}
+
+.hero-form .mf-revamp-thankyou-right {
+    flex: 0 0 66.6667%;
+    max-width: 66.6667%;
+    min-height: 429px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 60px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.hero-form .thankyou-bg-picture {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.hero-form .thankyou-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.hero-form .mf-thank-you-message {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+}
+
+@media (width <= 991px) {
+    .hero-form .mf-revamp-thankyou-left,
+    .hero-form .mf-revamp-thankyou-right {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .hero-form .mf-revamp-thankyou-left {
+        min-height: auto;
+    }
+
+    .hero-form .mf-revamp-thankyou-right {
+        min-height: 410px;
+        padding: 32px 30px;
+        justify-content: flex-start;
+    }
+}
+
+/* Left content positioning */
+.hero-form .mf-thank-you-left-content,
+.hero-form .mf-error-left-content {
+    position: absolute;
+    top: 50%;
+    padding: 0 60px;
+    transform: translateY(-50%);
+    box-sizing: border-box;
+    width: 100%;
+}
+
+@media (width <= 991px) {
+    .hero-form .mf-thank-you-left-content,
+    .hero-form .mf-error-left-content {
+        position: static;
+        transform: none;
+        padding: 20px 80px 27px 20px;
+    }
+}
+
+.hero-form .mf-thank-you-left-content h2,
+.hero-form .mf-error-left-content h2 {
+    font-size: 40px;
+    font-weight: 600;
+    color: #000;
+    line-height: 48px;
+    letter-spacing: -0.8px;
+    margin-bottom: 25px;
+    text-shadow: 3px 2.5px 0 #fff, 3px 2.5px 2px #000;
+}
+
+@media (width <= 991px) {
+    .hero-form .mf-thank-you-left-content h2,
+    .hero-form .mf-error-left-content h2 {
+        font-size: 24px;
+        line-height: 56px;
+        letter-spacing: -0.48px;
+        margin-bottom: 0;
+    }
+}
+
+.hero-form .mf-thank-you-left-content p,
+.hero-form .mf-error-left-content p {
+    color: #222;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 21px;
+    letter-spacing: 0.14px;
+    margin-bottom: 0;
+}
+
+.hero-form .mf-thank-you-message-title {
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 48px;
+    margin-bottom: 16px;
+    max-width: 400px;
+}
+
+@media (width <= 991px) {
+    .hero-form .mf-thank-you-message-title {
+        font-size: 32px;
+        line-height: 35px;
+        width: 100%;
+    }
+}
+
+.hero-form .mf-thank-you-message-subtitle {
+    color: #dcdbdb;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    margin-bottom: 0;
+}
+
+.hero-form .mf-thank-you-message-subtitle p {
+    margin: 0;
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+@media (width <= 991px) {
+    .hero-form .mf-thank-you-message-subtitle {
+        font-size: 12px;
+        line-height: 18px;
+    }
+}
+
+/* Optional CTA */
+.hero-form .explore-painting-btn {
+    width: fit-content !important;
+    padding: 14px 20px;
+    border-radius: 45px;
+    background: linear-gradient(180deg, #fec940, #f90) !important;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 16px;
+    color: #1e1e1e !important;
+    display: inline-flex !important;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: 38px;
+    text-decoration: none;
+    margin-top: 20px;
+    box-sizing: border-box;
+    text-transform: none !important;
+}
+
+@media (width <= 991px) {
+    .hero-form .explore-painting-btn {
+        font-size: 14px;
+        padding: 12px 18px;
+    }
+}
+
+.hero-form .explore-painting-btn:focus,
+.hero-form .explore-painting-btn:hover {
+    background: #fdbf45 !important;
+    border: none !important;
+    outline: none !important;
+    color: #1e1e1e !important;
+}
+
+.hero-form .explore-painting-btn:focus .arrow,
+.hero-form .explore-painting-btn:hover .arrow {
+    transform: none;
+}
+

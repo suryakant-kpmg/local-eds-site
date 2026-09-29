@@ -1,0 +1,359 @@
+.designer-collections {
+  background: #f5f0e4;
+  padding: 60px 40px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.designer-collections>div {
+  display: none;
+}
+
+.designer-collections .designer-collections-header,
+.designer-collections .designer-collections-carousel {
+  display: block;
+}
+
+.designer-collections-header {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 0 0 30px;
+  gap: 20px;
+}
+
+.designer-collections-title {
+  color: #000;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0;
+  text-align: left;
+}
+
+.designer-collections-nav-wrapper {
+  display: flex;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.designer-collections-carousel {
+  position: relative;
+  max-width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.designer-collections-track {
+  display: flex;
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+.designer-collections-card {
+  background: transparent;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: auto;
+  min-width: 0;
+  margin-right: 0;
+}
+
+.designer-collections-card-link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.designer-collections-logo {
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.designer-collections-logo-image {
+  display: block;
+}
+
+.designer-collections-logo-image--mobile {
+  display: none;
+}
+
+.designer-collections-logo img,
+.designer-collections-logo picture {
+  display: block;
+  max-width: 100%;
+}
+
+.designer-collections-logo img {
+  height: 60px;
+  width: auto;
+  margin: 0 auto 5%;
+  object-fit: contain;
+}
+
+.designer-collections-image {
+  position: relative;
+  /* width: 68%; */
+  max-width: 320px;
+  margin: 0 auto 20px;
+  display: block;
+  overflow: visible;
+}
+
+.designer-collections-card-link:hover .designer-collections-image {
+  transform: translateY(-4px);
+}
+
+/* .designer-collections-image::before,
+.designer-collections-image::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  top: 0;
+  left: 0;
+} */
+
+.designer-collections-image::after {
+  background: #c9a992;
+  transform: translate(12px, 12px) rotate(6deg);
+  z-index: 0;
+}
+
+/* .designer-collections-image::before {
+  background: #ddc8b8;
+  transform: translate(6px, 6px) rotate(3deg);
+  z-index: 1;
+} */
+
+.designer-collections-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+  position: relative;
+  z-index: 2;
+  /* background: white; */
+}
+
+.designer-collections-content{
+  max-width: 100%;
+}
+
+.designer-collections-content h3 {
+  font-size: 24px;
+  line-height: 24.6px;
+  font-weight: 400;
+  color: #5d4f43;
+  margin-bottom: 4px;
+}
+
+.designer-collections-content p {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  color: #5d4f43;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 5px;
+  flex-grow: 1;
+  max-width: 100%;
+}
+
+.designer-collections-cta-wrap {
+  padding-top: 1ch;
+}
+
+.designer-collections-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #000;
+  text-decoration: none;
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.designer-collections-cta-icon {
+  font-size: 22px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}
+
+.designer-collections-cta:hover {
+  text-decoration: underline;
+  color: black;
+  text-underline-offset: 4px;
+}
+
+
+.designer-collections-nav {
+  position: static !important;
+  /* background: white; */
+  background: transparent;
+  /* border: 1px solid #ddd; */
+
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  max-width: 48px;
+  max-height: 48px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* color: #333;
+  font-weight: 300; */
+  margin: 0 !important;
+  padding: 0;
+}
+
+.designer-collections-nav:hover {
+  background: transparent;
+}
+
+.designer-collections-nav:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.designer-collections-nav.swiper-button-prev::after,
+.designer-collections-nav.swiper-button-next::after {
+  display: none !important;
+}
+
+.designer-collections-next,
+.designer-collections-prev {
+  border: unset !important;
+}
+
+.designer-collections-prev::before {
+  content: " ";
+  background-image: url("/eds/icons/round-black-prev-icon.svg");
+  background-repeat: no-repeat;
+  width: 44px;
+  height: 44px;
+}
+
+.designer-collections-next::before {
+  content: " ";
+  background-image: url("/eds/icons/round-black-next-icon.svg");
+  background-repeat: no-repeat;
+  width: 44px;
+  height: 44px;
+}
+
+.designer-collections-pagination {
+  display: none;
+}
+
+@media (width < 900px) {
+  .designer-collections {
+    padding: 40px 24px;
+  }
+
+  .designer-collections-header {
+    /* flex-direction: column; */
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .designer-collections-title {
+    font-size: 1.8rem;
+  }
+
+  .designer-collections-content h3 {
+    font-size: 1.1rem;
+  }
+
+  .designer-collections-content p {
+    font-size: 0.85rem;
+  }
+
+}
+
+@media (width < 600px) {
+  .designer-collections {
+    padding: 32px 20px 40px;
+  }
+
+  .designer-collections-logo-image--desktop {
+    display: none;
+  }
+
+  .designer-collections-logo-image--mobile {
+    display: block;
+  }
+
+  .designer-collections-title {
+    font-size: 1.6rem;
+    align-self: center;
+  }
+
+  .designer-collections-image {
+    max-width: 220px;
+  }
+
+  .designer-collections-content {
+    padding-top: 0;
+  }
+
+  .designer-collections-content h3 {
+    font-size: 1.3rem;
+    line-height: 1.2;
+  }
+
+  .designer-collections-content p {
+    font-size: 12px;
+    line-height: 16.8px;
+    margin: 0 auto;
+  }
+
+  .designer-collections-nav-wrapper {
+    /* display: none; */
+  }
+
+  .designer-collections-pagination {
+    display: block;
+    margin-top: 24px;
+    text-align: left !important;
+    line-height: 0;
+  }
+
+  .designer-collections-pagination .swiper-pagination-bullet {
+    width: 6px;
+    height: 6px;
+    margin: 0 5px !important;
+    background: #b7ab9b;
+    opacity: 1;
+    border-radius: 999px;
+    transition: all 0.3s ease;
+  }
+
+  .designer-collections-pagination .swiper-pagination-bullet-active {
+    width: 20px;
+    background: #000;
+  }
+
+  .designer-collections-cta-wrap {
+    padding-top: 10px;
+    padding-bottom: 30px;
+  }
+
+}

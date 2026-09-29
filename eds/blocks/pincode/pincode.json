@@ -1,0 +1,19 @@
+{
+  "name": "pincode",
+  "title": "Pincode",
+  "description": "Pincode block authoring (cfg text only)",
+  "variants": [
+    {
+      "name": "cta",
+      "title": "Pincode (cta)",
+      "authoring": {
+        "type": "key-value-rows",
+        "rows": [
+          { "key": "Title", "valueType": "text" },
+          { "key": "Input Placeholder", "valueType": "text", "default": "Enter pincode" },
+          { "key": "CTA Text", "valueType": "text", "default": "Search" }
+        ]
+      }
+    }
+  ]
+}

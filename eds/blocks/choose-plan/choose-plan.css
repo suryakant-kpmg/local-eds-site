@@ -1,0 +1,295 @@
+/* default look: coloured plan cards (same as the choose-plan block) */
+.choose-plan {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.choose-plan .choose-plan-intro :is(h1, h2, h3) {
+  margin: 0 0 16px;
+  font-size: var(--heading-font-size-l);
+  line-height: 1.15;
+  color: var(--text-color);
+}
+
+.choose-plan .choose-plan-intro p {
+  margin: 0;
+  color: #6b7280;
+  font-size: var(--body-font-size-s);
+  line-height: 1.6;
+}
+
+.choose-plan .choose-plan-plans {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* plan colours, picked by plan name: background, name and tick marks */
+.choose-plan .choose-plan-plan {
+  --plan-bg: #e6ebfb;
+  --plan-color: #3b5bdb;
+  --plan-tick: var(--plan-color);
+
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  padding: 28px 24px;
+  background-color: var(--plan-bg);
+  text-align: left;
+}
+
+.choose-plan .choose-plan-plan.plan-gold {
+  --plan-bg: #fdf3dd;
+  --plan-color: #f0a500;
+}
+
+.choose-plan .choose-plan-plan.plan-platinum {
+  --plan-bg: #fce7de;
+  --plan-color: #e8590c;
+}
+
+.choose-plan .choose-plan-header :is(h1, h2, h3, h4) {
+  margin: 0 0 20px;
+  font-size: var(--heading-font-size-l);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--plan-color);
+}
+
+/* feature lists */
+.choose-plan .choose-plan-features {
+  flex: 1 1 auto;
+  color: #4b5563;
+  font-size: var(--body-font-size-xs);
+  line-height: 1.5;
+}
+
+.choose-plan .choose-plan-features p {
+  margin: 0 0 8px;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.choose-plan .choose-plan-features ul {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+}
+
+.choose-plan .choose-plan-features li {
+  position: relative;
+  margin: 0 0 8px;
+  padding-left: 22px;
+}
+
+.choose-plan .choose-plan-features li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--plan-tick);
+  font-weight: 700;
+}
+
+/* footnotes (lines starting with *): small grey text, no tick */
+.choose-plan .choose-plan-features .choose-plan-footnote {
+  padding-left: 0;
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.choose-plan .choose-plan-features li.choose-plan-footnote::before {
+  content: none;
+}
+
+/* optional call to action */
+.choose-plan .choose-plan-cta {
+  margin: 24px 0 0;
+}
+
+.choose-plan a.button.choose-plan-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #1a1a2e;
+  border-radius: 2.4em;
+  padding: 12px 28px;
+  background: transparent;
+  color: var(--text-color);
+  font-size: var(--body-font-size-s);
+  font-weight: 500;
+}
+
+.choose-plan a.button.choose-plan-button::after {
+  content: "→";
+  font-weight: 400;
+}
+
+.choose-plan a.button.choose-plan-button:hover,
+.choose-plan a.button.choose-plan-button:focus-visible {
+  background: var(--text-color);
+  color: #fff;
+  text-decoration: none;
+}
+
+/* icons variant: header image with the plan name, white cards with a shadow */
+.choose-plan.icons .choose-plan-intro {
+  text-align: center;
+}
+
+.choose-plan.icons .choose-plan-intro :is(h1, h2, h3) {
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.choose-plan.icons .choose-plan-plans {
+  align-items: start;
+  gap: 24px;
+}
+
+.choose-plan.icons .choose-plan-plan {
+  --plan-bg: #fcd9c8;
+  --plan-tick: #222;
+
+  border-radius: 10px;
+  padding: 0;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 4px 24px rgb(0 0 0 / 8%);
+}
+
+.choose-plan.icons .choose-plan-plan.plan-gold {
+  --plan-bg: #ffecc8;
+  --plan-tick: #c8912e;
+}
+
+.choose-plan.icons .choose-plan-plan.plan-platinum {
+  --plan-bg: #ddd6ea;
+  --plan-tick: #e0643c;
+}
+
+.choose-plan.icons .choose-plan-header {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 110px;
+  padding: 0 24px 14px;
+  background-color: var(--plan-bg);
+}
+
+.choose-plan.icons .choose-plan-header.has-image {
+  aspect-ratio: 322 / 137;
+  min-height: 0;
+}
+
+.choose-plan.icons .choose-plan-header-image {
+  position: absolute;
+  inset: 0;
+  line-height: 0;
+}
+
+.choose-plan.icons .choose-plan-header-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.choose-plan.icons .choose-plan-header :is(h1, h2, h3, h4) {
+  position: relative;
+  margin: 0;
+  color: #222;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.choose-plan.icons .choose-plan-features {
+  padding: 24px 24px 20px;
+  color: #222;
+  font-size: var(--body-font-size-s);
+}
+
+.choose-plan.icons .choose-plan-features p {
+  margin: 0 0 8px;
+  color: #555;
+  font-size: 15px;
+}
+
+.choose-plan.icons .choose-plan-features ul {
+  margin: 0 0 20px;
+}
+
+.choose-plan.icons .choose-plan-features ul:last-child {
+  margin-bottom: 0;
+}
+
+.choose-plan.icons .choose-plan-features li {
+  margin: 0 0 8px;
+  padding-left: 24px;
+}
+
+/* thin tick like the AEM component */
+.choose-plan.icons .choose-plan-features li::before {
+  content: "";
+  top: 0.45em;
+  width: 12px;
+  height: 12px;
+  background-color: var(--plan-tick);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12.5l5 5L20 6.5'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.choose-plan.icons .choose-plan-features li.choose-plan-footnote {
+  margin-top: 4px;
+  padding-left: 0;
+  color: #666;
+  font-size: 13px;
+}
+
+.choose-plan.icons .choose-plan-features li.choose-plan-footnote::before {
+  content: none;
+}
+
+.choose-plan.icons .choose-plan-cta {
+  margin: 0;
+  padding: 0 24px 24px;
+}
+
+/* tablet */
+@media (width >= 600px) {
+  .choose-plan .choose-plan-plans {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* desktop */
+@media (width >= 900px) {
+  .choose-plan .choose-plan-plans {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .choose-plan.icons .choose-plan-intro {
+    margin-bottom: 24px;
+  }
+
+  .choose-plan.icons .choose-plan-plans {
+    gap: 48px;
+  }
+
+  .choose-plan.icons .choose-plan-header {
+    padding: 0 32px 16px;
+  }
+
+  .choose-plan.icons .choose-plan-header :is(h1, h2, h3, h4) {
+    font-size: 34px;
+  }
+
+  .choose-plan.icons .choose-plan-features {
+    padding: 28px 32px 24px;
+    font-size: 18px;
+  }
+
+  .choose-plan.icons .choose-plan-cta {
+    padding: 0 32px 28px;
+  }
+}

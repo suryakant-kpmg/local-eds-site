@@ -1,0 +1,450 @@
+/* Carousel Collections Block - Two variants:
+   1. Image Grid Card variant (default) - 4 texture cards in grid
+   2. Exquisite Collections variant (video collage) - carousel + 2x2 grid + text panel
+*/
+
+/* ==========================================
+   SECTION STYLING
+   ========================================== */
+
+.section.carousel-collections-container {
+  background-color: #fff;
+  padding: 40px 24px 60px;
+}
+
+@media (width >= 900px) {
+  .section.carousel-collections-container {
+    padding: 60px 40px 80px;
+  }
+}
+
+/* ==========================================
+   IMAGE GRID CARD VARIANT (Default)
+   4-card grid layout
+   ========================================== */
+
+.carousel-collections {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.carousel-collections-carousel {
+  width: 100%;
+}
+
+/* 4-card grid layout */
+.carousel-collections-track {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (width >= 600px) {
+  .carousel-collections-track {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (width >= 1024px) {
+  .carousel-collections-track {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+}
+
+/* Card styling */
+.carousel-collections-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.carousel-collections-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+}
+
+/* Card image - portrait aspect ratio */
+.carousel-collections-card-image {
+  width: 100%;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  background-color: #e8e4de;
+}
+
+.carousel-collections-card-image picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-collections-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: transform 0.4s ease;
+}
+
+.carousel-collections-card:hover .carousel-collections-card-image img {
+  transform: scale(1.03);
+}
+
+/* Title overlay at bottom */
+.carousel-collections-card-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 40px 16px 16px;
+  background: linear-gradient(to top, rgb(0 0 0 / 60%) 0%, rgb(0 0 0 / 30%) 50%, transparent 100%);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
+@media (width >= 768px) {
+  .carousel-collections-card-title {
+    font-size: 16px;
+    padding: 50px 20px 20px;
+  }
+}
+
+/* Hide pagination for grid variant */
+.carousel-collections-pagination {
+  display: none;
+}
+
+/* ==========================================
+   EXQUISITE COLLECTIONS VARIANT (Video Collage)
+   Carousel + 2x2 grid + text panel
+   ========================================== */
+
+.carousel-collections.video-collage {
+  background-color: #fff;
+  padding: 0;
+}
+
+/* Main layout - 3 columns on desktop */
+.carousel-collections-collage {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (width >= 900px) {
+  .carousel-collections-collage {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 20px;
+  }
+}
+
+/* Left column - Carousel with branding card */
+.carousel-collections-carousel-panel {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (width >= 900px) {
+  .carousel-collections-carousel-panel {
+    max-width: 180px;
+  }
+}
+
+@media (width >= 1200px) {
+  .carousel-collections-carousel-panel {
+    max-width: 200px;
+  }
+}
+
+/* Carousel slide container */
+.carousel-collections-slides {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Branding card - "Royale Designer Palette" style */
+.carousel-collections-brand-card {
+  background-color: #faf8f5;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.carousel-collections-brand-logo {
+  font-family: 'Times New Roman', serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #1a1a1a;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.carousel-collections-brand-tagline {
+  font-family: 'Times New Roman', serif;
+  font-size: 14px;
+  font-style: italic;
+  color: #666;
+}
+
+/* Tall portrait container in carousel */
+.carousel-collections-portrait {
+  flex: 1;
+  border-radius: 16px;
+  overflow: hidden;
+  min-height: 280px;
+}
+
+.carousel-collections.video-collage .carousel-collections-portrait img,
+.carousel-collections.video-collage .carousel-collections-portrait video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Pagination dots */
+.carousel-collections-dots {
+  display: flex;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.carousel-collections-dot {
+  width: 24px;
+  height: 4px;
+  background-color: #1a1a1a;
+  border-radius: 2px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  opacity: 0.2;
+}
+
+.carousel-collections-dot.active {
+  opacity: 1;
+}
+
+/* Middle column - 2x2 image/video grid */
+.carousel-collections-video-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  flex: 1;
+  max-width: 100%;
+}
+
+@media (width >= 900px) {
+  .carousel-collections-video-grid {
+    max-width: 480px;
+    gap: 8px;
+  }
+}
+
+@media (width >= 1200px) {
+  .carousel-collections-video-grid {
+    max-width: 540px;
+    gap: 12px;
+  }
+}
+
+.carousel-collections-video-item {
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 1;
+  background-color: #e8e4de;
+}
+
+.carousel-collections.video-collage .carousel-collections-video-item video,
+.carousel-collections.video-collage .carousel-collections-video-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Right column - Text panel */
+.carousel-collections-text-panel {
+  flex: 1;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (width >= 900px) {
+  .carousel-collections-text-panel {
+    padding: 24px 0 24px 32px;
+    max-width: 380px;
+  }
+}
+
+@media (width >= 1200px) {
+  .carousel-collections-text-panel {
+    max-width: 420px;
+    padding-left: 48px;
+  }
+}
+
+/* Heading with gradient text */
+.carousel-collections-heading {
+  font-family: var(--heading-font-family);
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 4px;
+  line-height: 1.3;
+}
+
+@media (width >= 768px) {
+  .carousel-collections-heading {
+    font-size: 24px;
+  }
+}
+
+@media (width >= 1200px) {
+  .carousel-collections-heading {
+    font-size: 28px;
+  }
+}
+
+/* Large gradient text - "Exquisite Collections" */
+.carousel-collections-gradient-text {
+  font-family: var(--heading-font-family);
+  font-size: 36px;
+  font-weight: 600;
+  font-style: italic;
+  line-height: 1.15;
+  margin: 0 0 16px;
+  background: linear-gradient(135deg, #6b2d8c 0%, #9b4dca 25%, #d64a7b 50%, #e85d3a 75%, #f5a623 100%);
+  background-clip: text;
+  color: transparent;
+}
+
+@media (width >= 768px) {
+  .carousel-collections-gradient-text {
+    font-size: 48px;
+  }
+}
+
+@media (width >= 1200px) {
+  .carousel-collections-gradient-text {
+    font-size: 56px;
+  }
+}
+
+/* Description text */
+.carousel-collections-description {
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  line-height: 1.6;
+  color: #555;
+  margin: 0 0 24px;
+}
+
+@media (width >= 768px) {
+  .carousel-collections-description {
+    font-size: 15px;
+  }
+}
+
+/* Yellow pill CTA button */
+.carousel-collections-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background-color: #f5a623;
+  color: #1a1a1a;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  width: fit-content;
+}
+
+.carousel-collections-cta::after {
+  content: '→';
+  font-size: 16px;
+  transition: transform 0.2s ease;
+}
+
+.carousel-collections-cta:hover {
+  background-color: #ffca28;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgb(245 166 35 / 40%);
+}
+
+.carousel-collections-cta:hover::after {
+  transform: translateX(4px);
+}
+
+/* Section styles for Carousel Collections intro content */
+/* stylelint-disable-next-line no-descending-specificity */
+main > .section.carousel-collections-container > .default-content-wrapper:first-of-type {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 32px;
+  padding: 40px 24px 0;
+}
+
+main > .section.carousel-collections-container > .default-content-wrapper:first-of-type h2 {
+  font-size: 28px;
+  font-weight: 600;
+  font-family: Manrope, sans-serif;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  background: var(--gradient-brand);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main > .section.carousel-collections-container > .default-content-wrapper:first-of-type p {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-color);
+  margin-bottom: 24px;
+}
+
+main > .section.carousel-collections-container > .default-content-wrapper:first-of-type .button-container {
+  margin-top: 8px;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main > .section.carousel-collections-container > .default-content-wrapper:first-of-type a.button {
+  background-color: transparent;
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
+  padding: 12px 28px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-radius: 30px;
+  transition: all 0.2s ease;
+}
+
+main > .section.carousel-collections-container > .default-content-wrapper:first-of-type a.button:hover {
+  background-color: var(--text-color);
+  color: #fff;
+}

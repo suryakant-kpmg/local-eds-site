@@ -1,0 +1,25 @@
+<!doctype html>
+<!--
+  Minimal silent-check-sso page for keycloak-js.
+
+  Required because the previous redirect target (/content/ap/en/home/key-cloak.html)
+  was a full AEM Sites page that pulled in ~290 KB of AMS clientlibs
+  (clientlib-analytics, clientlib-base, clientlib-baselanding-*, clientlib-blankpage,
+  clientlib-template) inside the silent SSO iframe. Because the iframe is same-origin
+  with the parent EDS page, every byte of JS those clientlibs parsed was billed to
+  the parent's main thread — pushing Lighthouse TBT to ~7,100 ms and re-introducing
+  the legacy Adobe Launch analytics we just migrated off of.
+
+  This page does only what keycloak-js requires: post the iframe's URL (which
+  contains the SSO check result as query params) back to the parent window and
+  let keycloak-js parse it. Nothing else loads.
+
+  Reference: https://www.keycloak.org/securing-apps/javascript-adapter#_session_status_iframe
+-->
+<html>
+  <body>
+    <script>
+      parent.postMessage(location.href, location.origin);
+    </script>
+  </body>
+</html>

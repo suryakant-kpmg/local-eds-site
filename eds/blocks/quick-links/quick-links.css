@@ -1,0 +1,366 @@
+/* =========================================================
+   QUICK LINKS — FINAL, AEM-PARITY (100% ZOOM SAFE)
+   ========================================================= */
+
+.quick-links {
+    all: initial;
+    display: block;
+    font-family: var(--body-font-family, Manrope, sans-serif);
+    color: #111;
+
+    --ql-bg: #f7f2e7;
+    --ql-text: #111;
+    --ql-muted: #222;
+
+    --ql-radius: 10px;
+    --ql-gap: 26px;
+
+    --ql-icon-size: 44px;
+    --ql-col-gap: 14px;
+
+    --ql-icon-y: 10px;
+
+    --ql-btn-border: #222;
+
+    /* Hover colors */
+    --ql-hover-fill: #fcaf17;
+    --ql-estimate-hover: #fff7e8;
+}
+
+/* =========================================================
+   GRID
+   ========================================================= */
+.quick-links .ql-list {
+    all: unset;
+    list-style: none;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--ql-gap);
+
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+}
+
+/* =========================================================
+   CARD
+   ========================================================= */
+.quick-links .ql-card {
+    all: unset;
+    box-sizing: border-box;
+
+    display: grid;
+
+    /* ✅ IMPORTANT: remove 1fr stretch so action row doesn't drift */
+    grid-template-rows: auto auto auto;
+
+    background: var(--ql-bg);
+    border-radius: var(--ql-radius);
+    padding: 22px 22px 20px;
+    min-height: 176px;
+
+    position: relative;
+    min-width: 0;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+.quick-links .ql-header {
+    display: grid;
+    grid-template-columns: var(--ql-icon-size) minmax(0, 1fr);
+    column-gap: var(--ql-col-gap);
+    align-items: start;
+}
+
+.quick-links .ql-icon {
+    width: var(--ql-icon-size);
+    height: var(--ql-icon-size);
+}
+
+.quick-links .ql-card--call { --ql-icon-y: 12px; }
+.quick-links .ql-card--whatsapp { --ql-icon-y: 10px; }
+.quick-links .ql-card--estimate { --ql-icon-y: 9px; }
+
+.quick-links .ql-icon img {
+    width: var(--ql-icon-size);
+    height: var(--ql-icon-size);
+    object-fit: contain;
+    display: block;
+}
+
+.quick-links .ql-title {
+    font-family: var(--heading-font-family, Manrope, sans-serif);
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.15;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+}
+
+/* =========================================================
+   SPACING
+   ========================================================= */
+.quick-links .ql-spacer {
+    min-height: 0px;
+}
+
+/* =========================================================
+   ACTION ROW
+   ========================================================= */
+.quick-links .ql-action-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    width: 100%;
+    min-width: 0;
+}
+
+.quick-links .ql-primary {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.quick-links .ql-secondary {
+    font-family: Manrope, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--ql-muted);
+    min-width: 0;
+
+    /* ✅ keep "Alternatively..." vertically aligned with button */
+    display: flex;
+    align-items: center;
+}
+
+/* =========================================================
+   PHONE NUMBER
+   ========================================================= */
+.quick-links .ql-number {
+    font-family: Manrope, sans-serif;
+    font-size: 34px;
+    font-weight: 300;
+    line-height: 1;
+    margin: 0;
+
+    width: fit-content;
+    font-feature-settings: "tnum" 1, "lnum" 1;
+    font-variant-numeric: tabular-nums lining-nums;
+
+    letter-spacing: 0;
+    color: #000;
+
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+.quick-links a,
+.quick-links button {
+    all: unset;
+    box-sizing: border-box;
+}
+
+.quick-links .ql-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 38px;
+    padding: 12px 18px;
+
+    border-radius: 999px;
+    border: 1px solid var(--ql-btn-border);
+    background: transparent;
+
+    font-family: Manrope, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+
+    cursor: pointer;
+    overflow: hidden;
+}
+
+/* =========================================================
+   SVG ARROW
+   ========================================================= */
+.quick-links .ql-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 20px;
+    height: 20px;
+
+    transform: translateX(0);
+    transition: transform 220ms ease;
+}
+
+.quick-links .ql-arrow svg.ql-arrow-svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+/* =========================================================
+   HOVER — ARROW MOVE
+   ========================================================= */
+.quick-links .ql-btn:hover .ql-arrow,
+.quick-links .ql-btn:focus-visible .ql-arrow {
+    transform: translateX(6px);
+}
+
+/* Estimate: no arrow move */
+.quick-links .ql-card--estimate .ql-btn:hover .ql-arrow,
+.quick-links .ql-card--estimate .ql-btn:focus-visible .ql-arrow {
+    transform: translateX(0);
+}
+
+.quick-links .ql-card--estimate .ql-arrow {
+    transition: none;
+}
+
+/* =========================================================
+   HOVER BACKGROUNDS
+   ========================================================= */
+.quick-links .ql-card--whatsapp .ql-btn:hover {
+    background: var(--ql-hover-fill);
+}
+
+.quick-links .ql-card--estimate .ql-btn:hover {
+    background: var(--ql-estimate-hover);
+}
+.quick-links p {  margin-top: 0 !important;    margin-bottom: 1rem !important;}
+
+.quick-links .ql-secondary p {margin-top: 8px !important; margin-bottom: 0.6rem !important;}
+/* =========================================================
+   CALL CARD LINK
+   ========================================================= */
+.quick-links .ql-cardlink {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--ql-radius);
+    text-indent: -9999px;
+    cursor: pointer;
+}
+
+/* =========================================================
+   ✅ DESKTOP — ALIGN ACTIONS & NUMBER TO TITLE START
+   ✅ ALSO: FORCE SAME TITLE HEIGHT SO ACTION ROW IS SAME Y
+   ========================================================= */
+@media (min-width: 768px) {
+
+    /* ✅ Reserve equal title space across all cards (3 lines) */
+    .quick-links .ql-title {
+        min-height: calc(1.15em * 3); /* 3 lines at line-height 1.15 */
+        display: block;
+    }
+
+    /* ✅ Small consistent gap between title block and actions */
+    .quick-links .ql-spacer {
+        min-height: 12px;
+    }
+
+    /* Align buttons / numbers with title text start */
+    .quick-links .ql-action-row {
+        justify-content: flex-start;
+        padding-left: calc(var(--ql-icon-size) + var(--ql-col-gap));
+    }
+
+    /* Call number alignment */
+    .quick-links .ql-card--call .ql-primary {
+        width: auto;
+        justify-content: flex-start;
+    }
+
+    /* Optional micro tweak: makes number visually sit like button baseline */
+    .quick-links .ql-number {
+        padding-top: 2px;
+    }
+}
+
+/* =========================================================
+   MOBILE — UNCHANGED
+   ========================================================= */
+@media (max-width: 767px) {
+
+    .quick-links {
+        --ql-icon-size: 32px;
+        --ql-col-gap: 12px;
+    }
+
+    .quick-links .ql-list {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        /*padding: 0 16px;*/
+    }
+
+    .quick-links .ql-card {
+        padding: 14px 14px 12px;
+        min-height: auto;
+    }
+
+    .quick-links .ql-title {
+        font-size: 16px;
+        line-height: normal;
+        min-height: 0; /* ensure desktop min-height doesn't affect mobile */
+    }
+
+    .quick-links .ql-spacer {
+        min-height: 0px;
+    }
+
+    .quick-links .ql-action-row {
+        justify-content: flex-start;
+        padding-left: calc(var(--ql-icon-size) + var(--ql-col-gap));
+    }
+
+    .quick-links .ql-card--whatsapp .ql-action-row {
+        flex-wrap: nowrap;
+        gap: 12px;
+    }
+
+    .quick-links .ql-secondary {
+        font-size: 11px;
+        line-height: 1.15;
+    }
+
+    .quick-links .ql-number {
+        font-size: 26px;
+        padding-top: 0;
+    }
+
+    .quick-links .ql-btn {
+        font-size: 11px;
+        padding: 10px 14px;
+        height: auto;
+    }
+
+    .quick-links .ql-card--estimate .ql-title br:nth-of-type(2) {
+        display: none;
+    }
+
+    .quick-links .ql-card--estimate .ql-title br {
+        display: block;
+        margin-top: 4px;
+    }
+
+
+
+    .quick-links .ql-card--whatsapp { order: 1; }
+    .quick-links .ql-card--call { order: 2; }
+    .quick-links .ql-card--estimate { order: 3; }
+
+    .quick-links .ql-card--call { --ql-icon-y: 9px; }
+    .quick-links .ql-card--whatsapp { --ql-icon-y: 8px; }
+    .quick-links .ql-card--estimate { --ql-icon-y: 7px; }
+}

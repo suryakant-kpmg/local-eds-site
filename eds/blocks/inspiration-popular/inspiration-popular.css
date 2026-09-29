@@ -1,0 +1,118 @@
+/* Title */
+.section.inspiration-popular-container:has(.inspiration-popular)>.default-content-wrapper {
+    text-align: center;
+}
+
+.section.inspiration-popular-container:has(.inspiration-popular)>.default-content-wrapper h2 {
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 80px;
+    margin: 0 0 20px;
+    text-align: center;
+    color: #222;
+
+    @media (min-width: 320px) and (max-width: 991px) {
+        font-size: 20px;
+        line-height: 27.32px;
+        font-weight: 800;
+    }
+}
+
+.inspiration-popular {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 40px;
+    gap: 18px;
+
+    @media (max-width: 900px) {
+        padding: 0 10px;
+        gap: 10px;
+    }
+}
+
+.inspiration-popular p {
+    margin: 0;
+}
+
+.inspiration-popular>div {
+    width: calc(33.33% - 12px);
+    margin-bottom: 40px;
+
+    @media (max-width: 900px) {
+        width: calc(50% - 5px);
+    }
+}
+
+.inspiration-popular .inspiration-popular-image img {
+    border-radius: 10px 10px 0 0;
+
+    @media (max-width: 900px) {
+        border-radius: 10px;
+    }
+}
+
+.inspiration-popular .inspiration-popular-title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 28px;
+    text-align: left;
+    color: #000;
+    padding: 20px 20px 0;
+    background: #fff;
+    overflow-wrap: break-word;
+
+    @media (max-width: 900px) {
+        font-size: 14px;
+        line-height: 21px;
+        max-width: 90%;
+        padding: 10px 0 0 12px;
+    }
+}
+
+.inspiration-popular .inspiration-popular-read-more {
+    padding: 10px 20 20px 20px;
+
+    @media (max-width: 900px) {
+        padding: 0 12px 20px 0;
+    }
+}
+
+.inspiration-popular .inspiration-popular-read-more p {
+    @media (max-width: 900px) {
+        margin-left: -10px;
+    }
+}
+
+.inspiration-popular .inspiration-popular-read-more a {
+    padding: 7px 17px;
+    border: 1px solid #232426;
+    border-radius: 45px;
+    font-size: 14.5px;
+    letter-spacing: 0.2px;
+    color: #000;
+    display: inline-block;
+    margin-bottom: 40px;
+    font-weight: 600;
+    margin-top: 12px;
+    margin-left: 15px;
+
+    @media (max-width: 900px) {
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+}
+
+.inspiration-popular .inspiration-popular-read-more a:hover {
+    background: #fff7e8;
+}
+
+.inspiration-popular .inspiration-popular-read-more a .link-icon {
+    filter: invert(1);
+    margin-left: 8px;
+}
+
+@media (max-width: 991px) {
+    .inspiration-popular .inspiration-popular-read-more a .link-icon {
+        margin-left: 4px;
+    }
+}

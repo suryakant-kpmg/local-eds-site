@@ -1,0 +1,451 @@
+.section.discover-collections-container {
+  margin-top: -10px;
+  background: #f4f2ee;
+  padding: 5rem 0 10rem;
+  margin-bottom: 0;
+}
+
+.discover-collections {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding-right: 4%;
+  padding-left: 4%;
+}
+
+.discover-collections__block-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 8px 0 28px;
+  text-align: center;
+}
+
+.discover-collections__block-title {
+  margin: 0;
+  color: #1f1f1f;
+  font-size: 32px;
+  line-height: 22px;
+  font-weight: 800;
+  letter-spacing: 0;
+  margin-bottom: 2rem;
+}
+.discover-collections__block-title span {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.discover-collections__block-title-main {
+  color: #1f1f1f;
+}
+
+.discover-collections__block-title-gradient {
+  margin-left: 10px;
+  background: linear-gradient(270deg, #f8a12e, #be2a1d 50.07%, #45216c 98.1%);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.discover-collections__variant {
+  margin-bottom: 100px;
+}
+
+.discover-collections__variant:last-child {
+  margin-bottom: 0;
+}
+
+
+@media (max-width: 991px) {
+   .discover-collections__group.discover-collections__group--primary , .discover-collections__group.discover-collections__group--secondary {
+      width:100%
+  }
+  .discover-collections__variant .discover-collections__collage .discover-collections__group.discover-collections__group--primary  .discover-collections__text {
+    width: 100%;
+  }
+   .discover-collections__variant.discover-collections__variant--left .discover-collections__collage .discover-collections__group.discover-collections__group--primary .one-to-three {
+    display: none;
+  }
+  .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .discover-collections__group.discover-collections__group--primary .one-to-three  {
+      display: none;
+  }
+  .discover-collections__variant.discover-collections__variant--left .discover-collections__group.discover-collections__group--secondary {
+    display: flex;
+    gap: 10px;
+  }
+  .discover-collections__variant.discover-collections__variant--left .discover-collections__group.discover-collections__group--secondary  .column-one {
+    margin-top: 22px;
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+  }
+  .discover-collections__variant.discover-collections__variant--left .discover-collections__group.discover-collections__group--secondary  .column-two {
+        justify-content: flex-start;
+    margin-top: -40px;
+    display: flex;
+    flex-direction: column;
+    gap:10px
+  }
+   .discover-collections__variant.discover-collections__variant--left .discover-collections__group.discover-collections__group--secondary .discover-collections__image {
+      display: flex;
+      flex-direction: column;
+      row-gap: 10px;
+   }
+   .discover-collections__variant.discover-collections__variant--left .discover-collections__group.discover-collections__group--secondary .discover-collections__image.discover-collections__image--6 {
+    display: none;
+   }
+   .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .discover-collections__group.discover-collections__group--secondary {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+        flex-direction: row-reverse;
+
+   }
+    .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .discover-collections__group.discover-collections__group--secondary .column-one {
+      display: flex;
+    flex-direction: column;
+    margin-top: -40px;
+    gap:10px;
+    }
+    .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .discover-collections__group.discover-collections__group--secondary .column-two {
+              margin-top: 22px;
+              display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap:10px;
+    }
+}
+@media (min-width: 992px) {
+  .discover-collections__collage {
+    display: flex;
+    gap: 10px;
+}
+  .discover-collections__variant .discover-collections__collage .discover-collections__group.discover-collections__group--primary  .discover-collections__text{
+    width: 425px;
+  }
+  .discover-collections__group.discover-collections__group--primary , .discover-collections__group.discover-collections__group--secondary {
+      width:50%
+  }
+  .discover-collections__group.discover-collections__group--primary .one-to-three {
+        display: flex;
+        gap: 10px;
+  }
+  .discover-collections__group.discover-collections__group--primary .one-to-three .column-one {
+    margin-top: 50px;
+    width: -webkit-fill-available;
+  }
+  .discover-collections__group.discover-collections__group--primary .one-to-three .column-two {
+    width: -webkit-fill-available;
+    flex-direction: column;
+    display: flex;
+    row-gap: 10px;
+  }
+  .discover-collections__group.discover-collections__group--secondary {
+    display: flex;
+    gap: 10px;
+  }
+  .discover-collections__group.discover-collections__group--secondary .column-one {
+    width: -webkit-fill-available;
+    row-gap: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  .discover-collections__group.discover-collections__group--secondary .column-two {
+    width: -webkit-fill-available;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    justify-content: center;
+  }
+  .discover-collections__variant.discover-collections__variant--right .discover-collections__collage {
+    flex-direction: row-reverse;
+  }
+   .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .discover-collections__group.discover-collections__group--primary .discover-collections__text {
+    margin-left: 40px;
+   }
+   .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .one-to-three {
+    flex-direction: row-reverse;
+   }
+   .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .discover-collections__group.discover-collections__group--primary .one-to-three .column-one {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    width: -webkit-fill-available;
+    flex-direction: column;
+   }
+      .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .discover-collections__group.discover-collections__group--primary .one-to-three .column-two {
+        margin-top: 60px;
+      }
+      .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .discover-collections__group.discover-collections__group--secondary {
+        flex-direction: row-reverse;
+      }
+      .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .discover-collections__group.discover-collections__group--secondary .column-two {
+        justify-content: flex-start;
+    margin-top: 60px;
+      }
+
+}
+
+
+
+
+
+.discover-collections__title {
+  margin: 0 0 18px;
+  color: #303030;
+  font-size: 54px;
+  line-height: 59.4px;
+  font-weight: 800;
+  white-space: pre-line;
+}
+
+.discover-collections__subtitle {
+  margin: 0 0 28px;
+  max-width: 420px;
+  color: #1f1f1f;
+  font-size: 16px;
+  line-height: 1.55;
+  font-weight: 500;
+}
+
+.discover-collections__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.discover-collections__download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #1e1e1e;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 600;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.discover-collections__download:hover {
+  color: #1e1e1e;
+}
+
+.discover-collections__download-icon,
+.discover-collections__cta-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.discover-collections__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid #1e1e1e;
+  border-radius: 999px;
+  color: #1e1e1e;
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 700;
+  text-decoration: none;
+  background: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.discover-collections__cta:hover {
+ background: #feeecf;
+    border: 1px solid #232426;
+  text-decoration: none;
+  color: #222222;
+}
+.discover-collections__image {
+  overflow: hidden;
+  border-radius: 8px;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.discover-collections__image picture,
+.discover-collections__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.discover-collections__image.is-hidden-before-animation {
+  visibility: hidden;
+  transform: scale(0.65);
+}
+
+.discover-collections__image.animate-grow-from-center {
+  visibility: visible;
+  animation: grow-from-center 3s forwards;
+}
+
+@keyframes grow-from-center {
+  0% {
+    transform: scale(0.65);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.discover-collections__image picture,
+.discover-collections__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.discover-collections__image img {
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.discover-collections__image:hover img {
+  transform: scale(1.02);
+}
+
+
+
+
+@media (min-width: 992px) and (max-width: 1279px) {
+  .discover-collections__block-title {
+    font-size: 44px;
+  }
+
+  .discover-collections__title {
+    font-size: 52px;
+  }
+
+  .discover-collections__subtitle {
+    max-width: 380px;
+  }
+
+  /* .discover-collections__variant--left .discover-collections__image,
+  .discover-collections__variant--right .discover-collections__image {
+    height: 210px;
+  } */
+}
+
+@media (max-width: 991px) {
+  .discover-collections {
+    padding-right: 4.5%;
+    padding-left: 4.5%;
+  }
+
+  .discover-collections__block-header {
+    margin: 0;
+    margin-top: 25px;
+  }
+
+  .discover-collections__block-title {
+    font-size: 20px;
+    line-height: 1.05;
+  }
+
+  .discover-collections__block-title-gradient {
+    margin-left: 6px;
+  }
+
+  .discover-collections__variant {
+    margin-bottom: 28px;
+  }
+
+
+
+
+
+  .discover-collections__title {
+    margin: 0 0 20px;
+    max-width: 170px;
+    font-size: 32px;
+    line-height: 35px;
+  }
+
+  .discover-collections__subtitle {
+    max-width: 100%;
+    margin: 0 0 40px;
+    font-size: 14px;
+    line-height: 1.45;
+    padding-right: 20px;
+  }
+
+  .discover-collections__actions {
+    gap: 20px;
+    align-items: flex-start;
+    flex-direction: column-reverse;
+  }
+
+  .discover-collections__cta {
+    min-height: 32px;
+    padding: 0 12px;
+    font-size: 14px;
+  }
+
+  .discover-collections__download {
+    font-size: 14px;
+  }
+
+  .discover-collections__download-icon svg,
+  .discover-collections__cta-arrow svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .discover-collections__image {
+    overflow: hidden;
+    border-radius: 4px;
+    margin-top: 0 !important;
+  }
+
+  .discover-collections__image picture,
+  .discover-collections__image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .discover-collections__image img {
+    object-fit: cover;
+  }
+
+  /* .discover-collections__image--5,
+  .discover-collections__image--6,
+  .discover-collections__image--7,
+  .discover-collections__image--8 {
+    display: none !important;
+  } */
+
+  /* .discover-collections__variant--left .discover-collections__image--1,
+  .discover-collections__variant--left .discover-collections__image--3,
+  .discover-collections__variant--right .discover-collections__image--1,
+  .discover-collections__variant--right .discover-collections__image--3 {
+    height: 92px !important;
+  }
+
+  .discover-collections__variant--left .discover-collections__image--2,
+  .discover-collections__variant--left .discover-collections__image--4,
+  .discover-collections__variant--right .discover-collections__image--2,
+  .discover-collections__variant--right .discover-collections__image--4 {
+    height: 80px !important;
+  } */
+
+  /* LEFT MOBILE */
+ 
+
+  .section.discover-collections-container {
+    padding: 2rem 0 5rem;
+  }
+
+ .discover-collections__variant--right .discover-collections__collage {
+  margin-top: 4rem;
+ }
+}

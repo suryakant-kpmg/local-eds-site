@@ -1,0 +1,241 @@
+.servicesteps {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 12px;
+  color: #fff;
+
+  /* Fallback teal shown until / when no background media is authored. */
+  background-color: #0e8480;
+}
+
+/* Background layer: authored image(s), with the video stacked on top. */
+.servicesteps .servicesteps-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.servicesteps .servicesteps-media picture,
+.servicesteps .servicesteps-video {
+  position: absolute;
+  inset: 0;
+}
+
+.servicesteps .servicesteps-media img,
+.servicesteps .servicesteps-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.servicesteps picture.servicesteps-bg-desktop {
+  display: none;
+}
+
+/* Teal gradient tint over the background, matching the source section. */
+.servicesteps .servicesteps-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(82deg, rgb(14 132 128 / 60%), rgb(9 115 112 / 0%) 93.55%);
+}
+
+/* Content layer */
+.servicesteps .servicesteps-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 32px 24px;
+}
+
+/* Left: logo + CTA buttons */
+.servicesteps .servicesteps-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.servicesteps .servicesteps-logo img {
+  width: 120px;
+  height: auto;
+  display: block;
+}
+
+/* Show mobile logo by default, desktop on wider screens. */
+.servicesteps picture.servicesteps-logo-desktop {
+  display: none;
+}
+
+.servicesteps picture.servicesteps-logo-mobile {
+  display: block;
+}
+
+.servicesteps .servicesteps-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.servicesteps .servicesteps-button {
+  width: 100%;
+}
+
+.servicesteps .servicesteps-cta {
+  display: inline-flex;
+  box-sizing: border-box;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+  padding: 12px 26px;
+  border-radius: 45px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.servicesteps .servicesteps-cta::after {
+  content: '\2192';
+  font-weight: 700;
+}
+
+/* Download CTAs use a downward arrow instead. */
+.servicesteps .servicesteps-cta-download::after {
+  content: '\2193';
+}
+
+.servicesteps .servicesteps-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 25%);
+}
+
+.servicesteps .servicesteps-cta-primary {
+  background: #fcaf17;
+  color: #232426;
+}
+
+/* Secondary: transparent, white outline pill. */
+.servicesteps .servicesteps-cta-secondary {
+  background: transparent;
+  color: #fff;
+  border: 1.5px solid rgb(255 255 255 / 80%);
+}
+
+/* Right: heading + steps */
+.servicesteps .servicesteps-heading {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+/* Steps sit in a 3-column row (icon above text) on all viewports. */
+.servicesteps .servicesteps-steps {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.servicesteps .servicesteps-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+  gap: 12px;
+}
+
+/* Step artwork (ring + number badge + icon) is authored as one image. */
+.servicesteps .servicesteps-step-icon {
+  flex: 0 0 auto;
+  width: 56px;
+  height: 62px;
+  line-height: 0;
+}
+
+.servicesteps .servicesteps-step-icon picture,
+.servicesteps .servicesteps-step-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.servicesteps .servicesteps-step-description {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Desktop layout */
+@media (width >= 900px) {
+  .servicesteps picture.servicesteps-logo-desktop,
+  .servicesteps picture.servicesteps-bg-desktop {
+    display: block;
+  }
+
+  .servicesteps picture.servicesteps-logo-mobile,
+  .servicesteps picture.servicesteps-bg-mobile {
+    display: none;
+  }
+
+  .servicesteps .servicesteps-content {
+    flex-direction: row;
+    align-items: center;
+    gap: 48px;
+    padding: 48px 64px;
+  }
+
+  .servicesteps .servicesteps-left {
+    flex: 0 0 30%;
+  }
+
+  .servicesteps .servicesteps-right {
+    flex: 1;
+  }
+
+  .servicesteps .servicesteps-buttons {
+    width: auto;
+  }
+
+  .servicesteps .servicesteps-cta {
+    width: auto;
+  }
+
+  .servicesteps .servicesteps-logo img {
+    width: 171px;
+  }
+
+  .servicesteps .servicesteps-heading {
+    font-size: 24px;
+    margin-bottom: 32px;
+  }
+
+  .servicesteps .servicesteps-steps {
+    gap: 40px;
+  }
+
+  .servicesteps .servicesteps-step {
+    gap: 20px;
+  }
+
+  .servicesteps .servicesteps-step-icon {
+    width: 70px;
+    height: 78px;
+  }
+
+  .servicesteps .servicesteps-step-description {
+    font-size: 16px;
+  }
+}

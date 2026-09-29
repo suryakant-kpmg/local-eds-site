@@ -1,0 +1,229 @@
+/* How It Works Steps (EDS) – Updated Styles */
+.how-works-container {
+    display: flex;
+    padding: 48px 48px 0;
+    background: #fef9f2;
+    gap: 50px;
+}
+
+/* Left Column: Title and Image */
+.how-works-img-section {
+    width: 50%;
+    position: relative;
+
+    /* ✅ DESKTOP FIX: anchor title + image to bottom-left */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;   /* bottom */
+    align-items: flex-start;     /* left */
+}
+
+.how-works-img-section .title {
+    font-family: Manrope, sans-serif;
+    font-size: 64px;
+    font-weight: 800;
+    line-height: 70.4px;
+    color: #1D1D1F;
+    margin: 0 0 29px;
+}
+
+.how-works-img-section .title-image {
+    display: block;
+    width: 100%;
+}
+
+.how-works-img-section .title-image img {
+    width: 100%;
+    height: auto;
+}
+
+/* Right Column: Steps List */
+.how-works-text-section {
+    width: 50%;
+}
+
+.text-section-wraper {
+    display: flex;
+    padding: 20px 0;
+}
+
+.text-section-wraper:first-child {
+    padding-top: 0;
+}
+
+.text-section-wraper:not(:last-of-type) {
+    border-bottom: 1px dashed #b3a898;
+}
+
+.text-section-number {
+    font-family: Manrope, sans-serif;
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 35.2px;
+    color: #EE4137;
+    margin: 0;
+    margin-right: 27px;
+}
+
+.inner-text-wraper .text-title {
+    font-family: Manrope, sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 33.6px;
+    color: #232426;
+    margin: 0 0 8px;
+    margin-bottom: 0;
+}
+
+.inner-text-wraper .text-description {
+    font-family: Manrope, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #53565A;
+    margin-bottom: 0;
+}
+
+/* keep for desktop/tablet; overridden on mobile */
+.how-works-text-section p {
+    margin-right: 27px;
+    padding: 0;
+}
+
+/* Responsive Adjustments for Tablet (up to 1024px wide) */
+@media (max-width: 1024px) {
+    .how-works-container {
+        max-width: 100%;
+        padding: 40px 16px;
+        gap: 40px;
+    }
+
+    .how-works-img-section {
+        width: 40%;
+        max-width: 40%;
+    }
+
+    .how-works-img-section .title {
+        font-size: 36px;
+        line-height: 1.2;
+    }
+
+    .text-section-number {
+        font-size: 32px;
+        line-height: 1.1;
+        min-width: 50px;
+    }
+}
+
+/* ✅ MOBILE PARITY WITH LIVE (320–991px) */
+@media (min-width: 320px) and (max-width: 991px) {
+
+    .how-works-container {
+        flex-direction: column;
+        margin-top: 72px;
+        padding-top: 28px;
+        padding-left: 0;
+        padding-right: 0;
+        padding-bottom: 0;
+        gap: 2px;
+    }
+
+    /* HEADER ROW */
+    .how-works-img-section {
+        width: 100% !important;
+        max-width: 100% !important;
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        position: static;
+        text-align: left;
+        padding: 0 0 0 24px !important;
+        box-sizing: border-box;
+        column-gap: 12px;
+    }
+
+    .how-works-img-section .title {
+        font-size: 32px;
+        font-weight: 800;
+        line-height: 32px;
+        letter-spacing: -0.01em;
+        -webkit-font-smoothing: antialiased;
+
+        margin-top: 10px;
+        margin-bottom: 0;
+
+        flex: 1 1 auto;
+        min-width: 0;
+        max-width: calc(100% - 179px - 12px);
+    }
+
+    .how-works-img-section .title-image {
+        flex: 0 0 179px;
+        width: 179px !important;
+        height: 157px !important;
+        display: block;
+        margin-left: auto;
+        transform: translateY(-127px);
+    }
+
+    .how-works-img-section .title-image img {
+        width: 179px !important;
+        height: 157px !important;
+        max-width: none !important;
+        margin: 0 !important;
+        position: static;
+        object-fit: contain;
+        transform: none !important;
+    }
+
+    .how-works-text-section {
+        width: 100%;
+        margin-top: -130px;
+    }
+
+    .how-works-text-section .text-section-wraper {
+        margin: 0 16px;
+        padding: 18px 0;
+        padding-left: 8px;
+        align-items: flex-start;
+    }
+
+    .how-works-text-section .text-section-wraper:first-child {
+        padding-top: 8px;
+    }
+
+    .text-section-number {
+        font-size: 32px;
+        font-weight: 300;
+        line-height: 35.2px;
+    }
+
+    .text-section-number:not(:empty) {
+        margin-right: 21px;
+    }
+
+    .inner-text-wraper .text-title {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 24px;
+        margin: 0;
+    }
+
+    .inner-text-wraper .text-description {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 19.12px;
+        color: #2f2f2f;
+        margin: 0;
+    }
+
+    .how-works-text-section .inner-text-wraper {
+        max-width: 80%;
+    }
+
+    .how-works-text-section p {
+        margin: 0 !important;
+        padding: 0;
+    }
+}

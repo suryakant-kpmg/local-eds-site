@@ -1,0 +1,40 @@
+{
+  "variantName": "carousel-expertise",
+  "baseBlock": "city-carousel",
+  "version": "1.0.0",
+  "created": "2026-01-30T06:03:38.270Z",
+  "sourceContext": {
+    "originUrl": "https://www.asianpaints.com/painting-contractors.html",
+    "originPage": "Painting Contractors landing page",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "service-categories",
+    "imagePattern": "split"
+  },
+  "contentPattern": {
+    "structure": "tab navigation + image/content split",
+    "buttonCount": 1,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "Service category showcases",
+      "Expertise area displays",
+      "Tab-based content switching",
+      "Feature highlights with images"
+    ],
+    "notSuitableFor": [
+      "Simple image carousels",
+      "Full-width hero banners",
+      "Testimonial sliders"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/content/painting-contractors"],
+    "reuseCount": 1,
+    "lastUsed": "2026-01-30T06:03:38.270Z"
+  }
+}

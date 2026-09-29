@@ -1,0 +1,314 @@
+.section.seo-content-container {
+    padding: 0 25px;
+    margin: 40px auto;
+}
+
+.seo-content.large-side-space {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+@media (width >=900px) {
+    .seo-content.large-side-space {
+        padding-left: 18%;
+        padding-right: 18%;
+    }
+}
+
+.seo-content.block h2 {
+    color: #222;
+    margin-bottom: .5rem;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 34px;
+
+    @media (max-width: 991px) {
+        font-size: 22px;
+        line-height: 24px;
+        letter-spacing: normal;
+    }
+}
+
+.seo-content.block h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #222;
+    margin-top: 2.5rem;
+
+    @media (max-width: 991px) {
+        font-size: 16px;
+        line-height: 22px;
+        letter-spacing: normal;
+    }
+}
+
+.seo-content.block p {
+    font-size: 14px;
+    letter-spacing: .5px;
+
+    @media (max-width: 991px) {
+        font-size: 14px;
+        line-height: 1.57;
+        letter-spacing: .5px;
+        font-weight: 400;
+    }
+}
+
+.seo-content.block p a {
+    color: #00e;
+    text-decoration: underline;
+}
+
+.seo-content.block ul li strong {
+    font-size: 20px;
+}
+
+.seo-content.block ul {
+    margin-bottom: .2rem;
+}
+
+.seo-content.block ul {
+    margin-top: 2rem;
+    padding: 0 16px;
+}
+
+.seo-content.block ul li {
+    font-size: 14px;
+    color: #222;
+    margin-bottom: 14px;
+    letter-spacing: .5px;
+    line-height: 22px;
+}
+
+.seo-content.block ul li a {
+    color: #00e;
+    text-decoration: underline;
+}
+
+.seo-content.block ul li::marker {
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+.seo-content.block ul li p:nth-child(1) {
+    margin-bottom: .2rem;
+}
+
+.seo-content.block ul li p strong {
+    font-size: 20px;
+}
+
+/* Hide list style */
+.seo-content.block.hide-list-style ul {
+    padding: 0;
+}
+
+.seo-content.block.hide-list-style li {
+    list-style: none;
+}
+
+
+/* ============================================
+   Variant: List Padding 1
+   ============================================ */
+.seo-content.block.list-padding-1 ul {
+    margin-top: 0;
+    padding-left: 20px;
+}
+
+
+
+/* Responsive */
+@media screen and (max-width: 992px) {
+    .seo-content.mt-5.block {
+        margin-top: 3rem !important;
+    }
+
+    .section.seo-content-container {
+        padding: 0 16px;
+        margin: 50px auto 40px;
+    }
+
+    .seo-content.block h2 {
+        font-size: 22px;
+        font-weight: 700;
+    }
+
+    .seo-content.block ul li strong {
+        font-size: 16px;
+    }
+}
+
+/* ============================================
+   Variant: Table Style
+   ============================================ */
+
+@media screen and (max-width: 992px) {
+    .seo-content.block.table-style {
+
+        padding: 0 0 !important;
+    }
+}
+
+.seo-content.block.table-style {
+    overflow-x: auto;
+    padding: 0 30px;
+}
+
+.seo-content.block.table-style table {
+    width: fit-content;
+    max-width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    color: #222;
+}
+
+.seo-content.block.table-style th,
+.seo-content.block.table-style td {
+    border: 1px solid #ddd;
+    padding: 14px 16px;
+    text-align: left;
+    vertical-align: top;
+    line-height: 22px;
+    letter-spacing: 0.5px;
+}
+
+.seo-content.block.table-style th {
+    font-weight: 700;
+    background: #f7f7f7;
+}
+
+.seo-content.block.table-style td p,
+.seo-content.block.table-style th p {
+    margin: 0;
+}
+
+@media screen and (max-width: 992px) {
+    .seo-content.block.table-style table {
+        min-width: 640px;
+    }
+
+    .seo-content.block.table-style th,
+    .seo-content.block.table-style td {
+        padding: 12px;
+        font-size: 13px;
+    }
+}
+
+
+@media screen and (min-width: 992px) {
+    .royale-seo-content-container {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .royale-seo-content-container .seo-content-wrapper,
+    .royale-seo-content-container .default-content-wrapper {
+        max-width: 1440px;
+        margin: auto !important;
+        padding-left: 4% !important;
+        padding-right: 4% !important;
+    }
+
+    #types-of-wall-texture-designs-for-interior-walls {
+        line-height: 42px;
+        margin: 60px 0 30px 0;
+    }
+
+    #difference-between-normal-paint-and-texture-paint {
+        margin: 50px 0 40px 0;
+    }
+
+    #texture-painting-techniques-used-in-royale-play {
+        margin: 50px 0 40px 0;
+    }
+
+    .royale-seo-content-container .seo-content.block.table-style {
+        padding: 0;
+    }
+
+    .royale-seo-content-container .seo-content-wrapper h2 {
+        margin-top: 20px;
+        line-height: 34px;
+        font-size: 30px;
+        font-weight: 700;
+    }
+
+    #textured-paint-designs,
+    #how-to-maintain-textured-walls {
+        line-height: 34px;
+        font-size: 30px;
+        font-weight: 700;
+        margin-bottom: 7px;
+    }
+
+    .royale-seo-content-container .seo-content-wrapper h2#why-choose-royale-play-texture-paint {
+        margin-top: 55px;
+    }
+
+    .royale-seo-content-container .seo-content-wrapper h3 {
+        font-size: 20px;
+        line-height: 22px;
+    }
+
+    .royale-seo-content-container .seo-content-wrapper .table-style.block {
+        margin-top: 30px;
+    }
+
+    .royale-seo-content-container .default-content-wrapper p {
+        letter-spacing: 0.5px;
+    }
+}
+
+/* ==================== side-by-side : start ==================== */
+/* Titled text sections. Mobile: one column; desktop: two columns that
+   fill top-to-bottom, in authored order. */
+.seo-content.side-by-side {
+    --seo-title: #23242b;
+    --seo-text: #3b3d40;
+}
+
+.seo-content.side-by-side .seo-content-item {
+    margin-bottom: 20px;
+    break-inside: avoid;
+}
+
+.seo-content.side-by-side .seo-content-title {
+    /* font-size/line-height come from the existing .seo-content.block h3 rule */
+    margin: 0 0 8px;
+    color: var(--seo-title);
+}
+
+/* font-size/letter-spacing match the existing .seo-content.block p rule */
+.seo-content.side-by-side .seo-content-desc {
+    font-size: 14px;
+    letter-spacing: .5px;
+    color: var(--seo-text);
+}
+
+.seo-content.side-by-side .seo-content-desc p {
+    margin: 0;
+    color: var(--seo-text);
+}
+
+.seo-content.side-by-side .seo-content-desc p+p {
+    margin-top: 8px;
+}
+
+.seo-content.side-by-side .seo-content-desc a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+@media (width >=900px) {
+    .seo-content.side-by-side .seo-content-list {
+        column-count: 2;
+        column-gap: 32px;
+    }
+
+    .seo-content.side-by-side .seo-content-item {
+        margin-bottom: 24px;
+    }
+}
+
+/* ==================== side-by-side : end ==================== */

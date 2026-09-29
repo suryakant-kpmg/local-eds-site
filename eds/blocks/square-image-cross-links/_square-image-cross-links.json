@@ -1,0 +1,6 @@
+{
+  "title": "Square Image Cross Links",
+  "description": "Grid of square image tiles with title, description, arrow and link. Mobile shows 'VIEW PRODUCTS'.",
+  "version": "1.0",
+  "columns": ["Image", "Title", "Description", "Link"]
+}

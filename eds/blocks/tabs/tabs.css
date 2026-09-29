@@ -1,0 +1,420 @@
+/* Tabs block - vertical sidebar layout */
+.tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+@media (min-width: 900px) {
+  .tabs {
+    flex-direction: row;
+    gap: 60px;
+    padding: 60px 80px;
+  }
+}
+
+/* Tabs list - vertical sidebar on desktop */
+.tabs .tabs-list {
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  overflow-x: auto;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 900px) {
+  .tabs .tabs-list {
+    flex-direction: column;
+    flex-shrink: 0;
+    width: 220px;
+    min-width: 220px;
+    border-bottom: none;
+    margin-bottom: 0;
+    overflow-x: visible;
+  }
+}
+
+/* Tab buttons */
+.tabs .tabs-list button {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 12px 16px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background-color: transparent;
+  color: #000;
+  opacity: 0.5;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-align: left;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+
+@media (min-width: 900px) {
+  .tabs .tabs-list button {
+    padding: 20px 0;
+    border-bottom: none;
+    border-left: none;
+    white-space: normal;
+  }
+}
+
+.tabs .tabs-list button p {
+  margin: 0;
+}
+
+.tabs .tabs-list button:hover {
+  opacity: 0.8;
+}
+
+/* Active tab */
+.tabs .tabs-list button[aria-selected='true'] {
+  color: #000;
+  opacity: 1;
+  font-weight: 600;
+  border-bottom: 2px solid #000;
+}
+
+@media (min-width: 900px) {
+  .tabs .tabs-list button[aria-selected='true'] {
+    border-bottom: none;
+  }
+}
+
+/* Tab panels - main content area */
+.tabs .tabs-panel {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  border: none;
+  overflow: visible;
+}
+
+.tabs .tabs-panel[aria-hidden='true'] {
+  display: none;
+}
+
+/* Panel title - matches the tab button text */
+.tabs .tabs-panel .panel-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 40px 0;
+  padding: 0;
+  color: #000;
+  text-align: center;
+}
+
+@media (min-width: 900px) {
+  .tabs .tabs-panel .panel-title {
+    font-size: 32px;
+    text-align: center;
+  }
+}
+
+/* All h2 headings are accordion items */
+.tabs .tabs-panel h2 {
+  position: relative;
+  padding: 24px 50px 24px 0;
+  margin: 0;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #000;
+  transition: none;
+  background: none;
+  border-top: 1px solid #e0e0e0;
+}
+
+.tabs .tabs-panel h2:hover {
+  background-color: transparent;
+}
+
+/* Plus/minus icon */
+.tabs .tabs-panel h2::after {
+  content: '+';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 28px;
+  font-weight: 300;
+  color: #000;
+  transition: none;
+}
+
+.tabs .tabs-panel h2.active::after {
+  content: '−';
+}
+
+/* Last heading bottom border when not active */
+.tabs .tabs-panel h2:last-of-type:not(.active) {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Accordion content */
+.tabs .tabs-panel .accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  padding: 0;
+}
+
+.tabs .tabs-panel .accordion-content.active {
+  max-height: 5000px;
+  padding: 0 0 24px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tabs .tabs-panel .accordion-content p {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #333;
+}
+
+.tabs .tabs-panel .accordion-content p:last-child {
+  margin-bottom: 0;
+}
+
+.tabs .tabs-panel .accordion-content hr {
+  display: none;
+}
+
+/* Links inside accordion - plain style, not buttons */
+.tabs .tabs-panel .accordion-content a {
+  color: #277bd4;
+  text-decoration: none;
+  font-weight: 400;
+  background: none;
+  border: none;
+  padding: 0;
+  display: inline;
+}
+
+.tabs .tabs-panel .accordion-content a:hover {
+  text-decoration: underline;
+}
+
+/* Override button styling for links in accordion */
+.tabs .tabs-panel .accordion-content .button-container {
+  display: inline;
+}
+
+.tabs .tabs-panel .accordion-content a.button {
+  color: #277bd4;
+  background: none;
+  border: none;
+  padding: 0;
+  font-weight: 400;
+  text-decoration: none;
+  border-radius: 0;
+}
+
+.tabs .tabs-panel .accordion-content a.button:hover {
+  background: none;
+  text-decoration: underline;
+  color: #1a5a9e;
+}
+
+/* When accordion content is active, next heading doesn't need top border */
+.tabs .tabs-panel .accordion-content.active + h2 {
+  border-top: none;
+}
+
+/* ============================================
+   Variant: categories — Tabs (categories)
+   ============================================ */
+
+.tabs.categories {
+  padding: 0;
+  background-color: #f8f6f2;
+}
+
+.tabs.categories .tabs-list {
+  display: flex;
+  gap: 8px;
+  padding: 20px 20px 0;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  background-color: #f8f6f2;
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.tabs.categories .tabs-list::-webkit-scrollbar {
+  display: none;
+}
+
+@media (width >= 768px) {
+  .tabs.categories .tabs-list {
+    justify-content: center;
+    padding: 24px 40px 0;
+    gap: 12px;
+  }
+}
+
+.tabs.categories .tabs-list button {
+  flex: 0 0 auto;
+  margin: 0;
+  border: none;
+  border-radius: 24px;
+  padding: 10px 20px;
+  background-color: #fff;
+  color: #333;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+  opacity: 1;
+}
+
+.tabs.categories .tabs-list button p {
+  margin: 0;
+}
+
+.tabs.categories .tabs-list button:hover {
+  background-color: #f0ebe3;
+  transform: translateY(-1px);
+}
+
+.tabs.categories .tabs-list button[aria-selected='true'] {
+  background-color: #c17f59;
+  color: #fff;
+  cursor: default;
+  box-shadow: 0 4px 12px rgb(193 127 89 / 30%);
+  border-bottom: none;
+}
+
+.tabs.categories .tabs-list button[aria-selected='true']:hover {
+  background-color: #c17f59;
+  transform: none;
+}
+
+@media (width >= 768px) {
+  .tabs.categories .tabs-list button {
+    padding: 12px 28px;
+    font-size: 14px;
+  }
+}
+
+.tabs.categories .tabs-panel {
+  padding: 32px 20px 48px;
+  border: none;
+  background-color: #f8f6f2;
+  margin-top: 0;
+  overflow: visible;
+}
+
+.tabs.categories .tabs-panel[aria-hidden='true'] {
+  display: none;
+}
+
+@media (width >= 768px) {
+  .tabs.categories .tabs-panel {
+    padding: 48px 40px 64px;
+  }
+}
+
+.tabs.categories .tabs-panel > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.tabs.categories .tabs-panel picture {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgb(0 0 0 / 12%);
+}
+
+.tabs.categories .tabs-panel img {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.tabs.categories .tabs-panel > div > p:not(.button-container) {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #555;
+  max-width: 600px;
+}
+
+.tabs.categories .tabs-panel > div > p:first-child {
+  margin: 0;
+}
+
+@media (width >= 768px) {
+  .tabs.categories .tabs-panel > div > p:not(.button-container) {
+    font-size: 16px;
+  }
+}
+
+.tabs.categories .tabs-panel .button-container {
+  margin-top: 8px;
+}
+
+.tabs.categories .tabs-panel .button-container .button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background-color: #c17f59;
+  border: none;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgb(193 127 89 / 30%);
+}
+
+.tabs.categories .tabs-panel .button-container .button::after {
+  content: "\2192";
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.tabs.categories .tabs-panel .button-container .button:hover {
+  background-color: #a86b47;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgb(193 127 89 / 40%);
+}
+
+.tabs.categories .tabs-panel .button-container .button:hover::after {
+  transform: translateX(4px);
+}
+
+.section.tabs-container:has(.tabs.categories) {
+  background-color: #f8f6f2;
+  padding: 0;
+}

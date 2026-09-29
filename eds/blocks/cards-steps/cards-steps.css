@@ -1,0 +1,142 @@
+/* Full-width blue gradient section */
+.cards-steps {
+  padding: 60px 24px;
+  margin: 0;
+  width: 100%;
+  background: linear-gradient(135deg, #1a5276 0%, #154360 100%);
+  box-sizing: border-box;
+}
+
+/* Inner container - use specific selector to avoid section class conflict */
+.cards-steps > .cards-steps-container {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 80px;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cards-steps-intro {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cards-steps-logo {
+  margin-bottom: 20px;
+}
+
+.cards-steps-logo picture img {
+  max-width: 150px;
+  height: auto;
+}
+
+.cards-steps-heading {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 20px;
+  line-height: 1.4;
+  max-width: 200px;
+}
+
+.cards-steps-ctas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.cards-steps-cta {
+  display: block;
+  padding: 12px 20px;
+  background: #fff;
+  color: #1a5276;
+  text-decoration: none;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.cards-steps-cta:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+}
+
+/* Right side heading above steps */
+.cards-steps-right-heading {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 24px;
+  line-height: 1.3;
+}
+
+.cards-steps-list {
+  display: flex;
+  gap: 24px;
+  justify-content: flex-start;
+}
+
+.cards-steps-step {
+  flex: 0 0 auto;
+  width: 160px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 30px 20px;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.cards-steps-step-image {
+  margin-bottom: 16px;
+}
+
+.cards-steps-step-image picture img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+}
+
+.cards-steps-step-content h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+
+.cards-steps-step-content p {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Mobile responsive */
+@media (max-width: 900px) {
+  .cards-steps {
+    padding: 40px 20px;
+  }
+
+  .cards-steps-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .cards-steps-list {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cards-steps-step {
+    max-width: 100%;
+    width: 100%;
+  }
+}

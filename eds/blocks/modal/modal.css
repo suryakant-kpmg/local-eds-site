@@ -1,0 +1,535 @@
+body.modal-open {
+  overflow: hidden;
+}
+
+.modal.block {
+  display: block !important;
+}
+
+.modal dialog::backdrop {
+  background-color: rgb(19 19 19 / 75%);
+}
+
+.modal dialog {
+  overscroll-behavior: none;
+  overflow-y: hidden;
+  position: relative;
+  width: calc(100vw - 48px);
+  max-width: 900px;
+  max-height: calc(100dvh - (2 * var(--header-height)));
+  padding: 0;
+  border: 1px solid var(--dark-color);
+}
+
+.modal dialog .modal-content {
+  box-sizing: border-box;
+  overflow-y: auto;
+  overscroll-behavior: none;
+  width: 100%;
+  max-height: calc(100dvh - (2 * var(--header-height)) - 48px);
+  padding: 24px;
+  padding-top: 0;
+  margin-top: 44px;
+}
+
+.modal-backdrop.show {
+  opacity: .5;
+}
+
+.show {
+  display: block;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: #000;
+  height: 100%;
+  width: 100%;
+}
+
+.fade {
+  transition: opacity .15s linear;
+}
+
+@media (width >=900px) {
+  .modal dialog {
+    width: calc(100vw - 64px);
+  }
+
+  .modal dialog .modal-content {
+    max-height: calc(100dvh - (2 * var(--header-height)) - 64px);
+    padding: 32px;
+    padding-top: 0;
+  }
+}
+
+.modal .close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  background-color: transparent;
+  color: var(--text-color);
+  line-height: 0;
+}
+
+.modal .close-button .icon.icon-close {
+  content: '';
+  width: 24px;
+  height: 24px;
+}
+
+.modal .close-button .icon.icon-close::before,
+.modal .close-button .icon.icon-close::after {
+  content: '';
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 24px;
+  height: 2px;
+  border-radius: 2px;
+  background-color: currentcolor;
+}
+
+.modal .close-button .icon.icon-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg)
+}
+
+.modal dialog .section {
+  padding: 0;
+}
+
+.modal dialog.book-free-site-visit-dialog::backdrop {
+  background-color: rgb(0 0 0 / 50%);
+}
+
+.modal dialog.book-free-site-visit-dialog {
+  position: fixed;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  width: min(calc(100vw - 24px), 542px);
+  max-width: 542px;
+  height: fit-content;
+  max-height: calc(100dvh - 50px);
+  padding: 0;
+  border: 1px solid rgb(0 0 0 / 20%);
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: none;
+  overflow: hidden auto;
+
+  @media (min-width: 1200px) and (max-width: 1281px) {
+    left: 50%;
+    transform: translateX(-50%) scale(0.83);
+    transform-origin: top center;
+  }
+}
+
+.modal dialog.book-free-site-visit-dialog .modal-content {
+  margin-top: 0;
+  padding: 0;
+  background: #fff;
+  overflow-y: auto;
+  max-height: calc(100dvh - 75px);
+  border-radius: 4px;
+}
+
+/* isBhpsForm (lead-form.js) renders .new-questions-wrapper inside this
+   dialog — use its presence as the CSS-side signal for "isBhpsForm is
+   true", since CSS can't read the JS flag directly. */
+.modal dialog.book-free-site-visit-dialog:has(.new-questions-wrapper) {
+  border-radius: 10px;
+}
+
+.modal dialog.book-free-site-visit-dialog:has(.new-questions-wrapper) .modal-content {
+  border-radius: 10px;
+}
+
+@media (min-width:991px) and (max-width:1500px) {
+  .modal dialog.book-free-site-visit-dialog .modal-content {
+    max-height: 100%;
+  }
+}
+
+.modal dialog.book-free-site-visit-dialog .close-button {
+  top: 61px;
+  right: 50px;
+  width: 29px;
+  height: 25px;
+  border: none;
+  border-radius: 2px;
+  background: none;
+  box-shadow: none;
+  color: #222;
+  z-index: 10;
+}
+
+.modal dialog.book-free-site-visit-dialog .close-button .icon.icon-close::before,
+.modal dialog.book-free-site-visit-dialog .close-button .icon.icon-close::after {
+  width: 20px;
+  height: 1.5px;
+}
+
+
+
+@media (width <=640px) {
+  .modal dialog.book-free-site-visit-dialog {
+    width: calc(100vw - 16px);
+    max-width: none;
+  }
+
+  .modal dialog.book-free-site-visit-dialog .close-button {
+    top: 59px;
+    right: 17px;
+    width: 26px;
+    height: 24px;
+  }
+
+  .modal dialog.book-free-site-visit-dialog .close-button .icon.icon-close::before,
+  .modal dialog.book-free-site-visit-dialog .close-button .icon.icon-close::after {
+    width: 15px;
+  }
+}
+
+/* Book Free Site Visit: fragment section styling inside dialog */
+.modal dialog.book-free-site-visit-dialog .section {
+  padding: 0;
+}
+
+.modal dialog.book-free-site-visit-dialog .default-content-wrapper>p:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  margin: 0;
+  padding: 9px 19px;
+  background: #dfd;
+  border-radius: 4px 4px 0 0;
+  color: #000;
+
+  @media (min-width: 320px) and (max-width: 991px) {
+    gap: 6px;
+    padding: 4px 9px;
+  }
+}
+
+/* isBhpsForm (lead-form.js) renders .new-questions-wrapper inside this
+   dialog — use its presence as the CSS-side signal for "isBhpsForm is
+   true", since CSS can't read the JS flag directly. */
+.modal dialog.book-free-site-visit-dialog:has(.new-questions-wrapper) .default-content-wrapper>p:first-child {
+  padding: 13px 19px;
+  background: #f3f3f3;
+}
+
+.modal dialog.book-free-site-visit-dialog .default-content-wrapper>p:first-child span {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (min-width: 320px) and (max-width: 991px) {
+    font-size: 12px;
+  }
+}
+
+.modal dialog.book-free-site-visit-dialog:has(.new-questions-wrapper) .default-content-wrapper>p:first-child span {
+  color: #53565a;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.modal dialog.book-free-site-visit-dialog .default-content-wrapper>p:first-child span .mob-num {
+  color: #00bf00;
+  font-size: 16px;
+  vertical-align: middle;
+
+  @media (min-width: 320px) and (max-width: 991px) {
+    font-size: 13px;
+  }
+}
+
+.modal dialog.book-free-site-visit-dialog:has(.new-questions-wrapper) .default-content-wrapper>p:first-child span .mob-num {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.book-free-site-visit-dialog .exit-popup-call-us--title--icon a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+}
+
+.book-free-site-visit-dialog .exit-popup-call-us--title--icon a .call-img {
+  width: 38px;
+  height: 38px;
+
+  @media (min-width: 320px) and (max-width: 991px) {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* isBhpsForm (lead-form.js) renders .new-questions-wrapper inside this
+   dialog — use its presence as the CSS-side signal for "isBhpsForm is
+   true", since CSS can't read the JS flag directly. */
+.modal dialog.book-free-site-visit-dialog:has(.new-questions-wrapper) .exit-popup-call-us--title--icon a .call-img {
+  width: 12px;
+  height: 12px;
+  margin-left: 5px;
+}
+
+.modal dialog.book-free-site-visit-dialog .default-content-wrapper h2 {
+  margin: 0 0 7px;
+  padding: 16px 46px 0;
+  color: #222;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.modal dialog.book-free-site-visit-dialog .lead-form-wrapper .lead-form {
+  max-width: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.modal dialog.book-free-site-visit-dialog .lead-form-wrapper .lead-form-fields {
+  box-sizing: border-box;
+  padding: 9px 45px 45px;
+  max-width: 100%;
+}
+
+@media (min-width: 320px) and (max-width: 991px) {
+  .modal dialog.book-free-site-visit-dialog .lead-form-wrapper .lead-form-fields {
+    grid-template-columns: repeat(2, 2fr);
+  }
+
+  .modal dialog.book-free-site-visit-dialog .lead-form-wrapper .lead-form-fields .field-mobile,
+  .modal dialog.book-free-site-visit-dialog .lead-form-wrapper .lead-form-fields .field-pincode {
+    grid-column: 1 / -1;
+  }
+
+  .modal dialog.book-free-site-visit-dialog .lead-form-wrapper .lead-form-fields .question-panel .question-field legend {
+    transform: translate(0px, 6px);
+  }
+
+  .modal dialog.book-free-site-visit-dialog .lead-form-wrapper .lead-form-fields .question-panel .question-field:first-child {
+    border-bottom: 1px solid #bedbff;
+  }
+}
+
+@media (width <=640px) {
+  .modal dialog.book-free-site-visit-dialog .default-content-wrapper h2 {
+    padding: 16px 20px 0;
+    font-size: 18px;
+  }
+
+  .modal dialog.book-free-site-visit-dialog .lead-form-wrapper .lead-form-fields {
+    padding: 9px 20px 20px;
+  }
+}
+
+/* Full-width styles when form success/error overlays are active */
+.modal dialog.book-free-site-visit-dialog.modal-success-active,
+.modal dialog.book-free-site-visit-dialog.modal-error-active {
+  overflow: hidden;
+  width: 100% !important;
+  max-width: 100%;
+  height: 100%;
+  padding: 30px !important;
+  min-height: 432px !important;
+  transform: translateX(-50%) scale(0.9);
+  max-height: 432px !important;
+
+  @media (min-width: 320px) and (max-width: 991px) {
+    height: auto;
+    padding: 12px !important;
+    min-height: auto !important;
+    transform: translate(-50%, -50%) scale(0.95);
+    max-height: calc(100dvh - 32px) !important;
+    overflow-y: auto;
+    border: none;
+    top: 50%;
+  }
+}
+
+.modal dialog.book-free-site-visit-dialog.modal-success-active .form-popup-overlay--success,
+.modal dialog.book-free-site-visit-dialog.modal-error-active .form-popup-overlay--success {
+  @media (min-width: 320px) and (max-width: 991px) {
+    position: relative;
+  }
+}
+
+.modal dialog.book-free-site-visit-dialog.modal-error-active {
+  padding: 0 !important;
+}
+
+.modal dialog.book-free-site-visit-dialog.modal-success-active .modal-content,
+.modal dialog.book-free-site-visit-dialog.modal-error-active .modal-content {
+  padding: 0;
+  margin-top: 0;
+  width: 100%;
+  height: 100%;
+  /* max-height: 100dvh; */
+  overflow: hidden;
+  border: none;
+}
+
+/* Hide close button and lead form container when modal is in active success/error state */
+.modal dialog.book-free-site-visit-dialog.modal-success-active .close-button,
+.modal dialog.book-free-site-visit-dialog.modal-error-active .close-button {
+  display: none !important;
+}
+
+.modal dialog.book-free-site-visit-dialog.modal-success-active .section.lead-form-container,
+.modal dialog.book-free-site-visit-dialog.modal-error-active .section.lead-form-container {
+  display: none !important;
+}
+
+.form.block.position-relative.overflow-hidden.w-100.thank-you-active.popup-active {
+  min-height: 432px;
+}
+
+/* ============================================
+   Variant: promo — Modal (promo)
+   ============================================ */
+
+body.modal-promo-open {
+  overflow: hidden;
+}
+
+.modal.promo dialog::backdrop {
+  background-color: rgb(19 19 19 / 75%);
+}
+
+.modal.promo dialog {
+  overscroll-behavior: none;
+  overflow-y: hidden;
+  position: relative;
+  width: calc(100vw - 48px);
+  max-width: 900px;
+  max-height: calc(100dvh - (2 * var(--header-height)));
+  padding: 0;
+  border: 1px solid var(--dark-color);
+}
+
+.modal.promo dialog .modal-content {
+  box-sizing: border-box;
+  overflow-y: auto;
+  overscroll-behavior: none;
+  width: 100%;
+  max-height: calc(100dvh - (2 * var(--header-height)) - 48px);
+  padding: 24px;
+  padding-top: 0;
+  margin-top: 44px;
+}
+
+@media (width >=900px) {
+  .modal.promo dialog {
+    width: calc(100vw - 64px);
+  }
+
+  .modal.promo dialog .modal-content {
+    max-height: calc(100dvh - (2 * var(--header-height)) - 64px);
+    padding: 32px;
+    padding-top: 0;
+  }
+}
+
+.modal.promo dialog .section {
+  padding: 0;
+}
+
+.modal.block dialog.book-free-site-visit-dialog {
+  overflow: hidden;
+}
+
+.modal.block dialog.book-free-site-visit-dialog .modal-content {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: calc(100dvh - 32px);
+  /* max-height: 100%; */
+  scrollbar-width: none;
+}
+
+
+/* new changes  */
+.modal.block {
+  overflow: auto;
+}
+
+body.appear.eds-modal-open {
+  overflow: hidden;
+}
+
+/* Default hidden wrapper */
+.modal.block {
+  display: none !important;
+}
+
+/* Outer modal wrapper should scroll */
+.modal.block.modal-open {
+  display: block !important;
+  position: fixed;
+  inset: 0;
+  z-index: 1055;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 24px 16px;
+  -webkit-overflow-scrolling: touch;
+
+  @media (min-width: 320px) and (max-width: 991px) {
+    padding-top: 0;
+    margin: 0px;
+  }
+
+  @media (min-width: 1400px) {
+    padding-top: 0;
+    margin: 0px;
+  }
+}
+
+/* Backdrop because show() will not create native backdrop */
+.modal.block.modal-open::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-color: rgb(0 0 0 / 50%);
+}
+
+/* Dialog should not scroll */
+.modal.block.modal-open dialog.book-free-site-visit-dialog {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: min(100%, 539px);
+  max-height: none;
+  overflow: visible;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* Content should also not scroll */
+.modal.block.modal-open dialog.book-free-site-visit-dialog .modal-content {
+  max-height: none;
+  overflow: visible;
+}

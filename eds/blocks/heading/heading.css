@@ -1,0 +1,33 @@
+.heading {
+    padding: 0 32px;
+
+    @media (max-width: 990px) {
+        padding: 0 16px;
+    }
+}
+
+.heading h1 {
+    font-size: 40px;
+    font-weight: 800;
+    color: #000;
+
+    @media (max-width: 990px) {
+        font-size: 20px;
+    }
+}
+
+.heading.center {
+    text-align: center;
+}
+/* heading font for inspiration */
+.heading.block #get-inspired{
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 42px;
+    color: #000;
+    @media (max-width: 990px) {
+        margin-bottom: 5px;
+        font-size: 32px;
+        line-height: 24px;
+    }
+}

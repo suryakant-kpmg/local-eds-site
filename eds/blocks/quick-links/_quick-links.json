@@ -1,0 +1,41 @@
+{
+  "block": "quick-links",
+  "version": 1,
+  "mobileOrder": [
+    "whatsapp",
+    "call",
+    "estimate"
+  ],
+  "items": [
+    {
+      "type": "call",
+      "icon": "https://static.asianpaints.com/content/dam/apcolourcatalogue/asset/ap-revamp/waterproofing/landing-page/quick-links/call-icon.webp",
+      "headingHtml": "Call our expert<br>for waterproofing queries",
+      "primaryText": "1800-209-5678",
+      "primaryLink": "tel:18002095678",
+      "secondaryHtml": ""
+    },
+    {
+      "type": "whatsapp",
+      "icon": "https://static.asianpaints.com/content/dam/apcolourcatalogue/asset/ap-revamp/waterproofing/landing-page/quick-links/media-social-icon.webp",
+      "headingHtml": "WhatsApp our smartcare<br>expert for waterproofing help",
+      "primaryText": "Click Here",
+      "primaryLink": "https://wa.me/8886659255?text=Hi",
+      "secondaryHtml": "Alternately,<br>Say \"Hi\" to 8886659255",
+      "hover": {
+        "ctaFill": true
+      }
+    },
+    {
+      "type": "estimate",
+      "icon": "https://static.asianpaints.com/content/dam/apcolourcatalogue/asset/ap-revamp/waterproofing/landing-page/quick-links/estimate-icon.webp",
+      "headingHtml": "Estimate your home<br>waterproofing expenses<br>with us",
+      "primaryText": "Calculate now",
+      "primaryLink": "/tools/waterproofing-calculator",
+      "secondaryHtml": "",
+      "hover": {
+        "cardLift": true
+      }
+    }
+  ]
+}

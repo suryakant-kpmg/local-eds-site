@@ -1,0 +1,962 @@
+.city-carousel .carousel-slides-container {
+    position: relative;
+}
+
+.city-carousel .carousel-slides,
+.city-carousel .carousel-slide-indicators {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.city-carousel .carousel-slides {
+    display: flex;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    overflow: scroll clip;
+}
+
+.city-carousel .carousel-slides::-webkit-scrollbar {
+    display: none;
+}
+
+.city-carousel .carousel-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    min-height: min(50vw, calc(100dvh - var(--header-height)));
+}
+
+.city-carousel .carousel-slide:has(.carousel-slide-content[data-align='center']) {
+    align-items: center;
+}
+
+.city-carousel .carousel-slide:has(.carousel-slide-content[data-align='right']) {
+    align-items: flex-end;
+}
+
+.city-carousel .carousel-slide .carousel-slide-image picture {
+    position: absolute;
+    inset: 0;
+}
+
+.city-carousel .carousel-slide .carousel-slide-image picture > img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.city-carousel .carousel-slide .carousel-slide-content {
+    z-index: 1;
+    margin: 68px;
+    padding: 16px;
+    color: white;
+    background-color: rgba(19 19 19 / 75%);
+    position: relative;
+    width: var(--slide-content-width, auto);
+}
+
+.city-carousel .carousel-slide-indicators {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 12px;
+    padding: 12px;
+    background-color: var(--light-color);
+    line-height: 0;
+}
+
+.city-carousel .carousel-slide-indicator button {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+    border-radius: 50%;
+    background-color: #dadada;
+    transition: background-color 0.2s;
+}
+
+.city-carousel .carousel-slide-indicator button:disabled,
+.city-carousel .carousel-slide-indicator button:hover,
+.city-carousel .carousel-slide-indicator button:focus-visible {
+    background-color: var(--text-color);
+}
+
+.city-carousel .carousel-navigation-buttons {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 12px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.city-carousel .carousel-navigation-buttons button {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    border-radius: 50%;
+    padding: 0;
+    background-color: rgba(19 19 19 / 25%);
+    transition: background-color 0.2s;
+}
+
+.city-carousel .carousel-navigation-buttons button:hover,
+.city-carousel .carousel-navigation-buttons button:focus-visible {
+    background-color: rgba(19 19 19 / 75%);
+}
+
+.city-carousel .carousel-navigation-buttons button::after {
+    display: block;
+    content: '';
+    border: 2px solid;
+    border-bottom: 0;
+    border-left: 0;
+    height: 12px;
+    width: 12px;
+    position: absolute;
+    top: 50%;
+    left: calc(50% + 2px);
+    transform: translate(-50%, -50%) rotate(-135deg);
+}
+
+.city-carousel .carousel-navigation-buttons button.slide-next::after {
+    transform: translate(-50%, -50%) rotate(45deg);
+    left: calc(50% - 2px);
+}
+
+@media (width >= 600px) {
+    .city-carousel .carousel-navigation-buttons {
+        left: 24px;
+        right: 24px;
+    }
+
+    .city-carousel .carousel-slide .carousel-slide-content {
+        --slide-content-width: calc((100% - 184px) / 2);
+
+        margin: 92px;
+    }
+
+    .city-carousel .carousel-slide .carousel-slide-content[data-align='justify'] {
+        --slide-content-width: auto;
+    }
+}
+
+/* ============================================
+   Variant: hero — Carousel (hero)
+   ============================================ */
+
+/* 
+.city-carousel.hero {
+    margin: 0;
+    display: block;
+    width: 100%;
+    min-height: 400px;
+    background-color: #1a1a1a;
+    overflow: hidden;
+    position: relative;
+}
+
+@media (width >= 768px) {
+    .city-carousel.hero {
+        min-height: 500px;
+    }
+}
+
+@media (width >= 992px) {
+    .city-carousel.hero {
+        min-height: 600px;
+    }
+}
+
+.city-carousel.hero .carousel-slides-container {
+    position: relative;
+    width: 100%;
+    min-height: 400px;
+}
+
+@media (width >= 768px) {
+    .city-carousel.hero .carousel-slides-container {
+        min-height: 500px;
+    }
+}
+
+@media (width >= 992px) {
+    .city-carousel.hero .carousel-slides-container {
+        min-height: 600px;
+    }
+}
+
+.city-carousel.hero .carousel-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    min-height: 400px;
+    box-sizing: border-box;
+}
+
+@media (width >= 768px) {
+    .city-carousel.hero .carousel-slide {
+        min-height: 500px;
+    }
+}
+
+@media (width >= 992px) {
+    .city-carousel.hero .carousel-slide {
+        min-height: 600px;
+    }
+}
+
+.city-carousel.hero .carousel-slide .carousel-slide-image {
+    position: absolute;
+    inset: 0;
+}
+
+.city-carousel.hero .carousel-slide .carousel-slide-image picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.city-carousel.hero .carousel-slide .carousel-slide-image picture > img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.city-carousel.hero .carousel-slide .carousel-slide-content {
+    z-index: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    max-width: 600px;
+    margin: 0;
+    background-color: transparent;
+    color: white;
+    width: auto;
+}
+
+.city-carousel.hero .carousel-slide .carousel-slide-content p {
+    margin: 0 0 15px;
+}
+
+.city-carousel.hero .carousel-slide .carousel-slide-content p picture {
+    display: block;
+}
+
+.city-carousel.hero .carousel-slide .carousel-slide-content p img {
+    max-width: 180px;
+    height: auto;
+    object-fit: contain;
+}
+
+@media (width >= 768px) {
+    .city-carousel.hero .carousel-slide .carousel-slide-content p img {
+        max-width: 240px;
+    }
+}
+
+@media (width >= 992px) {
+    .city-carousel.hero .carousel-slide .carousel-slide-content p img {
+        max-width: 300px;
+    }
+}
+
+.city-carousel.hero .carousel-slide .carousel-slide-content p:first-child img {
+    max-width: 120px;
+}
+
+@media (width >= 768px) {
+    .city-carousel.hero .carousel-slide .carousel-slide-content p:first-child img {
+        max-width: 150px;
+    }
+}
+
+@media (width >= 992px) {
+    .city-carousel.hero .carousel-slide .carousel-slide-content p:first-child img {
+        max-width: 180px;
+    }
+}
+
+.city-carousel.hero .carousel-slide .carousel-slide-content p:last-child {
+    margin-top: 20px;
+}
+
+.city-carousel.hero .carousel-slide .carousel-slide-content p a,
+.city-carousel.hero .carousel-slide .carousel-slide-content p strong a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background-color: rgb(255 255 255 / 95%);
+    border: none;
+    border-radius: 30px;
+    color: #333;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+}
+
+.city-carousel.hero .carousel-slide .carousel-slide-content p a:hover,
+.city-carousel.hero .carousel-slide .carousel-slide-content p strong a:hover {
+    background-color: #fff;
+    color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 20%);
+}
+
+@media (width >= 768px) {
+    .city-carousel.hero .carousel-slide .carousel-slide-content p a,
+    .city-carousel.hero .carousel-slide .carousel-slide-content p strong a {
+        padding: 16px 36px;
+        font-size: 14px;
+    }
+}
+
+.city-carousel.hero .carousel-slide-indicators {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    padding: 3px 5px 5px;
+    line-height: 0;
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    background: #fff;
+    border-radius: 40px;
+    height: 16px;
+}
+
+.city-carousel.hero .carousel-slide-indicator button {
+    width: 6px;
+    height: 6px;
+    margin: 0 5px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: #8c8e90;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.city-carousel.hero .carousel-slide-indicator button:disabled {
+    background-color: #4c4e52;
+    width: 24px;
+    border-radius: 30px;
+}
+
+.city-carousel.hero .carousel-slide-indicator button:hover:not(:disabled),
+.city-carousel.hero .carousel-slide-indicator button:focus-visible:not(:disabled) {
+    background-color: #6c6e70;
+}
+
+.city-carousel.hero .carousel-navigation-buttons {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 16px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+
+/* .city-carousel.hero .carousel-navigation-buttons button {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    border-radius: 50%;
+    padding: 0;
+    background-color: rgb(255 255 255 / 90%);
+    border: none;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 12%);
+    transition: all 0.3s ease;
+    pointer-events: auto;
+}
+
+.city-carousel.hero .carousel-navigation-buttons button:hover,
+.city-carousel.hero .carousel-navigation-buttons button:focus-visible {
+    background-color: white;
+    box-shadow: 0 4px 16px rgb(0 0 0 / 18%);
+    transform: scale(1.05);
+}
+
+.city-carousel.hero .carousel-navigation-buttons button::after {
+    display: block;
+    content: '';
+    border: 2px solid #333;
+    border-bottom: 0;
+    border-left: 0;
+    height: 8px;
+    width: 8px;
+    position: absolute;
+    top: 50%;
+    left: calc(50% + 2px);
+    transform: translate(-50%, -50%) rotate(-135deg);
+}
+
+.city-carousel.hero .carousel-navigation-buttons button.slide-next::after {
+    transform: translate(-50%, -50%) rotate(45deg);
+    left: calc(50% - 2px);
+}
+
+@media (width >= 992px) {
+    .city-carousel.hero .carousel-slide-indicators {
+        bottom: 30px;
+        padding: 8px 12px;
+        height: auto;
+    }
+
+    .city-carousel.hero .carousel-navigation-buttons {
+        left: 40px;
+        right: 40px;
+    }
+
+    .city-carousel.hero .carousel-navigation-buttons button {
+        width: 48px;
+        height: 48px;
+    }
+
+    .city-carousel.hero .carousel-navigation-buttons button::after {
+        height: 10px;
+        width: 10px;
+    }
+}
+
+@media (width >= 1200px) {
+    .city-carousel.hero .carousel-navigation-buttons {
+        left: 60px;
+        right: 60px;
+    }
+} */
+
+/* ============================================
+   Hero section: "Transform your space" overlay
+   Styles the default-content-wrapper that sits
+   alongside the carousel.hero in the same section.
+   ============================================ */
+
+.section.city-carousel-container:has(.city-carousel.hero) {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+}
+
+.section.city-carousel-container:has(.city-carousel.hero) > .default-content-wrapper {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    background: rgba(255 255 255 / 95%);
+    border-radius: 16px;
+    padding: 32px 28px;
+    width: 340px;
+    box-shadow: 0 8px 32px rgba(0 0 0 / 12%);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px 16px;
+    max-width: none;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.section.city-carousel-container:has(.city-carousel.hero) > .default-content-wrapper h2 {
+    grid-column: 1 / -1;
+    font-family: "Times New Roman", Times, serif;
+    font-style: normal;
+    font-size: 42px;
+    font-weight: 400;
+    color: #cc2229;
+    line-height: 1.15;
+    margin: 0 0 8px;
+    text-align: center;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.section.city-carousel-container:has(.city-carousel.hero) > .default-content-wrapper p {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+    line-height: 1.3;
+    cursor: pointer;
+}
+
+.section.city-carousel-container:has(.city-carousel.hero) > .default-content-wrapper p:hover {
+    color: #000;
+}
+
+.section.city-carousel-container:has(.city-carousel.hero) > .default-content-wrapper p picture {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.section.city-carousel-container:has(.city-carousel.hero) > .default-content-wrapper p img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+/* Tablet: slightly smaller overlay */
+@media (width <= 1200px) {
+    .section.city-carousel-container:has(.city-carousel.hero) > .default-content-wrapper {
+        width: 300px;
+        right: 24px;
+        padding: 24px 20px;
+        gap: 20px 12px;
+    }
+
+    .section.city-carousel-container:has(.city-carousel.hero) > .default-content-wrapper h2 {
+        font-size: 34px;
+    }
+}
+
+/* Mobile: stack below carousel instead of overlay */
+@media (width <= 900px) {
+    .section.city-carousel-container:has(.city-carousel.hero) > .default-content-wrapper {
+        position: static;
+        transform: none;
+        width: auto;
+        max-width: 100%;
+        border-radius: 0;
+        box-shadow: none;
+        background: #fff;
+        padding: 24px 16px;
+        gap: 20px 8px;
+        margin: 0;
+    }
+
+    .section.city-carousel-container:has(.city-carousel.hero) > .default-content-wrapper h2 {
+        font-size: 24px;
+    }
+
+    .section.city-carousel-container:has(.city-carousel.hero) > .default-content-wrapper p {
+        font-size: 11px;
+    }
+
+    .section.city-carousel-container:has(.city-carousel.hero) > .default-content-wrapper p picture {
+        width: 36px;
+        height: 36px;
+    }
+
+    .section.city-carousel-container:has(.city-carousel.hero) > .default-content-wrapper p img {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+
+/* ============================================
+   Variant: cities — Carousel (cities)
+   ============================================ */
+
+.city-carousel {
+    overflow: clip visible;
+}
+
+.city-carousel .contractors-in-your-city {
+    margin-left: 40px;
+    position: relative;
+    overflow: visible;
+}
+
+@media (width >= 320px) and (width <= 991px) {
+    .city-carousel .contractors-in-your-city {
+        margin-left: 16px;
+        margin-bottom: 20px;
+    }
+}
+
+.city-carousel .contractors-in-your-city .contractors-in-your-city-title {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 41.6px;
+    color: #000;
+    margin-bottom: 30px;
+}
+
+@media (width >= 320px) and (width <= 991px) {
+    .city-carousel .contractors-in-your-city .contractors-in-your-city-title {
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 28px;
+        color: #2f2f2f;
+        margin-bottom: 20px;
+        max-width: 233px;
+    }
+}
+
+/* Subtitle (optional) - title sits closer to it when both are present */
+.city-carousel .contractors-in-your-city .contractors-in-your-city-title:has(+ .contractors-in-your-city-subtitle) {
+    margin-bottom: 8px;
+}
+
+.city-carousel .contractors-in-your-city .contractors-in-your-city-subtitle {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #8c8e90;
+    margin: 0 0 30px;
+}
+
+@media (width >= 320px) and (width <= 991px) {
+    .city-carousel .contractors-in-your-city .contractors-in-your-city-title:has(+ .contractors-in-your-city-subtitle) {
+        margin-bottom: 4px;
+        font-size: 24px;
+        font-weight: 800;
+    }
+
+    .city-carousel .contractors-in-your-city .contractors-in-your-city-subtitle {
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 20px;
+        margin-bottom: 20px;
+        padding-right: 16px;
+    }
+}
+
+.city-carousel .contractors-in-your-city .contractors-in-your-city-cards {
+    overflow: hidden;
+}
+
+.city-carousel .contractors-in-your-city .contractors-in-your-city-cards .contractors-in-your-city-card {
+    width: 229px;
+}
+
+.city-carousel .contractors-citycard-link,
+.city-carousel .contractors-citycard-link:hover,
+.city-carousel .contractors-citycard-link:focus,
+.city-carousel .contractors-citycard-link:active {
+    text-decoration: none;
+    color: inherit;
+}
+
+.city-carousel .contractors-in-your-city-card-title {
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 33.6px;
+    color: #1d1d1f;
+    margin-top: 12px;
+}
+
+@media (width >= 320px) and (width <= 991px) {
+    .city-carousel .contractors-in-your-city-card-title {
+        font-size: 20px;
+        line-height: 28px;
+        font-weight: 600;
+    }
+}
+
+.city-carousel .contractors-in-your-city-card-img {
+    overflow: hidden;
+    display: block;
+    width: 229px;
+    height: 210px;
+    border-radius: 8px;
+}
+
+.city-carousel .contractors-in-your-city-card-img .blur-image {
+    filter: grayscale(100%);
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.city-carousel .contractors-citycard-link:hover .blur-image,
+.city-carousel .contractors-in-your-city-card:focus-visible .blur-image {
+    filter: none;
+    transform: scale(1.1);
+}
+
+/* Prev / next arrows - top right, level with the title */
+.city-carousel .contractors-in-your-city .contractors-in-your-city-nav {
+    position: absolute;
+    top: 0;
+    right: 55px;
+    display: flex;
+    gap: 21px;
+    z-index: 2;
+}
+
+/* No title / subtitle - arrows get their own row above the cards */
+.city-carousel .contractors-in-your-city .contractors-in-your-city-nav:first-child {
+    position: static;
+    justify-content: flex-end;
+    margin: 0 55px 20px 0;
+}
+
+.city-carousel .contractors-in-your-city .contractors-in-your-city-prev,
+.city-carousel .contractors-in-your-city .contractors-in-your-city-next {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 44px 44px;
+    cursor: pointer;
+}
+
+.city-carousel .contractors-in-your-city .contractors-in-your-city-prev {
+    background-image: url('./resources/images/prev-icon_v2.svg');
+}
+
+.city-carousel .contractors-in-your-city .contractors-in-your-city-next {
+    background-image: url('./resources/images/next-icon_v2.svg');
+}
+
+.city-carousel .contractors-in-your-city .contractors-in-your-city-prev.is-disabled,
+.city-carousel .contractors-in-your-city .contractors-in-your-city-next.is-disabled {
+    opacity: 0.25;
+    cursor: default;
+}
+
+/* Pagination dots - mobile only */
+.city-carousel .contractors-in-your-city .contractors-in-your-city-pagination {
+    display: none;
+}
+
+@media (width <= 991px) {
+    .city-carousel .contractors-in-your-city .contractors-in-your-city-nav {
+        display: none;
+    }
+
+    .city-carousel .contractors-in-your-city .contractors-in-your-city-pagination {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 18px;
+    }
+
+    .city-carousel .contractors-in-your-city .contractors-in-your-city-pagination .swiper-pagination-bullet {
+        width: 8px;
+        height: 8px;
+        margin: 0;
+        border-radius: 50%;
+        background: #d8d8d8;
+        opacity: 1;
+    }
+
+    .city-carousel .contractors-in-your-city .contractors-in-your-city-pagination .swiper-pagination-bullet-active {
+        width: 19px;
+        border-radius: 10px;
+        background: #4d4d4d;
+    }
+}
+
+#find-trusted-contractors-in-your-city {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 41.6px;
+    color: #000;
+    margin-bottom: 30px;
+}
+
+@media (width <=991px) {
+    #find-trusted-contractors-in-your-city {
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 28px;
+        color: #2f2f2f;
+        margin-bottom: 20px;
+        max-width: 233px;
+        text-align: start;
+    }
+
+    .section.city-carousel-container:has(.city-carousel.cities) {
+        margin-bottom: 20px;
+    }
+}
+
+/* ==================== grid-variant : start ==================== */
+.city-carousel.grid-variant .contractors-in-your-city {
+    margin-right: 40px;
+}
+
+.city-carousel.grid-variant .contractors-in-your-city .contractors-in-your-city-cards {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 32px 30px;
+    overflow: visible;
+}
+
+.city-carousel.grid-variant .contractors-in-your-city .contractors-in-your-city-cards .contractors-in-your-city-card {
+    width: auto;
+}
+
+/* Whole card (image + title) is the link */
+.city-carousel.grid-variant .contractors-citycard-link {
+    display: block;
+    cursor: pointer;
+}
+
+.city-carousel.grid-variant .contractors-in-your-city-card-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 229 / 210;
+}
+
+/* Full colour images; slight zoom when the image or title is hovered */
+.city-carousel.grid-variant .contractors-in-your-city-card-img .blur-image {
+    filter: none;
+    transition: transform 0.3s ease-in-out;
+}
+
+.city-carousel.grid-variant .contractors-citycard-link:hover .blur-image,
+.city-carousel.grid-variant .contractors-citycard-link:focus-visible .blur-image {
+    transform: scale(1.05);
+}
+
+.city-carousel.grid-variant .contractors-in-your-city-card-title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 28px;
+    margin: 12px 0 0;
+}
+
+@media (width <= 991px) {
+    .city-carousel.grid-variant .contractors-in-your-city {
+        margin-right: 16px;
+    }
+
+    .city-carousel.grid-variant .contractors-in-your-city .contractors-in-your-city-title {
+        max-width: none;
+    }
+
+    .city-carousel.grid-variant .contractors-in-your-city .contractors-in-your-city-cards {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px 16px;
+    }
+
+    .city-carousel.grid-variant .contractors-in-your-city-card-title {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 22px;
+        text-align: center;
+        margin-top: 8px;
+    }
+}
+
+@media (width <= 599px) {
+    .city-carousel.grid-variant .contractors-in-your-city .contractors-in-your-city-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* ==================== grid-variant : end ==================== */
+
+/* ==================== before-after-variant : start ==================== */
+.city-carousel.before-after-variant .contractors-in-your-city .contractors-in-your-city-title,
+.city-carousel.before-after-variant .contractors-in-your-city .contractors-in-your-city-title:has(+ .contractors-in-your-city-subtitle) {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 42px;
+    color: #000;
+    letter-spacing: -0.02em;
+    margin-bottom: 0;
+}
+
+.city-carousel.before-after-variant .contractors-in-your-city .contractors-in-your-city-subtitle {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 22px;
+    color: #75787b;
+    transform: translate(0, 8px);
+    margin-bottom: 40px;
+}
+
+.city-carousel.before-after-variant .contractors-in-your-city .contractors-in-your-city-nav {
+    top: 40px;
+    right: 32px;
+}
+
+/* 3.2 cards visible: 3 full cards + 3 x 20px gaps + a 0.2 peek of the 4th */
+.city-carousel.before-after-variant .contractors-in-your-city .contractors-in-your-city-cards .contractors-in-your-city-card {
+    width: calc((100% - 60px) / 3.2);
+}
+
+.city-carousel.before-after-variant .contractors-in-your-city-card-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 562 / 566;
+}
+
+.city-carousel.before-after-variant .before-after-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@media (width <= 991px) {
+    .city-carousel.before-after-variant .contractors-in-your-city .contractors-in-your-city-title,
+    .city-carousel.before-after-variant .contractors-in-your-city .contractors-in-your-city-title:has(+ .contractors-in-your-city-subtitle) {
+        font-size: 24px;
+        line-height: 33.6px;
+        letter-spacing: 0;
+        max-width: none;
+    }
+
+    .city-carousel.before-after-variant .contractors-in-your-city .contractors-in-your-city-subtitle {
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 13px;
+        transform: none;
+        margin-bottom: 16px;
+    }
+
+    .city-carousel.before-after-variant .contractors-in-your-city .contractors-in-your-city-cards .contractors-in-your-city-card {
+        width: 282px;
+    }
+
+    .city-carousel.before-after-variant .contractors-in-your-city-card-img {
+        aspect-ratio: 282 / 290;
+    }
+}
+
+/* ==================== before-after-variant : end ==================== */

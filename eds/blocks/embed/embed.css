@@ -1,0 +1,378 @@
+.embed:not(.media) {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 0 156px;
+}
+
+@media (width <=1200px) {
+  .embed:not(.media) {
+    padding: 40px;
+  }
+}
+
+@media (width <=767px) {
+  .embed:not(.media) {
+    padding: 20px 20px 0;
+  }
+}
+
+.embed:not(.media)>div {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Video placeholder container */
+.embed:not(.media) .embed-placeholder {
+  width: 100%;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000;
+  padding-top: 48%;
+  /* Aspect ratio ~2.1:1 matching live site desktop */
+}
+
+@media (width <=991px) {
+  .embed:not(.media) .embed-placeholder {
+    padding-top: 82%;
+    border-radius: 0;
+  }
+}
+
+.embed:not(.media) .embed-placeholder>* {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  inset: 0;
+}
+
+.embed:not(.media) .embed-placeholder picture {
+  height: 100%;
+  width: 100%;
+}
+
+.embed:not(.media) .embed-placeholder-desktop {
+  display: flex;
+}
+
+.embed:not(.media) .embed-placeholder-mobile {
+  display: none;
+}
+
+@media (width <=991px) {
+  .embed:not(.media) .embed-placeholder-desktop {
+    display: none;
+  }
+
+  .embed:not(.media) .embed-placeholder-mobile {
+    display: flex;
+  }
+}
+
+.embed:not(.media) .embed-placeholder picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Asian Paints style play button */
+.embed:not(.media) .embed-placeholder-play {
+  z-index: 2;
+}
+
+.embed:not(.media) .embed-placeholder-play button {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 77px;
+  height: 54px;
+  background: url('https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/youtube-play-icon-desk.svg') no-repeat;
+  background-size: contain;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.embed:not(.media) .embed-placeholder-play button:hover {
+  transform: scale(1.1);
+}
+
+@media (width <=991px) {
+  .embed:not(.media) .embed-placeholder-play button {
+    width: 48px;
+    height: 39px;
+    background-image: url('https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/youtube-play-icon-mob.svg');
+  }
+}
+
+/* YouTube iframe container */
+.embed:not(.media).embed-youtube,
+.embed:not(.media).embed-is-loaded {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.embed:not(.media).embed-youtube>div,
+.embed:not(.media).embed-is-loaded>div {
+  width: 100%;
+  padding-bottom: 48%;
+  /* Maintain aspect ratio after load */
+  height: 0;
+  position: relative;
+}
+
+@media (width <=991px) {
+
+  .embed:not(.media).embed-youtube>div,
+  .embed:not(.media).embed-is-loaded>div {
+    padding-bottom: 82%;
+  }
+}
+
+.embed:not(.media).embed-youtube iframe,
+.embed:not(.media).embed-is-loaded iframe,
+.embed:not(.media).embed-is-loaded .embed-media-video-wrapper,
+.embed:not(.media).embed-is-loaded video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.embed:not(.media).embed-is-loaded .embed-media-video-wrapper video {
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+@media (width <=991px) {
+  .embed:not(.media).embed-is-loaded .embed-media-video-wrapper video {
+    border-radius: 0;
+  }
+}
+
+/* ============================================
+   Variant: media — Embed (media)
+   ============================================ */
+
+.embed.media {
+  width: 100%;
+  text-align: center;
+  max-width: 100%;
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+
+.embed.media .embed-media-image-only {
+  width: 100%;
+  line-height: 0;
+}
+
+.embed.media .embed-media-video-wrapper {
+  width: 100%;
+  min-width: 0;
+  line-height: 0;
+}
+
+.embed.media .embed-media-video-wrapper video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.embed.media .embed-media-image-only picture {
+  display: block;
+  width: 100%;
+}
+
+.embed.media .embed-media-image-only picture img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+@media (width >=768px) {
+  .embed.media.embed-media-banner {
+    margin: 40px 0;
+  }
+
+  .embed.media .embed-media-image-only picture img {
+    border-radius: 16px;
+  }
+}
+
+/* ============================================
+   Section Metadata Class: video-title-section
+   ============================================ */
+
+.section.video-title-section {
+  text-align: center;
+}
+
+.section.video-title-section p,
+.section.video-title-section h1,
+.section.video-title-section h2,
+.section.video-title-section h3 {
+  font-family: var(--heading-font-family);
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* Desktop Styles */
+@media (width >=992px) {
+
+  .section.video-title-section p,
+  .section.video-title-section h1,
+  .section.video-title-section h2,
+  .section.video-title-section h3 {
+    font-size: 32px;
+    line-height: 35.2px;
+  }
+}
+
+/* Laptop/Tablet Styles */
+@media (width <=1200px) and (width >=992px) {
+  .section.video-title-section {
+    padding: 40px;
+  }
+}
+
+/* Mobile Styles */
+@media (width <=991px) {
+  .section.video-title-section {
+    padding: 15px 20px 10px;
+  }
+
+  .section.video-title-section h1,
+  .section.video-title-section h2,
+  .section.video-title-section h3 {
+    font-size: 24px;
+    line-height: 28px;
+    font-weight: 800;
+  }
+
+  .section.video-title-section .embed:not(.media) {
+    padding: 0;
+  }
+
+  .section.video-title-section p {
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 500;
+    letter-spacing: .5px;
+  }
+
+  .section.video-title-section .default-content-wrapper>p:not(.button-container):first-of-type {
+    text-align: left !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    line-height: 19.12px !important;
+    padding-right: 16px !important;
+    color: #4c4e52 !important;
+  }
+
+  .section.video-title-section .default-content-wrapper>p:not(.button-container):nth-of-type(2) {
+    font-size: 14px !important;
+    letter-spacing: .5px;
+    text-align: left !important;
+    font-weight: 500;
+  }
+}
+
+.section.video-title-section .default-content-wrapper>p:not(.button-container):first-of-type {
+  font-family: Manrope, sans-serif;
+  letter-spacing: 0;
+  text-align: center;
+  margin-bottom: 0;
+  padding-bottom: 10px;
+  font-size: 16px;
+  line-height: 21.86px;
+  color: #4c4e52 !important;
+  font-weight: 500 !important;
+}
+
+/* Start spacing where text block begins on live */
+.section.video-title-section .default-content-wrapper>p:not(.button-container):first-of-type {
+  margin-top: 15px;
+}
+
+/* Second paragraph ("To find out more...") should use different styling */
+.section.video-title-section .default-content-wrapper>p:not(.button-container):nth-of-type(2) {
+  color: #4c4e52;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: .5px;
+  text-align: center;
+  margin-bottom: 0;
+  padding-bottom: 10px;
+}
+
+.section.video-title-section .default-content-wrapper>p:not(.button-container):nth-of-type(2) a {
+  color: #00e !important;
+  text-decoration: underline !important;
+}
+
+@media (width >=1200px) {
+  main>.section.video-title-section:has(.embed-wrapper)>.default-content-wrapper {
+    width: 970px;
+    max-width: 970px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section.video-title-section .default-content-wrapper>p:not(.button-container):first-of-type,
+  .section.video-title-section .default-content-wrapper>p:not(.button-container):nth-of-type(2) {
+    width: 940px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* ============================================
+   Variant: royale play
+   ============================================ */
+
+.section.embed-container:has(.embed.media.royale-play) {
+  margin: 0;
+  padding: 3rem 0 0;
+  background-color: rgb(236, 229, 215);
+}
+
+.embed.media.royale-play.block {
+  overflow: hidden;
+  display: flex;
+  max-width: 70%;
+  margin: 0 auto;
+  border-radius: 8px;
+}
+
+@media screen and (max-width: 992px) {
+  .section.embed-container:has(.embed.media.royale-play) {
+    padding-top: 1.5rem;
+  }
+
+  .embed.media.royale-play.block {
+    overflow: unset;
+    max-width: 100%;
+    border-radius: 0px;
+    padding-bottom: 30px;
+  }
+
+  .embed.media.royale-play.block .embed-media-video-wrapper video {
+    border-radius: 0;
+  }
+}

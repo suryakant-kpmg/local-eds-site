@@ -1,0 +1,155 @@
+.contact-complaint-bot {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  box-sizing: border-box;
+  background: #f5f5f5;
+
+  /* Internal breathing room for the coloured panel (not outer page spacing,
+     which the section handles). */
+  padding: 32px 24px;
+  color: #222;
+}
+
+.contact-complaint-bot .contact-complaint-bot-panel h3 {
+  margin: 0 0 18px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 22px;
+  color: #222;
+}
+
+.contact-complaint-bot .contact-complaint-bot-panel p {
+  margin: 0 0 16px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0.5px;
+  color: #333;
+}
+
+.contact-complaint-bot .contact-complaint-bot-panel b {
+  font-weight: 700;
+}
+
+/* Complaint panel CTA button */
+.contact-complaint-bot .contact-complaint-bot-cta {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 8px 0 16px;
+  padding: 16px 20px;
+  background: #431a80;
+  border: 1px solid #431a80;
+  border-radius: 2px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.86px;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.contact-complaint-bot .contact-complaint-bot-cta:hover {
+  background: #37105c;
+  border-color: #37105c;
+  color: #fff;
+}
+
+/* Paints panel email link */
+.contact-complaint-bot .contact-complaint-bot-email {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 22px;
+  text-decoration: none;
+  color: #222;
+}
+
+.contact-complaint-bot .contact-complaint-bot-email b {
+  font-weight: 700;
+}
+
+.contact-complaint-bot .contact-complaint-bot-email:hover b {
+  color: #4a1a7a;
+}
+
+/* OR divider — horizontal on mobile */
+.contact-complaint-bot .contact-complaint-bot-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+}
+
+.contact-complaint-bot .contact-complaint-bot-divider::before,
+.contact-complaint-bot .contact-complaint-bot-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #ccc;
+}
+
+/* Desktop: two panels side-by-side, short vertical divider */
+@media (width >= 900px) {
+  .contact-complaint-bot {
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+    margin: 0 4%;
+    width: auto;
+    padding: 52px 40px;
+    background-color: #f8f8f8;
+  }
+
+  .contact-complaint-bot .contact-complaint-bot-panel {
+    flex: 0 1 auto;
+  }
+
+  .contact-complaint-bot .contact-complaint-bot-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 48px;
+    margin-bottom: 32px;
+  }
+
+  .contact-complaint-bot .contact-complaint-bot-row p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .contact-complaint-bot .contact-complaint-bot-cta {
+    display: inline-block;
+    width: auto;
+    min-width: 200px;
+    margin: 0;
+  }
+
+  .contact-complaint-bot .contact-complaint-bot-divider {
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-self: center;
+    gap: 12px;
+    color: #333;
+  }
+
+  .contact-complaint-bot .contact-complaint-bot-divider::before,
+  .contact-complaint-bot .contact-complaint-bot-divider::after {
+    flex: 0 0 50px;
+    width: 1px;
+    height: 50px;
+  }
+}
+@media (min-width: 320px) and (max-width: 991px) {
+  .contact-complaint-bot{
+    padding-right: 4%;
+    padding-left: 4%;
+  }
+}

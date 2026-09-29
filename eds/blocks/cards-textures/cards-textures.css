@@ -1,0 +1,540 @@
+/* Cards Textures Block - Hover Reveal Design */
+.cards-textures {
+  display: flex;
+  gap: 0;
+  width: 100%;
+  max-width: 1320px;
+  margin: 40px auto 60px;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.cards-textures-card {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 520px;
+  overflow: hidden;
+  transition: flex 0.4s ease;
+}
+
+/* Background image */
+.cards-textures-card .card-background {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.cards-textures-card .card-background picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cards-textures-card .card-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+/* Gradient overlay */
+.cards-textures-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+
+  z-index: 2;
+  pointer-events: none;
+}
+@media (min-width:992px) {
+  .cards-textures-card::before {
+      background: linear-gradient(to top, rgb(0 0 0 / 70%) 0%, rgb(0 0 0 / 20%) 40%, transparent 70%);
+  }
+
+}
+
+/* Card name - always visible at bottom */
+.cards-textures-card .card-name {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  right: 24px;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+  z-index: 3;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover content overlay */
+.cards-textures-card .card-hover-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 32px 24px;
+  /* background: rgb(0 0 0 / 75%); */
+  opacity: 0;
+  z-index: 4;
+  transition: opacity 0.3s ease;
+}
+
+/* Paint bucket/packshot image */
+.cards-textures-card .card-bucket {
+  width: 100px;
+  height: 120px;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.cards-textures-card .card-bucket picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cards-textures-card .card-bucket img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Hover title */
+.cards-textures-card .card-hover-title {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+/* Description */
+.cards-textures-card .card-description {
+  color: rgb(255 255 255 / 85%);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+/* View Details button */
+.cards-textures-card .card-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: transparent;
+  border: 1px solid #fff;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.cards-textures-card .card-button:hover {
+  background: #fff7e8;
+  color: #1a1a1a;
+}
+
+.cards-textures-card .card-button .arrow {
+  transition: transform 0.3s ease;
+  display: flex;
+}
+
+.cards-textures-card .card-button .arrow::after {
+    content: "";
+    background: url('../../icons/arrow-icon-new.svg') no-repeat;
+    width: 17px;
+    height: 17px;
+    
+    display: inline-flex;
+}
+.cards-textures-card .card-button:hover .arrow::after {
+  filter: invert(1);
+}
+
+.cards-textures-card .card-button:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* Hover state */
+.cards-textures-card:hover {
+  flex: 1.8;
+}
+
+.cards-textures-card:hover .card-background img {
+  transform: scale(1.05);
+}
+
+.cards-textures-card:hover .card-name {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.cards-textures-card:hover .card-hover-content {
+  opacity: 1;
+}
+
+/* Desktop styles */
+@media (min-width: 1025px) {
+  .cards-textures-card .card-description {
+    min-width: calc((100vw / 7) * 1.3);
+  }
+}
+
+/* Mobile responsive */
+@media (width <=1024px) {
+  .cards-textures {
+    flex-wrap: wrap;
+    border-radius: 12px;
+  }
+
+  .cards-textures-card {
+    flex: 0 0 calc(33.333% - 1px);
+    height: 320px;
+  }
+
+  .cards-textures-card:hover {
+    flex: 0 0 calc(33.333% - 1px);
+  }
+
+  .cards-textures-card .card-hover-content {
+    opacity: 1;
+    /* background: rgb(0 0 0 / 60%); */
+    background: unset;
+    justify-content: flex-end;
+    padding-bottom: 24px;
+  }
+
+  .cards-textures-card .card-name {
+    display: none;
+  }
+
+  .cards-textures-card .card-bucket {
+    display: none;
+  }
+
+  .cards-textures-card .card-hover-title {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .cards-textures-card .card-description {
+    font-size: 12px;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .cards-textures-card .card-button {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+}
+
+@media (width <=768px) {
+  .cards-textures-card {
+    flex: 0 0 50%;
+    height: 280px;
+  }
+}
+
+@media (width <=480px) {
+  .cards-textures {
+    flex-direction: column;
+  }
+
+  .cards-textures-card {
+    flex: 0 0 auto;
+    height: 200px;
+  }
+}
+
+/* Section styles for Cards Textures intro content */
+main>.section.cards-textures-container {
+  background: var(--cream-bg);
+  padding: 60px 24px;
+  margin: 0 -24px;
+  width: calc(100% + 48px);
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main>.section.cards-textures-container>.default-content-wrapper {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 32px;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main>.section.cards-textures-container>.default-content-wrapper h2 {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-color-dark);
+  margin: 0 0 16px;
+}
+
+main>.section.cards-textures-container>.default-content-wrapper h2 .gradient-text {
+  background: linear-gradient(90deg, #f8a12e, #be2a1d);
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main>.section.cards-textures-container>.default-content-wrapper p {
+  color: var(--text-color-muted);
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main>.section.cards-textures-container>.default-content-wrapper p strong a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: transparent;
+  border: 1.5px solid var(--text-color-dark);
+  border-radius: 30px;
+  color: var(--text-color-dark);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+main>.section.cards-textures-container>.default-content-wrapper p strong a::after {
+  content: " ";
+  background: url('/eds/icons/arrow-icon-new.svg');
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 18px;
+  display: inline-flex;
+  object-fit: cover;
+  filter: invert(1);
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main>.section.cards-textures-container>.default-content-wrapper p strong a:hover {
+  background: #fff7e8;
+  border: 1px solid #232426;
+  color: #222
+}
+
+main>.section.cards-textures-container>.default-content-wrapper p strong a:hover::after {
+  transform: none;
+}
+
+@media (width >=768px) {
+  main>.section.cards-textures-container {
+    padding: 80px 56px;
+    margin: 0 -56px;
+    width: calc(100% + 112px);
+  }
+
+  main>.section.cards-textures-container>.default-content-wrapper h2 {
+    font-size: 40px;
+    margin: 0 0 20px;
+  }
+}
+
+/* ============================================
+   Variant: width and margin fix
+   ============================================ */
+.section.cards-textures-container:has(.cards-textures.width-alt.block) {
+  width: 100%;
+  margin: 0;
+}
+
+.section.cards-textures-container:has(.cards-textures.width-alt.block)>.default-content-wrapper h2 {
+  font-size: 32px;
+}
+
+.section.cards-textures-container:has(.cards-textures.width-alt.block)>.default-content-wrapper h2 strong {
+  background: linear-gradient(270deg, #f8a12e, #be2a1d 50.07%, #45216c 98.1%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 32px;
+}
+
+.section.cards-textures-container:has(.cards-textures.width-alt.block)>.default-content-wrapper p {
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: .5px;
+}
+
+.section.cards-textures-container:has(.cards-textures.width-alt.block)>.default-content-wrapper p a {
+  padding: 8px 20px;
+}
+
+@media screen and (max-width:992px) {
+  .section.cards-textures-container:has(.cards-textures.width-alt.block)>.default-content-wrapper h2 {
+    font-size: 20px;
+    margin-bottom: 14px;
+  }
+
+  .section.cards-textures-container:has(.cards-textures.width-alt.block)>.default-content-wrapper h2 strong {
+    font-size: 20px;
+  }
+
+  .section.cards-textures-container:has(.cards-textures.width-alt.block)>.default-content-wrapper {
+    padding: 0;
+  }
+
+  .section.cards-textures-container:has(.cards-textures.width-alt.block) {
+    padding: 60px 17px;
+  }
+
+  .cards-textures.width-alt.block {
+    border-radius: 0;
+  }
+}
+
+.cards-textures.width-alt.block {
+  border-radius: 0;
+}
+
+
+@media (min-width: 320px) and (max-width: 991px) {
+  .cards-textures.width-alt .cards-textures-card .card-description {
+    text-align: center;
+    font-size: 14px;
+    line-height: 23px;
+    margin-bottom: 24px;
+  }
+  .cards-textures.width-alt.block .cards-textures-card {
+    width: 100%;
+    height: 90px;
+    transition: height 1s ease;
+    flex:  0 0 auto;
+  }
+
+  .cards-textures.width-alt.block .cards-textures-card .card-name {
+        display: flex;
+        text-align: center;
+        opacity: 1;
+        align-items: center;
+        justify-content: center;
+        bottom: 40px;
+  }
+
+
+  .cards-textures.width-alt.block .cards-textures-card.child-open {
+    height: 362px;
+  }
+
+
+  .cards-textures.width-alt.block .cards-textures-card.child-open .card-name {
+    /* display: none;
+     animation: none; */
+     opacity: 0;
+  }
+
+
+   .cards-textures.width-alt.block .cards-textures-card .card-hover-content {
+  display: flex;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .4s ease;
+}
+
+.cards-textures.width-alt.block .cards-textures-card.child-open .card-hover-content {
+  opacity: 1;
+  visibility: visible;
+
+  align-items: center;
+  justify-content: center;
+}
+
+  .cards-textures.width-alt.block .cards-textures-card.child-open .card-hover-content .card-bucket {
+    display: block;
+  }
+}
+.cards-textures.width-alt{
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+.cards-textures.width-alt .cards-textures-card .card-description{
+  /* min-width: calc((100vw / var(--child-count)) * 1.3);
+    max-width: 100%; */
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+.cards-textures.width-alt .cards-textures-card .card-button{
+      padding: 12px 15px;
+}
+.cards-textures.width-alt .cards-textures-card .card-hover-content{
+  justify-content: end;
+}
+.cards-textures-card:hover .card-hover-content .card-button{
+    font-size: 14px;
+    padding: 12px 22px;
+}
+
+.cards-textures.width-alt .cards-textures-card .card-button{
+    padding: 8px 25px;
+    font-size: 14px;
+}
+
+@media(min-width: 991px) {
+.cards-textures.width-alt .cards-textures-card .card-hover-content .wrapper {
+    position: absolute;
+    bottom: 10%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 5% 0;
+    height: unset;
+}
+.cards-textures.width-alt.block .cards-textures-card {
+  transition: flex .7s ease-in-out, background-image .7s ease-in-out;
+}
+
+.cards-textures.width-alt .cards-textures-card .card-hover-content .card-bucket {
+    position: absolute;
+    top: 25%;
+    transform: translate(10px, 0px);
+}
+.cards-textures.width-alt .cards-textures-card .card-hover-content{
+  padding-left: 0px;
+}
+.cards-textures.width-alt .cards-textures-card .card-button{
+  width: fit-content;
+}
+.cards-textures.width-alt .cards-textures-card .card-name{
+  left: 10px;
+}
+}
+
+@media(min-width:992px){
+  .texture-wrapper {
+    padding: 80px 4% !important;
+  }
+  .texture-wrapper .default-content-wrapper {
+    max-width: unset !important;
+    margin: unset !important;
+    padding: unset !important;
+  }
+   .texture-wrapper .default-content-wrapper #explore-textures {
+    font-weight: 800;
+    margin-bottom: 14px;
+   }
+  .texture-wrapper .default-content-wrapper p:not(.button-container) {
+    padding: 0 15%;
+    color:#222222 !important;
+  }
+}

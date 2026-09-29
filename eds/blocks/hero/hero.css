@@ -1,0 +1,284 @@
+/* === Base Hero === */
+
+.hero-container .hero-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+.hero {
+  position: relative;
+  padding: 40px 24px;
+  min-height: 300px;
+}
+
+.hero h1,
+.hero h2,
+.hero h3,
+.hero h4,
+.hero h5,
+.hero h6,
+.hero p {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--background-color);
+}
+
+.hero.no-image * {
+  color: var(--text-color);
+}
+
+.hero picture {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  object-fit: cover;
+  box-sizing: border-box;
+}
+
+.hero img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+@media (width >= 900px) {
+  .hero {
+    padding: 40px 32px;
+  }
+}
+
+/* ============================================
+   Variant: about — Hero (about)
+   ============================================ */
+
+.hero.about-container .hero-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+.hero.about {
+  position: relative;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 60px 24px;
+}
+
+@media (min-width: 600px) {
+  .hero.about {
+    min-height: 450px;
+  }
+}
+
+@media (min-width: 900px) {
+  .hero.about {
+    min-height: 500px;
+    padding: 80px 32px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero.about {
+    min-height: 550px;
+  }
+}
+
+.hero.about picture {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  object-fit: cover;
+  box-sizing: border-box;
+}
+
+.hero.about img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.hero.about > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.hero.about h5,
+.hero.about h6,
+.hero.about p:first-of-type:not(:last-of-type) {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0 0 12px;
+  opacity: 0.9;
+}
+
+.hero.about h1 {
+  font-family: var(--heading-font-family);
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #fff;
+  margin: 0;
+  text-shadow: 0 2px 4px rgb(0 0 0 / 30%);
+}
+
+@media (min-width: 600px) {
+  .hero.about h1 {
+    font-size: 40px;
+  }
+}
+
+@media (min-width: 900px) {
+  .hero.about h1 {
+    font-size: 48px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero.about h1 {
+    font-size: 56px;
+  }
+}
+
+.hero.about h1 strong {
+  font-weight: 400;
+}
+
+.hero.about h1,
+.hero.about h2,
+.hero.about h3,
+.hero.about h4,
+.hero.about h5,
+.hero.about h6,
+.hero.about p {
+  color: #fff;
+}
+
+.hero.about.no-image * {
+  color: var(--text-color);
+}
+
+/* ============================================
+   Variant: services — Hero (services)
+   ============================================ */
+
+.hero.services-container .hero-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+.hero.services {
+  position: relative;
+  padding: 40px 24px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.hero.services::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgb(0 0 0 / 50%), rgb(0 0 0 / 50%));
+  z-index: 1;
+}
+
+.hero.services > div {
+  position: relative;
+  z-index: 2;
+}
+
+.hero.services h1,
+.hero.services h2,
+.hero.services h3,
+.hero.services h4,
+.hero.services h5,
+.hero.services h6,
+.hero.services p {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #fff;
+}
+
+.hero.services h1,
+.hero.services h2 {
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.hero.services p {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.hero.services.no-image * {
+  color: var(--text-color);
+}
+
+.hero.services.no-image::before {
+  display: none;
+}
+
+.hero.services picture {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  object-fit: cover;
+  box-sizing: border-box;
+}
+
+.hero.services img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.hero.services a.button {
+  background-color: var(--accent-color);
+  color: var(--dark-color);
+  padding: 12px 32px;
+  border-radius: 45px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  border: none;
+}
+
+.hero.services a.button:hover {
+  background-color: #e59d15;
+}
+
+@media (width >= 900px) {
+  .hero.services {
+    padding: 80px 32px;
+    min-height: 500px;
+  }
+
+  .hero.services h1,
+  .hero.services h2 {
+    font-size: 48px;
+  }
+
+  .hero.services p {
+    font-size: 20px;
+  }
+}

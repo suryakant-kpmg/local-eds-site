@@ -1,0 +1,167 @@
+/* =============================================
+   CATEGORY SHOWCASE
+   Heading + intro above a row of category cards.
+   Mobile: horizontal scroll, 300px cards; desktop: four cards per row.
+   ============================================= */
+
+.category-showcase {
+  --cs-text: #23242b;
+  --cs-muted: #585b61;
+
+  /* mobile: left padding only, so the card row scrolls off the right edge */
+  padding-left: 4%;
+}
+
+/* ---------- HEADER ---------- */
+.category-showcase .category-showcase-header {
+  margin-bottom: 20px;
+}
+
+.category-showcase .category-showcase-heading {
+  margin: 0 0 8px;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 33.6px;
+  letter-spacing: 0;
+  color: var(--cs-text);
+}
+
+.category-showcase .category-showcase-intro {
+  margin: 0;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
+  letter-spacing: 0;
+  color: var(--cs-text);
+}
+
+/* ---------- CARDS (mobile: horizontal scroll) ---------- */
+.category-showcase .category-showcase-cards {
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.category-showcase .category-showcase-cards::-webkit-scrollbar {
+  display: none;
+}
+
+.category-showcase .category-showcase-card {
+  flex: 0 0 300px;
+  scroll-snap-align: start;
+}
+
+.category-showcase .category-showcase-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.category-showcase .category-showcase-image img {
+  display: block;
+  width: 100%;
+  height: 192px;
+  object-fit: cover;
+}
+
+.category-showcase .category-showcase-title {
+  margin: 16px 0 8px;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0;
+  color: var(--cs-text);
+}
+
+.category-showcase .category-showcase-desc {
+  max-width: 86%;
+  margin: 0;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16.8px;
+  letter-spacing: 0;
+  color: var(--cs-muted);
+}
+
+/* ---------- PAGINATION DOTS (mobile only) ---------- */
+.category-showcase .category-showcase-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.category-showcase .category-showcase-dot {
+  width: 10px;
+  height: 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #d0d0d2;
+  cursor: pointer;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.category-showcase .category-showcase-dot.active {
+  width: 36px;
+  background: var(--cs-text);
+}
+
+/* =============================================
+   DESKTOP
+   ============================================= */
+@media (width >= 900px) {
+  .category-showcase {
+    padding: 0 40px;
+  }
+
+  .category-showcase .category-showcase-header {
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .category-showcase .category-showcase-heading {
+    margin-bottom: 16px;
+    font-size: 40px;
+    line-height: 42px;
+    letter-spacing: -0.02em;
+  }
+
+  .category-showcase .category-showcase-intro {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .category-showcase .category-showcase-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    overflow: visible;
+  }
+
+  .category-showcase .category-showcase-image img {
+    height: 285px;
+  }
+
+  .category-showcase .category-showcase-dots {
+    display: none;
+  }
+
+  .category-showcase .category-showcase-title {
+    margin: 20px 0 12px;
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .category-showcase .category-showcase-desc {
+    font-size: 14px;
+    line-height: 18px;
+  }
+}

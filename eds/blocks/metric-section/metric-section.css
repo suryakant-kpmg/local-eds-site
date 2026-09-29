@@ -1,0 +1,160 @@
+/*
+ * metric-section — "Why choose us" metrics band.
+ *
+ * AUTHORING (Google Doc / Word table). First row is the section header
+ * (title | subtitle). Every following row is one stat:
+ *   [ Icon image | Count | Label ]
+ *
+ *   +-------------------------------------------------------------+
+ *   | metric-section                                              |
+ *   +-----------------+---------+---------------------------------+
+ *   | Why choose us   | Discover what sets us apart ...           |
+ *   +-----------------+---------+---------------------------------+
+ *   | <icon>          | 5.7L+   | Customer Homes Painted          |
+ *   | <icon>          | 1200+   | Towns serviceable across india  |
+ *   | <icon>          | 100%    | Dedicated site supervision      |
+ *   +-----------------+---------+---------------------------------+
+ *
+ * Renders a heading + subheading and a row of stats (icon + big count + label),
+ * marked up as a description list. Header row is optional.
+ *
+ * VARIANTS (add as classes on the block): none required — stats are 1-up on
+ * mobile and 3-up on desktop.
+ */
+
+
+.metric-section .metric-section-header {
+  margin-bottom: 16px;
+}
+
+.metric-section .metric-section-title {
+  margin: 0;
+  font-size: var(--heading-font-size-l);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.metric-section .metric-section-subtitle {
+  margin: 4px 0 0;
+  font-size: var(--body-font-size-xs);
+  color: #7a7c80;
+}
+
+/* --- stats (mobile: one per row as icon | big count | label, with the three
+   parts aligned in shared columns so every label starts at the same x) --- */
+.metric-section .metric-section-stats {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 36px 14px;
+  margin: 24px 0 0;
+}
+
+/* the stat wrapper steps aside so its icon/count/label sit in the dl grid */
+.metric-section .metric-section-stat {
+  display: contents;
+}
+
+.metric-section .metric-section-stat-icon {
+  grid-column: 1;
+  line-height: 0;
+}
+
+.metric-section .metric-section-stat-icon img {
+  width: auto;
+  height: 44px;
+}
+
+.metric-section .metric-section-stat-count {
+  grid-column: 2;
+  margin: 0;
+  font-family: var(--heading-font-family);
+  font-size: 44px;
+  font-weight: 300;
+  line-height: 1;
+  white-space: nowrap;
+  color: #5d4f43;
+}
+
+.metric-section .metric-section-stat-label {
+  grid-column: 3;
+  margin: 0 0 0 6px;
+  font-size: 16px;
+  line-height: 1.3;
+  color: #5d4f43;
+}
+
+/* --- tablet+: 3-up, each stat stacked (icon above count above label) --- */
+@media (width >=600px) {
+  .metric-section .metric-section-stats {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+    gap: 32px;
+    margin-top: 0;
+  }
+
+  .metric-section .metric-section-stat {
+    display: block;
+  }
+
+  .metric-section .metric-section-stat-icon {
+    margin-bottom: 8px;
+  }
+
+  .metric-section .metric-section-stat-icon img {
+    height: 48px;
+  }
+
+  .metric-section .metric-section-stat-count {
+    font-size: var(--heading-font-size-l);
+    font-weight: 700;
+    line-height: 1.1;
+    white-space: normal;
+  }
+
+  .metric-section .metric-section-stat-label {
+    margin: 2px 0 0;
+    font-size: var(--body-font-size-s);
+  }
+}
+
+/* --- desktop: header on the left, stats to the right --- */
+@media (width >=900px) {
+  .metric-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 48px;
+  }
+
+  .metric-section .metric-section-header {
+    flex: 0 0 30%;
+    max-width: 360px;
+    margin-bottom: 0;
+  }
+
+  .metric-section .metric-section-stats {
+    flex: 1;
+  }
+
+  .metric-section .metric-section-title {
+    /* large display title matching the source (~70px), scaled to viewport */
+    font-size: clamp(2.75rem, 4vw, 4.375rem);
+    line-height: 1.05;
+  }
+
+  .metric-section .metric-section-subtitle {
+    font-size: var(--body-font-size-s);
+  }
+
+  .metric-section .metric-section-stat-count {
+    font-size: var(--heading-font-size-xl);
+  }
+
+  .metric-section .metric-section-stat-label {
+    font-size: var(--body-font-size-m);
+  }
+
+  .metric-section .metric-section-stat-icon img {
+    height: 64px;
+  }
+}

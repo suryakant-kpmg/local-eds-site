@@ -1,0 +1,1775 @@
+/* Override section and wrapper inherited styles */
+.section.form-container {
+  padding: 0 40px;
+  margin: 0;
+}
+
+.section.form-container>.form-wrapper {
+  max-width: none !important;
+  width: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.form.block {
+  position: relative;
+  overflow: hidden;
+  background-color: #fff;
+  border: 1px solid #cfcfcf;
+  border-radius: 20px;
+  min-height: 100%;
+}
+
+/* ============================================
+   Bootstrap Reboot neutralisation
+
+   Bootstrap 5 CSS is loaded lazily from a CDN on the first pointerdown
+   anywhere on the page (see loadDelayed() in scripts.js — it is deferred
+   deliberately to keep it out of the critical path). It lands after
+   styles.css, so its Reboot layer wins on bare element selectors and
+   silently re-lays out this block the moment the user first clicks
+   anything in it — the form visibly jumps once, then never again.
+
+   The rules below re-assert the site values Reboot would otherwise
+   override, scoped to .form.block so they beat Bootstrap on specificity
+   regardless of stylesheet order. Keep them in sync with styles.css.
+   Only layout-affecting properties are listed; the visually-hidden
+   checkbox/radio inputs are position:absolute, so Reboot zeroing their
+   margins changes nothing and is not countered here.
+   ============================================ */
+
+/* Reboot: body { font-size: 1rem; line-height: 1.5 } — every descendant
+   inherits this, so re-declaring it on the block covers all of them. */
+.form.block {
+  font-size: var(--body-font-size-m);
+  line-height: 1.6;
+}
+
+/* Reboot: p { margin-top: 0; margin-bottom: 1rem } — styles.css uses
+   0.8em/0.25em for these elements. Deliberately kept at (0,1,1)
+   specificity — enough to beat Reboot bare-element selectors, but not
+   the .form-title-small p / .form-subtitle p rules further down this
+   file, which must keep winning. Do not raise this to .form.block p. */
+.form p,
+.form dl,
+.form ol,
+.form ul,
+.form pre,
+.form blockquote {
+  margin-top: 0.8em;
+  margin-bottom: 0.25em;
+}
+
+/* Reboot: legend { float: left; width: 100% } — would stretch and float
+   the disclaimer question headings. */
+.form.block legend {
+  float: none;
+  width: auto;
+}
+
+/* Reboot: fieldset { min-width: 0 } — restore the UA default so the
+   disclaimer fieldsets keep sizing to their content. */
+.form.block fieldset {
+  min-width: min-content;
+}
+
+/* Bootstrap .btn { border: 1px solid transparent; vertical-align: middle }
+   — the submit button is borderless here, and the extra 1px grew it by 2px
+   in both axes. */
+.form.block .form-submit,
+.form.block .btn.form-submit {
+  border: 0;
+  vertical-align: baseline;
+}
+
+/* Reboot: input { margin: 0 } — these checkbox/radio inputs are
+   visually hidden and position:absolute, so this is belt-and-braces
+   rather than a visible fix, but it keeps the block provably
+   shift-free. revert restores the UA margins the layout was measured
+   against. */
+.form.block input[type="checkbox"],
+.form.block input[type="radio"] {
+  margin: revert;
+}
+
+.form.block .form-row {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 80px;
+  width: 100%;
+}
+
+.form.block .form-description-cell {
+  flex: 0 0 300px;
+  max-width: 300px;
+  min-width: 300px;
+}
+
+.form.block .form-title-small {
+  font-size: 20px;
+  color: #000;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.form.block .form-title-large {
+  font-size: 64px;
+  color: #f14950;
+  font-weight: 600;
+  line-height: 70.4px;
+  margin-bottom: 20px;
+}
+
+.form.block .form-subtitle {
+  font-size: 20px;
+  color: #2e2f32;
+  line-height: 1.5;
+}
+
+.form.block .form-fields-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+  width: 100%;
+}
+
+@media (min-width:992px) {
+  .form.block .form-fields-area {
+    gap: 0;
+  }
+
+  .form.block .form-consent-area {
+    margin-top: 0px;
+  }
+
+  .form.block .form-button-cell {
+    margin-top: 25px !important;
+  }
+}
+
+.form.block .form-inputs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.form.block .form-input-cell {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  width: 100%;
+}
+
+.form.block .form-field {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+}
+
+.form.block .form-field-label {
+  position: absolute;
+  top: -7px;
+  left: 12px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 3px;
+  background: #fff;
+  color: #53565a;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.form.block .form-field.show-label .form-field-label {
+  opacity: 1;
+  visibility: visible;
+}
+
+.form.block .form-field-required {
+  color: #53565a;
+}
+
+.form.block .form-input,
+.form.block .form-control.form-input {
+  width: 100%;
+  height: 52px;
+  padding: 0 20px;
+  border: 1px solid #dfdfdf;
+  border-radius: 8px;
+  background-color: transparent;
+  color: #53565a;
+  font-size: 16px;
+  line-height: 1.2;
+  box-sizing: border-box;
+  box-shadow: none;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    color 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.form.block .form-input::placeholder {
+  color: #53565a;
+  opacity: 1;
+}
+
+.form.block .form-input:focus,
+.form.block .form-control.form-input:focus {
+  outline: none;
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.form.block .form-field.is-focused .form-input,
+.form.block .form-field.has-value .form-input {
+  border-color: #53565a;
+}
+
+.form.block .form-input-prefix-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.form.block .form-input-prefix {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  z-index: 2;
+  color: #53565a;
+  font-size: 16px;
+  line-height: 1.2;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.form.block .form-input.form-input--with-prefix,
+.form.block .form-control.form-input.form-input--with-prefix {
+  padding-left: 55px;
+}
+
+.form.block .form-consent-area {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 4px;
+}
+
+.form.block .form-consent-options {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px 34px;
+}
+
+.form.block .form-consent-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 32px;
+  cursor: pointer;
+  user-select: none;
+  align-self: self-start;
+}
+
+.form.block .form-consent-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.form.block .form-consent-text {
+  color: #53565a;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16.8px;
+}
+
+.form.block .form-consent-text-whatsapp {
+  color: #000000;
+  font-weight: 500;
+}
+
+.form.block .form-consent-box {
+  position: relative;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #b0b1b3;
+  border-radius: 4px;
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.form.block.blue-form .form-consent-input:checked+.form-consent-box {
+  /* background: #fff;
+  border-color: #53565a; */
+  background-color: transparent;
+  border: 1px solid #fff;
+}
+
+.form.block .form-consent-input:checked+.form-consent-box {
+  /* background: #fff;
+  border-color: #53565a; */
+  background-color: transparent;
+  border: 1px solid #b0b1b3;
+}
+
+.form.block .form-consent-input:checked+.form-consent-box::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 7px;
+  width: 5px;
+  height: 10px;
+  transform: rotate(45deg);
+  border-right: 2px solid #b0b1b3;
+  border-bottom: 2px solid #b0b1b3;
+}
+
+.form.block.blue-form .form-consent-input:checked+.form-consent-box::after {
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+}
+
+.form.block .form-consent-item--toggle .form-consent-toggle {
+  position: relative;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  background: gray;
+  transition: background-color 0.2s ease;
+}
+
+.form.block .form-consent-item--toggle .form-consent-toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s ease;
+}
+
+.form.block .form-consent-item--toggle .form-consent-input:checked+.form-consent-toggle {
+  background: #14c759;
+}
+
+.form.block .form-consent-item--toggle .form-consent-input:checked+.form-consent-toggle::after {
+  transform: translateX(19px);
+}
+
+.form.block .form-consent-note {
+  color: #8c8e90;
+  font-size: 11px;
+  line-height: 16.3px;
+  max-width: 920px;
+  font-weight: 400;
+  letter-spacing: .5px;
+}
+
+.form.block .form-consent-note .form-consent-note-link {
+  color: #00e;
+  text-decoration: underline;
+}
+
+.form.block .form-consent-note .form-consent-note-link:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.form.block .form-button-cell {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-top: 0;
+  width: 100%;
+}
+
+.form.block .form-submit,
+.form.block .btn.form-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 22px;
+  border-radius: 30px;
+  background: #fcaf17 !important;
+  color: #1a1a1a;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: none;
+}
+
+.form.block .form-submit__label,
+.form.block .form-submit__arrow,
+.form.block .rotating {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.form.block .form-row .form-fields-area .form-button-cell .form-submit .form-submit__label {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.form.block .form-submit__arrow {
+  width: 20px;
+  height: 18px;
+  background-image: url("/eds/icons/arrow-icon-new.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: invert(1);
+  align-self: center;
+}
+
+.form.block .rotating {
+  font-size: 16px;
+  line-height: 1;
+  animation: form-submit-spin 1s linear infinite;
+}
+
+.form.block .d-none {
+  display: none !important;
+}
+
+@keyframes form-submit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.form.block .form-submit:hover,
+.form.block .btn.form-submit:hover {
+  background: #fed440 !important;
+  border-color: #ffca28;
+  color: #1a1a1a;
+}
+
+.form.block .form-submit:hover .form-submit__arrow,
+.form.block .btn.form-submit:hover .form-submit__arrow {
+  transform: translateX(2px);
+}
+
+.form.block .form-submit:focus,
+.form.block .btn.form-submit:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.form.block .form-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.form.block .form-empty-cell {
+  display: none;
+}
+
+/* Hide form when popup is active */
+.form.block.popup-active>.form-row,
+.form.block.popup-active>div[style*='display: none'] {
+  /* visibility: hidden; */
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+  padding: 0 !important;
+}
+
+/* Generic popup overlay */
+.form.block .form-popup-overlay {
+  /* position: absolute; */
+  inset: 0;
+  z-index: 50;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border-radius: 20px;
+  /* overflow: hidden; */
+}
+
+.blue-form.form.block .form-popup-overlay {
+  border-radius: unset
+}
+
+.form.block .form-popup-close {
+  position: absolute;
+  top: 3px;
+  right: 18px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* width: 56px;
+  height: 56px; */
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  /* background: rgb(255 255 255 / 88%); */
+  background: none;
+  color: #1a1a1a;
+  font-size: 44px;
+  line-height: 50px;
+  cursor: pointer;
+}
+
+/* Success popup */
+.form.block .form-popup-overlay--success {
+  background: #ded7cb;
+}
+
+.form.block .form-popup-success-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  clip-path: inset(0 round 20px);
+}
+
+.form.block .form-popup-success-cta,
+.form.block .explore-now-rewamp {
+  position: absolute;
+  opacity: 0;
+  z-index: 2;
+  bottom: 36%;
+  right: 7%;
+  width: 11%;
+  height: 33%;
+  border-radius: 100%;
+}
+
+/* The "Yes I am Interested" secondary success screen (see
+   showThankYouScreen()'s .intereseted-cta handler in form.js) — its
+   images had no sizing rules at all (only the desktop/mobile display:none
+   toggles below), so they rendered at native intrinsic size and
+   overflowed the popup edge to edge on mobile. */
+.form.block .thank-you-pop-two {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.form.block .thank-img-desk,
+.form.block .thank-img-mob {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Error popup */
+.form.block .form-popup-overlay--error {
+  background: #fff;
+}
+
+.form.block .form-error-popup {
+  display: grid;
+  grid-template-columns: 32% 68%;
+  width: 100%;
+  height: 100%;
+}
+
+.form.block .form-error-popup__left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 40px 48px 48px;
+  background: #f4f4f4;
+}
+
+.form.block .form-error-popup__copy {
+  max-width: 360px;
+}
+
+.form.block .form-error-popup__title {
+  margin: 0 0 24px;
+  color: #111;
+  font-size: 60px;
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -1px;
+}
+
+.form.block .form-error-popup__text {
+  margin: 0;
+  color: #111;
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+.form.block .form-error-popup__right {
+  min-width: 0;
+  height: 100%;
+}
+
+.form.block .form-error-popup__media {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 56px 48px;
+  background-image: var(--form-error-image-desktop);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.form.block .form-error-popup__media::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgb(0 0 0 / 35%) 0%, rgb(0 0 0 / 10%) 45%, rgb(0 0 0 / 0%) 100%);
+}
+
+.form.block .form-error-popup__content {
+  position: relative;
+  z-index: 2;
+  max-width: 560px;
+  color: #fff;
+}
+
+.form.block .form-error-popup__content-title {
+  margin: 0 0 18px;
+  color: #fff;
+  font-size: 54px;
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.5px;
+}
+
+.form.block .form-error-popup__content-subtitle {
+  margin: 0 0 24px;
+  color: #fff;
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.form.block .form-error-popup__actions {
+  margin-bottom: 16px;
+}
+
+.form.block .form-error-popup__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  background: #ffbc1f;
+  color: #111;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.form.block .form-error-popup__button:hover {
+  background: #ffc839;
+  color: #111;
+}
+
+.form.block .form-error-popup__download {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.form-field-error {
+  min-height: 1px;
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.2;
+  color: #ed1c24;
+  text-align: left;
+}
+
+.form-field.has-error .form-input,
+.form-input.is-invalid {
+  border-color: #ff2343 !important;
+  box-shadow: none !important;
+  background-image: unset;
+}
+
+.form-field.has-error .form-field-label {
+  color: inherit;
+}
+
+.form.block .btn.form-submit .form-submit__label {
+  font-weight: 700;
+}
+
+/* Tablet */
+@media (width <=991px) {
+  .form.block .form-title-small {
+    font-weight: 700;
+    color: #2e2f32;
+    margin: 0;
+  }
+
+  .form.block .form-title-large {
+    font-weight: 800;
+    margin-bottom: 6px;
+    font-size: 36px;
+  }
+
+  .form.block .form-title-large p {
+    margin-bottom: 0;
+  }
+
+  .form.block .form-subtitle {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 21px;
+    color: #3b3d40;
+    margin-bottom: 0;
+    letter-spacing: normal;
+    width: 305px;
+  }
+
+  .form.block .form-button-cell {
+    margin-top: 14px;
+  }
+
+  .form.block .btn.form-submit {
+    width: 100%;
+    background: #fcaf17 !important;
+  }
+
+  .form.block .form-subtitle p {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+  }
+
+  .intereseted-cta {
+    top: 37%;
+    left: 50%;
+    padding: 0;
+    transform: translate(-50%, -42%);
+    width: 52%;
+    height: 40px;
+    position: absolute;
+    border-radius: 20px;
+  }
+
+  .form.block .thank-you-pop-two .thank-img-desk {
+    display: none;
+  }
+
+  .form.block .form-title-small p {
+    margin: 0;
+  }
+
+  .form.block {
+    padding: 40px;
+  }
+
+  .form.block .form-row {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .form.block .form-description-cell {
+    flex: none;
+    min-width: auto;
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .form.block .form-consent-options {
+    gap: 22px 24px;
+  }
+
+  .form.block .form-popup-success-cta {
+    bottom: 50%;
+    right: 6%;
+    width: 31%;
+    height: 16%;
+    transform: translateY(93%);
+  }
+
+  .form.block .explore-now-rewamp {
+    width: 29%;
+    height: 13%;
+    bottom: 50%;
+    right: 6%;
+    transform: translateY(93%);
+  }
+
+  .form.block .form-error-popup {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .form.block .form-error-popup__left {
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 28px 24px 16px;
+  }
+
+  .form.block .form-error-popup__copy {
+    max-width: 100%;
+    padding-right: 48px;
+  }
+
+  .form.block .form-error-popup__title {
+    margin-bottom: 12px;
+    font-size: 28px;
+    line-height: 1.05;
+    letter-spacing: 0;
+  }
+
+  .form.block .form-error-popup__text {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .form.block .form-error-popup__media {
+    align-items: flex-start;
+    padding: 28px 20px 20px;
+    background-image: var(--form-error-image-mobile);
+    background-position: center;
+  }
+
+  .form.block .form-error-popup__media::before {
+    background:
+      linear-gradient(180deg, rgb(0 0 0 / 35%) 0%, rgb(0 0 0 / 15%) 38%, rgb(0 0 0 / 0%) 100%);
+  }
+
+  .form.block .form-error-popup__content {
+    max-width: 280px;
+  }
+
+  .form.block .form-error-popup__content-title {
+    margin-bottom: 10px;
+    font-size: 28px;
+    line-height: 1.05;
+    letter-spacing: 0;
+  }
+
+  .form.block .form-error-popup__content-subtitle {
+    margin-bottom: 14px;
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .form.block .form-error-popup__actions {
+    margin-bottom: 10px;
+  }
+
+  .form.block .form-error-popup__button {
+    min-height: 40px;
+    padding: 10px 16px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+
+  .form.block .form-error-popup__download {
+    font-size: 11px;
+  }
+}
+
+/* Mobile */
+@media (width <=600px) {
+  .section.form-container {
+    padding: 0;
+  }
+
+  .section.form-container .form-wrapper {
+    padding: 0 10px !important;
+  }
+
+  .section.form-container .form-wrapper:has(.form.block.blue-form) {
+    padding: 0 !important;
+  }
+
+  .form.block {
+    padding: 20px 12px 20px 16px;
+    border: 1px solid #e2e2e2;
+    border-radius: 20px;
+    box-shadow: 0 12px 20px 0 #00000014;
+  }
+
+  .form.block.blue-form {
+    border: 0;
+    border-radius: 0;
+  }
+
+  /* Error/thank-you popups become a small, centered card on mobile —
+     matching the book-free-site-visit dialog's mobile treatment (see
+     .modal-success-active/.modal-error-active in modal.css): sized to
+     its own content (capped by max-height), not a full-screen sheet.
+     .form.block has no height of its own once its content row is hidden
+     (min-height:100% is inert against an auto-height ancestor), so
+     without an explicit centered position it would just collapse in
+     place instead. Body scroll is locked to match — see
+     lockBodyScroll()/unlockBodyScroll() in form.js. */
+  .form.block.popup-active {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    transform: translate(-50%, 0%);
+    /* Below .header .header-brands/.header-sticky (z-index: 1001/1000 in
+       header.css) so the header stays visible above this popup instead
+       of being covered by it. Those header elements are siblings of
+       header.js's cart/search/visual-search overlays (all appended
+       directly to the .header block, not nested inside header-sticky),
+       which sit at z-index: 2000+ specifically to cover the header when
+       open — raising the header itself above this popup, rather than
+       raising the header sky-high, avoids disturbing that relationship. */
+    z-index: 900;
+    width: calc(100% - 32px);
+    height: auto;
+    max-width: 400px;
+    max-height: calc(100dvh - 32px);
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgb(0 0 0 / 20%);
+    overflow-y: auto;
+  }
+
+  /* .form-popup-overlay/.thank-you-pop-two are both height:100% of
+     .form.block.popup-active, which is now height:auto (small centered
+     card, not full-screen) — percentage heights don't resolve against
+     an auto-height ancestor, so without an explicit height here they'd
+     collapse to nothing. aspect-ratio keeps the card a sensible size
+     regardless of viewport, capped by the parent's own max-height. */
+  .form.block .form-popup-overlay {
+    height: auto;
+    aspect-ratio: 3 / 5;
+  }
+
+  .form.block .thank-you-pop-two {
+    height: 100%;
+    margin: 0 auto;
+  }
+
+  .form.block .form-row {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .form.block .form-description-cell {
+    text-align: left;
+  }
+
+  .form.block .form-title-small {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+  }
+
+  .form.block .form-title-large {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 41.6px;
+    letter-spacing: 0;
+    margin-bottom: 6px;
+  }
+
+  .form.block.blue-form .form-title-large p {
+    font-size: 24px;
+    line-height: 36px;
+    font-weight: 800;
+  }
+
+  .form.block .form-subtitle {
+    font-size: 14px;
+  }
+
+  .form.block .form-subtitle p {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    margin-bottom: 0;
+    color: #75787b;
+  }
+
+  .form.block.blue-form .form-subtitle p {
+    font-size: 14px !important;
+    line-height: 21px !important;
+    font-weight: 500 !important;
+  }
+
+  .form.block.blue-form .btn.form-submit {
+    width: 55%;
+  }
+
+  .form.block.blue-form .form-row .form-fields-area .form-button-cell .form-submit .form-submit__label {
+    font-size: 14px;
+  }
+
+  .form.block .form-fields-area {
+    gap: 0px;
+  }
+
+  .form.block .form-inputs-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .form.block .form-input-cell {
+    width: 100%;
+  }
+
+  .form.block .form-field-label {
+    top: -9px;
+    left: 15px;
+    font-size: 13px;
+  }
+
+  .form.block .form-input,
+  .form.block .form-control.form-input {
+    height: 52px;
+    padding: 18px 18px 18px;
+    font-size: 16px;
+  }
+
+  .form.block .form-input-prefix {
+    left: 18px;
+    font-size: 16px;
+  }
+
+  .form.block .form-input.form-input--with-prefix,
+  .form.block .form-control.form-input.form-input--with-prefix {
+    padding-left: 55px;
+  }
+
+  .form.block .form-consent-area {
+    gap: 18px;
+  }
+
+  .form.block .form-consent-options {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .form.block .form-consent-item {
+    width: 100%;
+    gap: 16px;
+  }
+
+  .form.block .form-consent-item:nth-of-type(1) {
+    margin-bottom: 10px;
+  }
+
+  .form.block .form-consent-box {
+    width: 20px;
+    height: 20px;
+    flex-basis: 20px;
+  }
+
+  .form.block .form-consent-input:checked+.form-consent-box::after {
+    top: 3px;
+    left: 7px;
+    width: 5px;
+    height: 11px;
+  }
+
+  .form.block .form-consent-item--toggle .form-consent-toggle {
+    width: 40px;
+    height: 22px;
+    flex-basis: 40px;
+  }
+
+  .form.block .form-consent-note {
+    font-size: 10px;
+    line-height: 1.5;
+  }
+
+  .form.block.blue-form .form-consent-note {
+    font-size: 11px;
+    line-height: 15.03px;
+    font-weight: 400;
+  }
+
+  .form.block .form-button-cell {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  /* .form.block.popup-active is now a full-screen fixed modal with no
+     padding of its own (see above), so the overlay no longer needs to
+     bleed past a padded card via negative margin — it simply fills the
+     full-viewport block edge to edge. */
+  .form.block .form-popup-overlay {
+    border-radius: 0;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .form.block .form-popup-close {
+    top: 20px;
+    right: 5px;
+    width: 40px;
+    height: 40px;
+    font-size: 36px;
+  }
+}
+
+/* Form Verical Variant - Home page   */
+
+/* width > 991px (not min-width: 992px) — closes the fractional-pixel gap
+   against the ".thank-img-desk"/".thank-img-mob" mobile toggle's
+   "width <=991px" below (e.g. a 991.5px viewport, common with non-100%
+   browser zoom, matched neither query, leaving both thank-you images
+   visible at once — see .thank-img-desk/.thank-img-mob base rule). */
+@media (width > 991px) {
+  .intereseted-cta {
+    left: 34%;
+    bottom: 20%;
+    padding: 0;
+    height: 10%;
+    width: 16%;
+    transform: translateX(-4px);
+    position: absolute;
+    border-radius: 20px;
+  }
+
+  .form.block .thank-you-pop-two .thank-img-mob {
+    display: none;
+  }
+
+  .book-free-site-visit-dialog .thank-you-pop-two .thank-img-mob {
+    display: none;
+  }
+
+  .section.form-container .form.block .form-row {
+    padding: 35px 47px 35px 70px;
+    justify-content: space-between;
+  }
+
+  .form.block .form-row {
+    gap: unset;
+  }
+
+  .form.block .form-row .form-description-cell {
+    flex: 0 30%;
+    min-width: unset;
+    max-width: unset;
+    align-self: center;
+  }
+
+  .form.block .form-consent-options {
+    justify-content: space-between;
+  }
+
+  .form.block.blue-form .form-consent-options {
+    flex-direction: column;
+  }
+
+  .form.block.blue-form .form-title-small,
+  .form.block.blue-form .form-title-small p {
+    margin: 0;
+  }
+
+  .form.block .form-consent-options-right {
+    display: flex;
+    gap: 0 18px;
+    align-self: self-start;
+  }
+
+  .form.block.blue-form .form-consent-options-right {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .form.block.blue-form .form-consent-options-right label:nth-of-type(1) {
+    width: 63%;
+  }
+
+  .form.block.blue-form .form-consent-options-right label:nth-of-type(2) {
+    width: 40%;
+  }
+
+  .form.block.blue-form .form-consent-options-right .form-consent-item .form-consent-text {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 19.12px;
+  }
+
+  .form.block .form-button-cell {
+    justify-content: flex-end;
+  }
+
+  .form.block .form-subtitle {
+    line-height: 24px;
+    width: 375px;
+  }
+
+  .form.block .form-row .form-fields-area {
+    flex: 0 70%;
+  }
+}
+
+@media (min-width: 1201px) and (max-width: 1440px) {
+
+  .form.block .form-row .form-description-cell {
+    flex: 0 33%;
+    min-width: unset;
+    max-width: unset;
+    align-self: center;
+  }
+
+  .form.block .form-row .form-fields-area {
+    flex: 0 60%;
+  }
+}
+
+@media (min-width: 1440px) {
+  .form.block .form-row .form-description-cell {
+    flex: 0 32%;
+    min-width: unset;
+    max-width: unset;
+    align-self: center;
+  }
+
+  .form.block .form-row .form-fields-area {
+    flex: 0 65%;
+  }
+}
+
+/* ============================================
+   Variant: Form — Blue Form
+   ============================================ */
+@media screen and (min-width: 992px) {
+  .royale-play-form .form.block.blue-form .form-title-large {
+    font-size: 14px;
+    line-height: 22px;
+    margin: 0;
+    letter-spacing: unset;
+  }
+
+  .royale-play-form .form.block.blue-form .form-title-large p {
+    letter-spacing: unset;
+  }
+
+  .royale-play-form .form.block.blue-form .form-title-small {
+    max-width: 90%;
+  }
+
+  .form.block.blue-form .form-row .form-fields-area .form-button-cell .form-submit .form-submit__label {
+    font-size: 14px !important;
+    line-height: 21px;
+    font-weight: 700;
+    letter-spacing: 0.86px;
+  }
+
+  .form.block.blue-form .form-row .form-description-cell {
+    padding-top: 18px;
+    padding-right: 30px;
+  }
+
+  .form.block.blue-form .form-title-large p {
+    font-size: inherit;
+    line-height: inherit;
+    font-weight: inherit;
+    word-wrap: break-word;
+    letter-spacing: 0.5px;
+  }
+
+  .form.block.blue-form .form-inputs-grid {
+    row-gap: 25px;
+    column-gap: 6%;
+  }
+
+  .form.block.blue-form .form-input,
+  .form.block .form-control.form-input {
+    padding: 0 0 0 15px;
+  }
+}
+
+@media (min-width: 1201px) and (max-width: 1440px) {
+  .form.block.blue-form .form-row .form-description-cell {
+    flex: 0 42%;
+  }
+
+  .form.block.blue-form .form-row .form-fields-area {
+    flex: 0 70%
+  }
+}
+
+.form.block.blue-form {
+  background-color: #425E8E;
+}
+
+.form.block.blue-form .form-field-label {
+  color: #fff;
+  background: #425E8E;
+}
+
+.form.block.blue-form .form-input,
+.form.block.blue-form .form-control.form-input {
+  border: 1px solid #fff;
+  color: #fff;
+}
+
+.form.block.blue-form .form-field-required {
+  color: #fff;
+}
+
+.form.block.blue-form .form-input::placeholder,
+.form.block.blue-form .form-control.form-input::placeholder {
+  color: rgb(255 255 255 / 1000%);
+  opacity: 1;
+}
+
+.form.block.blue-form .form-input:focus,
+.form.block.blue-form .form-control.form-input:focus {
+  border-color: #fff;
+  color: #fff;
+}
+
+.form.block.blue-form .form-field.is-focused .form-input,
+.form.block.blue-form .form-field.has-value .form-input,
+.form.block.blue-form .form-field:not(.is-focused):not(.has-value) .form-input {
+  border-color: #fff;
+}
+
+.form.block.blue-form .form-input-prefix {
+  color: #fff;
+}
+
+.form.block.blue-form .form-consent-text {
+  color: #fff;
+}
+
+.form.block.blue-form .form-consent-note {
+  color: #fff;
+}
+
+.form.block.blue-form .form-consent-box {
+  border: 1px solid #fff;
+}
+
+.form.block.blue-form .form-title-small {
+  color: #fff;
+  font-size: 40px;
+  font-weight: 800;
+  text-transform: capitalize;
+  line-height: 48px;
+}
+
+.form.block.blue-form .form-title-large {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 30px;
+  word-wrap: break-word;
+  max-width: 90%;
+  margin: 15px 0;
+}
+
+.form.block.blue-form .form-subtitle p {
+  color: rgb(255 255 255);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 30px;
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 1201px) and (max-width: 1440px) {
+  .form.block.blue-form .form-title-large {
+    max-width: 100%;
+  }
+}
+
+.form.block.blue-form .form-submit:hover .form-submit__arrow,
+.form.block.blue-form .btn.form-submit:hover .form-submit__arrow {
+  transform: translateX(2px);
+  filter: invert(0);
+}
+
+.form.block.blue-form .form-submit:hover,
+.form.block.blue-form .btn.form-submit:hover {
+  background: transparent !important;
+  border: 1px solid #fff !important;
+  color: #fff !important;
+}
+
+/* Tablet and below adjustments for blue form*/
+@media screen and (max-width: 992px) {
+  .form.block.blue-form .form-title-small {
+    font-size: 24px;
+    padding-bottom: 0;
+    line-height: 36px;
+  }
+
+  .form.block.blue-form .form-title-large {
+    font-size: 14px;
+    line-height: 22px;
+    margin-top: 8px;
+    font-weight: 500;
+    margin-bottom: 0;
+    max-width: 100%;
+  }
+}
+
+/********WHite Form Styling Changes***********/
+
+@media screen and (min-width: 992px) {
+  .form.block .form-inputs-grid {
+    row-gap: 15px;
+    column-gap: 6%;
+  }
+
+  .form.block .form-consent-area {
+    margin-top: 0px;
+  }
+
+  .form-title-small {
+
+    color: #2e2f32 !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    line-height: 28px !important;
+    margin: 0 0 0 0 !important;
+  }
+
+  .form-title-small p {
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    margin: 0;
+  }
+
+  .form-title-large {
+    margin: 0 0 15px 0 !important;
+    font-size: 57px !important;
+    font-weight: 800 !important;
+    line-height: 56.4px !important;
+    letter-spacing: -1.14px !important;
+    color: #f14950 !important;
+    max-width: 90%;
+  }
+
+  .form-title-large p {
+    margin: 0 !important;
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    max-width: 93%;
+  }
+
+  .form-subtitle {
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 18px !important;
+    font-weight: 400 !important;
+    line-height: 25.8px !important;
+    color: #75787b !important;
+    letter-spacing: 0 !important;
+  }
+
+  .form-subtitle p {
+    margin: 0 !important;
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    max-width: 91%;
+  }
+
+  .form.block .form-row {
+    align-items: center !important;
+  }
+
+  .form.block .form-row .form-description-cell {
+    align-self: center !important;
+  }
+
+}
+
+@media (max-width:992px) {
+  .fitcontent.form-container .form.block {
+    padding: 27px 20px !important;
+  }
+
+  .fitcontent.form-container .form.block .form-popup-overlay {
+    width: calc(100% + 40px) !important;
+    margin-left: -20px !important;
+  }
+
+  .blue-form.form.block .form-popup-overlay {
+    margin-top: -22px;
+    margin-bottom: -22px;
+  }
+
+  .blue-form.form.block:has(.form-popup-overlay--success) {
+    border-radius: 20px !important;
+  }
+}
+
+.royale-play-form:not(.royale-play-form ~ .royale-play-form) .thank-you-active.popup-active {
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, .1), 0 0 1px 0 rgba(0, 0, 0, .1);
+}
+
+/* ============================================
+   isBhpsForm styling starts here
+   BHPS Form — WhatsApp toggle + disclaimer questions
+   (markup rendered by createBhpsQuestionsWrapper() in form.js,
+   inside .new-questions-wrapper, only when isBhpsForm is true)
+   ============================================ */
+
+.form.block .new-questions-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+/* WhatsApp checkbox */
+.form.block .form-whatsapp-consent {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.form.block .form-checkbox-input__field {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.form.block .form-checkbox-input__custom--check {
+  position: relative;
+  flex: 0 0 15px;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #b0b1b3;
+  border-radius: 2px;
+  background: transparent;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.form.block .form-checkbox-input__custom--check.whatsAppCheckbox-checked {
+  background: #75787b;
+  border-color: #75787b;
+}
+
+.form.block .form-checkbox-input__custom--check.whatsAppCheckbox-checked::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  width: 5px;
+  height: 8px;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(45deg);
+}
+
+.form.block .form-whatsapp-consent .form-global__custom-label-text {
+  color: #000;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 19px;
+}
+
+/* Disclaimer questions */
+.form.block .new-disclaimer-questions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 80px;
+}
+
+.form.block .disclaimer-group {
+  flex: 1;
+  min-width: 220px;
+}
+
+.form.block .disclaimer-group fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.form.block .disclaimer-group legend {
+  padding: 0;
+  margin-bottom: 12px;
+  color: #000;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.form.block .disclaimer-group .form-global__required {
+  color: #ed1c24;
+}
+
+.form.block .disclaimer-group .radio-options-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 10px 16px;
+}
+
+.form.block .disclaimer-group .disclaimer-radio-label {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.form.block .disclaimer-group .form-radio-input__field {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.form.block .disclaimer-group .form-radio-input__custom-element {
+  position: relative;
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #bdbdbd;
+  border-radius: 50%;
+  background: transparent;
+  transition: border-color 0.2s ease;
+}
+
+.form.block .disclaimer-group .form-radio-input__field:checked+.form-radio-input__custom-element {
+  border-color: #f47838;
+}
+
+.form.block .disclaimer-group .form-radio-input__field:checked+.form-radio-input__custom-element::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f47838;
+}
+
+.form.block .disclaimer-group .form-global__custom-label-text {
+  color: #323232;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19px;
+  opacity: .6;
+}
+
+/* Consent note + submit button row (BHPS form only) */
+.form.block .form-bhps-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  margin-top: 25px;
+}
+
+@media screen and (min-width: 992px) {
+  .form.block .form-bhps-footer {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .form.block .form-bhps-footer .form-consent-note {
+    flex: 1;
+    max-width: 50%;
+    margin: 0;
+    align-self: center;
+  }
+
+  .form.block .form-bhps-footer .form-button-cell {
+    width: auto;
+    flex: 0 0 auto;
+    margin-top: 0 !important;
+  }
+}
+
+@media (width <=991px) {
+  .form.block .disclaimer-group .radio-options-wrapper {
+    gap: 8px 12px;
+  }
+
+  .form.block .disclaimer-group .form-global__custom-label-text {
+    font-size: 12px;
+  }
+}
+
+@media (width <=600px) {
+  .form.block .new-questions-wrapper {
+    gap: 14px;
+  }
+
+  /* Disclaimer questions must appear above the WhatsApp toggle on mobile,
+     even though the WhatsApp toggle comes first in the markup. */
+  .form.block .new-disclaimer-questions {
+    flex-direction: column;
+    gap: 18px;
+    order: -1;
+  }
+
+  .form.block .form-whatsapp-consent {
+    order: 1;
+  }
+
+  .form.block .disclaimer-group .radio-options-wrapper {
+    flex-wrap: wrap;
+  }
+
+  .form.block .disclaimer-group legend {
+    font-size: 14px;
+  }
+}
+
+/* isBhpsForm styling ends here */

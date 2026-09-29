@@ -1,0 +1,427 @@
+/* Section title above the block */
+
+main>.section .explore-split-wrapper {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Diagonal mosaic: tall/short in column 1, short/tall in column 2.
+   Middle row = tall (212px) - short (106px) - gap (10px) so both columns end flush. */
+.wallpapers-mobile {
+  grid-template-columns: 158fr 160fr;
+  grid-template-rows: 106px 96px 106px auto;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.wallpapers-mobile p {
+  margin: 0;
+}
+
+.wallpapers-mobile p:nth-of-type(1) {
+  grid-column: 1;
+  grid-row: 1 / 3;
+}
+
+.wallpapers-mobile p:nth-of-type(2) {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.wallpapers-mobile p:nth-of-type(3) {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.wallpapers-mobile p:nth-of-type(4) {
+  grid-column: 2;
+  grid-row: 2 / 4;
+}
+
+.wallpapers-mobile p:not(.button-container) picture,
+.wallpapers-mobile p:not(.button-container) img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.wallpapers-mobile p img {
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.explore-mobile-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.5rem 0;
+  gap: 15px;
+}
+
+.explore-mobile-tabs h3 {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  color: #6a6d70;
+  border-bottom: 3px solid transparent;
+  text-transform: uppercase;
+  padding-bottom: 5px;
+  margin: 0 5px
+}
+
+.explore-mobile-tabs h3.active {
+  font-weight: 600;
+  color: #2e2f32;
+  border-bottom: 3px solid #feb940;
+}
+
+.textures-mobile {
+  display: flex;
+  position: relative;
+  height: 470px;
+}
+
+.textures-mobile p {
+  position: absolute;
+  width: 48%;
+  margin: 0;
+}
+
+.textures-mobile p:nth-child(1) {
+  left: 0;
+  top: 0;
+}
+
+.textures-mobile p:nth-child(2) {
+  right: 0;
+  top: 0;
+}
+
+.textures-mobile p:nth-child(3) {
+  left: 0;
+  top: 250px;
+}
+
+.textures-mobile p:nth-child(4) {
+  right: 0;
+  top: 250px;
+}
+
+.textures-mobile p.button-container,
+.wallpapers-mobile p.button-container {
+  bottom: 5%;
+  width: 100%;
+  text-align: center;
+}
+
+.wallpapers-mobile p.button-container {
+  grid-column: 1/-1;
+  grid-row: 4;
+}
+
+.explore-split-wrapper h2 {
+  color: rgb(39, 123, 212);
+  font-size: 40px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 48px;
+  line-height: 22px;
+}
+
+.explore-split-desktop {
+  margin: 0 auto;
+  width: calc(100% - 80px);
+  display: flex;
+  flex-direction: row;
+  gap: 60px
+}
+
+.textures-desktop,
+.wallpapers-desktop {
+  position: relative;
+  height: 470px;
+  width: 50%
+}
+
+.textures-desktop p,
+.wallpapers-desktop p {
+  position: absolute;
+  background-color: transparent;
+  overflow: hidden;
+  border-radius: 8px
+}
+
+.textures-desktop #textures,
+.wallpapers-desktop #wallpapers {
+  font-weight: 300;
+  /* font-size: 60px;
+    line-height: 66px; */
+  font-size: clamp(2rem, 8vw, 60px);
+  /* Scales between 2rem and 60px */
+  line-height: 1.1;
+  letter-spacing: 0;
+  color: #303030;
+  margin-bottom: 20px;
+  margin-bottom: 20px;
+  margin-bottom: -4px;
+  margin-top: 21px;
+  margin-bottom: 8px;
+  width: max-content;
+}
+
+.wallpapers-desktop p picture,
+.textures-desktop p picture {
+  display: block;
+  width: 100%
+}
+
+.wallpapers-desktop p picture img,
+.textures-desktop p picture img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  transition: transform 1.5s ease
+}
+
+.wallpapers-desktop p picture img:hover,
+.textures-desktop p picture img:hover {
+  transform: scale(1.075);
+}
+
+.wallpapers-desktop p picture img:hover .textures-desktop p picture img:hover {
+  transform: scale(1.075)
+}
+
+.wallpapers-desktop p {
+  width: calc(50% - 7.5px)
+}
+
+.wallpapers-desktop p {
+  margin: 0
+}
+
+.wallpapers-desktop p:nth-child(odd) {
+  left: 0
+}
+
+.wallpapers-desktop p:nth-child(2n) {
+  left: calc(50% + 7.5px)
+}
+
+.wallpapers-desktop p:nth-child(2) {
+  top: unset;
+  left: 0;
+  width: auto;
+}
+
+.wallpapers-desktop p:nth-child(2) picture {
+  height: 192px
+}
+
+.wallpapers-desktop p:nth-child(3) {
+  top: 155px
+}
+
+.wallpapers-desktop p:nth-child(3) picture {
+  height: 155px
+}
+
+.wallpapers-desktop p:nth-child(4) {
+  bottom: 0;
+  left: 0;
+  width: calc(50% - 7.5px);
+}
+
+.wallpapers-desktop p:nth-child(4) picture {
+  height: 153px
+}
+
+.wallpapers-desktop p:nth-child(5) {
+  top: 0%;
+  left: calc(50% + 7.5px);
+}
+
+.wallpapers-desktop p:nth-child(5) picture {
+  height: 192px;
+}
+
+.wallpapers-desktop p:nth-child(6n) {
+  left: calc(50% + 7.5px);
+  bottom: 0;
+}
+
+.wallpapers-desktop p:nth-child(6n) picture {
+  height: 268px;
+}
+
+.textures-desktop p picture {
+  margin: 0
+}
+
+.textures-desktop p:nth-child(3n - 2) {
+  left: 0;
+  width: 40%
+}
+
+.textures-desktop p:nth-child(3n - 1) {
+  left: calc(40% + 10px);
+  width: calc(30% - 10px)
+}
+
+.textures-desktop p:nth-child(3n) {
+  top: 32%;
+  bottom: 0;
+  left: 0;
+  width: 40%;
+  margin-bottom: 0;
+}
+
+.textures-desktop p:nth-child(2) {
+  top: auto;
+  left: 8px;
+  width: auto;
+  margin: 0;
+}
+
+.textures-desktop p:nth-child(2) picture {
+  height: 301px
+}
+
+.textures-desktop p:nth-child(3) {
+  bottom: 0;
+}
+
+.textures-desktop p:nth-child(3) picture {
+  height: 305px;
+}
+
+.textures-desktop p:nth-child(4) {
+  left: calc(40% + 10px);
+  width: calc(30% - 10px);
+  top: 0%;
+  margin-top: 0;
+}
+
+.textures-desktop p:nth-child(4) picture {
+  height: 308px;
+}
+
+.textures-desktop p:nth-child(5) {
+  bottom: 0;
+  margin-bottom: 0;
+}
+
+.textures-desktop p:nth-child(5) picture {
+  height: 152px
+}
+
+.textures-desktop p:nth-child(6) {
+  top: 0;
+  left: calc(70% + 10px);
+  width: calc(30% - 10px);
+  margin-top: 2px;
+}
+
+.textures-desktop p:nth-child(6) picture {
+  height: auto;
+}
+
+.textures-desktop p:nth-child(7) {
+  left: calc(70% + 10px);
+  width: calc(30% - 10px);
+  bottom: 0;
+  margin-bottom: 0;
+  height: 63.5%;
+}
+
+.textures-desktop p:nth-child(7) picture {
+  height: 318px;
+}
+
+.explore-split p.button-container a {
+  border: 1px solid #232426 !important;
+  transform: none !important;
+  width: fit-content !important;
+  padding: 7px 20px !important;
+  align-items: center;
+  font-size: 14px !important;
+  font-weight: 700;
+  display: inline-flex !important;
+  gap: 10px;
+  cursor: pointer;
+  color: #222;
+  border-radius: 45px;
+}
+
+.explore-split p.button-container a:hover,
+.explore-split p.button-container a:focus-visible {
+  background: #fff7e8 !important;
+  border: 1px solid #232426 !important;
+}
+
+.explore-split p.button-container {
+  margin-top: 10px;
+}
+
+.explore-split p.button-container a::after {
+  content: "";
+  background: url('/eds/icons/arrow-icon-new.svg');
+  width: 17px;
+  height: 20px;
+  filter: invert(1);
+  display: inline-flex;
+}
+
+@media screen and (max-width: 992px) {
+  main>.section .explore-split-wrapper {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  main>.section>.default-content-wrapper #explore-beyond-colours {
+    font-size: 24px;
+  }
+
+  .explore-split .textures-mobile h3 {
+    display: none;
+  }
+
+  .explore-split .wallpapers-mobile h3 {
+    display: none;
+  }
+}
+
+@media (min-width:992px) {
+  main>.section>.default-content-wrapper #explore-beyond-colours {
+    font-size: 40px;
+    line-height: 54px;
+    margin-bottom: 50px;
+    margin-top: 0px;
+    font-weight: 800;
+  }
+
+  .textures-desktop #textures,
+  .wallpapers-desktop #wallpapers {
+    margin-bottom: 10px;
+    margin-top: 0;
+    font-size: 60px;
+    line-height: 66px;
+  }
+
+  .textures-desktop p:nth-child(3n) {
+    top: unset;
+  }
+
+  p.img-5 {
+    top: 0 !important;
+  }
+
+  p.img-5 picture {
+    height: 220px !important;
+  }
+
+  .img-6 {
+    height: 311px;
+  }
+}

@@ -1,0 +1,51 @@
+.wpcalc {
+    border: 1px solid #e6e6e6;
+    border-radius: 12px;
+    padding: 16px;
+    background: #fff;
+}
+
+.wpcalc__header h2 {
+    margin: 0 0 4px 0;
+}
+
+.wpcalc__header p {
+    margin: 0 0 16px 0;
+    color: #555;
+}
+
+.wpcalc__form {
+    display: grid;
+    gap: 12px;
+}
+
+.wpcalc__form label {
+    display: grid;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.wpcalc__form select,
+.wpcalc__form input {
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #d7d7d7;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.wpcalc__cta {
+    height: 44px;
+    border: 0;
+    border-radius: 10px;
+    background: #1a1a1a;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.wpcalc__result {
+    margin-top: 6px;
+    color: #1a1a1a;
+    font-weight: 600;
+}

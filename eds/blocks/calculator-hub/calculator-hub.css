@@ -1,0 +1,707 @@
+    /* /blocks/calculator-hub/quick-links.css */
+
+    /* ---------------------------------------
+       Helpers / resets inside this block only
+    ---------------------------------------- */
+    .calculator-hub .d-none { display: none !important; }
+
+    /* Remove default link/button styling */
+    .calculator-hub .animated-arrow-button {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    /* Remove number spinners */
+    .calculator-hub input[type="number"]::-webkit-outer-spin-button,
+    .calculator-hub input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    .calculator-hub input[type="number"] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
+
+    /* ---------------------------------------
+       Base container (AMS parity)
+    ---------------------------------------- */
+    .calculator-hub .mini-pbc {
+        background: #f7f2e7;
+        padding: 40px 16px 30px;
+        align-items: center;
+        border-radius: 10px;
+
+        /* ✅ FIX: max-width was causing squished layout on many 1080p browsers.
+           1440 keeps it looking correct without making it too narrow. */
+        /*max-width: 1440px;*/
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* tabToLarge() => >= 992px */
+    @media (min-width: 992px) {
+        .calculator-hub .mini-pbc {
+            display: flex;
+            padding: 30px 50px 30px 100px;
+            justify-content: center;
+        }
+    }
+
+    /* 1280-1366 */
+    @media (min-width: 1280px) and (max-width: 1366px) {
+        .calculator-hub .mini-pbc { padding: 30px 50px 30px 80px; }
+    }
+
+    /* mediumLargeScreen() => 991-1200 */
+    @media (min-width: 991px) and (max-width: 1200px) {
+        .calculator-hub .mini-pbc { padding: 30px 50px 30px 50px; }
+    }
+
+    /* ---------------------------------------
+       Left panel
+    ---------------------------------------- */
+    .calculator-hub .tool-description { flex: 0 0 36%; }
+
+    @media (min-width: 1280px) and (max-width: 1366px) {
+        .calculator-hub .tool-description { flex: 0 0 43%; }
+        .calculator-hub .mini-pbc .tool-description .sub-heading {
+            font-size: 64px;
+            font-weight: 800;
+            line-height: 70.4px;
+            letter-spacing: -0.02em;
+            text-align: left;
+        }
+
+    }
+    @media (min-width: 1200px) and (max-width: 1403px) {
+        .calculator-hub .mini-pbc.wbc-variant .tool-fields .mini-tools-form {
+            padding: 30px 28px 10px;
+        }
+    }
+
+    .calculator-hub .tool-description .heading {
+        font-size: 26px;
+        font-weight: 300;
+        line-height: 31.2px;
+        margin-bottom: 10px;
+        width: 85%;
+    }
+
+    @media (max-width: 991px) {
+        .calculator-hub .tool-description .heading {
+            font-size: 24px;
+            font-weight: 400;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .calculator-hub .tool-description .heading:focus-visible { display: inline-block; }
+        .form-group.project-field{
+            margin-right: 60px;
+        }
+    }
+
+    .calculator-hub .tool-description .sub-heading {
+        font-size: 48px;
+        font-weight: 800;
+        line-height: 55.4px;
+        letter-spacing: -0.02em;
+        text-align: left;
+    }
+    @media (min-width: 1366px) {
+        .calculator-hub .tool-description .sub-heading{
+            font-size: 64px;
+            line-height: 58px
+        }
+    }
+
+    @media (min-width: 1280px) {
+        .calculator-hub .tool-description .sub-heading { width: 80%; }
+    }
+
+    @media (max-width: 991px) {
+        .calculator-hub .tool-description .sub-heading {
+            font-size: 40px;
+            margin-bottom: 20px;
+            line-height: 48px;
+            width: auto;
+        }
+    }
+
+    @media (min-width: 1260px) and (max-width: 1328px) {
+        .calculator-hub .tool-description .sub-heading { width: 85%; }
+    }
+
+    /* ---------------------------------------
+       Right panel
+    ---------------------------------------- */
+    .calculator-hub .tool-fields { flex: 0 0 67%; }
+
+    @media (min-width: 1280px) and (max-width: 1366px) {
+        .calculator-hub .tool-fields { flex: 0 0 62%; }
+    }
+
+    @media (min-width: 1600px) and (max-width: 1920px) {
+        .calculator-hub .tool-fields { flex: 0 0 60%; }
+    }
+
+    @media (min-width: 1800px) {    .calculator-hub .mini-pbc.wbc-variant .project-field-inputs {        grid-template-columns: repeat(4, max-content);   }}
+    .calculator-hub .mini-tools-form {
+        background: #fff;
+        padding: 30px 40px 10px 40px;
+        border-radius: 8px;
+    }
+
+    @media (max-width: 991px) {
+        .calculator-hub .mini-tools-form { padding: 20px; }
+    }
+
+    /* ---------------------------------------
+       PBC grid (AMS parity)
+    ---------------------------------------- */
+    @media (min-width: 992px) {
+        .calculator-hub form.pbc-mini-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+        }
+    }
+
+    /* ---------------------------------------
+       Headings
+    ---------------------------------------- */
+    .calculator-hub .project-field-heading,
+    .calculator-hub .space-field-heading {
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 21px;
+        margin-bottom: 10px;
+    }
+
+    @media (max-width: 991px) {
+        .calculator-hub .project-field-heading,
+        .calculator-hub .space-field-heading { margin-bottom: 12px; }
+    }
+
+    .calculator-hub .project-field-heading span,
+    .calculator-hub .space-field-heading span,
+    .calculator-hub .form-group.area-field label span {
+        color: #ed1c24;
+    }
+
+    @media (min-width: 992px) {
+        .calculator-hub .project-field-heading:focus-visible,
+        .calculator-hub .space-field-heading:focus-visible { display: inline-block; }
+    }
+
+    /* ---------------------------------------
+       TILE GROUPS (PBC + generic)
+    ---------------------------------------- */
+    .calculator-hub .project-field-inputs label,
+    .calculator-hub .space-field-inputs label {
+        /* EDS global CSS often does label { display:block; width:100% }.
+           This override fixes the "tiles are in one vertical line" issue. */
+        display: inline-block !important;
+        width: auto !important;
+        margin-right: 30px;
+        vertical-align: top;
+    }
+
+    /* base tile */
+    .calculator-hub .radiobtn {
+        width: 110px;
+        height: 110px;
+        display: inline-block;
+        cursor: pointer;
+        border: 1px solid #CACBCC;
+        border-radius: 5px;
+    }
+
+    @media (min-width: 991px) and (max-width: 1200px) {
+        .calculator-hub .radiobtn { width: 90px; height: 90px; }
+    }
+
+    .calculator-hub .option-icon {
+        width: 50px;
+        height: 50px;
+        transform: translate(59%, 40%);
+    }
+
+    @media (min-width: 991px) and (max-width: 1200px) {
+        .calculator-hub .option-icon { transform: translate(37%, 25%); }
+    }
+
+    .calculator-hub .option-icon img {
+        width: 100%;
+        opacity: 0.6;
+    }
+
+    .calculator-hub .option-title {
+        color: #53565A;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 16.8px;
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    @media (min-width: 991px) and (max-width: 1200px) {
+        .calculator-hub .option-title { margin-top: 12px; }
+    }
+
+    @media (max-width: 991px) {
+        .calculator-hub .option-title { font-weight: 500; }
+    }
+
+    /* checked (PBC baseline) */
+    .calculator-hub input:checked + .radiobtn {
+        border: 1px solid #5D4F43 !important;
+        box-shadow: 0px 8px 12px 0px #00000014;
+    }
+
+    .calculator-hub input:checked + .radiobtn .option-icon img { opacity: 1; }
+    .calculator-hub input:checked + .radiobtn .option-title { color: #000000; }
+
+    /* Mobile spacing */
+    @media (max-width: 991px) {
+        .calculator-hub .form-group.space-field { margin-top: 20px; }
+    }
+
+    /* ---------------------------------------
+       Area field (PBC baseline)
+    ---------------------------------------- */
+    .calculator-hub .form-group.area-field {
+        margin-top: 20px;
+    }
+
+    @media (max-width: 991px) {
+        .calculator-hub .form-group.area-field { margin-bottom: 25px; }
+    }
+
+    .calculator-hub .form-group.area-field label {
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 21px;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+
+    .calculator-hub .form-group.area-field input {
+        display: flex;
+        padding: 9px 14px;
+        height: 52px;
+        border-radius: 6px;
+        border: 1px solid #cacbcc;
+        width: stretch;
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    @media (min-width: 991px) and (max-width: 1200px) {
+        .calculator-hub .form-group.area-field input {
+            width: 195px;
+            margin-right: 44px;
+        }
+    }
+
+    .calculator-hub .form-group.area-field input::placeholder {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+    }
+
+    .calculator-hub .error-msg { visibility: hidden; }
+
+    /* ---------------------------------------
+       CTA (local button styles)
+    ---------------------------------------- */
+    @media (min-width: 992px) {
+        .calculator-hub .form-actions { margin-top: 35px;padding-bottom: 13px }
+    }
+
+    .calculator-hub .form-actions .animated-arrow-button {
+        width: 238px !important;
+        justify-content: center;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        border-radius: 999px;
+        height: 38px;
+        background: linear-gradient(180deg, #ffc63c, #ffa20c);
+        color: #222;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    @media (min-width: 991px) and (max-width: 1200px) {
+        .calculator-hub .form-actions .animated-arrow-button {
+            width: 195px !important;
+            margin-right: 44px;
+        }
+    }
+
+
+    .calculator-hub .form-actions .arrow::after {
+        content: " ";
+        background: url(./resources/images/arrow-icon.svg);
+        background-repeat: no-repeat;
+        background-size: cover;
+            width: 17px;
+    height: 20px;
+        display: inline-block;
+        font-size: 16px;
+        line-height: 1;
+               align-self: center;
+        display: flex;
+        filter: invert(1);
+    }
+
+
+    /* disabled */
+    .calculator-hub button[disabled] {
+        background: #EEEEEF !important;
+        color: #9b9b9b !important;
+        pointer-events: none;
+    }
+
+    /* optional spinner */
+    .calculator-hub .rotating {
+        display: inline-block;
+        animation: chspin 1s linear infinite;
+    }
+    @keyframes chspin { to { transform: rotate(360deg); } }
+
+    /* =========================================================
+       WBC VARIANT (full AMS parity + grid wrap fix)
+    ========================================================= */
+
+    /* padding tweak */
+    @media (min-width: 992px) and (max-width: 1199px) {
+        .calculator-hub .mini-pbc.wbc-variant { padding: 30px 30px; }
+    }
+
+    /* WBC grid layout */
+    .calculator-hub .mini-pbc.wbc-variant form.wbc-mini-form {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        align-items: flex-start;
+    }
+
+    @media (max-width: 991px) {
+        .calculator-hub .mini-pbc.wbc-variant form.wbc-mini-form {
+            align-items: inherit;
+            grid-template-columns: none;
+        }
+    }
+
+    /* WBC: desktop labels must not be full-width */
+    .calculator-hub .mini-pbc.wbc-variant .project-field-inputs {
+        display: block;
+    }
+
+    .calculator-hub .mini-pbc.wbc-variant .project-field-inputs label {
+        display: inline-block !important;
+        width: auto !important;
+        margin-right: 16px;
+        margin-bottom: 16px;
+        vertical-align: top;
+    }
+
+    /* WBC mobile: 2 tiles per row */
+    @media (max-width: 991px) {
+        .calculator-hub .mini-pbc.wbc-variant .project-field-inputs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .calculator-hub .mini-pbc.wbc-variant .project-field-inputs label {
+            margin: 0 !important;
+            width: 48% !important;
+        }
+
+        .calculator-hub .mini-pbc.wbc-variant .project-field-inputs .radiobtn {
+            width: 100%;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 5px;
+            padding: 1px;
+        }
+    }
+
+    /* =========================================================
+       ✅ FIX 1: WBC desktop should be 3 columns (stable)
+       ✅ FIX 2: Icons must NOT use translate() on desktop (stable on 1080p)
+    ========================================================= */
+    @media (min-width: 992px) {
+        .calculator-hub .mini-pbc.wbc-variant .project-field-inputs {
+            display: grid;
+            grid-template-columns: repeat(4, max-content);
+            gap: 16px;
+            align-content: start;
+        }
+
+        .calculator-hub .mini-pbc.wbc-variant .project-field-inputs label {
+            margin: 0 !important;
+            width: auto !important;
+            display: block !important;
+        }
+
+        /* Make each tile layout stable */
+        .calculator-hub .mini-pbc.wbc-variant .project-field-inputs .radiobtn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* ✅ override base translate icon positioning */
+        .calculator-hub .mini-pbc.wbc-variant .project-field-inputs .option-icon {
+            transform: none !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calculator-hub .mini-pbc.wbc-variant .project-field-inputs .option-title {
+            margin-top: 0 !important;
+            text-align: center;
+        }
+    }
+
+    /* WBC tile sizes */
+    @media (min-width: 992px) and (max-width: 1199px) {
+        .calculator-hub .mini-pbc.wbc-variant .project-field-inputs .radiobtn {
+            width: 78px;
+            height: 78px;
+        }
+    }
+
+    @media (min-width: 1200px) and (max-width: 1403px) {
+        .calculator-hub .mini-pbc.wbc-variant .project-field-inputs .radiobtn {
+            width: 95px;
+            height: 95px;
+        }
+    }
+
+    /* ✅ Missing range fix (this is the 1080p browser width problem area) */
+    @media (min-width: 1404px) and (max-width: 1799px) {
+        .calculator-hub .mini-pbc.wbc-variant .project-field-inputs .radiobtn {
+            width: 110px;
+            height: 110px;
+        }
+    }
+/* ✅ Desktop large screens (incl. 1422px width) */
+    @media (min-width: 1400px) and (max-width: 1799px) {
+        .calculator-hub .tool-description .sub-heading {
+            font-size: 64px;
+            line-height: 70.4px;
+        }
+    }
+
+    @media (min-width: 1800px) {
+        .calculator-hub .mini-pbc.wbc-variant .project-field-inputs .radiobtn {
+            width: 150px;
+            height: 150px;
+        }
+
+        .calculator-hub .mini-pbc.wbc-variant .project-field-inputs .option-title {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    }
+
+    /* WBC icon sizing */
+    @media (max-width: 991px) {
+        .calculator-hub .mini-pbc.wbc-variant .project-field-inputs .option-icon {
+            width: 22px;
+            height: auto;
+            margin-left: 10px;
+            transform: none;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .calculator-hub .mini-pbc.wbc-variant .project-field-inputs .option-icon {
+            width: 42px;
+            height: 42px;
+        }
+    }
+
+    .calculator-hub .mini-pbc.wbc-variant .project-field-inputs .icon-img {
+        height: auto;
+    }
+
+    /* WBC title tweaks */
+    @media (max-width: 991px) {
+        .calculator-hub .mini-pbc.wbc-variant .project-field-inputs .option-title {
+            font-weight: 400;
+            margin: 0;
+        }
+    }
+
+    @media (min-width: 320px) and (max-width: 365px) {
+        .calculator-hub .mini-pbc.wbc-variant .project-field-inputs .option-title { font-size: 11px; }
+    }
+
+    @media (min-width: 992px) and (max-width: 1199px) {
+        .calculator-hub .mini-pbc.wbc-variant .project-field-inputs .option-title {
+            font-size: 10px;
+            margin-top: 10px;
+        }
+    }
+
+    /* WBC selected tile */
+    .calculator-hub .mini-pbc.wbc-variant .project-field-inputs input:checked + .radiobtn {
+        background: linear-gradient(180deg, #ffc63c, #ffa20c);
+        border: 0 !important;
+        box-shadow: none;
+    }
+
+    .calculator-hub .mini-pbc.wbc-variant .project-field-inputs input:checked + .radiobtn .option-title {
+        font-weight: 700;
+    }
+
+    /* WBC focus-visible rounding */
+    .calculator-hub .mini-pbc.wbc-variant .project-field-inputs label.focus-visible-auto-imp:focus-visible {
+        border-radius: 5px;
+    }
+
+    /* WBC right column (radio + area inside space-field-inputs) */
+    .calculator-hub .mini-pbc.wbc-variant .space-field-inputs .area-field {
+        margin-top: 10px;
+    }
+    @media (max-width: 991px) {
+        .calculator-hub .mini-pbc.wbc-variant .space-field-inputs .area-field { margin-bottom: 20px; }
+         .calculator-hub .mini-pbc.wbc-variant .tool-description .heading {
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 28.8px;
+            margin-bottom: 5px;
+         }
+        .calculator-hub .mini-pbc.wbc-variant .tool-description .sub-heading {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 34.6px;
+        }
+        .calculator-hub .mini-pbc.wbc-variant .form-actions .animated-arrow-button {
+            width: fit-content !important;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 12px 18px;
+            color: #1e1e1e !important;
+        }
+        .calculator-hub .mini-pbc.wbc-variant .form-actions button[disabled].animated-arrow-button {
+            color: #1e1e1e !important;
+            opacity: 0.6;
+        }
+        .calculator-hub .mini-pbc.wbc-variant .form-actions button[disabled].animated-arrow-button .arrow{
+            opacity: unset !important;
+        }
+
+    
+    }
+
+    /* AMS hides error msg in WBC */
+    .calculator-hub .mini-pbc.wbc-variant .space-field-inputs .area-field .error-msg {
+        display: none;
+    }
+
+    /* WBC area heading */
+    .calculator-hub .mini-pbc.wbc-variant .space-field-inputs .area-field .area-field-heading {
+        font-size: 14px;
+        line-height: 21px;
+        font-weight: 700;
+    }
+
+    /* radio wrapper and radio styles */
+    .calculator-hub .mini-pbc.wbc-variant .radio-wraper label {
+        margin-bottom: 10px;
+        display: inline-flex;
+        flex-direction: row-reverse;
+        gap: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    .calculator-hub .mini-pbc.wbc-variant .radio-wraper input[type="radio"] {
+        appearance: none;
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #53565A;
+        border-radius: 50%;
+        background: #ffffff33;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .calculator-hub .mini-pbc.wbc-variant .radio-wraper input[type="radio"]:checked {
+        background: linear-gradient(180deg, #ffc63c, #ffa20c);
+        border: none;
+    }
+
+    .calculator-hub .mini-pbc.wbc-variant .radio-wraper input[type="radio"]:checked::before {
+        content: "";
+        width: 12px;
+        height: 12px;
+        opacity: 1;
+        border-radius: 50%;
+        position: absolute;
+        background: white;
+    }
+
+    /* responsive */
+    @media (max-width: 991px) {
+        .calculator-hub .tool-description .sub-heading {
+            font-size: 40px;
+            line-height: 48px;
+            margin-bottom: 20px;
+        }
+    }
+
+
+    /* ✅ 1920×1080 AND ABOVE — FONT SCALE UP */
+    @media (min-width: 1800px) {
+        .calculator-hub .tool-description .sub-heading {
+            font-size: 64px;
+            line-height: 70.4px;
+        }
+    }
+
+    @media (max-width: 991px) {
+        .calculator-hub .tool-description .sub-heading {
+            font-size: 40px;
+            line-height: 48px;
+            margin-bottom: 20px;
+        }
+    }
+
+
+    /* FIX: Type of project – text first, radio after */
+    .calculator-hub
+    .mini-pbc.wbc-variant
+    .space-field-inputs
+    .radio-wraper
+    label {
+        display: inline-flex !important;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* force radio to the end */
+    .calculator-hub
+    .mini-pbc.wbc-variant
+    .space-field-inputs
+    .radio-wraper
+    label
+    input[type="radio"] {
+        order: 2;
+    }

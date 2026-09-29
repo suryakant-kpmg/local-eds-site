@@ -1,0 +1,30 @@
+{
+  "variant": "pbc",
+  "screenHeading": "Get quick estimate",
+  "screenSubHeading": "Paint Budget Calculator",
+  "toolLink": "/content/ap/en/home/resources/tools/paint-quotation-tool.html?source=PBC_miniform",
+  "minArea": 100,
+  "areaLabel": "Area",
+  "areaPlaceholder": "Area in SQFT",
+  "errorText": "Please enter area above 100 sq ft",
+  "ctaLabel": "Calculate Now",
+  "storageKey": "miniFormValues",
+  "q1": {
+    "label": "What is your project type?",
+    "style": "icon",
+    "name": "project",
+    "options": [
+      { "label": "Fresh Painting", "value": "Fresh Painting", "icon": "https://example.com/fresh.png" },
+      { "label": "Repainting", "value": "Repainting", "icon": "https://example.com/repaint.png" }
+    ]
+  },
+  "q2": {
+    "label": "Choose your space",
+    "style": "icon",
+    "name": "space",
+    "options": [
+      { "label": "Interior", "value": "Interior", "icon": "https://example.com/interior.png" },
+      { "label": "Exterior", "value": "Exterior", "icon": "https://example.com/exterior.png" }
+    ]
+  }
+}

@@ -1,0 +1,129 @@
+.contact-get-in-touch {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  color: #222;
+}
+
+/* Background image layer */
+.contact-get-in-touch .contact-get-in-touch-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.contact-get-in-touch .contact-get-in-touch-media picture,
+.contact-get-in-touch .contact-get-in-touch-media img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+/* Content layer. Horizontal insets come from the section wrapper; only the
+   vertical padding that gives the banner its height lives here. */
+.contact-get-in-touch .contact-get-in-touch-content {
+  position: relative;
+  z-index: 1;
+  padding: 48px 0 64px;
+}
+
+.contact-get-in-touch .contact-get-in-touch-eyebrow {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: normal;
+  text-transform: uppercase;
+}
+
+.contact-get-in-touch .contact-get-in-touch-heading {
+  margin: 0 0 32px;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+/* Info columns */
+.contact-get-in-touch .contact-get-in-touch-columns {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.contact-get-in-touch .contact-get-in-touch-column b,
+.contact-get-in-touch .contact-get-in-touch-column strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Labels are block-level, so an authored <br> after one would add an empty line */
+.contact-get-in-touch .contact-get-in-touch-column b + br,
+.contact-get-in-touch .contact-get-in-touch-column strong + br {
+  display: none;
+}
+
+.contact-get-in-touch .contact-get-in-touch-column p {
+  margin: 0 0 12px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+  color: #333;
+}
+
+/* Underlined CTA link */
+.contact-get-in-touch .contact-get-in-touch-cta {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 0 0 2px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #222;
+  border-bottom: 2px solid #5e25b2;
+}
+
+.contact-get-in-touch .contact-get-in-touch-cta:hover,
+.contact-get-in-touch .contact-get-in-touch-cta:active {
+  background: transparent;
+  box-shadow: none;
+  font-weight: 700;
+  border-bottom: 2px solid #431a80;
+}
+
+/* Desktop layout */
+@media (width >= 900px) {
+  .contact-get-in-touch .contact-get-in-touch-content {
+    padding: 72px 4% 96px 150px;
+  }
+
+  .contact-get-in-touch .contact-get-in-touch-heading {
+    font-size: 60px;
+    margin-bottom: 56px;
+  }
+
+  .contact-get-in-touch .contact-get-in-touch-columns {
+    flex-direction: row;
+    align-items: center;
+    gap: 128px;
+  }
+
+  .contact-get-in-touch .contact-get-in-touch-column {
+    flex: 0 1 auto;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 991px) {
+  .contact-get-in-touch .contact-get-in-touch-content {
+    padding: 22px 0 10px;
+    padding-left: 20px;
+    margin-top: 30px;
+  }
+}

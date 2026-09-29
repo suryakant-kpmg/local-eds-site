@@ -1,0 +1,272 @@
+.expert-tips {
+  --expert-tips-gap: 18px;
+  --expert-tips-card-width: 227px;
+  --expert-tips-card-padding: 15px;
+  --expert-tips-radius: 10px;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+/* title */
+.expert-tips .expert-tips-intro > * {
+  margin: 0;
+}
+
+.expert-tips .expert-tips-intro > :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-s);
+  font-weight: 800;
+  line-height: 1.4;
+  color: var(--text-color);
+}
+
+.expert-tips .expert-tips-intro > p {
+  margin-top: 16px;
+  font-size: var(--body-font-size-xs);
+  font-weight: 500;
+}
+
+/* card rail: native horizontal scroll with snap points, no JS needed to swipe */
+.expert-tips .expert-tips-list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: var(--expert-tips-card-width);
+  gap: var(--expert-tips-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.expert-tips .expert-tips-list::-webkit-scrollbar {
+  display: none;
+}
+
+.expert-tips .expert-tips-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: var(--expert-tips-card-padding);
+  border-radius: var(--expert-tips-radius);
+  background-color: var(--light-color);
+  font-size: var(--body-font-size-xs);
+  scroll-snap-align: start;
+}
+
+.expert-tips .expert-tips-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.expert-tips .expert-tips-card-body > * {
+  margin: 0;
+}
+
+.expert-tips .expert-tips-card-eyebrow {
+  font-size: 0.75em;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--dark-color);
+}
+
+.expert-tips .expert-tips-card-body > .expert-tips-card-title {
+  margin-top: 10px;
+  font-family: var(--body-font-family);
+  font-size: 1em;
+  font-weight: 500;
+  line-height: 1.15;
+  color: var(--text-color);
+}
+
+.expert-tips .expert-tips-card-body > .expert-tips-card-cta {
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.expert-tips .expert-tips-card-cta a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 24px;
+  font-size: 0.8em;
+  font-weight: 700;
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.expert-tips .expert-tips-card-cta a:hover {
+  text-decoration: underline;
+}
+
+.expert-tips .expert-tips-card-cta svg {
+  width: 1.1em;
+  height: 1.1em;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.expert-tips .expert-tips-card-image {
+  aspect-ratio: 308 / 210;
+  overflow: hidden;
+}
+
+.expert-tips .expert-tips-card-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* controls: shown by JS only when the cards overflow */
+.expert-tips .expert-tips-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.expert-tips .expert-tips-controls[hidden] {
+  display: none;
+}
+
+.expert-tips .expert-tips-controls button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.expert-tips .expert-tips-dots {
+  display: flex;
+}
+
+.expert-tips .expert-tips-controls .expert-tips-dot {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+}
+
+.expert-tips .expert-tips-dot::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: var(--dark-color);
+  opacity: 0.35;
+  transition: width 0.3s, opacity 0.3s;
+}
+
+.expert-tips .expert-tips-dot[aria-current='true']::before {
+  width: 20px;
+  opacity: 1;
+}
+
+.expert-tips .expert-tips-controls .expert-tips-prev,
+.expert-tips .expert-tips-controls .expert-tips-next {
+  display: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 2px solid currentcolor;
+  border-radius: 50%;
+}
+
+.expert-tips .expert-tips-controls .expert-tips-prev:disabled,
+.expert-tips .expert-tips-controls .expert-tips-next:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.expert-tips .expert-tips-controls svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.expert-tips .expert-tips-controls button:focus-visible,
+.expert-tips .expert-tips-card-cta a:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.expert-tips .expert-tips-controls .expert-tips-prev:focus-visible,
+.expert-tips .expert-tips-controls .expert-tips-next:focus-visible {
+  border-radius: 50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .expert-tips .expert-tips-dot::before {
+    transition: none;
+  }
+}
+
+@media (width >= 992px) {
+  .expert-tips {
+    --expert-tips-gap: 20px;
+    --expert-tips-card-padding: 20px;
+
+    grid-template-columns: minmax(0, 1fr) minmax(0, 4fr);
+    align-items: center;
+    gap: 0;
+  }
+
+  .expert-tips .expert-tips-intro {
+    padding-right: 25px;
+  }
+
+  .expert-tips .expert-tips-intro > :is(h1, h2, h3, h4, h5, h6) {
+    font-size: var(--heading-font-size-xxl);
+    line-height: 1.18;
+  }
+
+  /* three cards fill the rail; more than three scroll */
+  .expert-tips .expert-tips-list {
+    grid-auto-columns: calc((100% - 2 * var(--expert-tips-gap)) / 3);
+  }
+
+  .expert-tips .expert-tips-card-eyebrow {
+    font-size: 1em;
+  }
+
+  .expert-tips .expert-tips-card-body > .expert-tips-card-title {
+    font-size: var(--heading-font-size-s);
+  }
+
+  .expert-tips .expert-tips-card-body > .expert-tips-card-cta {
+    padding-top: 35px;
+  }
+
+  .expert-tips .expert-tips-card-cta a {
+    font-size: 0.93em;
+  }
+
+  .expert-tips .expert-tips-controls {
+    justify-content: flex-end;
+  }
+
+  .expert-tips .expert-tips-dots {
+    display: none;
+  }
+
+  .expert-tips .expert-tips-controls .expert-tips-prev,
+  .expert-tips .expert-tips-controls .expert-tips-next {
+    display: grid;
+  }
+}

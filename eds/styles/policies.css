@@ -1,0 +1,144 @@
+/* =============================================
+   POLICIES
+   ============================================= */
+
+@media (width >=992px) {
+   .desktop-mt-100 {
+      margin-top: 100px !important;
+   }
+
+   .desktop-mt-60 {
+      margin-top: 60px;
+   }
+
+   .desktop-side-padding-4 {
+      padding-left: 4%;
+      padding-right: 4%;
+   }
+
+   .desktop-side-padding-40 {
+      padding-left: 40px;
+      padding-right: 40px;
+   }
+}
+
+@media (width < 992px) {
+   .mobile-mt-100 {
+      margin-top: 100px;
+   }
+
+   .mobile-mt-60 {
+      margin-top: 60px;
+   }
+
+   .mobile-side-padding-16 {
+      padding-left: 16px;
+      padding-right: 16px;
+   }
+}
+
+/* Bootstrap utility fallbacks.
+   Bootstrap CSS is deliberately deferred until first user interaction
+   (see loadDelayed in scripts.js), so any of its utility classes used on
+   content visible at page load are unstyled until then. The utilities
+   below mirror Bootstrap 5.3 exactly (same values, same !important) so
+   they apply at load and nothing shifts when Bootstrap arrives later. */
+.d-none {
+   display: none !important;
+}
+
+.d-flex {
+   display: flex !important;
+}
+
+.flex-column {
+   flex-direction: column !important;
+}
+
+.flex-wrap {
+   flex-wrap: wrap !important;
+}
+
+.align-items-center {
+   align-items: center !important;
+}
+
+.w-100 {
+   width: 100% !important;
+}
+
+.m-0 {
+   margin: 0 !important;
+}
+
+.p-0 {
+   padding: 0 !important;
+}
+
+.position-relative {
+   position: relative !important;
+}
+
+.overflow-hidden {
+   overflow: hidden !important;
+}
+
+.mt-0 {
+   margin-top: 0 !important;
+}
+
+.mt-1 {
+   margin-top: 0.25rem !important;
+}
+
+.mt-2 {
+   margin-top: 0.5rem !important;
+}
+
+.mt-3 {
+   margin-top: 1rem !important;
+}
+
+.mt-4 {
+   margin-top: 1.5rem !important;
+}
+
+.mt-5 {
+   margin-top: 3rem !important;
+}
+
+.mb-0 {
+   margin-bottom: 0 !important;
+}
+
+.mb-1 {
+   margin-bottom: 0.25rem !important;
+}
+
+.mb-2 {
+   margin-bottom: 0.5rem !important;
+}
+
+.mb-3 {
+   margin-bottom: 1rem !important;
+}
+
+.mb-4 {
+   margin-bottom: 1.5rem !important;
+}
+
+.mb-5 {
+   margin-bottom: 3rem !important;
+}
+
+.pt-5 {
+   padding-top: 3rem !important;
+}
+
+.pb-5 {
+   padding-bottom: 3rem !important;
+}
+
+.text-center {
+   text-align: center;
+}
