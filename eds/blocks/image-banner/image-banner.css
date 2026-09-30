@@ -142,6 +142,16 @@ main > .section .image-banner.block > .breadcrumb-wrapper {
   color: var(--ib-crumb-separator);
 }
 
+/* as on the source, the next section starts right under a banner that ends its section
+   (removes the standard 40px section spacing between the two) */
+main > .section:has(> .image-banner-wrapper:last-child) {
+  margin-bottom: 0;
+}
+
+main > .section:has(> .image-banner-wrapper:last-child) + .section {
+  margin-top: 0;
+}
+
 /* options */
 .image-banner.dark-text {
   --ib-text-color: var(--dark-color);
