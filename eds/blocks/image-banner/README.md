@@ -20,6 +20,9 @@ top of the banner, as on the source:
 | **Exterior Wall Paints** *(heading)*<br>Explore the versatile range of exterior paint products for your home!<br>[Explore Now](https://www.asianpaints.com/paint-products/exterior-wall-paints/plain-finishes.html) | |
 | CTA target | Same tab |
 
+- **Keep Breadcrumb + Image Banner in their own section**: add a section break (`---`) right
+  after the banner. Other blocks in the same section bring their section styles with them (for
+  example Cards `grid` adds padding and a cream background, which boxes the banner in).
 - **Image row**: desktop image, optional mobile image (shown below 992px). Alt text comes from the
   image. The frame keeps each image's own ratio, so nothing shifts while it loads.
 - **Content row**: a heading, description and a link. The last link becomes the CTA and makes the
