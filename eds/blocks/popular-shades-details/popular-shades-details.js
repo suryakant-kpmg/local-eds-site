@@ -1,6 +1,12 @@
 /*
 ** Authoring format **
-Row 1 - intro: heading (italic words get the brand gradient), description, CTA link
+Row 1 - intro: heading (italic words get the brand gradient), description
+Settings rows (optional, two cells: name | value):
+  CTA label          | View Catalogue
+  CTA link           | https://www.asianpaints.com/catalogue/colour-catalogue.html
+  CTA target         | Same tab (default) or New tab
+  Autoplay           | Yes (default) or No
+  Autoplay interval  | 3000 (milliseconds, or "3s")
 One row per shade:
 Col 1 - desktop image
 Col 2 - mobile image (optional)
@@ -8,6 +14,7 @@ Col 3 - swatch colour (hex, e.g. #FCDAB7)
 Col 4 - shade name
 Col 5 - shade code (e.g. #7986)
 
+Without a "CTA link" row, the last link in the intro becomes the CTA.
 Options: add "no-autoplay" to the block name to disable auto-rotation.
 */
 
@@ -23,7 +30,56 @@ import {
 const DESKTOP_MEDIA = '(width >= 992px)';
 const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
 const AUTOPLAY_DELAY = 3000;
+const MIN_AUTOPLAY_DELAY = 1000;
 const COLOUR_PATTERN = /^(#?[0-9a-f]{6}|#[0-9a-f]{3}|(rgb|hsl)a?\(.+\))$/i;
+
+// settings-row names authors may use, mapped to config keys
+const SETTINGS = {
+  'cta label': 'ctaLabel',
+  'cta text': 'ctaLabel',
+  'button label': 'ctaLabel',
+  'cta link': 'ctaLink',
+  'cta url': 'ctaLink',
+  'button link': 'ctaLink',
+  'cta target': 'ctaTarget',
+  'open link in': 'ctaTarget',
+  autoplay: 'autoplay',
+  autoswitch: 'autoplay',
+  'autoplay interval': 'interval',
+  'autoplay timeout': 'interval',
+  interval: 'interval',
+};
+
+const settingKey = (row) => {
+  const cols = [...row.children];
+  if (cols.length !== 2 || row.querySelector('img')) return null;
+  return SETTINGS[cols[0].textContent.trim().toLowerCase().replace(/\s+/g, ' ')] || null;
+};
+
+/**
+ * Reads the optional name | value settings rows.
+ */
+function readSettings(rows) {
+  const config = {};
+  rows.forEach((row) => {
+    const key = settingKey(row);
+    const valueCol = row.children[1];
+    const text = valueCol.textContent.trim();
+    if (key === 'ctaLink') {
+      config.ctaLink = valueCol.querySelector('a[href]')?.getAttribute('href') || text;
+    } else if (key === 'ctaTarget') {
+      config.newTab = /^(_blank|new( tab| window)?|yes|true)$/i.test(text);
+    } else if (key === 'autoplay') {
+      config.autoplay = !/^(no|false|off|0)$/i.test(text);
+    } else if (key === 'interval') {
+      const value = parseFloat(text);
+      if (value > 0) config.interval = /s$/i.test(text) && !/ms$/i.test(text) ? value * 1000 : value;
+    } else if (key) {
+      config[key] = text;
+    }
+  });
+  return config;
+}
 
 function toColour(text) {
   const value = /^[0-9a-f]{6}$/i.test(text) ? `#${text}` : text;
@@ -82,29 +138,49 @@ function readShade(row, index) {
 function decorateIntro(row) {
   const intro = document.createElement('div');
   intro.className = 'popular-shades-details-intro';
-  moveInstrumentation(row, intro);
-  [...row.children].forEach((col) => intro.append(...col.childNodes));
+  if (row) {
+    moveInstrumentation(row, intro);
+    [...row.children].forEach((col) => intro.append(...col.childNodes));
+  }
 
   const heading = intro.querySelector('h1, h2, h3, h4, h5, h6');
   heading?.classList.add('popular-shades-details-heading');
   heading?.querySelectorAll('em').forEach((em) => em.classList.add('popular-shades-details-gradient'));
+  return { intro, title: heading?.textContent.trim() || '' };
+}
 
-  // the CTA is laid out separately so it can sit below the swatches on mobile
-  const link = [...intro.querySelectorAll('a[href]')].pop();
-  let cta = null;
-  if (link) {
-    cta = document.createElement('p');
-    cta.className = 'popular-shades-details-cta';
-    link.className = '';
-    const wrapper = link.closest('p');
-    cta.append(link);
-    if (wrapper && !wrapper.textContent.trim()) wrapper.remove();
-    link.insertAdjacentHTML('beforeend', '<span class="popular-shades-details-cta-arrow" aria-hidden="true"></span>');
-    link.addEventListener('click', () => {
-      triggerCTAClickWithLinkAndTitle(link.href, link.textContent.trim(), heading?.textContent.trim() || '');
-    });
+/**
+ * Builds the pill CTA from the settings rows, falling back to the last link in the intro.
+ * It is laid out separately from the intro so it can sit below the swatches on mobile.
+ */
+function buildCta(intro, config, title) {
+  let link = [...intro.querySelectorAll('a[href]')].pop();
+  if (config.ctaLink) {
+    const label = config.ctaLabel || link?.textContent.trim() || 'Learn more';
+    link = document.createElement('a');
+    link.href = config.ctaLink;
+    link.textContent = label;
+  } else if (link && config.ctaLabel) {
+    link.textContent = config.ctaLabel;
   }
-  return { intro, cta, title: heading?.textContent.trim() || '' };
+  if (!link) return null;
+
+  const wrapper = link.closest('p');
+  const cta = document.createElement('p');
+  cta.className = 'popular-shades-details-cta';
+  link.className = '';
+  cta.append(link);
+  if (wrapper && !wrapper.textContent.trim()) wrapper.remove();
+  if (config.newTab) {
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.setAttribute('aria-label', `${link.textContent.trim()} (opens in a new tab)`);
+  }
+  link.insertAdjacentHTML('beforeend', '<span class="popular-shades-details-cta-arrow" aria-hidden="true"></span>');
+  link.addEventListener('click', () => {
+    triggerCTAClickWithLinkAndTitle(link.href, link.textContent.trim(), title);
+  });
+  return cta;
 }
 
 function trackShadeClick(shade, title) {
@@ -121,9 +197,12 @@ function trackShadeClick(shade, title) {
 
 export default function decorate(block) {
   const rows = [...block.children];
+  const settingRows = rows.filter(settingKey);
   const shadeRows = rows.filter((row) => row.querySelector('img'));
-  const introRow = rows.find((row) => !shadeRows.includes(row));
-  const { intro, cta, title } = introRow ? decorateIntro(introRow) : {};
+  const introRow = rows.find((row) => !shadeRows.includes(row) && !settingRows.includes(row));
+  const config = readSettings(settingRows);
+  const { intro, title } = decorateIntro(introRow);
+  const cta = buildCta(intro, config, title);
   const shades = shadeRows.map(readShade);
 
   const media = document.createElement('div');
@@ -190,7 +269,9 @@ export default function decorate(block) {
   // auto-rotation as on the source: loops continuously and carries on from a clicked shade;
   // only idles while the block is off screen or the tab is hidden
   let schedule = () => {};
-  if (shades.length > 1 && !block.classList.contains('no-autoplay')) {
+  const autoplay = config.autoplay !== false && !block.classList.contains('no-autoplay');
+  const delay = Math.max(config.interval || AUTOPLAY_DELAY, MIN_AUTOPLAY_DELAY);
+  if (shades.length > 1 && autoplay) {
     let visible = false;
     let timer;
     schedule = () => {
@@ -199,7 +280,7 @@ export default function decorate(block) {
       timer = setTimeout(() => {
         select((active + 1) % shades.length);
         schedule();
-      }, AUTOPLAY_DELAY);
+      }, delay);
     };
     document.addEventListener('visibilitychange', schedule);
     new IntersectionObserver(([entry]) => {

@@ -1,9 +1,10 @@
 /* Popular Shades Details: house preview that repaints as a shade swatch is chosen */
 .popular-shades-details {
-  /* block palette; the source's grey swatch tick has no global token */
+  /* block palette; the source's swatch tick and CTA hover cream have no global tokens */
   --psd-text-color: var(--text-color);
   --psd-focus-color: var(--primary-color);
   --psd-tick-color: var(--dark-grey);
+  --psd-cta-hover-bg: #fff7e8;
   --psd-swatch-width: 96px;
   --psd-swatch-height: 100px;
   --psd-inline-padding: 11px;
@@ -187,8 +188,8 @@
 }
 
 .popular-shades-details .popular-shades-details-cta a:hover {
-  background-color: var(--dark-color);
-  color: var(--background-color);
+  background-color: var(--psd-cta-hover-bg);
+  color: var(--dark-color);
 }
 
 .popular-shades-details .popular-shades-details-cta-arrow {
