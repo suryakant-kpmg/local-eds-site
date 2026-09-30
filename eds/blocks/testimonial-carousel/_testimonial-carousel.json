@@ -1,0 +1,252 @@
+{
+  "definitions": [
+    {
+      "title": "Testimonial Carousel",
+      "id": "testimonial-carousel",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Testimonial Carousel",
+              "model": "testimonial-carousel",
+              "filter": "testimonial-carousel"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Setting (Eyebrow / Title / Subtitle)",
+      "id": "testimonial-carousel-setting",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Setting",
+              "model": "testimonial-carousel-setting"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Play Icon",
+      "id": "testimonial-carousel-play-icon",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Play Icon",
+              "model": "testimonial-carousel-play-icon",
+              "label": "Play icon"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Testimonial",
+      "id": "testimonial-carousel-testimonial",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Testimonial",
+              "model": "testimonial-carousel-testimonial"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Video (home-work)",
+      "id": "testimonial-carousel-video",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Video",
+              "model": "testimonial-carousel-video"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "testimonial-carousel",
+      "fields": [
+        {
+          "component": "select",
+          "name": "classes",
+          "label": "Variant",
+          "valueType": "string",
+          "value": "",
+          "options": [
+            {
+              "name": "Default (testimonials)",
+              "value": ""
+            },
+            {
+              "name": "Stories",
+              "value": "stories-variant"
+            },
+            {
+              "name": "Home-work (video cards)",
+              "value": "home-work"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "testimonial-carousel-setting",
+      "fields": [
+        {
+          "component": "select",
+          "name": "label",
+          "label": "Setting",
+          "valueType": "string",
+          "value": "Title",
+          "options": [
+            {
+              "name": "Eyebrow (home-work)",
+              "value": "Eyebrow"
+            },
+            {
+              "name": "Title",
+              "value": "Title"
+            },
+            {
+              "name": "Subtitle / description",
+              "value": "Subtitle"
+            }
+          ]
+        },
+        {
+          "component": "text",
+          "name": "value",
+          "label": "Text",
+          "valueType": "string",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "testimonial-carousel-play-icon",
+      "fields": [
+        {
+          "component": "text",
+          "name": "label",
+          "label": "Row type (keep as \"Play icon\")",
+          "valueType": "string",
+          "value": "Play icon"
+        },
+        {
+          "component": "reference",
+          "name": "icon",
+          "label": "Play icon image",
+          "valueType": "string",
+          "multi": false
+        }
+      ]
+    },
+    {
+      "id": "testimonial-carousel-testimonial",
+      "fields": [
+        {
+          "component": "reference",
+          "name": "image",
+          "label": "Thumbnail",
+          "valueType": "string",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "name": "video",
+          "label": "YouTube embed link (https://www.youtube.com/embed/<id>)",
+          "valueType": "string",
+          "value": ""
+        },
+        {
+          "component": "text",
+          "name": "quote",
+          "label": "Testimonial text",
+          "valueType": "string",
+          "value": ""
+        },
+        {
+          "component": "text",
+          "name": "name",
+          "label": "Customer name",
+          "valueType": "string",
+          "value": ""
+        },
+        {
+          "component": "text",
+          "name": "place",
+          "label": "Place (stories: number of views)",
+          "valueType": "string",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "testimonial-carousel-video",
+      "fields": [
+        {
+          "component": "reference",
+          "name": "image",
+          "label": "Thumbnail",
+          "valueType": "string",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "name": "imageAlt",
+          "label": "Thumbnail alt text",
+          "valueType": "string",
+          "value": ""
+        },
+        {
+          "component": "text",
+          "name": "video",
+          "label": "YouTube embed link (https://www.youtube.com/embed/<id>)",
+          "valueType": "string",
+          "value": ""
+        },
+        {
+          "component": "text",
+          "name": "title",
+          "label": "Video title",
+          "valueType": "string",
+          "value": ""
+        },
+        {
+          "component": "text",
+          "name": "description",
+          "label": "Video description",
+          "valueType": "string",
+          "value": ""
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "testimonial-carousel",
+      "components": [
+        "testimonial-carousel-setting",
+        "testimonial-carousel-play-icon",
+        "testimonial-carousel-testimonial",
+        "testimonial-carousel-video"
+      ]
+    }
+  ]
+}

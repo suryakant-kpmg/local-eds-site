@@ -43,11 +43,29 @@ Col 3 → Testimonial text (short quote, shown exactly as authored)
 Col 4 → Customer name (e.g. "Dr.Sachin Kumble - Pune")
 Col 5 → Number of views (e.g. "110" → shown as "110 views" with an eye icon)
 
+----------------------------------------
+Variant: home-work
+(block authored as "testimonial-carousel (home-work)") - video cards such as
+"Discover / Homework by Asian Paints"
+
+Row "Eyebrow" (optional) → small line above the title (e.g. "Discover")
+Row "Title"              → section title
+Row "Subtitle"           → description below the title
+Row "Play icon"          → play icon image shown on every thumbnail
+Row onwards (one row per video)
+Col 1 → Thumbnail image (picture)
+Col 2 → YouTube embed link (e.g. https://www.youtube.com/embed/<id>)
+Col 3 → Video title
+Col 4 → Video description
+
 Labels in Col 1 are matched case-insensitively. Older unlabelled title rows
 ("Title" or "Title | Subtitle") are still supported.
 */
 
-import { trackEvent, bindCarouselNavigationTracking, pushAdobeCtaClickEvent } from "../../scripts/analytics_1.js";
+import { createOptimizedPicture } from '../../scripts/aem.js';
+import { moveInstrumentation } from '../../scripts/scripts.js';
+import { trackEvent, bindCarouselNavigationTracking, pushAdobeCtaClickEvent } from '../../scripts/analytics_1.js';
+
 async function getSwiperClass() {
   if (window.Swiper) return window.Swiper;
   if (window.loadSwiper) return window.loadSwiper();
@@ -78,6 +96,7 @@ function buildHeading(rows, block) {
   const testimonialRows = [];
   let playIcon = null;
   let subtitleText = '';
+  let eyebrowText = '';
 
   rows.forEach((row) => {
     const cols = [...row.querySelectorAll(':scope > div')];
@@ -95,6 +114,8 @@ function buildHeading(rows, block) {
       if (!headingText) headingText = cols[1].textContent.trim();
     } else if (label === 'subtitle') {
       subtitleText = cols[1].textContent.trim();
+    } else if (label === 'eyebrow') {
+      eyebrowText = cols[1].textContent.trim();
     } else if (isHeadingRow) {
       if (!headingText) headingText = cols[0].textContent.trim();
       if (cols[1]) subtitleText = cols[1].textContent.trim();
@@ -104,7 +125,7 @@ function buildHeading(rows, block) {
   });
 
   return {
-    headingText, subtitleText, siblingHeading, testimonialRows, playIcon,
+    headingText, subtitleText, eyebrowText, siblingHeading, testimonialRows, playIcon,
   };
 }
 
@@ -120,37 +141,6 @@ function createQuoteIcon() {
   logo.appendChild(img);
 
   return logo;
-}
-
-function getTestimonialContent(columns) {
-  let quoteText = '';
-  let nameText = '';
-  let locationText = '';
-
-  if (columns.length >= 4) {
-    quoteText = columns[1]?.textContent?.trim() || '';
-    nameText = columns[2]?.textContent?.trim() || '';
-    locationText = columns[3]?.textContent?.trim() || '';
-  } else if (columns.length >= 2) {
-    const paragraphs = columns[1]?.querySelectorAll('p') || [];
-    if (paragraphs[0]) quoteText = paragraphs[0].textContent.trim();
-
-    if (paragraphs[1]) {
-      const strong = paragraphs[1].querySelector('strong');
-      const fullText = paragraphs[1].textContent.trim();
-
-      if (strong) {
-        nameText = strong.textContent.trim();
-        locationText = fullText.replace(nameText, '').replace(/^[,\s]+/, '').trim();
-      } else {
-        const parts = fullText.split(',');
-        nameText = parts[0]?.trim() || '';
-        locationText = parts.slice(1).join(',').trim();
-      }
-    }
-  }
-
-  return { quoteText, nameText, locationText };
 }
 
 function createVideoModal(block) {
@@ -170,7 +160,7 @@ function createVideoModal(block) {
   return modal;
 }
 
-function openVideoModal(block, videoUrl) {
+function openVideoModal(block, videoUrl, title = 'Customer testimonial video') {
   const modal = block.querySelector('.testimonial-video-modal');
   const videoWrapper = modal?.querySelector('.testimonial-video-wrapper');
   if (!modal || !videoWrapper || !videoUrl) return;
@@ -181,7 +171,7 @@ function openVideoModal(block, videoUrl) {
   videoWrapper.innerHTML = `
     <iframe
       src="${iframeSrc}"
-      title="Customer testimonial video"
+      title="${title.replace(/"/g, '&quot;')}"
       allow="autoplay; encrypted-media; picture-in-picture"
       allowfullscreen
     ></iframe>
@@ -189,6 +179,13 @@ function openVideoModal(block, videoUrl) {
 
   modal.classList.add('active');
   document.body.classList.add('testimonial-video-open');
+
+  if (block.classList.contains('home-work')) {
+    // home-work: move focus into the dialog and remember where to return it
+    modal.returnFocus = document.activeElement;
+    modal.setAttribute('aria-label', title);
+    modal.querySelector('.testimonial-video-close')?.focus();
+  }
 }
 
 function closeVideoModal(block) {
@@ -199,6 +196,11 @@ function closeVideoModal(block) {
   modal.classList.remove('active');
   videoWrapper.innerHTML = '';
   document.body.classList.remove('testimonial-video-open');
+
+  if (modal.returnFocus) {
+    modal.returnFocus.focus();
+    modal.returnFocus = null;
+  }
 }
 
 // eye icon for the stories-variant view count
@@ -245,9 +247,43 @@ function buildStoriesContent(descriptionCol, nameCol, viewsCol) {
   return content;
 }
 
+/** home-work card body: video title and description */
+function buildHomeWorkContent(titleCol, descriptionCol) {
+  const content = document.createElement('div');
+  content.className = 'testimonial-content';
+  const titleText = titleCol?.textContent?.trim() || '';
+  if (titleText) {
+    const title = document.createElement('h3');
+    title.className = 'testimonial-title';
+    title.textContent = titleText;
+    content.appendChild(title);
+  }
+  const descriptionText = descriptionCol?.textContent?.trim() || '';
+  if (descriptionText) {
+    const description = document.createElement('p');
+    description.className = 'testimonial-description';
+    description.textContent = descriptionText;
+    content.appendChild(description);
+  }
+  return content;
+}
+
+function optimizeThumbnail(picture) {
+  const img = picture.querySelector('img');
+  if (!img) return picture.cloneNode(true);
+  const optimized = createOptimizedPicture(img.src, img.alt, false, [
+    { media: '(width >= 992px)', width: '650' },
+    { width: '520' },
+  ]);
+  moveInstrumentation(img, optimized.querySelector('img'));
+  return optimized;
+}
+
 function buildSlide(row, block, playIcon) {
   const slide = document.createElement('div');
   slide.className = 'testimonial-slide swiper-slide';
+  const isHomeWork = block.classList.contains('home-work');
+  if (isHomeWork) moveInstrumentation(row, slide);
 
   const columns = [...row.querySelectorAll(':scope > div')];
 
@@ -255,26 +291,30 @@ function buildSlide(row, block, playIcon) {
   //                 columns[1] = quote text
   //                 columns[2] = name
   //                 columns[3] = location
-const imageCol = columns[0];
-const videoCol = columns[1];
-const descriptionCol = columns[2];
-const nameCol = columns[3];
-const placeCol = columns[4];
+  const imageCol = columns[0];
+  const videoCol = columns[1];
+  const descriptionCol = columns[2];
+  const nameCol = columns[3];
+  const placeCol = columns[4];
 
   // Video link lives in the <a> wrapping the thumbnail image
   // const videoLink = imageCol?.querySelector('a')?.href || '';
-  const videoLink = columns[1]?.textContent.trim() || '';
+  const videoLink = videoCol?.textContent.trim() || '';
 
   const imageWrapper = document.createElement('div');
   imageWrapper.className = 'testimonial-image';
 
   const picture = imageCol?.querySelector('picture');
-  if (picture) imageWrapper.appendChild(picture.cloneNode(true));
+  if (picture) {
+    imageWrapper.appendChild(isHomeWork ? optimizeThumbnail(picture) : picture.cloneNode(true));
+  }
+  // home-work: col 3 is the video title (default/stories: testimonial text, col 4 the name)
+  const videoTitle = (isHomeWork ? descriptionCol : nameCol)?.textContent?.trim() || '';
 
   const playButton = document.createElement('button');
   playButton.className = 'testimonial-play-button';
   playButton.type = 'button';
-  playButton.setAttribute('aria-label', 'Play testimonial video');
+  playButton.setAttribute('aria-label', isHomeWork && videoTitle ? `Play video: ${videoTitle}` : 'Play testimonial video');
 
   // play icon is authored in DA (row 2); the button's aria-label names it,
   // so the icon itself is decorative
@@ -294,15 +334,13 @@ const placeCol = columns[4];
     playButton.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      openVideoModal(block, videoLink);
+      if (isHomeWork) openVideoModal(block, videoLink, videoTitle || 'Video');
+      else openVideoModal(block, videoLink);
       trackEvent('test_open');
-      
-        pushAdobeCtaClickEvent({
-        title: nameCol?.textContent?.trim() || '',
-        event: 'test_open'
-        })
-
-
+      pushAdobeCtaClickEvent({
+        title: videoTitle,
+        event: 'test_open',
+      });
     });
   }
 
@@ -313,13 +351,18 @@ const placeCol = columns[4];
     return slide;
   }
 
+  if (isHomeWork) {
+    slide.append(imageWrapper, buildHomeWorkContent(descriptionCol, nameCol));
+    return slide;
+  }
+
   const contentWrapper = document.createElement('div');
   contentWrapper.className = 'testimonial-content';
   contentWrapper.appendChild(createQuoteIcon());
 
   const quoteText = descriptionCol?.textContent?.trim() || '';
-const nameText = nameCol?.textContent?.trim() || '';
-const placeText = placeCol?.textContent?.trim() || '';
+  const nameText = nameCol?.textContent?.trim() || '';
+  const placeText = placeCol?.textContent?.trim() || '';
 
   if (quoteText) {
     const quoteDiv = document.createElement('div');
@@ -380,11 +423,12 @@ export default function decorate(block) {
   if (!rows.length) return;
 
   const {
-    headingText, subtitleText, siblingHeading, testimonialRows, playIcon,
+    headingText, subtitleText, eyebrowText, siblingHeading, testimonialRows, playIcon,
   } = buildHeading(rows, block);
   if (!testimonialRows.length) return;
 
   const isStories = block.classList.contains('stories-variant');
+  const isHomeWork = block.classList.contains('home-work');
 
   const container = document.createElement('div');
   container.className = 'testimonial-carousel-container';
@@ -409,6 +453,25 @@ export default function decorate(block) {
       headingTextEl.appendChild(subtitle);
     }
     headingWrapper.appendChild(headingTextEl);
+  } else if (isHomeWork) {
+    // home-work: eyebrow, title and description as authored
+    if (eyebrowText) {
+      const eyebrow = document.createElement('p');
+      eyebrow.className = 'testimonial-eyebrow';
+      eyebrow.textContent = eyebrowText;
+      headingWrapper.appendChild(eyebrow);
+    }
+    if (headingText) {
+      const h2 = document.createElement('h2');
+      h2.textContent = headingText;
+      headingWrapper.appendChild(h2);
+    }
+    if (subtitleText) {
+      const subtitle = document.createElement('p');
+      subtitle.className = 'testimonial-subtitle';
+      subtitle.textContent = subtitleText;
+      headingWrapper.appendChild(subtitle);
+    }
   } else {
     if (headingText) {
       const h2 = document.createElement('h2');
@@ -455,6 +518,8 @@ export default function decorate(block) {
     </button>
   `;
 
+  if (isHomeWork) swiperEl.setAttribute('aria-label', headingText ? `${headingText} videos` : 'Videos');
+
   if (isStories) {
     headingWrapper.appendChild(navButtons);
     carouselWrapper.append(swiperEl, paginationEl);
@@ -465,7 +530,11 @@ export default function decorate(block) {
 
   block.textContent = '';
   block.appendChild(container);
-  createVideoModal(block);
+  const modal = createVideoModal(block);
+  if (isHomeWork) {
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+  }
 
   hideSiblingHeading(siblingHeading);
   bindModalEvents(block);
@@ -475,9 +544,7 @@ export default function decorate(block) {
   function handleNav(swiper) {
     const totalSlides = swiper.slides.length;
 
-
-
-    let slidesPerView = swiper.params.slidesPerView;
+    let { slidesPerView } = swiper.params;
 
     // ✅ correct way to get current slidesPerView
     if (typeof slidesPerView !== 'number') {
@@ -516,31 +583,41 @@ export default function decorate(block) {
     const Swiper = await getSwiperClass();
     if (!Swiper) return;
 
-    // stories-variant: card widths come from CSS (next card peeks in)
-    const layout = isStories
-      ? {
-        slidesPerView: 'auto',
-        spaceBetween: 16,
-        breakpoints: { 900: { spaceBetween: 20 } },
-      }
-      : {
-        slidesPerView: 1,
-        spaceBetween: 20,
-        breakpoints: {
-          600: {
-            slidesPerView: 1.1,
-            spaceBetween: 20,
-          },
-          900: {
-            slidesPerView: 2,
-            spaceBetween: 20,
-          },
-          1200: {
-            slidesPerView: 3,
-            spaceBetween: 20,
-          },
+    // stories-variant / home-work: card widths come from CSS (next card peeks in)
+    const homeWorkLayout = {
+      slidesPerView: 'auto',
+      spaceBetween: 20,
+      slidesOffsetBefore: 15,
+      slidesOffsetAfter: 15,
+      breakpoints: { 992: { slidesOffsetBefore: 20, slidesOffsetAfter: 20 } },
+      // Swiper's a11y module labels the arrows; name them for videos
+      a11y: { prevSlideMessage: 'Previous video', nextSlideMessage: 'Next video' },
+    };
+    const storiesLayout = {
+      slidesPerView: 'auto',
+      spaceBetween: 16,
+      breakpoints: { 900: { spaceBetween: 20 } },
+    };
+    let layout = isStories ? storiesLayout : null;
+    if (isHomeWork) layout = homeWorkLayout;
+    layout = layout || {
+      slidesPerView: 1,
+      spaceBetween: 20,
+      breakpoints: {
+        600: {
+          slidesPerView: 1.1,
+          spaceBetween: 20,
         },
-      };
+        900: {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        1200: {
+          slidesPerView: 3,
+          spaceBetween: 20,
+        },
+      },
+    };
 
     const swiper = new Swiper(swiperEl, {
       ...layout,
@@ -581,6 +658,7 @@ export default function decorate(block) {
       },
     });
 
+    // eslint-disable-next-line no-underscore-dangle -- existing public handle on the block
     block._testimonialSwiper = swiper;
     bindCarouselNavigationTracking(block, headingText);
   };
