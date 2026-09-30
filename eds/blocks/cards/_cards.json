@@ -30,6 +30,52 @@
           }
         }
       }
+    },
+    {
+      "title": "Cards Tab",
+      "id": "cards-tabs-tab",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Cards Tab",
+              "model": "cards-tabs-tab"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Tab Card",
+      "id": "cards-tabs-card",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Tab Card",
+              "model": "cards-tabs-card"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Tab CTA",
+      "id": "cards-tabs-tab-cta",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Tab CTA",
+              "model": "cards-tabs-tab-cta",
+              "marker": "Tab CTA"
+            }
+          }
+        }
+      }
     }
   ],
   "models": [
@@ -68,13 +114,87 @@
           "valueType": "string"
         }
       ]
+    },
+    {
+      "id": "cards-tabs-tab",
+      "fields": [
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "label",
+          "value": "",
+          "label": "Tab label"
+        }
+      ]
+    },
+    {
+      "id": "cards-tabs-card",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Desktop image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "imageAlt",
+          "value": "",
+          "label": "Image alt text"
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "mobileImage",
+          "label": "Mobile image (optional)",
+          "multi": false
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "text",
+          "value": "",
+          "label": "Title (heading), \"Upto **15** Years\", subtitle and CTA link"
+        }
+      ]
+    },
+    {
+      "id": "cards-tabs-tab-cta",
+      "fields": [
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "marker",
+          "value": "Tab CTA",
+          "label": "Row type (keep as \"Tab CTA\")"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "label",
+          "value": "",
+          "label": "CTA label"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "jumpId",
+          "value": "",
+          "label": "Jump link id (element or section id on this page)"
+        }
+      ]
     }
   ],
   "filters": [
     {
       "id": "cards",
       "components": [
-        "card"
+        "card",
+        "cards-tabs-tab",
+        "cards-tabs-card",
+        "cards-tabs-tab-cta"
       ]
     }
   ]

@@ -1894,3 +1894,360 @@
   }
 }
 
+
+/* ============================================
+   Variant: tabs — Cards (tabs)
+   Tabbed rows of product cards (image background, text on top)
+   ============================================ */
+
+/* stylelint-disable no-descending-specificity -- this variant only uses its own cards-tabs-* classes */
+
+/* full-bleed band: undo the 4% side margin every cards wrapper gets */
+.cards-wrapper:has(> .cards.tabs) {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.cards.tabs {
+  /* block palette; the source's peach, cream and hover tints have no global tokens */
+  --cards-tabs-bg: #fff5eb;
+  --cards-tabs-title: #f9f9f9;
+  --cards-tabs-meta: #fcedd6;
+  --cards-tabs-hover-bg: #fff7e8;
+  --cards-tabs-ink: var(--dark-color);
+  --cards-tabs-card-width: 152px;
+  --cards-tabs-card-ratio: 152 / 352;
+  --cards-tabs-inline-padding: 16px;
+
+  padding: 30px 0 16px;
+  background-color: var(--cards-tabs-bg);
+  font-family: var(--body-font-family);
+}
+
+/* tabs */
+.cards.tabs .cards-tabs-list {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-bottom: 15px;
+}
+
+.cards.tabs .cards-tabs-tab {
+  position: relative;
+  padding: 0 0 10px;
+  font-family: var(--heading-font-family);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--black);
+  cursor: pointer;
+}
+
+.cards.tabs .cards-tabs-tab[aria-selected="true"] {
+  font-weight: 800;
+}
+
+.cards.tabs .cards-tabs-tab[aria-selected="true"]::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 40px;
+  height: 3px;
+  border-radius: 3px;
+  background-color: var(--black);
+  transform: translateX(-50%);
+}
+
+.cards.tabs .cards-tabs-tab:focus-visible {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 4px;
+}
+
+/* cards: swipeable row on mobile, centred row on desktop */
+.cards.tabs .cards-tabs-panel {
+  position: relative;
+}
+
+.cards.tabs .cards-tabs-cards {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0 var(--cards-tabs-inline-padding);
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--cards-tabs-inline-padding);
+  scrollbar-width: none;
+}
+
+.cards.tabs .cards-tabs-cards::-webkit-scrollbar {
+  display: none;
+}
+
+.cards.tabs .cards-tabs-card {
+  position: relative;
+  flex: 0 0 var(--cards-tabs-card-width);
+  aspect-ratio: var(--cards-tabs-card-ratio);
+  overflow: hidden;
+  border-radius: 8px 8px 0 0;
+  scroll-snap-align: start;
+
+  /* own stacking context: the image sits behind the text, and the stretched CTA covers the card */
+  isolation: isolate;
+}
+
+.cards.tabs .cards-tabs-media,
+.cards.tabs .cards-tabs-media picture,
+.cards.tabs .cards-tabs-media img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cards.tabs .cards-tabs-media {
+  z-index: -1;
+}
+
+.cards.tabs .cards-tabs-media img {
+  object-fit: cover;
+}
+
+.cards.tabs .cards-tabs-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 31px 8px 0;
+  color: var(--cards-tabs-meta);
+  text-align: center;
+}
+
+.cards.tabs .cards-tabs-body > *,
+.cards.tabs .cards-tabs-info > * {
+  margin: 0;
+}
+
+/* title + warranty lines; reserved height keeps CTAs aligned when a card has no warranty */
+.cards.tabs .cards-tabs-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 71px;
+}
+
+.cards.tabs .cards-tabs-title {
+  margin-bottom: 8px;
+  font-family: var(--heading-font-family);
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--cards-tabs-title);
+}
+
+.cards.tabs .cards-tabs-body p {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.cards.tabs .cards-tabs-body p strong {
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.3;
+  vertical-align: -1px;
+}
+
+.cards.tabs .cards-tabs-info p:nth-of-type(2) {
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* card CTA: arrow-only circle on mobile, pill on desktop; stretched over the card */
+.cards.tabs .cards-tabs-body .cards-tabs-cta {
+  margin-top: 12px;
+}
+
+.cards.tabs .cards-tabs-cta a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--background-color);
+  border-radius: 45px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.57;
+  color: var(--background-color);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.cards.tabs .cards-tabs-cta a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.cards.tabs .cards-tabs-cta-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.cards.tabs .cards-tabs-cta a:hover {
+  background-color: var(--cards-tabs-hover-bg);
+  color: var(--black);
+}
+
+.cards.tabs .cards-tabs-cta a:focus-visible {
+  outline: 3px solid var(--background-color);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px var(--dark-color);
+}
+
+.cards.tabs .cards-tabs-arrow {
+  position: relative;
+  width: 12px;
+  height: 2px;
+  background-color: currentcolor;
+}
+
+.cards.tabs .cards-tabs-arrow::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 6px;
+  height: 6px;
+  border: solid currentcolor;
+  border-width: 2px 2px 0 0;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* tab footer CTA (e.g. Texture Collection jump link), overlapping the faded card bottoms */
+.cards.tabs .cards-tabs-footer {
+  position: relative;
+  margin: 16px 0 0;
+  text-align: center;
+}
+
+.cards.tabs .cards-tabs-footer-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 38px;
+  padding: 7px 20px;
+  border: 1px solid var(--cards-tabs-ink);
+  border-radius: 45px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.57;
+  color: var(--text-color);
+  transition: background-color 0.2s ease;
+}
+
+.cards.tabs .cards-tabs-footer-cta:hover {
+  background-color: var(--cards-tabs-hover-bg);
+  color: var(--text-color);
+}
+
+.cards.tabs .cards-tabs-footer-cta:focus-visible {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 3px;
+}
+
+.cards.tabs .cards-tabs-chevron {
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  border: solid currentcolor;
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+}
+
+@media (width >= 992px) {
+  .cards.tabs {
+    --cards-tabs-card-width: 294px;
+    --cards-tabs-card-ratio: 294 / 550;
+
+    padding: 50px 0 16px;
+  }
+
+  .cards.tabs .cards-tabs-list {
+    margin-bottom: 40px;
+  }
+
+  .cards.tabs .cards-tabs-tab {
+    font-size: 24px;
+    line-height: 1.1;
+  }
+
+  .cards.tabs .cards-tabs-tab[aria-selected="true"]::after {
+    width: 60px;
+  }
+
+  .cards.tabs .cards-tabs-cards {
+    justify-content: center;
+    overflow: visible;
+  }
+
+  .cards.tabs .cards-tabs-body {
+    padding-top: 80px;
+  }
+
+  .cards.tabs .cards-tabs-info {
+    min-height: 89px;
+  }
+
+  .cards.tabs .cards-tabs-title {
+    margin-bottom: 1px;
+    font-size: 32px;
+    line-height: 1.35;
+  }
+
+  .cards.tabs .cards-tabs-info p:first-of-type {
+    margin-bottom: 5px;
+  }
+
+  .cards.tabs .cards-tabs-body p strong {
+    font-size: 20px;
+  }
+
+  .cards.tabs .cards-tabs-info p:nth-of-type(2) {
+    font-size: 12px;
+    line-height: 1.17;
+  }
+
+  .cards.tabs .cards-tabs-body .cards-tabs-cta {
+    margin-top: 30px;
+  }
+
+  .cards.tabs .cards-tabs-cta a {
+    gap: 12px;
+    width: auto;
+    height: auto;
+    min-height: 38px;
+    padding: 7px 20px;
+  }
+
+  .cards.tabs .cards-tabs-cta-label {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+  }
+
+  .cards.tabs .cards-tabs-arrow {
+    width: 14px;
+  }
+
+  .cards.tabs .has-cta .cards-tabs-footer {
+    margin-top: -38px;
+  }
+}
