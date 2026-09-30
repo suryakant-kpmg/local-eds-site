@@ -1,4 +1,9 @@
+import { createOptimizedPicture } from '../../scripts/aem.js';
+import { moveInstrumentation } from '../../scripts/scripts.js';
 import { triggerCTAClickWithLinkAndTitle } from '../../scripts/analytics_1.js';
+
+const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
+const IMAGES_AUTOPLAY_DELAY = 3000;
 
 function getSwiperClass() {
   if (window.Swiper) return Promise.resolve(window.Swiper);
@@ -608,6 +613,117 @@ function buildMobileCollage(slide, labelText = '') {
   return buildMobileNineImageSlide(slide, labelText);
 }
 
+/* ============================================
+   Variant: images — Collage Slideshow (images)
+   Image-only slides whose layout follows the number of filled cells in the row
+   (cell 1 is the logo; empty cells are ignored), so slides can come in any order:
+   9 cells - logo + 8 images in four staggered columns
+   6 cells - logo + large image | wide image over two stacked images and a tall one
+   5 cells - logo + large image | wide image over two images
+   A row with video links keeps the default video collage.
+   ============================================ */
+
+const isVideoCell = (cell) => !!cell && !cell.querySelector('img')
+  && /\.(mp4|webm|ogg)(\?|$)/i.test(cell.querySelector('a[href]')?.href || getTextContent(cell));
+
+const isFilledCell = (cell) => !!cell.querySelector('img, a[href]') || !!getTextContent(cell);
+
+function getImagesLayout(cells) {
+  if (cells.some(isVideoCell)) return 'video';
+  if (cells.length === 6) return 'six';
+  if (cells.length === 5) return 'five';
+  return 'nine';
+}
+
+function buildOptimizedMedia(cell, index) {
+  const img = cell?.querySelector('img');
+  if (!img) return null;
+  const media = document.createElement('div');
+  media.className = `collage-slideshow__media collage-slideshow__media--cell-${index + 1}`;
+  if (index === 0) media.classList.add('collage-slideshow__media--logo');
+  const picture = createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]);
+  moveInstrumentation(img, picture.querySelector('img'));
+  media.append(picture);
+  return media;
+}
+
+function group(className, ...children) {
+  const el = document.createElement('div');
+  el.className = className;
+  el.append(...children.filter(Boolean));
+  return el;
+}
+
+function buildImagesCollage(filled, layout) {
+  const cells = filled.map((cell, i) => buildOptimizedMedia(cell, i));
+  const collage = document.createElement('div');
+  collage.className = `collage-slideshow__collage collage-slideshow__collage--images collage-slideshow__collage--${layout}`;
+
+  if (layout === 'nine') {
+    // columns hold cells 1-2, 3-4, 5-7 and 8-9, as on the source
+    [[0, 2], [2, 4], [4, 7], [7, 9]].forEach(([from, to], i) => {
+      const column = `collage-slideshow__column collage-slideshow__column--${i + 1}`;
+      collage.append(group(column, ...cells.slice(from, to)));
+    });
+    return collage;
+  }
+
+  const left = group('collage-slideshow__images-left', cells[0], cells[1]);
+  const bottom = layout === 'six'
+    ? group('collage-slideshow__images-bottom', group('collage-slideshow__images-stack', cells[3], cells[4]), cells[5])
+    : group('collage-slideshow__images-bottom', cells[3], cells[4]);
+  collage.append(left, group('collage-slideshow__images-right', cells[2], bottom));
+  return collage;
+}
+
+function buildImagesSlide(slide, index) {
+  const filled = slide.columns.filter(isFilledCell);
+  const layout = getImagesLayout(filled);
+  const slideEl = document.createElement('div');
+  slideEl.className = `collage-slideshow__slide swiper-slide collage-slideshow__slide--${layout}`;
+  slideEl.dataset.index = index;
+  if (layout === 'video') {
+    const label = slide.columns[0]?.querySelector('img')?.alt || '';
+    slideEl.append(buildDesktopVideoSlide(slide, label), buildMobileVideoSlide(slide, label));
+  } else {
+    slideEl.append(buildImagesCollage(filled, layout));
+  }
+  return slideEl;
+}
+
+/**
+ * Auto-rotation for the images variant: runs only while the block is on screen, never under
+ * reduced motion, and a pause/play button stops it (WCAG 2.2.2).
+ */
+function setupImagesAutoplay(block, swiper, controls) {
+  if (REDUCED_MOTION.matches || block.classList.contains('no-autoplay')) {
+    swiper.autoplay?.stop();
+    return;
+  }
+  let paused = false;
+  let visible = false;
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'collage-slideshow__autoplay-toggle';
+  const sync = () => {
+    toggle.setAttribute('aria-label', paused ? 'Play slideshow' : 'Pause slideshow');
+    toggle.classList.toggle('is-paused', paused);
+    if (!paused && visible && !document.hidden) swiper.autoplay.start();
+    else swiper.autoplay.stop();
+  };
+  toggle.addEventListener('click', () => {
+    paused = !paused;
+    sync();
+  });
+  controls.append(toggle);
+  document.addEventListener('visibilitychange', sync);
+  new IntersectionObserver(([entry]) => {
+    visible = entry.isIntersecting;
+    sync();
+  }).observe(block);
+  sync();
+}
+
 export default async function decorate(block) {
   const rows = [...block.children];
   if (rows.length < 2) return;
@@ -617,8 +733,12 @@ export default async function decorate(block) {
 
   const contentRow = rows[0];
   const slides = getSlides(rows);
+  const isImages = block.classList.contains('images');
 
   if (!slides.length) return;
+
+  // images variant: build (and move UE instrumentation) before the authored rows are cleared
+  const imageSlides = isImages ? slides.map((slide, index) => buildImagesSlide(slide, index)) : [];
 
   block.innerHTML = '';
   block.classList.add('collage-slideshow');
@@ -638,33 +758,39 @@ export default async function decorate(block) {
   const swiperWrapper = document.createElement('div');
   swiperWrapper.className = 'swiper-wrapper';
 
-  slides.forEach((slide, index) => {
-    const slideEl = document.createElement('div');
-    slideEl.className = `collage-slideshow__slide swiper-slide collage-slideshow__slide--${index + 1}`;
-    slideEl.dataset.index = index;
+  if (isImages) {
+    swiperWrapper.append(...imageSlides);
+  } else {
+    slides.forEach((slide, index) => {
+      const slideEl = document.createElement('div');
+      slideEl.className = `collage-slideshow__slide swiper-slide collage-slideshow__slide--${index + 1}`;
+      slideEl.dataset.index = index;
 
-    const labelText = 'Range of Royale collections';
-    const desktopCollage = buildDesktopCollage(slide, labelText);
-    const mobileCollage = buildMobileCollage(slide, labelText);
+      const labelText = 'Range of Royale collections';
+      const desktopCollage = buildDesktopCollage(slide, labelText);
+      const mobileCollage = buildMobileCollage(slide, labelText);
 
-    slideEl.appendChild(desktopCollage);
-    slideEl.appendChild(mobileCollage);
-    swiperWrapper.appendChild(slideEl);
-  });
+      slideEl.appendChild(desktopCollage);
+      slideEl.appendChild(mobileCollage);
+      swiperWrapper.appendChild(slideEl);
+    });
+  }
 
   swiperEl.appendChild(swiperWrapper);
 
   const pagination = document.createElement('div');
   pagination.className = 'collage-slideshow__pagination swiper-pagination';
 
-  leftSection.append(swiperEl, pagination);
+  // images variant: dots and the pause/play button share one row
+  const controls = isImages ? group('collage-slideshow__controls', pagination) : pagination;
+  leftSection.append(swiperEl, controls);
 
   const contentPanel = createContentPanel(contentRow);
+  if (isImages) moveInstrumentation(contentRow, contentPanel);
   rightSection.appendChild(contentPanel);
 
-  // MOBILE: move CTA + description below left section
+  // MOBILE: move CTA below left section
   if (window.innerWidth <= 991) {
-    const description = contentPanel.querySelector('.collage-slideshow__description');
     const cta = contentPanel.querySelector('.collage-slideshow__cta');
     if (cta) leftSection.appendChild(cta);
   }
@@ -683,7 +809,7 @@ export default async function decorate(block) {
 
     const swiper = new Swiper(swiperEl, {
       slidesPerView: 1,
-      speed: 700,
+      speed: isImages ? 500 : 700,
       loop: false,
       watchOverflow: true,
       autoHeight: false,
@@ -692,9 +818,14 @@ export default async function decorate(block) {
         el: pagination,
         clickable: true,
       },
+      ...(isImages && {
+        rewind: true,
+        autoplay: { delay: IMAGES_AUTOPLAY_DELAY, disableOnInteraction: false },
+      }),
     });
 
     block.collageSlideshowSwiper = swiper;
+    if (isImages) setupImagesAutoplay(block, swiper, controls);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Failed to initialize collage slideshow Swiper', error);
