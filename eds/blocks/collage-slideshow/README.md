@@ -48,8 +48,8 @@ can come in any order:
 
 - Auto-rotates every 3s (as on the source) and rewinds after the last slide; only while the block
   is on screen and the tab is visible. Not at all with `prefers-reduced-motion`.
-- A pause/play button beside the dots stops the rotation (WCAG 2.2.2); the dots are keyboard
-  buttons ("Go to slide N") from Swiper's a11y module.
+- No pause button, as on the source; the dots are keyboard buttons ("Go to slide N") from
+  Swiper's a11y module. Use `no-autoplay` where a static collage is needed.
 - Sizes are fractions of the collage width (container query units), measured from the source at
   705px (desktop, ≥992px) and 355px (mobile), so the collage scales with the viewport.
 - On mobile the text sits above the collage and the CTA moves below the dots, as on the source.

@@ -692,30 +692,19 @@ function buildImagesSlide(slide, index) {
 }
 
 /**
- * Auto-rotation for the images variant: runs only while the block is on screen, never under
- * reduced motion, and a pause/play button stops it (WCAG 2.2.2).
+ * Auto-rotation for the images variant, as on the source: runs only while the block is on
+ * screen and the tab is visible, never under reduced motion.
  */
-function setupImagesAutoplay(block, swiper, controls) {
+function setupImagesAutoplay(block, swiper) {
   if (REDUCED_MOTION.matches || block.classList.contains('no-autoplay')) {
     swiper.autoplay?.stop();
     return;
   }
-  let paused = false;
   let visible = false;
-  const toggle = document.createElement('button');
-  toggle.type = 'button';
-  toggle.className = 'collage-slideshow__autoplay-toggle';
   const sync = () => {
-    toggle.setAttribute('aria-label', paused ? 'Play slideshow' : 'Pause slideshow');
-    toggle.classList.toggle('is-paused', paused);
-    if (!paused && visible && !document.hidden) swiper.autoplay.start();
+    if (visible && !document.hidden) swiper.autoplay.start();
     else swiper.autoplay.stop();
   };
-  toggle.addEventListener('click', () => {
-    paused = !paused;
-    sync();
-  });
-  controls.append(toggle);
   document.addEventListener('visibilitychange', sync);
   new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting;
@@ -781,7 +770,7 @@ export default async function decorate(block) {
   const pagination = document.createElement('div');
   pagination.className = 'collage-slideshow__pagination swiper-pagination';
 
-  // images variant: dots and the pause/play button share one row
+  // images variant: the dots sit in their own centred row
   const controls = isImages ? group('collage-slideshow__controls', pagination) : pagination;
   leftSection.append(swiperEl, controls);
 
@@ -825,7 +814,7 @@ export default async function decorate(block) {
     });
 
     block.collageSlideshowSwiper = swiper;
-    if (isImages) setupImagesAutoplay(block, swiper, controls);
+    if (isImages) setupImagesAutoplay(block, swiper);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Failed to initialize collage slideshow Swiper', error);
