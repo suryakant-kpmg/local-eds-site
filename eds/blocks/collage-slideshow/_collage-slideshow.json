@@ -1,0 +1,169 @@
+{
+  "definitions": [
+    {
+      "title": "Collage Slideshow",
+      "id": "collage-slideshow",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Collage Slideshow",
+              "model": "collage-slideshow",
+              "filter": "collage-slideshow"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Collage Intro",
+      "id": "collage-slideshow-intro",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Collage Intro",
+              "model": "collage-slideshow-intro"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Collage Slide",
+      "id": "collage-slideshow-slide",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Collage Slide",
+              "model": "collage-slideshow-slide"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "collage-slideshow",
+      "fields": [
+        {
+          "component": "multiselect",
+          "name": "classes",
+          "label": "Style",
+          "valueType": "string",
+          "options": [
+            {
+              "name": "Images (layout by number of images)",
+              "value": "images"
+            },
+            {
+              "name": "No autoplay (images style)",
+              "value": "no-autoplay"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "collage-slideshow-intro",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "text",
+          "value": "",
+          "label": "Eyebrow, **title**, description and CTA link (one paragraph each)",
+          "valueType": "string"
+        }
+      ]
+    },
+    {
+      "id": "collage-slideshow-slide",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "logo",
+          "label": "Logo",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "logoAlt",
+          "value": "",
+          "label": "Logo alt text"
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image2",
+          "label": "Image 2",
+          "multi": false
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image3",
+          "label": "Image 3",
+          "multi": false
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image4",
+          "label": "Image 4",
+          "multi": false
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image5",
+          "label": "Image 5",
+          "multi": false
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image6",
+          "label": "Image 6 (leave 6-9 empty for a 5-image slide)",
+          "multi": false
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image7",
+          "label": "Image 7 (leave 7-9 empty for a 6-image slide)",
+          "multi": false
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image8",
+          "label": "Image 8",
+          "multi": false
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image9",
+          "label": "Image 9",
+          "multi": false
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "collage-slideshow",
+      "components": [
+        "collage-slideshow-intro",
+        "collage-slideshow-slide"
+      ]
+    }
+  ]
+}
