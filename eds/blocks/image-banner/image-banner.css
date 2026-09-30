@@ -120,11 +120,16 @@
   transform: translateY(-50%) rotate(45deg);
 }
 
-/* breadcrumb adopted from the block before this one; sits above the stretched link */
-.image-banner .breadcrumb-wrapper {
+/* breadcrumb adopted from the block before this one; sits above the stretched link.
+   Placed as on the source: flush left, links 21px below the banner top. The extra
+   selector weight beats breadcrumb.css's section rules (4% gutter, and the -52px
+   shift meant for interior-page sections that also hold cards). */
+main > .section .image-banner.block > .breadcrumb-wrapper {
   position: absolute;
   inset: 0 0 auto;
   z-index: 1;
+  padding: 0;
+  transform: none;
 }
 
 .image-banner .breadcrumb .slash-icon ul li a,
