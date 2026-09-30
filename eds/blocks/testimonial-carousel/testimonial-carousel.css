@@ -4,7 +4,6 @@
 }
 
 .testimonial-carousel-container {
-
     /* gap: 40px; */
     width: 100%;
 }
@@ -25,6 +24,7 @@
     line-height: 60px;
     text-align: left;
 }
+
 .testimonial-carousel .testimonial-heading h2{
     font-weight: 800;
     letter-spacing: -.5px;
@@ -56,11 +56,12 @@
 .testimonial-carousel .testimonial-swiper .swiper-wrapper {
     left: 20px !important;
 
-    @media (min-width: 320px) and (max-width: 991px) {
+    @media (width >= 320px) and (width <= 991px) {
         left: 2px !important;
     }
 }
 
+/* stylelint-disable-next-line no-descending-specificity -- legacy rule order */
 .testimonial-carousel .swiper-wrapper {
     align-items: stretch;
 }
@@ -146,7 +147,8 @@
     object-fit: contain;
 
 }
-@media(max-width:991px){
+
+@media(width <=991px){
     .testimonial-carousel .testimonial-logo-bg img {
         transform: translateY(-9px);
     }
@@ -159,7 +161,7 @@
 .testimonial-carousel .testimonial-quote {
     position: relative;
     z-index: 1;
-    margin: 0 0 30px 0;
+    margin: 0 0 30px;
     color: #4d4d4d;
     font-family: Manrope, sans-serif;
     font-size: 14px;
@@ -244,7 +246,8 @@
     justify-content: center;
     padding: 32px 20px 20px;
     background: rgba(0 0 0 / 75%);
-    @media (min-width: 320px) and (max-width: 991px) {
+
+    @media (width >= 320px) and (width <= 991px) {
         padding: 32px 14px 20px;
     }
 }
@@ -260,6 +263,7 @@
 
 .testimonial-carousel .testimonial-video-close {
     position: absolute;
+
     /* top: -22px; */
     right: 0;
     z-index: 2;
@@ -296,11 +300,13 @@
     overflow: hidden;
     background: #000;
     border-radius: 8px;
-    @media (min-width: 320px) and (max-width: 991px) {
+
+    @media (width >= 320px) and (width <= 991px) {
         aspect-ratio: 5 / 4;
     }
 }
 
+/* stylelint-disable-next-line media-feature-name-no-unknown -- misspelt, so this block never applies; left as is to keep the current modal size */
 @media (min-widht:992px) {
     .testimonial-carousel .testimonial-video-wrapper {
         height: 81vh;
@@ -391,7 +397,7 @@ body.testimonial-video-open {
 
 @media (width <=600px) {
     .testimonial-carousel {
-        padding: 0px 16px;
+        padding: 0 16px;
     }
 
     .testimonial-carousel .testimonial-heading h2,
@@ -502,8 +508,6 @@ body.testimonial-video-open {
     .testimonial-prev::before {
         content: " ";
         background-image: url('/eds/icons/round-black-prev-icon.svg');
-        width: 22px;
-        height: 13px;
         background-repeat: no-repeat;
         width: 44px;
         height: 44px;
@@ -512,22 +516,23 @@ body.testimonial-video-open {
     .testimonial-next::before {
         content: " ";
         background-image: url('/eds/icons/round-black-next-icon.svg');
-        width: 22px;
-        height: 13px;
         background-repeat: no-repeat;
         width: 44px;
         height: 44px;
     }
 }
-@media (min-width: 992px) and (max-width: 1200px) {
+
+@media (width >= 992px) and (width <= 1200px) {
       .testimonial-carousel .testimonial-heading {
         width: 32%;
     }
+
      .testimonial-carousel .testimonial-carousel-inner-wrapper {
         width: 68%;
     }
 }
-@media (min-width: 1201px) and (max-width: 1400px) {
+
+@media (width >= 1201px) and (width <= 1400px) {
     .testimonial-carousel .testimonial-heading {
         width: 30%;
     }
@@ -536,10 +541,12 @@ body.testimonial-video-open {
         width: 70%;
     }
 }
-@media (min-width: 1400px) and (max-width: 1500px) {
+
+@media (width >= 1400px) and (width <= 1500px) {
       .testimonial-carousel .testimonial-heading {
         width: 30%;
     }
+
      .testimonial-carousel .testimonial-carousel-inner-wrapper {
         width: 70%;
     }
@@ -556,6 +563,7 @@ body.testimonial-video-open {
  * show only the first slide so the carousel renders as a single static card
  * instead of a vertical stack of all testimonials. :where() keeps specificity
  * flat so Swiper's runtime classes can override cleanly. */
+/* stylelint-disable-next-line no-descending-specificity -- legacy rule order */
 .testimonial-carousel:where(:not(.swiper-ready)) .swiper-wrapper {
     display: block;
 }
@@ -787,4 +795,266 @@ body.testimonial-video-open {
 
 /* =============================================
    End: Stories variant
+   ============================================= */
+
+/* =============================================
+   Start: Home-work variant
+   Used when the block is authored as "testimonial-carousel (home-work)".
+   Eyebrow + title + description, then a row of video cards (thumbnail, title,
+   description) that bleeds off the right edge. Mobile: text above the cards and
+   faded dots; desktop (>= 992px): text in the left 40%, arrows below the cards.
+   Measured from asianpaints.com /paint-products/exterior-wall-paints.html.
+   ============================================= */
+.testimonial-carousel.home-work {
+    /* block palette: the source's cream band and text colours have no global tokens */
+    --hw-bg: #f7f2e7;
+    --hw-eyebrow: #3b3d40;
+    --hw-heading: #5d4f43;
+    --hw-title: #2f2f2f;
+    --hw-text: #4d4d4d;
+    --hw-dot: #808080;
+    --hw-dot-active: #4d4d4d;
+    --hw-card-width: 253px;
+    --hw-offset: 15px;
+
+    padding: 30px 0 38px;
+    background-color: var(--hw-bg);
+}
+
+.testimonial-carousel.home-work .testimonial-heading {
+    display: block;
+    width: auto;
+    margin: 0 0 20px;
+    padding: 0 16px;
+}
+
+.testimonial-carousel.home-work .testimonial-heading > * {
+    margin: 0;
+    font-family: var(--body-font-family);
+    letter-spacing: normal;
+    text-align: left;
+}
+
+.testimonial-carousel.home-work .testimonial-eyebrow {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 28px;
+    color: var(--hw-eyebrow);
+}
+
+.testimonial-carousel.home-work .testimonial-heading h2 {
+    font-family: var(--heading-font-family);
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 33.6px;
+    color: var(--hw-heading);
+}
+
+.testimonial-carousel.home-work .testimonial-subtitle {
+    padding-top: 6px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16.8px;
+    color: var(--hw-eyebrow);
+}
+
+/* cards; no auto margins (swiper.css), which would shrink the swiper to its content in the desktop grid */
+.testimonial-carousel.home-work .testimonial-swiper {
+    margin: 0;
+    padding: 0;
+}
+
+.testimonial-carousel.home-work .testimonial-swiper .swiper-wrapper {
+    left: 0 !important;
+}
+
+/* card width drives Swiper's slidesPerView: 'auto'; !important beats the default 325px rule */
+.testimonial-carousel.home-work .testimonial-slide {
+    width: var(--hw-card-width) !important;
+    background: var(--background-color);
+    border-radius: 8px;
+    box-shadow: none;
+}
+
+/* before Swiper starts, lay the cards out as Swiper will (full row, same gaps and offset),
+   so the row height and card positions do not change on init */
+/* stylelint-disable-next-line no-descending-specificity -- variant section follows the stories one */
+.testimonial-carousel.home-work:where(:not(.swiper-ready)) .swiper-wrapper {
+    display: flex;
+}
+
+.testimonial-carousel.home-work:where(:not(.swiper-ready)) .testimonial-slide,
+.testimonial-carousel.home-work:where(:not(.swiper-ready)) .testimonial-slide ~ .testimonial-slide {
+    display: flex;
+    flex-shrink: 0;
+    margin-right: 20px;
+}
+
+.testimonial-carousel.home-work:where(:not(.swiper-ready)) .testimonial-slide:first-child {
+    margin-left: var(--hw-offset);
+}
+
+.testimonial-carousel.home-work .testimonial-image {
+    height: auto;
+    aspect-ratio: 325 / 222;
+    border-radius: 8px 8px 0 0;
+}
+
+.testimonial-carousel.home-work .testimonial-play-button,
+.testimonial-carousel.home-work .testimonial-play-button img {
+    width: 62px;
+    height: 62px;
+}
+
+.testimonial-carousel.home-work .testimonial-content {
+    min-height: 0;
+    padding: 11px 20px 10px;
+    background: transparent;
+}
+
+.testimonial-carousel.home-work .testimonial-title {
+    margin: 0 0 5px;
+    font-family: var(--body-font-family);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 21px;
+    color: var(--hw-title);
+}
+
+.testimonial-carousel.home-work .testimonial-description {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: normal;
+    color: var(--hw-text);
+}
+
+/* mobile dots, as the source's slick dots: 8px faded dots, a 20px bar for the current card */
+.testimonial-carousel.home-work .testimonial-pagination {
+    position: static;
+    display: flex;
+    justify-content: flex-start;
+    height: 8px;
+    margin: 24px 0 0;
+    line-height: 0;
+}
+
+.testimonial-carousel.home-work .testimonial-pagination .swiper-pagination-bullet {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    margin: 0 -2px 0 6px !important;
+    border-radius: 6px;
+    background: var(--hw-dot);
+    opacity: 0.25;
+}
+
+.testimonial-carousel.home-work .testimonial-pagination .swiper-pagination-bullet-active {
+    width: 20px;
+    margin-right: 1px !important;
+    background: var(--hw-dot-active);
+    opacity: 1;
+}
+
+.testimonial-carousel.home-work .testimonial-nav-buttons {
+    display: none;
+}
+
+.testimonial-carousel.home-work .testimonial-play-button:focus-visible,
+.testimonial-carousel.home-work .testimonial-nav-buttons button:focus-visible,
+.testimonial-carousel.home-work .testimonial-pagination .swiper-pagination-bullet:focus-visible,
+.testimonial-carousel.home-work .testimonial-video-close:focus-visible {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+@media (width >= 992px) {
+    .testimonial-carousel.home-work {
+        --hw-card-width: 325px;
+        --hw-offset: 20px;
+
+        padding: 50px 0 8px;
+    }
+
+    /* text | cards, arrows under the cards; the inner wrapper's children join the grid */
+    .testimonial-carousel.home-work .testimonial-carousel-container {
+        display: grid;
+        grid-template-columns: 40% minmax(0, 1fr);
+        align-items: start;
+    }
+
+    .testimonial-carousel.home-work .testimonial-carousel-inner-wrapper {
+        display: contents;
+    }
+
+    .testimonial-carousel.home-work .testimonial-heading {
+        grid-area: 1 / 1;
+        align-self: center;
+        width: auto;
+        margin: 0;
+        padding: 0 40px 0 clamp(20px, 6.25vw, 90px);
+    }
+
+    .testimonial-carousel.home-work .testimonial-eyebrow {
+        font-size: 32px;
+        line-height: 41.6px;
+    }
+
+    .testimonial-carousel.home-work .testimonial-heading h2 {
+        margin: -8px 0 14px;
+        font-size: 64px;
+        font-weight: 400;
+        line-height: 70.4px;
+    }
+
+    .testimonial-carousel.home-work .testimonial-subtitle {
+        max-width: 417px;
+        padding-top: 16px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 21px;
+    }
+
+    .testimonial-carousel.home-work .testimonial-swiper {
+        grid-area: 1 / 2;
+        min-width: 0;
+    }
+
+    .testimonial-carousel.home-work .testimonial-content {
+        padding: 20px 30px 40px;
+    }
+
+    .testimonial-carousel.home-work .testimonial-title {
+        margin-bottom: 10px;
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    .testimonial-carousel.home-work .testimonial-description {
+        font-size: 14px;
+    }
+
+    .testimonial-carousel.home-work .testimonial-pagination {
+        display: none;
+    }
+
+    .testimonial-carousel.home-work .testimonial-nav-buttons {
+        grid-area: 2 / 2;
+        display: flex;
+        justify-content: flex-end;
+        gap: 20px;
+        margin: 18px 0 0;
+        padding: 0 40px 0 0;
+    }
+
+    .testimonial-carousel.home-work .testimonial-nav-buttons button {
+        width: 44px;
+        height: 44px;
+        background: transparent;
+        border: 0;
+    }
+}
+
+/* =============================================
+   End: Home-work variant
    ============================================= */
