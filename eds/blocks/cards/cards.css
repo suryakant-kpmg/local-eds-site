@@ -1,11 +1,4 @@
-​.cards>ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  grid-gap: 24px;
-}
+/* stylelint-disable no-descending-specificity -- variants are scoped by .cards.{variant}; reordering this legacy file would change the cascade */
 
 .cards>ul>li {
   border: 1px solid #dadada;
@@ -57,7 +50,7 @@
   gap: 20px;
 }
 
-@media screen and (max-width:992px) {
+@media screen and (width <=992px) {
   .section.cards-container:has(.cards.benefits)>.default-content-wrapper {
     margin-bottom: 1rem;
   }
@@ -75,14 +68,13 @@
 @media (width >=768px) {
   .cards.benefits ul {
     grid-template-columns: repeat(3, 1fr);
-    column-gap: 20px;
-    row-gap: 35px;
+    gap: 35px 20px;
   }
 }
 
 .cards.benefits li {
   background-color: transparent;
-  padding: 0px;
+  padding: 0;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -167,7 +159,6 @@
 }
 
 @media (width <=767px) {
-
   .cards.benefits ul {
     gap: 16px;
   }
@@ -218,6 +209,7 @@
     margin-bottom: 55px;
     font-weight: 700;
   }
+
   .section.cards-container:has(.cards.blog) {
     padding: 80px 40px;
   }
@@ -378,15 +370,18 @@
 }
 
 .cards.stats .cards-card-body {
-  /*display: flex;*/
-  /*flex-direction: column;*/
+  /* display: flex; */
+
+  /* flex-direction: column; */
   flex-basis: 0;
   flex-grow: 1;
   align-items: center;
   text-align: center;
-  /* padding: 0 11px;*/
+
+  /* padding: 0 11px; */
   min-width: 120px;
-  /* flex: 1 1 auto;*/
+
+  /* flex: 1 1 auto; */
   margin: 0;
 }
 
@@ -499,7 +494,7 @@
   margin-bottom: 12px;
 }
 
-@media screen and (max-width: 992px) {
+@media screen and (width <= 992px) {
   .section.cards-container:has(.cards.services) {
     padding: 0 17px;
   }
@@ -576,6 +571,7 @@
   position: relative;
   border-radius: 12px;
   overflow: hidden;
+
   /* min-height: 380px; */
   display: flex;
   flex-direction: column;
@@ -617,6 +613,7 @@
   content: '';
   position: absolute;
   inset: 0;
+
   /* background: linear-gradient(to top, rgb(0 0 0 / 75%) 0%, rgb(0 0 0 / 40%) 35%, rgb(0 0 0 / 0%) 60%); */
   z-index: 1;
 }
@@ -662,7 +659,9 @@
 
   .cards.services .cards-card-body {
     padding: 0 25px 15px;
+
     /* height: 200px; */
+
     /* max-width: 82%; */
     position: absolute;
   }
@@ -700,8 +699,7 @@
   padding: 0 24px;
 }
 
-@media screen and (min-width: 992px) {
-
+@media screen and (width >= 992px) {
   .section.cards-container:has(.cards.room),
   .section.cards-container:has(.cards.services) {
     max-width: 100%;
@@ -737,7 +735,7 @@
   font-weight: 400;
 }
 
-@media screen and (max-width:992px) {
+@media screen and (width <=992px) {
   .section.cards-container:has(.cards.room)>.default-content-wrapper h2 {
     font-size: 22px;
   }
@@ -806,9 +804,11 @@
   width: 100%;
   aspect-ratio: 16 / 10;
   object-fit: cover;
+
   /* border-radius: 8px; */
 }
-@media(min-width:992px) {
+
+@media(width >=992px) {
   .cards.room .cards-card-image img {
     aspect-ratio: unset;
   }
@@ -1038,7 +1038,7 @@
 
 .section.cards-container:has(.cards.grid) {
   background: #ece5d7;
-  padding: 60px 100px 0px;
+  padding: 60px 100px 0;
 }
 
 .section.cards-container:has(.cards.grid)>.cards-wrapper {
@@ -1053,12 +1053,12 @@
   padding: 0;
   position: relative;
 }
+
 .section.cards-container:has(.cards.grid.interior-hero)>.default-content-wrapper {
   max-width: 100%;
 }
 
 .section.cards-container:has(.cards.grid)>.default-content-wrapper h1 {
-  font-weight: 700;
   color: #1a1a1a;
   margin: 0 0 12px;
   font-weight: 700;
@@ -1067,7 +1067,6 @@
 }
 
 .section.cards-container:has(.cards.grid)>.default-content-wrapper p:first-of-type {
-  font-size: 16px;
   color: #000;
   margin: 0 0 24px;
   font-size: 12px;
@@ -1080,7 +1079,6 @@
   margin: 0;
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
 .section.cards-container:has(.cards.grid)>.default-content-wrapper p a,
 .section.cards-container:has(.cards.grid)>.default-content-wrapper p a:link,
 .section.cards-container:has(.cards.grid)>.default-content-wrapper p a:visited {
@@ -1109,7 +1107,7 @@
   filter: contrast(1000%) invert(100%) sepia(100%) saturate(10000%) hue-rotate(90deg);
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   .section.cards-container:has(.cards.grid)>.default-content-wrapper {
     display: flex;
     justify-content: space-between;
@@ -1119,7 +1117,6 @@
   }
 
   .section.cards-container:has(.cards.grid)>.default-content-wrapper h2 {
-    font-size: 40px;
     margin: 0 0 13px;
     width: 100%;
     max-width: calc(100% - 200px);
@@ -1131,7 +1128,6 @@
   }
 
   .section.cards-container:has(.cards.grid)>.default-content-wrapper p:first-of-type {
-    font-size: 15px;
     margin: 0;
     max-width: calc(100% - 200px);
     color: #000;
@@ -1148,7 +1144,7 @@
   }
 }
 
-@media (min-width: 901px) and (max-width: 1530px) {
+@media (width >= 901px) and (width <= 1530px) {
   .section.cards-container:has(.cards.grid)>.default-content-wrapper {
     margin-left: 0%;
     margin-right: 0%;
@@ -1156,7 +1152,7 @@
 }
 
 /* Mobile */
-@media screen and (max-width:992px) {
+@media screen and (width <=992px) {
   .section.cards-container:has(.cards.grid)>.default-content-wrapper:first-child p:last-of-type {
     display: none;
   }
@@ -1183,7 +1179,7 @@
   }
 }
 
-@media screen and (min-width:992px) {
+@media screen and (width >=992px) {
   .section.cards-container:has(.cards.grid)>.default-content-wrapper:last-child .button-container {
     display: none;
   }
@@ -1198,18 +1194,19 @@
   grid-gap: 16px;
   max-width: 1400px;
 }
+
 .cards.grid.interior-hero > ul {
   max-width: 100%;
 }
 
-@media (min-width: 600px) {
+@media (width >= 600px) {
   .cards.grid>ul {
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 20px;
   }
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   .cards.grid>ul {
     grid-gap: 10px;
   }
@@ -1310,7 +1307,7 @@
 
 
 
-@media screen and (max-width: 992px) {
+@media screen and (width <= 992px) {
   .cards.grid>ul {
     grid-template-columns: auto;
     max-height: 560px;
@@ -1556,7 +1553,8 @@
 
 .cards.features>ul {
   list-style: none;
-  /*margin: 0 auto;*/
+
+  /* margin: 0 auto; */
   padding: 0;
   display: flex;
   flex-wrap: wrap;
@@ -1565,7 +1563,7 @@
   gap: 35px 20px;
   justify-content: space-between;
 
-  /*max-width: 1200px;*/
+  /* max-width: 1200px; */
 }
 
 .cards.features>ul>li {
@@ -1575,7 +1573,6 @@
   /* Match AEM: flexible 3-col layout */
   flex: 1 1 calc(33.333% - 20px);
   min-width: 320px;
-
   background: transparent;
   border: none;
   border-radius: 0;
@@ -1590,7 +1587,6 @@
   width: 54px;
   margin-right: 25px;
   padding-top: 7px;
-
   line-height: 0;
 }
 
@@ -1625,11 +1621,9 @@
 .cards.features .cards-card-body h4 {
   display: block;
   margin: 0 0 6px;
-
   font-size: 19px;
   font-weight: 800;
   line-height: 27.32px;
-
   color: #3b3d40;
   font-family: Manrope, sans-serif;
   text-align: left;
@@ -1642,7 +1636,6 @@
   font-size: 16px;
   font-weight: 500;
   line-height: 21.86px;
-
   color: #53565a;
   font-family: Manrope, sans-serif;
   text-align: left;
@@ -1651,7 +1644,7 @@
 /* ---------- Responsive ---------- */
 
 /* Reduce to 2-column layout when space is tight (similar to your earlier behavior) */
-@media (max-width: 1100px) {
+@media (width <= 1100px) {
   .cards.features>ul {
     justify-content: center;
     gap: 30px 40px;
@@ -1664,7 +1657,7 @@
 }
 
 /* AEM switches layout at <= 991px */
-@media (max-width: 991px) {
+@media (width <= 991px) {
   .cards.features {
     padding: 0 16px;
   }
@@ -1698,9 +1691,9 @@
     font-size: 14px;
     font-weight: 700;
     line-height: 21px;
-
     margin-bottom: 0;
     margin-top: -5px;
+
     /* matches AEM */
   }
 
@@ -1844,7 +1837,7 @@
   }
 }
 
-@media (min-width: 901px) {
+@media (width >= 901px) {
     .section.stats-nowrap .cards.stats .cards-card-body p:last-child {
         white-space: nowrap;
     }
@@ -1874,21 +1867,26 @@
       max-width: 100%;
       width: 100%;
  }
+
   .cards.services .cards-card-body p:nth-child(1)  {
       max-width: 50%;
-      margin-bottom: 0px;
+      margin-bottom: 0;
   }
+
    .cards.services .cards-card-body p:nth-child(1) strong {
     margin-bottom: 5px;
    }
+
     .cards.services .cards-card-body p:nth-child(2)   {
       max-width: 80%;
       line-height: 26px;
   }
+
   .cards.services .cards-card-body p:nth-child(3)  {
      max-width: 90%;
       line-height: 26px;
   }
+
   .cards.services ul li:nth-child(2) .cards-card-body p:nth-of-type(2)  {
       max-width: 90%;
   }
@@ -1899,8 +1897,6 @@
    Variant: tabs — Cards (tabs)
    Tabbed rows of product cards (image background, text on top)
    ============================================ */
-
-/* stylelint-disable no-descending-specificity -- this variant only uses its own cards-tabs-* classes */
 
 /* full-bleed band: undo the 4% side margin every cards wrapper gets */
 .cards-wrapper:has(> .cards.tabs) {

@@ -1,6 +1,8 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import { moveInstrumentation } from '../../scripts/scripts.js';
-import { trackEvent, triggerCTAClickWithLinkAndTitle, ga4Implementaion, pushAdobeCtaClickEvent } from '../../scripts/analytics_1.js';
+import {
+  trackEvent, triggerCTAClickWithLinkAndTitle, ga4Implementaion, pushAdobeCtaClickEvent,
+} from '../../scripts/analytics_1.js';
 
 /* ============================================
    Variant: tabs — Cards (tabs)
@@ -490,7 +492,7 @@ export default function decorate(block) {
           cta: btnTitle,
           parentTitle: roomTitle,
           destinationUrl: ctaLink,
-        })
+        });
         return;
       }
 
