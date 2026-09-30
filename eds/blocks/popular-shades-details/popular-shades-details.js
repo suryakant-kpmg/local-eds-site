@@ -128,10 +128,8 @@ export default function decorate(block) {
 
   const media = document.createElement('div');
   media.className = 'popular-shades-details-media';
-  const firstImg = shades[0]?.desktopImg;
-  const firstMobile = shades[0]?.mobileImg || firstImg;
-  // reserve the image area before any picture loads
-  if (firstImg?.width && firstImg?.height) media.style.setProperty('--psd-desktop-ratio', `${firstImg.width} / ${firstImg.height}`);
+  // reserve the mobile image area before any picture loads (desktop uses a fixed frame)
+  const firstMobile = shades[0]?.mobileImg || shades[0]?.desktopImg;
   if (firstMobile?.width && firstMobile?.height) media.style.setProperty('--psd-mobile-ratio', `${firstMobile.width} / ${firstMobile.height}`);
 
   const list = document.createElement('ul');
@@ -189,57 +187,30 @@ export default function decorate(block) {
   shadesWrap.className = 'popular-shades-details-shades';
   shadesWrap.append(list);
 
-  // auto-rotation (WCAG 2.2.2: visible pause control, pauses on hover/focus)
-  const autoplay = shades.length > 1 && !block.classList.contains('no-autoplay');
-  if (autoplay) {
-    const toggle = document.createElement('button');
-    toggle.type = 'button';
-    toggle.className = 'popular-shades-details-toggle';
-    shadesWrap.append(toggle);
-
-    let stopped = REDUCED_MOTION.matches;
+  // auto-rotation as on the source: loops continuously and carries on from a clicked shade;
+  // only idles while the block is off screen or the tab is hidden
+  let schedule = () => {};
+  if (shades.length > 1 && !block.classList.contains('no-autoplay')) {
     let visible = false;
-    let hovered = false;
     let timer;
-    const setLabel = () => {
-      toggle.setAttribute('aria-label', stopped ? 'Play shade rotation' : 'Pause shade rotation');
-      toggle.classList.toggle('is-paused', stopped);
-    };
-    const schedule = () => {
+    schedule = () => {
       clearTimeout(timer);
-      if (stopped || !visible || hovered || document.hidden) return;
+      if (!visible || document.hidden) return;
       timer = setTimeout(() => {
         select((active + 1) % shades.length);
         schedule();
       }, AUTOPLAY_DELAY);
     };
-    toggle.addEventListener('click', () => {
-      stopped = !stopped;
-      setLabel();
-      schedule();
-    });
-    block.addEventListener('pointerenter', () => { hovered = true; schedule(); });
-    block.addEventListener('pointerleave', () => { hovered = false; schedule(); });
-    block.addEventListener('focusin', () => { hovered = true; schedule(); });
-    block.addEventListener('focusout', (e) => {
-      if (!block.contains(e.relatedTarget)) { hovered = false; schedule(); }
-    });
     document.addEventListener('visibilitychange', schedule);
     new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
       schedule();
-    }, { threshold: 0.3 }).observe(block);
-    // choosing a shade ends the rotation
-    list.addEventListener('click', () => {
-      stopped = true;
-      setLabel();
-      schedule();
-    });
-    setLabel();
+    }).observe(block);
   }
 
   buttons.forEach((button, i) => button.addEventListener('click', () => {
     select(i);
+    schedule();
     trackShadeClick(shades[i], title);
   }));
 

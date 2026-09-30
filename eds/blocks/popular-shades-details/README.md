@@ -25,11 +25,13 @@ from the `productdetailscta` component on asianpaints.com
 
 ## Behaviour notes
 
-- Auto-rotates every 3s (as on the source) only while ≥30% visible; pauses on hover/focus and
-  when the tab is hidden; a visible pause/play button satisfies WCAG 2.2.2. Choosing a shade
-  stops the rotation. Off by default for `prefers-reduced-motion`.
-- All house images are stacked and cross-faded; the frame's aspect ratio comes from the first
-  image's intrinsic size, so nothing shifts while images load.
+- Auto-rotates every 3s and loops, as on the source. Choosing a shade shows it and the rotation
+  carries on from there. It idles only while the block is off screen or the tab is hidden. With
+  `prefers-reduced-motion` the image swaps without the fade. Use `no-autoplay` to turn it off.
+- All house images are stacked and cross-faded, and the frame's size is reserved up front so
+  nothing shifts while images load. On desktop the frame copies the source (988×538 at 1440px),
+  with the house right-aligned, running off the left edge and stretched to fill (as the source
+  does). On mobile the frame takes the first mobile image's own ratio.
 - Swatches are `<button aria-pressed>` labelled "{name} {code}".
 - Analytics: shade clicks fire `natural_wood_shade_click` (same as `popular-shades`); the CTA
   uses `triggerCTAClickWithLinkAndTitle`.
