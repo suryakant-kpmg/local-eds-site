@@ -858,6 +858,7 @@
   /* block palette: the source's title gradient and dot colours have no global tokens */
   --cs-title-gradient: linear-gradient(270deg, #f8a12e, #be2a1d 50.07%, #45216c 98.1%);
   --cs-dot: #606060;
+  --cs-dot-opacity: 0.25;
   --cs-dot-active: #2e2f32;
   --cs-hover-bg: #fff7e8;
   --cs-ink: var(--dark-color);
@@ -1021,38 +1022,39 @@
   padding: 0;
 }
 
-/* dots */
+/* dots, as the source's slick dots: 6px faded dots, a 30px bar for the current slide,
+   each in a 10px slot 6px apart (the bar takes 23px extra); left on desktop, centred on mobile */
 .collage-slideshow.images .collage-slideshow__controls {
   display: flex;
-  align-items: center;
   justify-content: center;
-  margin-top: 6px;
+  margin-top: 30px;
 }
 
 .collage-slideshow-container .collage-slideshow-wrapper .collage-slideshow.images .collage-slideshow__left .collage-slideshow__pagination {
-  gap: 10px;
+  align-items: center;
   width: auto;
+  height: 6px;
   margin: 0;
+  line-height: 0;
 }
 
 .collage-slideshow.images .collage-slideshow__pagination .swiper-pagination-bullet {
-  box-sizing: content-box;
+  flex: none;
   width: 6px;
   height: 6px;
-
-  /* 24px tall hit area around the 6px dot */
-  padding: 9px 0;
-  margin: 0 !important;
-  border-radius: 3px;
+  margin: 0 4px 0 6px !important;
+  border-radius: 6px;
   background: var(--cs-dot);
-  background-clip: content-box;
+  opacity: var(--cs-dot-opacity);
+  transition: none;
   cursor: pointer;
 }
 
 .collage-slideshow.images .collage-slideshow__pagination .swiper-pagination-bullet-active {
   width: 30px;
+  margin-right: 3px !important;
   background: var(--cs-dot-active);
-  background-clip: content-box;
+  opacity: 1;
 }
 
 .collage-slideshow.images .collage-slideshow__pagination .swiper-pagination-bullet:focus-visible {
@@ -1144,7 +1146,7 @@
 
   .collage-slideshow.images .collage-slideshow__controls {
     justify-content: flex-start;
-    margin-top: 26px;
+    margin-top: 32px;
   }
 
   .collage-slideshow-container .collage-slideshow-wrapper .collage-slideshow.images .collage-slideshow__right .collage-slideshow__content .collage-slideshow__eyebrow {
