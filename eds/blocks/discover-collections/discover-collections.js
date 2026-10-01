@@ -1,16 +1,27 @@
-import { getDigitalData, trackEvent, triggerCTAClickWithLinkAndTitle , pushAdobeCtaClickEvent } from '../../scripts/analytics_1.js';
+import { createOptimizedPicture } from '../../scripts/aem.js';
+import { moveInstrumentation } from '../../scripts/scripts.js';
+import {
+  getDigitalData, trackEvent, triggerCTAClickWithLinkAndTitle, pushAdobeCtaClickEvent,
+} from '../../scripts/analytics_1.js';
 
 /*
 ** Authoring format **
 Row 1
 Col 1 → Discover
-Col 2 → Collections
+Col 2 → Collections (gradient part of the title)
+Col 3 → optional line below the title
 Row 2
 Col 1: left text design content
 Col 2: right text design content
+  (heading, description, Download PDF link, optional View link;
+   a picture instead of the heading is shown as a logo)
 Row 3
 Col 1: left images
 Col 2: right images
+A side whose text and image cells are both empty is left out.
+
+Variant "single" (Discover Collections (single)): one collage led by a logo with a
+Download PDF button; images are optimized, lazy and square; 4 images on mobile.
 */
 
 export default async function decorate(block) {
@@ -28,7 +39,17 @@ export default async function decorate(block) {
 
   if ($titleCols.length < 2 || $contentCols.length < 2 || $imageCols.length < 2) return;
 
+  const isSingle = $block.hasClass('single');
   $block.empty().addClass('discover-collections');
+
+  // single: rebuild authored pictures through the media bus, keeping UE instrumentation
+  function optimizePicture(picture, width) {
+    const img = picture.querySelector('img');
+    if (!img) return picture.cloneNode(true);
+    const optimized = createOptimizedPicture(img.src, img.alt, false, [{ width }]);
+    moveInstrumentation(img, optimized.querySelector('img'));
+    return optimized;
+  }
 
   function getCellContent($cell) {
     const $preferred = $cell.find('h1,h2,h3,h4,h5,h6,p,span,div').first();
@@ -40,7 +61,7 @@ export default async function decorate(block) {
   }
 
   function getDescription($cell) {
-    return $cell.find('p').filter(function () {
+    return $cell.find('p').filter(function hasText() {
       return $(this).text().trim();
     }).first();
   }
@@ -59,7 +80,8 @@ export default async function decorate(block) {
   }
 
   function getPictures($cell) {
-    return $cell.find('picture').map(function (i) {
+    if (isSingle) return $cell.find('picture').get().map((picture) => optimizePicture(picture, '750'));
+    return $cell.find('picture').map(function clonePicture(i) {
       const $clone = $(this).clone();
       const $img = $clone.find('img');
 
@@ -101,8 +123,9 @@ export default async function decorate(block) {
   function createBlockHeader() {
     const first = getCellContent($titleCols.eq(0));
     const second = getCellContent($titleCols.eq(1));
+    const subtitle = $titleCols.length > 2 ? getCellContent($titleCols.eq(2)) : '';
 
-    return $(`
+    const $header = $(`
       <div class="discover-collections__block-header">
         <h2 class="discover-collections__block-title">
           ${first ? `<span class="discover-collections__block-title-main">${first}</span>` : ''}
@@ -110,6 +133,9 @@ export default async function decorate(block) {
         </h2>
       </div>
     `);
+    // optional third cell: a line below the title
+    if (subtitle) $('<p class="discover-collections__block-subtitle"></p>').text(subtitle).appendTo($header);
+    return $header;
   }
 
   function createTextBlock($cell) {
@@ -121,6 +147,15 @@ export default async function decorate(block) {
 
     const $title = $('<h3 class="discover-collections__title"></h3>').html($heading.html() || '');
     const $subtitle = $('<p class="discover-collections__subtitle"></p>').html($desc.html() || '');
+
+    // no heading but a picture: show it as the collection logo
+    const logo = $heading.length ? null : $cell.find('picture')[0];
+    let $logo = null;
+    if (logo) {
+      $logo = $('<div class="discover-collections__logo"></div>')
+        .append(isSingle ? optimizePicture(logo, '600') : $(logo).clone());
+    }
+    if (isSingle) moveInstrumentation($cell[0], $wrap[0]);
 
     const $actions = $('<div class="discover-collections__actions"></div>');
 
@@ -141,10 +176,11 @@ export default async function decorate(block) {
           event: 'download_form_pdf',
           title: data.pdfName,
         });
-
       });
 
       $download.prepend(createDownloadIcon());
+      // single: the label already says Download PDF, so the icon is decorative
+      if (isSingle) $download.find('.discover-collections__download-icon img').attr('alt', '');
       $actions.append($download);
     }
 
@@ -163,7 +199,7 @@ export default async function decorate(block) {
       $actions.append($view);
     }
 
-    $wrap.append($title, $subtitle, $actions);
+    $wrap.append($logo || $title, $subtitle, $actions);
     return $wrap;
   }
 
@@ -174,6 +210,10 @@ export default async function decorate(block) {
   }
 
   function createVariant($contentCell, $imageCell, variantClass) {
+    // leave out a side that has no text and no images
+    if (!$contentCell.text().trim() && !$contentCell.find('picture').length
+      && !$imageCell.find('picture').length) return null;
+
     const $section = $(`<section class="discover-collections__variant ${variantClass}"></section>`);
     const $collage = $('<div class="discover-collections__collage"></div>');
     const $primaryGroup = $('<div class="discover-collections__group discover-collections__group--primary"></div>');
@@ -211,45 +251,45 @@ export default async function decorate(block) {
   }
 
   function observeImagesOnce() {
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
 
-      $block.find('.discover-collections__image').each(function () {
-        const $image = $(this);
+        $block.find('.discover-collections__image').each(function animateImage() {
+          const $image = $(this);
 
-        if ($image.data('animated')) return;
-        $image.data('animated', true);
+          if ($image.data('animated')) return;
+          $image.data('animated', true);
 
-        $image.removeClass('is-hidden-before-animation');
-        $image.addClass('animate-grow-from-center');
+          $image.removeClass('is-hidden-before-animation');
+          $image.addClass('animate-grow-from-center');
+        });
+
+        obs.unobserve(entry.target);
       });
-
-      obs.unobserve(entry.target);
+    }, {
+      threshold: 0,
+      rootMargin: '0px 0px -10% 0px',
     });
-  }, {
-    threshold: 0,
-    rootMargin: '0px 0px -10% 0px',
-  });
 
-  observer.observe($block[0]);
-}
+    observer.observe($block[0]);
+  }
 
   const $header = createBlockHeader();
 
   const $left = createVariant(
     $contentCols.eq(0),
     $imageCols.eq(0),
-    'discover-collections__variant--left'
+    'discover-collections__variant--left',
   );
 
   const $right = createVariant(
     $contentCols.eq(1),
     $imageCols.eq(1),
-    'discover-collections__variant--right'
+    'discover-collections__variant--right',
   );
 
-  $block.append($header, $left, $right);
+  $block.append(...[$header, $left, $right].filter(Boolean));
 
   observeImagesOnce();
 }
