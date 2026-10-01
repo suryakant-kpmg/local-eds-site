@@ -1,0 +1,93 @@
+{
+  "definitions": [
+    {
+      "title": "Discover Collections",
+      "id": "discover-collections",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Discover Collections",
+              "model": "discover-collections"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "discover-collections",
+      "fields": [
+        {
+          "component": "select",
+          "name": "classes",
+          "label": "Variant",
+          "valueType": "string",
+          "value": "",
+          "options": [
+            {
+              "name": "Default (two collections)",
+              "value": ""
+            },
+            {
+              "name": "Single (one collection with logo and Download PDF button)",
+              "value": "single"
+            }
+          ]
+        },
+        {
+          "component": "text",
+          "name": "title",
+          "label": "Title (first part)",
+          "valueType": "string",
+          "value": ""
+        },
+        {
+          "component": "text",
+          "name": "titleGradient",
+          "label": "Title (gradient part)",
+          "valueType": "string",
+          "value": ""
+        },
+        {
+          "component": "text",
+          "name": "titleLine",
+          "label": "Line below the title (optional)",
+          "valueType": "string",
+          "value": ""
+        },
+        {
+          "component": "richtext",
+          "name": "leftText",
+          "label": "Left text: heading or logo image, description, Download PDF link, optional View link (leave empty to drop the left collage)",
+          "valueType": "string",
+          "value": ""
+        },
+        {
+          "component": "richtext",
+          "name": "rightText",
+          "label": "Right text: heading or logo image, description, Download PDF link, optional View link (leave empty to drop the right collage)",
+          "valueType": "string",
+          "value": ""
+        },
+        {
+          "component": "richtext",
+          "name": "leftImages",
+          "label": "Left images (up to 8)",
+          "valueType": "string",
+          "value": ""
+        },
+        {
+          "component": "richtext",
+          "name": "rightImages",
+          "label": "Right images (up to 8)",
+          "valueType": "string",
+          "value": ""
+        }
+      ]
+    }
+  ],
+  "filters": []
+}
