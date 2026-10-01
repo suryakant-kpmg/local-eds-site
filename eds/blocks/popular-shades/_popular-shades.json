@@ -1,0 +1,141 @@
+{
+  "definitions": [
+    {
+      "title": "Popular Shades",
+      "id": "popular-shades",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Popular Shades",
+              "model": "popular-shades",
+              "filter": "popular-shades"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Intro",
+      "id": "popular-shades-intro",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Intro",
+              "model": "popular-shades-intro"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Shade",
+      "id": "popular-shades-shade",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Shade",
+              "model": "popular-shades-shade"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "popular-shades",
+      "fields": [
+        {
+          "component": "multiselect",
+          "name": "classes",
+          "label": "Variant",
+          "valueType": "string",
+          "options": [
+            {
+              "name": "Exterior (house preview, auto-rotating)",
+              "value": "exterior"
+            },
+            {
+              "name": "No autoplay (exterior)",
+              "value": "no-autoplay"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "popular-shades-intro",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "text",
+          "value": "",
+          "label": "Heading (\"Popular Shades\" gets the gradient), description and CTA link",
+          "valueType": "string"
+        }
+      ]
+    },
+    {
+      "id": "popular-shades-shade",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Desktop image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "imageAlt",
+          "value": "",
+          "label": "Image alt text"
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "mobileImage",
+          "label": "Mobile image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "colour",
+          "value": "",
+          "label": "Swatch colour (hex, e.g. #FCDAB7)"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "name",
+          "value": "",
+          "label": "Shade name"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "code",
+          "value": "",
+          "label": "Shade code (e.g. #7986)"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "popular-shades",
+      "components": [
+        "popular-shades-intro",
+        "popular-shades-shade"
+      ]
+    }
+  ]
+}

@@ -7,12 +7,23 @@ Col 2 = mobile image
 Col 3 = swatch color
 Col 4 = swatch name
 Col 5 = swatch number
+
+Variant "exterior" (Popular Shades (exterior)): house preview bleeding off the left
+edge with the text on the right (desktop) or over the image (mobile), larger rounded
+swatches, and continuous auto-rotation every 3s while on screen (never with reduced
+motion; add "no-autoplay" to the block name to switch it off).
 */
+import { createOptimizedPicture } from '../../scripts/aem.js';
+import { moveInstrumentation } from '../../scripts/scripts.js';
 import {
   getDigitalData,
   trackEvent,
-  triggerCTAClickWithLinkAndTitle, pushAdobeProductTitleClick 
+  triggerCTAClickWithLinkAndTitle, pushAdobeProductTitleClick,
 } from '../../scripts/analytics_1.js';
+
+const EXTERIOR_DESKTOP = '(width >= 992px)';
+const EXTERIOR_AUTOPLAY_DELAY = 3000;
+const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 function getSwiperClass() {
   if (window.Swiper) return Promise.resolve(window.Swiper);
@@ -93,6 +104,42 @@ function buildPicture(desktopItem, mobileItem, altText) {
   return picture;
 }
 
+/** exterior: desktop + mobile pictures through the media bus, keeping UE instrumentation */
+function buildExteriorPicture(desktopItem, mobileItem, altText) {
+  const desktopImg = desktopItem?.img;
+  const mobileImg = mobileItem?.img || desktopImg;
+  const alt = desktopImg?.alt || mobileImg?.alt || altText;
+  const picture = createOptimizedPicture(mobileImg.src, alt, false, [{ width: '750' }]);
+  if (desktopImg && desktopImg !== mobileImg) {
+    const desktop = createOptimizedPicture(desktopImg.src, alt, false, [{ media: EXTERIOR_DESKTOP, width: '1600' }]);
+    picture.prepend(...desktop.querySelectorAll('source[media]'));
+  }
+  moveInstrumentation(desktopImg || mobileImg, picture.querySelector('img'));
+  return picture;
+}
+
+/** exterior: rotate continuously, only while the block is on screen and the tab is visible */
+function setupExteriorAutoplay(block, swiper) {
+  if (REDUCED_MOTION.matches || block.classList.contains('no-autoplay')) return;
+  let visible = false;
+  let timer;
+  const schedule = () => {
+    clearTimeout(timer);
+    if (!visible || document.hidden) return;
+    timer = setTimeout(() => {
+      swiper.slideNext();
+      schedule();
+    }, EXTERIOR_AUTOPLAY_DELAY);
+  };
+  // a chosen shade restarts the interval rather than stopping the rotation
+  swiper.on('slideChange', schedule);
+  document.addEventListener('visibilitychange', schedule);
+  new IntersectionObserver(([entry]) => {
+    visible = entry.isIntersecting;
+    schedule();
+  }).observe(block);
+}
+
 function createContentPanel(contentRow) {
   const panel = document.createElement('div');
   panel.className = 'popular-shades__content';
@@ -148,6 +195,7 @@ function getSlidesFromRows(rows) {
         swatchColour: getTextData(cols[2]),
         swatchName: getTextData(cols[3]),
         swatchNumber: getTextData(cols[4]),
+        row,
       };
     })
     .filter((slide) => slide && (slide.desktopImage || slide.mobileImage));
@@ -162,6 +210,7 @@ export default async function decorate(block) {
 
   const contentRow = rows[0];
   const slides = getSlidesFromRows(rows);
+  const isExterior = block.classList.contains('exterior');
 
   if (!slides.length) return;
 
@@ -172,6 +221,7 @@ export default async function decorate(block) {
   wrapper.className = 'popular-shades__wrapper';
 
   const contentPanel = createContentPanel(contentRow);
+  if (isExterior) moveInstrumentation(contentRow, contentPanel);
   const colourTitle = contentPanel.querySelector('.popular-shades__title')?.textContent?.trim() || '';
 
   const media = document.createElement('div');
@@ -191,11 +241,10 @@ export default async function decorate(block) {
     const imageWrap = document.createElement('div');
     imageWrap.className = 'popular-shades__image-wrap';
 
-    const picture = buildPicture(
-      slide.desktopImage,
-      slide.mobileImage,
-      slide.swatchName || `Popular shade ${index + 1}`,
-    );
+    const altText = slide.swatchName || `Popular shade ${index + 1}`;
+    const picture = isExterior
+      ? buildExteriorPicture(slide.desktopImage, slide.mobileImage, altText)
+      : buildPicture(slide.desktopImage, slide.mobileImage, altText);
     picture.classList.add('popular-shades__picture');
 
     imageWrap.appendChild(picture);
@@ -215,6 +264,7 @@ export default async function decorate(block) {
     const swatchItem = document.createElement('li');
     swatchItem.className = 'popular-shades__swatch-item track_paint_colour';
     swatchItem.dataset.index = index;
+    if (isExterior) moveInstrumentation(slide.row, swatchItem);
 
     const swatchBtn = document.createElement('button');
     swatchBtn.type = 'button';
@@ -246,15 +296,15 @@ export default async function decorate(block) {
   media.appendChild(swatches);
 
   wrapper.appendChild(media);
-wrapper.appendChild(contentPanel);
+  wrapper.appendChild(contentPanel);
 
-if (window.innerWidth < 768) {
-  const buttonContainer = contentPanel.querySelector('.button-container');
+  if (window.innerWidth < 768) {
+    const buttonContainer = contentPanel.querySelector('.button-container');
 
-  if (buttonContainer) {
-    media.insertAdjacentElement('afterend', buttonContainer);
+    if (buttonContainer) {
+      media.insertAdjacentElement('afterend', buttonContainer);
+    }
   }
-}
   block.appendChild(wrapper);
 
   if (slides.length <= 1) {
@@ -262,6 +312,29 @@ if (window.innerWidth < 768) {
     if (firstButton) firstButton.classList.add('is-active');
     return;
   }
+
+  const updateActiveSwatch = (activeIndex) => {
+    const swatchButtons = [...swatchList.querySelectorAll('.popular-shades__swatch')];
+
+    swatchButtons.forEach((btn, index) => {
+      const isActive = index === activeIndex;
+      btn.classList.toggle('is-active', isActive);
+      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+
+    const activeButton = swatchButtons[activeIndex];
+    if (activeButton?.parentElement) {
+      const listRect = swatchList.getBoundingClientRect();
+      const itemRect = activeButton.parentElement.getBoundingClientRect();
+
+      if (itemRect.left < listRect.left || itemRect.right > listRect.right) {
+        swatchList.scrollTo({
+          left: activeButton.parentElement.offsetLeft - 12,
+          behavior: 'smooth',
+        });
+      }
+    }
+  };
 
   try {
     const Swiper = await getSwiperClass();
@@ -275,9 +348,9 @@ if (window.innerWidth < 768) {
       watchOverflow: true,
       allowTouchMove: true,
       autoHeight: false,
-      effect: "fade",
+      effect: 'fade',
       fadeEffect: {
-        crossFade: true
+        crossFade: true,
       },
       on: {
         init(instance) {
@@ -288,29 +361,6 @@ if (window.innerWidth < 768) {
         },
       },
     });
-
-    function updateActiveSwatch(activeIndex) {
-      const swatchButtons = [...swatchList.querySelectorAll('.popular-shades__swatch')];
-
-      swatchButtons.forEach((btn, index) => {
-        const isActive = index === activeIndex;
-        btn.classList.toggle('is-active', isActive);
-        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-      });
-
-      const activeButton = swatchButtons[activeIndex];
-      if (activeButton?.parentElement) {
-        const listRect = swatchList.getBoundingClientRect();
-        const itemRect = activeButton.parentElement.getBoundingClientRect();
-
-        if (itemRect.left < listRect.left || itemRect.right > listRect.right) {
-          swatchList.scrollTo({
-            left: activeButton.parentElement.offsetLeft - 12,
-            behavior: 'smooth',
-          });
-        }
-      }
-    }
 
     [...swatchList.querySelectorAll('.popular-shades__swatch')].forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -350,6 +400,7 @@ if (window.innerWidth < 768) {
     });
 
     block.popularShadesSwiper = swiper;
+    if (isExterior) setupExteriorAutoplay(block, swiper);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Failed to initialize Popular Shades Swiper', error);
