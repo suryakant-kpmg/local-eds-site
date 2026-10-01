@@ -1,0 +1,396 @@
+/*
+ * popular-shades-nilaya — tabbed shade explorer (finish tabs, shade swatches, room image).
+ * Source: https://www.asianpaints.com/nilaya-arc-inspiration.html (.popularshades)
+ *
+ * AUTHORING (DA table; first cell = row keyword):
+ *
+ *   | popular-shades-nilaya |                                       |                                 |               |
+ *   | heading        | Popular Shades                        |                                 |               |
+ *   | cta            | [Download shade cards](…/shade-card.pdf) |                              |               |
+ *   | tab            | Natural Matt                          |                                 |               |
+ *   | shade          | <swatch image>                        | <mobile room> <desktop room>    | Indigo Tales  |
+ *   | shade          | <swatch image>                        | <mobile room> <desktop room>    | Dhoon Kul     |
+ *   | tab            | Natural Pearl                         |                                 |               |
+ *   | shade          | …                                     |                                 |               |
+ *
+ * - heading, cta: optional. A PDF link opens in a new tab (announced).
+ * - tab: starts a finish; the shade rows below it belong to it.
+ * - shade: swatch image (shown at its own size/shape) | room image(s) | shade
+ *   name (the swatch button's label and the room image's alt text).
+ *   Room cell: ONE image or TWO (mobile first, desktop second; desktop from 992px).
+ *
+ * BEHAVIOUR: tabs switch the finish (opening on its first shade); a swatch
+ * fades the room image (150ms out / 150ms in) and moves the white ring onto
+ * it (0.4s). Tabs: Left/Right/Home/End. Swatches are toggle buttons
+ * (aria-pressed). Motion is skipped with prefers-reduced-motion.
+ *
+ * STYLING: the source's exact values as --popular-shades-nilaya-* custom
+ * properties; white reuses the repo's --background-color. Breakpoint 992px.
+ * Source font: Manrope (stack is just "Manrope"), not loaded by this repo.
+ */
+
+/* full-width like the source (it pads itself: 40px, 16px left on mobile) */
+.popular-shades-nilaya-container .popular-shades-nilaya-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+.popular-shades-nilaya {
+  --popular-shades-nilaya-font: "Manrope", sans-serif;
+  --popular-shades-nilaya-title: #2e2f32;
+  --popular-shades-nilaya-ink: #232426;
+  --popular-shades-nilaya-accent: #fdbf45;
+  --popular-shades-nilaya-hover: #fff7e8;
+  --popular-shades-nilaya-focus: #feeecf;
+  --popular-shades-nilaya-white: var(--background-color);
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding: 0 0 0 16px;
+  color: var(--popular-shades-nilaya-ink);
+  font-family: var(--popular-shades-nilaya-font);
+}
+
+.popular-shades-nilaya [hidden] {
+  display: none !important;
+}
+
+.popular-shades-nilaya .popular-shades-nilaya-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.popular-shades-nilaya picture {
+  display: block;
+}
+
+.popular-shades-nilaya .popular-shades-nilaya-title {
+  margin: 0;
+  color: var(--popular-shades-nilaya-title);
+  font-family: inherit;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 41.6px;
+  letter-spacing: normal;
+  text-align: start;
+}
+
+/* --- tabs --- */
+.popular-shades-nilaya .popular-shades-nilaya-tabs {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  margin: 20px 0;
+  padding-right: 2px;
+  overflow: auto hidden;
+  scrollbar-width: none;
+}
+
+.popular-shades-nilaya .popular-shades-nilaya-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.popular-shades-nilaya .popular-shades-nilaya-tab {
+  position: relative;
+  flex: none;
+  margin: 0;
+  padding: 0 0 3px;
+  border: 0;
+  background: none;
+  color: var(--popular-shades-nilaya-ink);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.popular-shades-nilaya .popular-shades-nilaya-tab[aria-selected="true"] {
+  font-weight: 700;
+}
+
+.popular-shades-nilaya .popular-shades-nilaya-tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60%;
+  height: 3px;
+  border-radius: 2px;
+  background-color: var(--popular-shades-nilaya-accent);
+}
+
+.popular-shades-nilaya .popular-shades-nilaya-tab:focus-visible {
+  outline: 2px solid var(--popular-shades-nilaya-ink);
+  outline-offset: 2px;
+}
+
+/* --- panel: room image above a scrolling swatch row --- */
+.popular-shades-nilaya .popular-shades-nilaya-panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.popular-shades-nilaya .popular-shades-nilaya-view {
+  position: relative;
+  height: 420px;
+  margin-right: 16px;
+}
+
+.popular-shades-nilaya .popular-shades-nilaya-room,
+.popular-shades-nilaya .popular-shades-nilaya-room img {
+  width: 100%;
+  height: 100%;
+}
+
+/* the source stretches (fill) the room image on mobile; cover keeps its
+   aspect ratio (Lighthouse "incorrect aspect ratio") with a slight crop */
+.popular-shades-nilaya .popular-shades-nilaya-room img {
+  display: block;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.popular-shades-nilaya .popular-shades-nilaya-swatches {
+  position: relative;
+  display: flex;
+  order: 2;
+  width: 100%;
+  margin: 17px 0 25px;
+  overflow: auto hidden;
+  scrollbar-width: none;
+}
+
+.popular-shades-nilaya .popular-shades-nilaya-swatches::-webkit-scrollbar {
+  display: none;
+}
+
+/* the source shows 4.5 swatches per view on phones, 3 up to 768px; its
+   carousel rounds each slot up to a whole pixel */
+.popular-shades-nilaya .popular-shades-nilaya-swatch {
+  position: relative;
+  flex: none;
+  width: calc(round(up, 100% / 4.5, 1px) - 12px);
+  height: 70px;
+  margin: 0 12px 0 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* the picture must pass the swatch's (flexed) height on to the image */
+.popular-shades-nilaya .popular-shades-nilaya-swatch picture {
+  height: 100%;
+}
+
+/* the source stretches (fill) swatches into their slot; contain keeps the
+   blob's own shape (Lighthouse "incorrect aspect ratio") */
+.popular-shades-nilaya .popular-shades-nilaya-swatch img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.popular-shades-nilaya .popular-shades-nilaya-swatch:focus-visible {
+  outline: 2px solid var(--popular-shades-nilaya-ink);
+  outline-offset: -2px;
+}
+
+/* white selection ring, moved onto the selected swatch */
+.popular-shades-nilaya .popular-shades-nilaya-ring {
+  position: absolute;
+  top: var(--popular-shades-nilaya-ring-top, 22px);
+  left: var(--popular-shades-nilaya-ring-left, 21px);
+  z-index: 1;
+  box-sizing: border-box;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--popular-shades-nilaya-white);
+  border-radius: 50%;
+  background-color: transparent;
+  pointer-events: none;
+  transition: top 0.4s ease, left 0.4s ease;
+}
+
+/* --- download link --- */
+.popular-shades-nilaya .popular-shades-nilaya-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  justify-self: center;
+  box-sizing: border-box;
+  height: 35px;
+  padding: 12px 18px;
+  border: 1px solid var(--popular-shades-nilaya-ink);
+  border-radius: 45px;
+  color: var(--popular-shades-nilaya-ink);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 21px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.popular-shades-nilaya .popular-shades-nilaya-cta svg {
+  flex: none;
+  width: 17px;
+  height: 20px;
+  color: #000;
+}
+
+.popular-shades-nilaya .popular-shades-nilaya-cta:hover {
+  background: var(--popular-shades-nilaya-hover);
+  color: var(--popular-shades-nilaya-ink);
+  text-decoration: none;
+}
+
+.popular-shades-nilaya .popular-shades-nilaya-cta:focus {
+  background: var(--popular-shades-nilaya-focus);
+}
+
+.popular-shades-nilaya .popular-shades-nilaya-cta:focus-visible {
+  outline: 2px solid var(--popular-shades-nilaya-ink);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popular-shades-nilaya .popular-shades-nilaya-ring {
+    transition: none;
+  }
+}
+
+@media (width >= 481px) and (width <= 768px) {
+  .popular-shades-nilaya .popular-shades-nilaya-swatch {
+    width: calc(round(up, 100% / 3, 1px) - 12px);
+  }
+}
+
+/* 769–991px: the source leaves the row unslicked (natural swatch widths) */
+@media (width >= 769px) and (width <= 991px) {
+  .popular-shades-nilaya .popular-shades-nilaya-swatches {
+    gap: 43px;
+  }
+
+  .popular-shades-nilaya .popular-shades-nilaya-swatch {
+    width: auto;
+    margin: 0;
+  }
+
+  .popular-shades-nilaya .popular-shades-nilaya-swatch img {
+    width: auto;
+  }
+}
+
+/* --- desktop (source: 992px and up) --- */
+@media (width >= 992px) {
+  .popular-shades-nilaya {
+    --popular-shades-nilaya-title: #1d1d1f;
+
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "title title"
+      "tabs cta"
+      "panel panel";
+    align-items: center;
+    padding: 40px;
+  }
+
+  .popular-shades-nilaya .popular-shades-nilaya-title {
+    grid-area: title;
+    font-size: 40px;
+    line-height: 42px;
+    letter-spacing: -1px;
+  }
+
+  .popular-shades-nilaya .popular-shades-nilaya-tabs {
+    grid-area: tabs;
+    gap: 60px;
+    width: auto;
+    margin: 25px 0 40px;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .popular-shades-nilaya .popular-shades-nilaya-tab {
+    padding-bottom: 6px;
+    font-size: 24px;
+    line-height: 33.6px;
+  }
+
+  .popular-shades-nilaya .popular-shades-nilaya-tab[aria-selected="true"] {
+    font-weight: 800;
+  }
+
+  .popular-shades-nilaya .popular-shades-nilaya-tab[aria-selected="true"]::after {
+    bottom: -4px;
+  }
+
+  .popular-shades-nilaya .popular-shades-nilaya-panels {
+    grid-area: panel;
+  }
+
+  .popular-shades-nilaya .popular-shades-nilaya-panel {
+    flex-direction: row;
+    height: 640px;
+    overflow: hidden;
+  }
+
+  /* fixed-height column: the swatches shrink to fit, exactly as on the source */
+  .popular-shades-nilaya .popular-shades-nilaya-swatches {
+    flex-direction: column;
+    align-items: flex-start;
+    order: 0;
+    gap: 43px;
+    width: 100px;
+    margin: 6px 0 0;
+    overflow: visible;
+  }
+
+  .popular-shades-nilaya .popular-shades-nilaya-swatch {
+    flex: 0 1 auto;
+    width: auto;
+    height: auto;
+    margin: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .popular-shades-nilaya .popular-shades-nilaya-swatch img {
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .popular-shades-nilaya .popular-shades-nilaya-view {
+    order: 1;
+    width: 100%;
+    height: 640px;
+    margin: 0;
+  }
+
+  .popular-shades-nilaya .popular-shades-nilaya-room img {
+    border-radius: 6px;
+    object-fit: cover;
+  }
+
+  .popular-shades-nilaya .popular-shades-nilaya-cta {
+    grid-area: cta;
+    height: 44px;
+    margin: 25px 9px 40px 0;
+    padding: 14px 20px;
+    line-height: 24px;
+  }
+}
+

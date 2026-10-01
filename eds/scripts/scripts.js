@@ -127,6 +127,13 @@ function initChatPlaceholder() {
   document.head.appendChild(script);
 }());
 
+/*
+ * Legacy AMS Salesforce lead script (injected outside this repo) reads
+ * `globalThisObj` in its success callback; declare it so it doesn't throw.
+ * Used in Target popup - contractor page
+ */
+window.globalThisObj = window.globalThisObj || null;
+
 /**
  * Global jQuery loader
  * - loads jQuery only once
@@ -647,15 +654,7 @@ async function loadLazy(doc) {
       console.error('Failed to initialize analytics', e);
     });
   }
-   const ADOBE_LAUNCH_SCRIPT = 'https://assets.adobedtm.com/ef0f7eb243a4/50bf6aad1917/launch-1fb344a8e349-development.min.js';
-  function bootstrapAdobeLaunch() {
-  const script = document.createElement('script');
-  script.src = ADOBE_LAUNCH_SCRIPT;
-  script.async = true;
-  document.head.appendChild(script);
-}
-  bootstrapAdobeLaunch();
-
+  
   // Third-party marketing pixels — lightweight PageView image beacons
   // with optional GTM bridge (GTM-MP96GBBF) loaded by fireGTM().
   // PageView coverage includes FB Pixel, GA4, Google Ads, DCM Floodlight,

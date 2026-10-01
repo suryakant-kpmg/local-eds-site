@@ -369,4 +369,10 @@
     }
 }
 
+@media screen and (min-width: 1441px) {
+    .carousel-trending.service-variant .card .card-body-text {
+        max-width: 56%;
+    }
+}
+
 /* ==================== service-variant : end ==================== */

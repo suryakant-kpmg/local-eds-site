@@ -1,0 +1,376 @@
+/*
+ * product-range — two overlapping product panels (desktop) / stacked cards (mobile).
+ * Source: https://www.asianpaints.com/nilaya-arc-inspiration.html (.rangeofproducts)
+ *
+ * AUTHORING (DA table; first cell = row keyword):
+ *
+ *   | product-range |                        |               |              |             |                                 |          |                                  |
+ *   | product | Nilaya Arc Pearlescent | <mobile image> | <desktop bg> | <packshot> | [Product Details](…pearlescent.html) | ₹1125.00 | (Inclusive of all taxes) per L* |
+ *   | product | Nilaya Arc Matt        | <mobile image> | <desktop bg> | <packshot> | [Product Details](…matt.html)        | ₹1050.00 | (Inclusive of all taxes) per L* |
+ *   | note    | *The price per litre is calculated based on the largest available pack size. … |
+ *
+ * - product: name (screen-reader heading + link context) | mobile image
+ *   (composite, shown below 992px) | desktop background (texture, stretched to
+ *   the panel, decorative) | desktop packshot (product art) | link (opens in
+ *   a new tab if authored so) | price ("₹1125.00" -> "MRP ₹1125.00") | price
+ *   note (a trailing * is shown red). The packshot / mobile image alt text
+ *   must describe the art (it contains the product name and features).
+ * - note: footnote under the panels.
+ *
+ * BEHAVIOUR (desktop, CSS only): hovering or focusing a panel widens it from
+ * 55% to 60% (the other shrinks to 50%, 0.5s) and shows its price; on mouse
+ * hover the other panel's link is hidden, as on the source (not on keyboard
+ * focus, so both links stay reachable). Mobile: price always shown.
+ *
+ * STYLING: the source's exact values as --product-range-* custom properties;
+ * white reuses the repo's --background-color. Breakpoint 992px; desktop
+ * panel height follows the source's viewport-based heights. Font: Manrope
+ * (the source stack is just "Manrope"), not loaded by this repo.
+ */
+
+/* full-width like the source */
+.product-range-container .product-range-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+.product-range {
+  --product-range-font: "Manrope", sans-serif;
+  --product-range-ink: #000;
+  --product-range-cta-bg: #232426;
+  --product-range-cta-text: var(--background-color);
+  --product-range-cta-hover: #fcaf17;
+  --product-range-star: #f00;
+
+  /* source: #75787b (4.44:1 on white, fails WCAG AA); nearest passing grey */
+  --product-range-note: #737679;
+
+  font-family: var(--product-range-font);
+}
+
+.product-range .product-range-name,
+.product-range .product-range-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.product-range picture {
+  display: block;
+}
+
+/* --- mobile: stacked composite images --- */
+.product-range .product-range-item {
+  position: relative;
+  border-radius: 10px;
+}
+
+.product-range .product-range-bg,
+.product-range .product-range-packshot {
+  display: none;
+}
+
+.product-range .product-range-mobile img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.product-range .product-range-price {
+  position: absolute;
+  bottom: 18px;
+  left: 12px;
+  color: var(--product-range-ink);
+}
+
+.product-range .product-range-mrp {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16.39px;
+}
+
+.product-range .product-range-currency {
+  font-weight: 400;
+  line-height: 13.2px;
+}
+
+.product-range .product-range-amount {
+  font-weight: 700;
+  line-height: 14.4px;
+}
+
+.product-range .product-range-mrp-note {
+  margin: 1px 0 0;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 15.03px;
+}
+
+.product-range .product-range-star {
+  color: var(--product-range-star);
+}
+
+.product-range .product-range-cta {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-sizing: border-box;
+  height: 38px;
+  padding: 12px 18px;
+  border: 1px solid var(--product-range-ink);
+  border-radius: 60px;
+  background: var(--product-range-cta-bg);
+  color: var(--product-range-cta-text);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 21px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.product-range .product-range-cta svg {
+  flex: none;
+  width: 17px;
+  height: 17px;
+  margin-left: 5px;
+}
+
+.product-range .product-range-cta:hover {
+  border-color: var(--product-range-cta-hover);
+  background: var(--product-range-cta-hover);
+  color: var(--product-range-ink);
+  text-decoration: none;
+}
+
+.product-range .product-range-cta:focus-visible {
+  outline: 2px solid var(--product-range-cta-text);
+  outline-offset: 0;
+  box-shadow: 0 0 0 4px var(--product-range-cta-bg);
+}
+
+.product-range .product-range-note {
+  margin: 0;
+  padding: 10px 15px;
+  color: var(--product-range-note);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15px;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+/* --- desktop (source: 992px and up): two overlapping panels --- */
+@media (width >= 992px) {
+  .product-range .product-range-panels {
+    position: relative;
+    max-width: 1400px;
+    height: 690px;
+    margin: 0 auto;
+  }
+
+  .product-range .product-range-item {
+    position: absolute;
+    top: 0;
+    width: 55%;
+    height: 100%;
+    overflow: hidden;
+    transition: width 0.5s ease;
+  }
+
+  .product-range .product-range-item:nth-child(1) {
+    left: 0;
+    z-index: 10;
+  }
+
+  .product-range .product-range-item:nth-child(2) {
+    right: 0;
+    z-index: 11;
+  }
+
+  /* stretched to the panel, as on the source (a CSS background, so it is
+     decorative and not reported as a distorted image) */
+  .product-range .product-range-bg {
+    position: absolute;
+    inset: 0;
+    display: block;
+    background: var(--product-range-bg, none) no-repeat center / 100% 100%;
+  }
+
+  .product-range .product-range-packshot {
+    position: absolute;
+    top: 5%;
+    display: block;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .product-range .product-range-item:nth-child(1) .product-range-packshot {
+    right: 20%;
+  }
+
+  .product-range .product-range-item:nth-child(2) .product-range-packshot {
+    left: 20%;
+  }
+
+  .product-range .product-range-packshot img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .product-range .product-range-mobile {
+    display: none;
+  }
+
+  /* price: read by screen readers, shown when its panel is hovered/focused */
+  .product-range .product-range-price {
+    bottom: 84px;
+    left: 37px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .product-range .product-range-item:nth-child(2) .product-range-price {
+    right: 32px;
+    left: auto;
+  }
+
+  .product-range .product-range-item:is(:hover, :focus-within) .product-range-price {
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+  }
+
+  .product-range .product-range-mrp {
+    font-size: 20px;
+  }
+
+  .product-range .product-range-mrp-note {
+    margin-top: 9px;
+    font-size: 14px;
+  }
+
+  .product-range .product-range-cta {
+    bottom: 30px;
+    padding: 14px 20px;
+    line-height: 22px;
+  }
+
+  .product-range .product-range-item:nth-child(1) .product-range-cta {
+    right: auto;
+    left: 30px;
+  }
+
+  .product-range .product-range-item:nth-child(2) .product-range-cta {
+    right: 30px;
+  }
+
+  .product-range .product-range-cta svg {
+    margin-left: 10px;
+  }
+
+  /* the hovered/focused panel widens to 60%, the other narrows to 50% */
+  .product-range .product-range-panels:has(> .product-range-item:nth-child(1):is(:hover, :focus-within)) > .product-range-item:nth-child(1),
+  .product-range .product-range-panels:has(> .product-range-item:nth-child(2):is(:hover, :focus-within)) > .product-range-item:nth-child(2) {
+    width: 60%;
+  }
+
+  .product-range .product-range-panels:has(> .product-range-item:nth-child(1):is(:hover, :focus-within)) > .product-range-item:nth-child(2),
+  .product-range .product-range-panels:has(> .product-range-item:nth-child(2):is(:hover, :focus-within)) > .product-range-item:nth-child(1) {
+    width: 50%;
+  }
+
+  .product-range .product-range-note {
+    margin-top: 5px;
+    padding: 0;
+    font-size: 14px;
+    line-height: 21px;
+  }
+}
+
+/* mouse hover hides the other panel's link, as on the source */
+@media (width >= 992px) and (hover: hover) {
+  .product-range .product-range-panels:has(> .product-range-item:nth-child(1):hover) > .product-range-item:nth-child(2) .product-range-cta,
+  .product-range .product-range-panels:has(> .product-range-item:nth-child(2):hover) > .product-range-item:nth-child(1) .product-range-cta {
+    visibility: hidden;
+  }
+}
+
+/* the source's viewport-based panel heights */
+@media (width >= 992px) and (width <= 1281px) {
+  .product-range .product-range-panels {
+    height: calc(100vh - 70px);
+  }
+
+  .product-range .product-range-packshot {
+    top: 0;
+  }
+
+  .product-range .product-range-item .product-range-cta {
+    bottom: 27px;
+  }
+
+  .product-range .product-range-item:nth-child(1) .product-range-cta {
+    left: 36px;
+  }
+
+  .product-range .product-range-item:nth-child(2) .product-range-cta {
+    right: 45px;
+  }
+
+  .product-range .product-range-cta svg {
+    margin-left: 2px;
+  }
+}
+
+@media (width >= 992px) and (width <= 1290px) {
+  .product-range .product-range-packshot img {
+    height: calc(100vh - 140px);
+    object-fit: contain;
+  }
+
+  .product-range .product-range-price {
+    bottom: 75px;
+  }
+
+  .product-range .product-range-mrp-note {
+    margin-top: 3px;
+  }
+}
+
+@media (width >= 1282px) and (width <= 1400px) {
+  .product-range .product-range-panels {
+    height: calc(100vh - 40px);
+  }
+
+  .product-range .product-range-item:nth-child(n) .product-range-packshot {
+    top: 1%;
+    right: 19%;
+  }
+}
+
+@media (width >= 1401px) and (width <= 1600px) {
+  .product-range .product-range-panels {
+    height: calc(100vh - 100px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-range .product-range-item {
+    transition: none;
+  }
+}

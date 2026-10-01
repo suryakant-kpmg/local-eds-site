@@ -21,6 +21,10 @@
  *   Columns row → | left info column | right info column |
  *       Each column holds its own bold label and paragraph(s).
  */
+
+import { trackEvent , pushAdobeCtaClickEvent } from '../../scripts/analytics_1.js'; 
+
+
 function findBooleanCell(cells) {
   return cells.findIndex((cell) => {
     const t = cell.textContent.trim().toLowerCase();
@@ -132,6 +136,14 @@ export default function decorate(block) {
       ctaEl.target = '_blank';
       ctaEl.rel = 'noopener noreferrer';
     }
+    ctaEl.addEventListener('click', () => {
+      const cta = ctaEl.textContent.trim();
+      const destinationUrl = ctaEl.href;
+      trackEvent('cta_link_text', { cta_: cta, parentTitle: heading, param1: destinationUrl });
+      pushAdobeCtaClickEvent({
+        cta, parentTitle: heading, destinationUrl, event: 'cta_link_text',
+      });
+    });
   }
 
   if (columnCells.length) {
@@ -142,6 +154,17 @@ export default function decorate(block) {
       col.className = 'contact-get-in-touch-column';
       // Move the authored content into the column wrapper.
       while (cell.firstChild) col.append(cell.firstChild);
+      // Tag paragraphs for styling: a bold-only label (e.g. "Head Office") is the
+      // title; any other paragraph (address, phone, etc.) is body text.
+      col.querySelectorAll('p').forEach((p) => {
+        const label = p.querySelector('strong, b');
+        if (label && p.textContent.trim() === label.textContent.trim()) {
+          p.classList.add('contact-get-in-touch-column-title');
+          label.classList.add('contact-get-in-touch-column-label');
+        } else {
+          p.classList.add('contact-get-in-touch-column-text');
+        }
+      });
       // Place the CTA under the first column, matching the reference layout.
       if (index === 0 && ctaEl) {
         col.append(ctaEl);

@@ -92,23 +92,30 @@
   justify-content: center;
   width: 77px;
   height: 54px;
-  background: url('https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/youtube-play-icon-desk.svg') no-repeat;
-  background-size: contain;
+  background: none;
   border: none;
   padding: 0;
   cursor: pointer;
-  transition: transform 0.2s ease;
 }
 
-.embed:not(.media) .embed-placeholder-play button:hover {
-  transform: scale(1.1);
+/* Play icon authored in DA (Row 4) */
+.embed:not(.media) .embed-placeholder .embed-placeholder-play button picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.embed:not(.media) .embed-placeholder .embed-placeholder-play button picture img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 @media (width <=991px) {
   .embed:not(.media) .embed-placeholder-play button {
     width: 48px;
     height: 39px;
-    background-image: url('https://www.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/youtube-play-icon-mob.svg');
   }
 }
 

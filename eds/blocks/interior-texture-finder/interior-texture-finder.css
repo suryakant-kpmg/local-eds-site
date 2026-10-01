@@ -1,0 +1,1375 @@
+/* values follow the live AEM interior texture tool; desktop layout from 992px like the live site */
+
+/* the tool spans the full page width with no section padding around it */
+main > .section.interior-texture-finder-container:has(> div > .interior-texture-finder) {
+  margin: 0;
+  padding: 0;
+}
+
+main > .section.interior-texture-finder-container > div:has(> .interior-texture-finder) {
+  max-width: none;
+  padding: 0;
+}
+
+.interior-texture-finder {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: 612px;
+  overflow: hidden;
+  background-color: #2b2c31;
+  color: #fff;
+  font-family: Manrope, var(--body-font-family);
+  text-align: left;
+}
+
+.interior-texture-finder :is(h1, h2, h3, h4, p, button, input, legend, label) {
+  font-family: inherit;
+}
+
+.interior-texture-finder .itf-background {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.interior-texture-finder .itf-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.interior-texture-finder .itf-step {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.interior-texture-finder .itf-step[hidden] {
+  display: none;
+}
+
+.interior-texture-finder [tabindex="-1"]:focus {
+  outline: none;
+}
+
+.interior-texture-finder .itf-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* buttons: pill with an arrow after the label */
+.interior-texture-finder .itf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-sizing: border-box;
+  height: 38px;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: 45px;
+  padding: 12px 18px;
+  background: transparent;
+  color: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 22px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.interior-texture-finder .itf-btn::after {
+  content: "";
+  flex: none;
+  width: 17px;
+  height: 20px;
+  background-color: currentcolor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M10.2563 4.13128C10.598 3.78957 11.152 3.78957 11.4937 4.13128L16.7437 9.38128C17.0854 9.72299 17.0854 10.277 16.7437 10.6187L11.4937 15.8687C11.152 16.2104 10.598 16.2104 10.2563 15.8687C9.91457 15.527 9.91457 14.973 10.2563 14.6313L14.0126 10.875L3.875 10.875C3.39175 10.875 3 10.4832 3 10C3 9.51675 3.39175 9.125 3.875 9.125H14.0126L10.2563 5.36872C9.91457 5.02701 9.91457 4.47299 10.2563 4.13128Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform 0.2s ease-in;
+}
+
+.interior-texture-finder .itf-btn:hover:not(:disabled)::after {
+  transform: translateX(3px);
+}
+
+.interior-texture-finder .itf-btn-primary {
+  border: 0;
+  background: linear-gradient(180deg, #fec940, #f90);
+  color: #1e1e1e;
+}
+
+.interior-texture-finder .itf-btn-outline {
+  border-color: #fff;
+  color: #fff;
+}
+
+.interior-texture-finder .itf-btn-outline:hover:not(:disabled) {
+  background: #fff;
+  color: #1e1e1e;
+}
+
+.interior-texture-finder .itf-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.interior-texture-finder .itf-prev {
+  flex-direction: row-reverse;
+}
+
+.interior-texture-finder .itf-prev::after {
+  transform: scaleX(-1);
+}
+
+.interior-texture-finder .itf-prev:hover:not(:disabled)::after {
+  transform: scaleX(-1) translateX(3px);
+}
+
+/* loading spinner inside a button */
+.interior-texture-finder .itf-spinner {
+  display: none;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentcolor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: itf-spin 0.8s linear infinite;
+}
+
+.interior-texture-finder .is-loading .itf-spinner {
+  display: inline-block;
+}
+
+.interior-texture-finder .is-loading::after {
+  display: none;
+}
+
+@keyframes itf-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- hero ---------- */
+.interior-texture-finder .itf-hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px 16px;
+}
+
+.interior-texture-finder .itf-hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.interior-texture-finder .itf-hero-title {
+  margin: 0 0 16px;
+  color: #f9f9f9;
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 44px;
+  letter-spacing: -2px;
+}
+
+.interior-texture-finder .itf-hero-text {
+  width: 290px;
+  max-width: 100%;
+  margin: 0 0 30px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 21.86px;
+  letter-spacing: 0.5px;
+}
+
+/* ---------- question steps (room, light, theme) ---------- */
+.interior-texture-finder .itf-question {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px 0;
+  background: linear-gradient(180deg, rgb(0 0 0 / 0%) 71.49%, rgb(0 0 0 / 40%) 88.74%);
+}
+
+.interior-texture-finder .itf-question-head {
+  padding: 0 15px;
+}
+
+.interior-texture-finder .itf-step-number {
+  margin: 0 0 20px;
+  color: #fff;
+  font-size: 32px;
+  font-weight: 300;
+  line-height: 35.2px;
+}
+
+.interior-texture-finder .itf-question-text {
+  min-height: 105px;
+  margin: 0;
+  color: #f9f9f9;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 35.2px;
+}
+
+.interior-texture-finder .itf-options-wrap {
+  position: relative;
+  min-width: 0;
+}
+
+/* mobile and tablet: the three cards share one row like the live site (up to 260px each) */
+.interior-texture-finder .itf-options {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 32px;
+  min-height: 291px;
+  padding-left: 15px;
+}
+
+.interior-texture-finder .itf-option {
+  position: relative;
+  flex: 0 1 260px;
+  min-width: 0;
+}
+
+/* the radio stays in the page for keyboard and screen readers; the card is its label */
+.interior-texture-finder .itf-option-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.interior-texture-finder .itf-option-card {
+  display: block;
+  cursor: pointer;
+}
+
+.interior-texture-finder .itf-option-media {
+  position: relative;
+  display: block;
+  height: 236px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: rgb(255 255 255 / 10%);
+}
+
+.interior-texture-finder .itf-option-media picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.interior-texture-finder .itf-option-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1s;
+}
+
+/* theme cards swap to their hover image on hover and when selected */
+.interior-texture-finder .itf-option-media .itf-option-hover {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.interior-texture-finder .itf-option-name {
+  display: block;
+  margin-top: 10px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 22px;
+}
+
+/* selected card: dark overlay with the name and a tick */
+.interior-texture-finder .itf-option-input:checked + .itf-option-card .itf-option-media::before {
+  content: attr(data-label);
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  padding: 15px 8px 0;
+  background: rgb(0 0 0 / 40%);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 27.32px;
+  text-align: center;
+}
+
+.interior-texture-finder .itf-option-input:checked + .itf-option-card .itf-option-media::after {
+  content: "";
+  position: absolute;
+  top: 43%;
+  left: 50%;
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%231D1D1F'/%3E%3Cpath fill='white' fill-rule='evenodd' d='M16 29C23.1797 29 29 23.1797 29 16C29 8.8203 23.1797 3 16 3C8.8203 3 3 8.8203 3 16C3 23.1797 8.8203 29 16 29ZM22.024 13.899C22.6587 13.2644 22.6587 12.2356 22.024 11.601C21.3894 10.9663 20.3606 10.9663 19.726 11.601L14.375 16.9519L12.274 14.851C11.6394 14.2163 10.6106 14.2163 9.97595 14.851C9.34135 15.4856 9.34135 16.5144 9.97595 17.149L13.226 20.399C13.8606 21.0337 14.8894 21.0337 15.524 20.399L22.024 13.899Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  transform: translate(-50%, -50%);
+}
+
+.interior-texture-finder .itf-option-input:checked + .itf-option-card .itf-option-hover {
+  opacity: 1;
+}
+
+.interior-texture-finder .itf-option-input:checked + .itf-option-card .itf-option-name {
+  visibility: hidden;
+}
+
+.interior-texture-finder .itf-option-input:focus-visible + .itf-option-card .itf-option-media {
+  outline: 3px solid #feb940;
+  outline-offset: 3px;
+}
+
+/* pagination dots (mobile result cards; the steps use Previous / Next instead) */
+.interior-texture-finder .itf-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.interior-texture-finder .itf-dot {
+  width: 10px;
+  height: 10px;
+  margin: 0;
+  border: 0;
+  border-radius: 50%;
+  padding: 0;
+  background: #fff;
+  cursor: pointer;
+}
+
+.interior-texture-finder .itf-dot.is-active {
+  background: #feb940;
+}
+
+.interior-texture-finder .itf-dots[hidden] {
+  display: none;
+}
+
+/* result cards: dots below the cards, right aligned */
+.interior-texture-finder .itf-card-dots {
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding-right: 16px;
+}
+
+.interior-texture-finder .itf-card-dots .itf-dot {
+  background: #ccc;
+}
+
+.interior-texture-finder .itf-card-dots .itf-dot.is-active {
+  background: #feb940;
+}
+
+/* like the live site the buttons end at the right edge of a centred half-width box */
+.interior-texture-finder .itf-nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  width: 50%;
+  margin: 0 auto;
+}
+
+/* ---------- lead form ---------- */
+.interior-texture-finder .itf-form-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px 31px;
+  background: rgb(0 0 0 / 20%);
+}
+
+.interior-texture-finder .itf-form-header {
+  align-self: stretch;
+  padding: 15px 4px 23px;
+  text-align: left;
+}
+
+.interior-texture-finder .itf-form-title {
+  margin: 0 0 15px;
+  color: #fff;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 35.2px;
+}
+
+.interior-texture-finder .itf-form-subtitle {
+  margin: 0;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16.39px;
+}
+
+.interior-texture-finder .itf-form-card {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 880px;
+  border-radius: 5px;
+  padding: 20px 15px;
+  background: #fff;
+  color: #222;
+}
+
+.interior-texture-finder .itf-form-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: 21px;
+}
+
+.interior-texture-finder .itf-field {
+  position: relative;
+  padding-top: 8px;
+}
+
+.interior-texture-finder .itf-field-label {
+  position: absolute;
+  top: 0;
+  left: 11px;
+  z-index: 1;
+  padding: 0 4px;
+  background: #fff;
+  color: #303030;
+  font-size: 12px;
+  line-height: 16px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  pointer-events: none;
+}
+
+.interior-texture-finder .itf-field:focus-within .itf-field-label,
+.interior-texture-finder .itf-field.has-value .itf-field-label {
+  opacity: 1;
+  transform: none;
+}
+
+.interior-texture-finder .itf-required {
+  color: #e53935;
+}
+
+.interior-texture-finder .itf-field-control {
+  display: flex;
+}
+
+.interior-texture-finder .itf-input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 56px;
+  margin: 0;
+  border: 1px solid #bdbdbd;
+  border-radius: 8px;
+  padding: 0 15px;
+  background: #f9f9f9;
+  color: #303030;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.interior-texture-finder .itf-input::placeholder {
+  color: #757575;
+}
+
+.interior-texture-finder .itf-input:focus {
+  border-color: #303030;
+  outline: none;
+  background: transparent;
+  box-shadow: 0 0 0 1px #303030;
+}
+
+.interior-texture-finder .itf-prefix {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  width: 89px;
+  border: 1px solid #bdbdbd;
+  border-right: 0;
+  border-radius: 8px 0 0 8px;
+  padding: 0 0 0 12px;
+  background: #f9f9f9;
+  color: #303030;
+  font-size: 14px;
+}
+
+.interior-texture-finder .itf-prefix::after {
+  content: "";
+  width: 1px;
+  height: 24px;
+  margin-left: auto;
+  background: #bdbdbd;
+}
+
+.interior-texture-finder .itf-flag {
+  width: 22px;
+  height: 15px;
+  border-radius: 2px;
+  background:
+    radial-gradient(circle, #000080 0 1.8px, transparent 2.2px),
+    linear-gradient(#f93 33.3%, #fff 33.3% 66.6%, #138808 66.6%);
+}
+
+.interior-texture-finder .itf-field-mobile .itf-input {
+  border-left: 0;
+  border-radius: 0 8px 8px 0;
+  padding-left: 10px;
+}
+
+.interior-texture-finder .itf-field-mobile .itf-input:focus {
+  box-shadow: 1px 0 0 0 #303030 inset, 0 1px 0 0 #303030, 0 -1px 0 0 #303030, 1px 0 0 0 #303030;
+}
+
+.interior-texture-finder .itf-field-control:focus-within .itf-prefix {
+  border-color: #303030;
+  background: transparent;
+}
+
+.interior-texture-finder .itf-field.is-invalid .itf-input,
+.interior-texture-finder .itf-field.is-invalid .itf-prefix {
+  border-color: #e53935;
+}
+
+.interior-texture-finder .itf-field-error {
+  min-height: 16px;
+  margin: 2px 0 0;
+  color: #e53935;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.interior-texture-finder .itf-form-questions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.interior-texture-finder .itf-radio-group {
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  padding: 9px 0 8px;
+}
+
+.interior-texture-finder .itf-radio-question {
+  margin-bottom: 7px;
+  padding: 0;
+  color: #252b42;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+}
+
+.interior-texture-finder .itf-radio-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+}
+
+.interior-texture-finder .itf-radio {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.interior-texture-finder .itf-radio input {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  border: 1px solid #bdbdbd;
+  border-radius: 50%;
+  background: #fff;
+  appearance: none;
+  cursor: pointer;
+}
+
+.interior-texture-finder .itf-radio input:checked {
+  border-color: #303030;
+  background: radial-gradient(circle, #303030 0 4px, #fff 4.5px);
+}
+
+.interior-texture-finder .itf-radio input:focus-visible {
+  outline: 2px solid #f90;
+  outline-offset: 2px;
+}
+
+.interior-texture-finder .itf-radio label {
+  color: #323232;
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.interior-texture-finder .itf-radio-group .itf-field-error {
+  min-height: 0;
+  margin: 4px 0 0;
+}
+
+.interior-texture-finder .itf-radio-group .itf-field-error:empty {
+  display: none;
+}
+
+.interior-texture-finder .itf-radio-group.is-invalid .itf-radio input {
+  border-color: #e53935;
+}
+
+.interior-texture-finder .itf-consent {
+  margin: 10px 0 0;
+  color: #424242;
+  font-size: 10px;
+  line-height: 19px;
+}
+
+.interior-texture-finder .itf-consent a {
+  color: #00e;
+  text-decoration: underline;
+}
+
+.interior-texture-finder .itf-form-actions {
+  margin-top: 35px;
+  text-align: center;
+}
+
+.interior-texture-finder .itf-btn.itf-submit {
+  min-width: 244px;
+  height: auto;
+  border: 1px solid transparent;
+  padding: 9.5px 19px;
+  line-height: 16px;
+}
+
+.interior-texture-finder .itf-submit::after {
+  display: none;
+}
+
+.interior-texture-finder .itf-submit:hover:not(:disabled) {
+  border-color: #000;
+  background: transparent;
+  color: #000;
+}
+
+.interior-texture-finder .itf-form-status {
+  margin: 8px 0 0;
+  color: #e53935;
+  font-size: 12px;
+  text-align: center;
+}
+
+.interior-texture-finder .itf-form-status:empty {
+  display: none;
+}
+
+.interior-texture-finder .itf-form-failure {
+  padding: 20px 15px;
+  text-align: center;
+}
+
+.interior-texture-finder .itf-form-failure[hidden],
+.interior-texture-finder .itf-form[hidden] {
+  display: none;
+}
+
+.interior-texture-finder .itf-failure-heading {
+  margin: 0;
+  color: #000;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 56px;
+  letter-spacing: -0.48px;
+  text-shadow: 3px 2.5px 0 #fff, 3px 2.5px 2px #000;
+}
+
+.interior-texture-finder .itf-failure-text {
+  margin: 0 0 20px;
+  color: #222;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0.14px;
+}
+
+.interior-texture-finder .itf-btn-outline-dark {
+  border-color: #1e1e1e;
+  color: #1e1e1e;
+}
+
+.interior-texture-finder .itf-btn-outline-dark:hover {
+  background: #1e1e1e;
+  color: #fff;
+}
+
+/* ---------- result ---------- */
+.interior-texture-finder .itf-result {
+  display: grid;
+  grid-template-areas:
+    "title"
+    "cards"
+    "inputs"
+    "download"
+    "restart";
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  padding-bottom: 30px;
+}
+
+.interior-texture-finder .itf-restart {
+  display: flex;
+  grid-area: restart;
+  align-items: center;
+  justify-self: center;
+  gap: 10px;
+  margin: 20px 0 0;
+  border: 0;
+  padding: 0 6px 1px;
+  background: transparent;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 19.6px;
+  cursor: pointer;
+}
+
+.interior-texture-finder .itf-restart::before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  background-color: currentcolor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 12a8.5 8.5 0 1 0 2.6-6.1'/%3E%3Cpath d='M3.5 3.5v5h5'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.interior-texture-finder .itf-restart:hover {
+  color: #feb940;
+}
+
+.interior-texture-finder .itf-result-title {
+  grid-area: title;
+  margin: 0;
+  padding: 40px 16px 21px;
+  color: #f9f9f9;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 35.2px;
+}
+
+.interior-texture-finder .itf-inputs {
+  grid-area: inputs;
+  margin: 67px 0 20px;
+  padding: 18px 16px 24px 24px;
+  background: rgb(29 29 31 / 31%);
+}
+
+.interior-texture-finder .itf-inputs-title {
+  margin: 0;
+  color: #f9f9f9;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 14.3px;
+}
+
+.interior-texture-finder .itf-inputs-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 50px;
+  margin: 12px 0 0;
+  padding: 0;
+}
+
+.interior-texture-finder .itf-inputs-list li {
+  color: #f9f9f9;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 17.76px;
+}
+
+.interior-texture-finder .itf-inputs-list strong {
+  font-weight: 700;
+}
+
+.interior-texture-finder .itf-download {
+  display: flex;
+  grid-area: download;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  box-sizing: border-box;
+  width: 90%;
+  margin: 0 auto;
+  border-radius: 8px;
+  padding: 13px 15px;
+  background: rgb(0 0 0 / 50%);
+}
+
+.interior-texture-finder .itf-download[hidden] {
+  display: none;
+}
+
+.interior-texture-finder .itf-download-text {
+  width: 50%;
+  margin: 0;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16.39px;
+}
+
+.interior-texture-finder .itf-download-text strong {
+  color: #feb940;
+  font-weight: 700;
+}
+
+.interior-texture-finder .itf-pdf {
+  padding: 12px 11px;
+  font-size: 12px;
+  line-height: 16.8px;
+}
+
+.interior-texture-finder .itf-pdf::after {
+  width: 21px;
+  height: 20px;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 20'%3E%3Cpath d='M4.375 16.125C4.375 15.6418 4.76675 15.25 5.25 15.25H15.75C16.2333 15.25 16.625 15.6418 16.625 16.125C16.625 16.6082 16.2333 17 15.75 17H5.25C4.76675 17 4.375 16.6082 4.375 16.125ZM7.25628 9.38128C7.59799 9.03957 8.15201 9.03957 8.49372 9.38128L9.625 10.5126L9.625 3.875C9.625 3.39175 10.0167 3 10.5 3C10.9832 3 11.375 3.39175 11.375 3.875L11.375 10.5126L12.5063 9.38128C12.848 9.03957 13.402 9.03957 13.7437 9.38128C14.0854 9.72299 14.0854 10.277 13.7437 10.6187L11.1187 13.2437C10.9546 13.4078 10.7321 13.5 10.5 13.5C10.2679 13.5 10.0454 13.4078 9.88128 13.2437L7.25628 10.6187C6.91457 10.277 6.91457 9.72299 7.25628 9.38128Z'/%3E%3C/svg%3E");
+}
+
+.interior-texture-finder .itf-pdf:hover:not(:disabled) {
+  border-color: transparent;
+  background: linear-gradient(180deg, #ffc63c, #ffa20c);
+  color: #000;
+}
+
+.interior-texture-finder .itf-pdf:hover:not(:disabled)::after {
+  transform: none;
+}
+
+.interior-texture-finder .itf-result-cards {
+  grid-area: cards;
+  min-width: 0;
+  padding-left: 16px;
+}
+
+.interior-texture-finder .itf-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.interior-texture-finder .itf-tab {
+  margin: 0;
+  border: 0;
+  border-radius: 8px;
+  padding: 6px 10px 6px 0;
+  background: transparent;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 22px;
+  cursor: pointer;
+}
+
+.interior-texture-finder .itf-tab[aria-selected="true"] {
+  padding-left: 10px;
+  background: #f9f9f9;
+  color: #1d1d1f;
+  font-weight: 800;
+}
+
+.interior-texture-finder .itf-tabpanel {
+  margin-top: 33px;
+}
+
+.interior-texture-finder .itf-tabpanel[hidden],
+.interior-texture-finder .itf-empty[hidden] {
+  display: none;
+}
+
+.interior-texture-finder .itf-empty {
+  margin: 16px 16px 0 0;
+  font-size: 14px;
+}
+
+.interior-texture-finder .itf-cards {
+  display: flex;
+  gap: 25px;
+  margin: 0;
+  padding: 0 16px 0 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-padding-inline: 0;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.interior-texture-finder .itf-cards::-webkit-scrollbar {
+  display: none;
+}
+
+.interior-texture-finder .itf-card {
+  display: flex;
+  flex: 0 0 235px;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #efefef;
+  color: #000;
+  scroll-snap-align: start;
+}
+
+.interior-texture-finder .itf-card-media {
+  position: relative;
+  aspect-ratio: 6 / 5;
+  background: #d9d9d9;
+}
+
+.interior-texture-finder .itf-card-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180.04deg, rgb(0 0 0 / 0%) 39.85%, rgb(0 0 0 / 50%) 77.59%);
+}
+
+.interior-texture-finder .itf-card-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.interior-texture-finder .itf-card-title {
+  position: absolute;
+  right: 10px;
+  bottom: 12px;
+  left: 10px;
+  z-index: 1;
+  margin: 0;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 21.86px;
+}
+
+.interior-texture-finder .itf-card-body {
+  flex-grow: 1;
+  padding: 11px 10px 0;
+}
+
+.interior-texture-finder .itf-card-product {
+  border-bottom: 0.5px solid #ccc;
+  padding-bottom: 14px;
+}
+
+.interior-texture-finder .itf-card-label {
+  margin: 0 0 8px;
+  color: #808080;
+  font-size: 10px;
+  line-height: 9px;
+}
+
+.interior-texture-finder .itf-card-value {
+  margin: 0;
+  color: #1d1d1f;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16.39px;
+}
+
+.interior-texture-finder .itf-card-shades {
+  padding-top: 13px;
+}
+
+.interior-texture-finder .itf-card-shades-title {
+  margin: 0;
+  color: #2f2f2f;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14.4px;
+}
+
+.interior-texture-finder .itf-shades {
+  display: flex;
+  gap: 10px;
+}
+
+.interior-texture-finder .itf-shade {
+  width: 50%;
+  min-width: 0;
+}
+
+.interior-texture-finder .itf-shade-label {
+  margin: 0 0 3px;
+  color: #808080;
+  font-size: 11px;
+  line-height: 15.03px;
+}
+
+.interior-texture-finder .itf-shade-swatch {
+  box-sizing: border-box;
+  height: 47px;
+  border: 0.5px solid #75787b;
+  border-radius: 4px;
+  padding: 12px 6px 6px;
+  background: var(--shade);
+  color: #000;
+}
+
+.interior-texture-finder .itf-shade-swatch.is-dark {
+  color: #fff;
+}
+
+.interior-texture-finder .itf-shade-swatch span {
+  display: block;
+  overflow: hidden;
+  font-size: 9px;
+  line-height: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.interior-texture-finder .itf-shade-swatch span + span {
+  margin-top: 4px;
+}
+
+.interior-texture-finder .itf-card-link {
+  padding: 15px 10px;
+  color: #f47838;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16.39px;
+  text-decoration: underline;
+}
+
+.interior-texture-finder .itf-card-link:hover {
+  color: #d55f21;
+}
+
+/* keyboard focus */
+.interior-texture-finder .itf-btn:focus-visible,
+.interior-texture-finder .itf-restart:focus-visible,
+.interior-texture-finder .itf-tab:focus-visible,
+.interior-texture-finder .itf-card-link:focus-visible,
+.interior-texture-finder .itf-tabpanel:focus-visible {
+  outline: 2px solid #feb940;
+  outline-offset: 2px;
+}
+
+/* ---------- tablet ---------- */
+@media (width >= 576px) and (width < 992px) {
+  .interior-texture-finder {
+    min-height: 455px;
+  }
+}
+
+/* ---------- desktop ---------- */
+@media (width >= 992px) {
+  .interior-texture-finder {
+    min-height: 600px;
+  }
+
+  .interior-texture-finder .itf-btn {
+    padding: 14px 20px;
+  }
+
+  .interior-texture-finder .itf-hero {
+    align-items: center;
+    padding: 60px 60px 42px;
+  }
+
+  .interior-texture-finder .itf-hero-content {
+    align-items: center;
+    text-align: center;
+  }
+
+  .interior-texture-finder .itf-hero-title {
+    margin-bottom: 30px;
+    color: #fff;
+    font-size: 85px;
+    line-height: 85px;
+  }
+
+  .interior-texture-finder .itf-hero-text {
+    width: 400px;
+    margin-bottom: 50px;
+    font-size: 20px;
+    line-height: 27.32px;
+  }
+
+  .interior-texture-finder .itf-question {
+    flex-direction: row;
+    padding: 60px 60px 42px;
+    background: rgb(0 0 0 / 20%);
+  }
+
+  /* both columns shrink from their base size (510px and 100%) like the live flex layout */
+  .interior-texture-finder .itf-question-head {
+    display: flex;
+    flex: 0 1 510px;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    height: 400px;
+    padding: 0;
+  }
+
+  .interior-texture-finder .itf-step-number {
+    margin-bottom: 15px;
+  }
+
+  .interior-texture-finder .itf-question-text {
+    width: 90%;
+    min-height: 0;
+    font-size: 32px;
+    line-height: 36px;
+  }
+
+  .interior-texture-finder .itf-options-wrap {
+    flex: 0 1 100%;
+  }
+
+  .interior-texture-finder .itf-options {
+    gap: 16px;
+    min-height: 0;
+    padding: 0;
+  }
+
+  .interior-texture-finder .itf-option {
+    flex: 0 1 300px;
+  }
+
+  .interior-texture-finder .itf-option-media {
+    height: auto;
+    aspect-ratio: 3 / 4;
+  }
+
+  .interior-texture-finder .itf-option-input:checked + .itf-option-card .itf-option-media {
+    outline: 2px solid #fff;
+  }
+
+  .interior-texture-finder .itf-option-input:checked + .itf-option-card .itf-option-media::before {
+    border: 0;
+    padding-top: 8px;
+    font-size: 20px;
+  }
+
+  .interior-texture-finder .itf-option-input:checked + .itf-option-card .itf-option-media img {
+    transform: scale(1.1);
+    transition: transform 0.3s;
+  }
+
+  .interior-texture-finder .itf-option-input:checked + .itf-option-card .itf-option-name {
+    display: none;
+  }
+
+  .interior-texture-finder .itf-dots {
+    display: none;
+  }
+
+  .interior-texture-finder .itf-nav {
+    width: auto;
+    margin: 0 60px 0 0;
+    padding-top: 30px;
+  }
+
+  .interior-texture-finder .itf-form-step {
+    padding: 0 40px 67px;
+  }
+
+  .interior-texture-finder .itf-form-header {
+    align-self: center;
+    padding: 54px 0 25px;
+    text-align: center;
+  }
+
+  .interior-texture-finder .itf-field-error {
+    margin: 4px 0 8px;
+  }
+
+  .interior-texture-finder .itf-form-questions {
+    gap: 0;
+  }
+
+  .interior-texture-finder .itf-form-title {
+    font-size: 32px;
+    line-height: 35.2px;
+  }
+
+  .interior-texture-finder .itf-form-subtitle {
+    font-size: 16px;
+    line-height: 21.86px;
+  }
+
+  .interior-texture-finder .itf-form-card {
+    padding: 30px 70px;
+  }
+
+  .interior-texture-finder .itf-form-fields,
+  .interior-texture-finder .itf-form-questions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .interior-texture-finder .itf-result {
+    grid-template:
+      "restart cards" auto
+      "title cards" auto
+      "inputs cards" auto
+      "download cards" auto
+      ". cards" 1fr / minmax(0, 40%) minmax(0, 1fr);
+    column-gap: 45px;
+    min-height: 600px;
+    padding: 4.3% 4.1%;
+    background: rgb(0 0 0 / 20%);
+  }
+
+  .interior-texture-finder .itf-restart {
+    justify-self: start;
+    margin: 0;
+  }
+
+  .interior-texture-finder .itf-result-title {
+    margin: 22px 0 18px;
+    padding: 0;
+    color: #fff;
+    font-size: 32px;
+    line-height: 36px;
+  }
+
+  .interior-texture-finder .itf-inputs {
+    margin: 0;
+    padding: 0;
+    background: none;
+  }
+
+  .interior-texture-finder .itf-inputs-title {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16.39px;
+  }
+
+  .interior-texture-finder .itf-inputs-list {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 14px;
+    margin: 9px 0 19px;
+    padding: 0;
+  }
+
+  .interior-texture-finder .itf-inputs-list li {
+    line-height: 14.3px;
+  }
+
+  .interior-texture-finder .itf-download {
+    width: 100%;
+    margin: 0 0 20px;
+    padding: 13px 15px 7px;
+    background: rgb(0 0 0 / 25%);
+  }
+
+  .interior-texture-finder .itf-download-text {
+    width: 53%;
+  }
+
+  .interior-texture-finder .itf-pdf {
+    padding: 14px 20px;
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .interior-texture-finder .itf-result-cards {
+    padding: 0;
+  }
+
+  .interior-texture-finder .itf-tabs {
+    gap: 11px;
+    padding-top: 7px;
+  }
+
+  .interior-texture-finder .itf-tab {
+    padding: 6px 15px 6px 0;
+  }
+
+  .interior-texture-finder .itf-tab[aria-selected="true"] {
+    padding-left: 15px;
+  }
+
+  .interior-texture-finder .itf-tabpanel {
+    margin-top: 16px;
+  }
+
+  .interior-texture-finder .itf-cards {
+    gap: 12px;
+    padding: 0;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+
+  .interior-texture-finder .itf-card-dots {
+    display: none;
+  }
+
+  .interior-texture-finder .itf-card {
+    flex: 0 1 calc((100% - 24px) / 3);
+    min-width: 0;
+  }
+}
+
+@media (width >= 1200px) {
+  .interior-texture-finder .itf-question-text,
+  .interior-texture-finder .itf-result-title {
+    font-size: 40px;
+    line-height: 44px;
+  }
+}
+
+@media (width >= 1440px) {
+  .interior-texture-finder .itf-step-number {
+    margin-bottom: 20px;
+  }
+
+  .interior-texture-finder .itf-nav {
+    padding-top: 60px;
+  }
+}
+
+/* desktop pointer: zoom the photo and show the theme's hover image */
+@media (width >= 992px) and (hover: hover) {
+  .interior-texture-finder .itf-option-input:not(:checked) + .itf-option-card:hover img {
+    transform: scale(1.1);
+  }
+
+  .interior-texture-finder .itf-option-input:not(:checked) + .itf-option-card:hover .itf-option-hover {
+    opacity: 1;
+  }
+
+  .interior-texture-finder .itf-option-input:not(:checked) + .itf-option-card:hover .itf-option-hover img {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interior-texture-finder *,
+  .interior-texture-finder *::before,
+  .interior-texture-finder *::after {
+    transition: none !important;
+    animation-duration: 0.01ms !important;
+  }
+}

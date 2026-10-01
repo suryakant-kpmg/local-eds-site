@@ -1,4 +1,5 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
+import { trackEvent, pushAdobeCtaClickEvent } from '../../scripts/analytics_1.js';
 
 // plan colours are picked by plan name, falling back to the plan's position
 const PLAN_KEYS = ['classic', 'gold', 'platinum'];
@@ -109,10 +110,28 @@ export default function decorate(block) {
       card.append(features);
     }
 
-    const link = cta && cta.querySelector('a[href]');
-    if (link) {
+    const authoredLink = cta && cta.querySelector('a[href]');
+    if (authoredLink) {
+      // clone drops the global bindButtonContainerTracking listener so the click isn't tracked twice
+      const link = authoredLink.cloneNode(true);
+      authoredLink.replaceWith(link);
       cta.className = 'choose-plan-cta';
       link.className = 'button choose-plan-button';
+      link.addEventListener('click', () => {
+        const btnTitle = link.textContent.trim();
+        const planName = card.querySelector('.choose-plan-header h3')?.textContent?.trim() || '';
+        const parentTitle = block.querySelector('h1, h2, h3, h4, h5, h6')?.textContent?.trim() || '';
+
+        trackEvent('custom_cta_click', {
+          cta_: `${btnTitle} - ${planName}`,
+          parentTitle,
+        });
+        pushAdobeCtaClickEvent({
+          cta: `${btnTitle} - ${planName}`,
+          parentTitle,
+          event: 'custom_cta_click',
+        });
+      });
       card.append(cta);
     }
 

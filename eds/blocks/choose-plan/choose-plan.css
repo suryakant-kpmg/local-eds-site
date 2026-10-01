@@ -1,8 +1,14 @@
-/* default look: coloured plan cards (same as the choose-plan block) */
+/* shared structure for both looks */
 .choose-plan {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  font-family: Manrope, var(--body-font-family);
+}
+
+/* headings and the button set their own font globally, so pass Manrope on */
+.choose-plan :is(h1, h2, h3, h4, a.button) {
+  font-family: inherit;
 }
 
 .choose-plan .choose-plan-intro :is(h1, h2, h3) {
@@ -25,50 +31,29 @@
   gap: 16px;
 }
 
-/* plan colours, picked by plan name: background, name and tick marks */
+/* plan colours, picked by plan name */
 .choose-plan .choose-plan-plan {
-  --plan-bg: #e6ebfb;
-  --plan-color: #3b5bdb;
-  --plan-tick: var(--plan-color);
+  --plan-bg: #e8f0ff;
+  --plan-color: #788cb2;
+  --plan-text: #2f4365;
+  --plan-tick: var(--plan-text);
 
   display: flex;
   flex-direction: column;
-  border-radius: 20px;
-  padding: 28px 24px;
   background-color: var(--plan-bg);
   text-align: left;
 }
 
 .choose-plan .choose-plan-plan.plan-gold {
-  --plan-bg: #fdf3dd;
-  --plan-color: #f0a500;
+  --plan-bg: #fff7e8;
+  --plan-color: #fcaf17;
+  --plan-text: #b37c10;
 }
 
 .choose-plan .choose-plan-plan.plan-platinum {
-  --plan-bg: #fce7de;
-  --plan-color: #e8590c;
-}
-
-.choose-plan .choose-plan-header :is(h1, h2, h3, h4) {
-  margin: 0 0 20px;
-  font-size: var(--heading-font-size-l);
-  font-weight: 400;
-  line-height: 1.1;
-  color: var(--plan-color);
-}
-
-/* feature lists */
-.choose-plan .choose-plan-features {
-  flex: 1 1 auto;
-  color: #4b5563;
-  font-size: var(--body-font-size-xs);
-  line-height: 1.5;
-}
-
-.choose-plan .choose-plan-features p {
-  margin: 0 0 8px;
-  font-weight: 600;
-  color: #6b7280;
+  --plan-bg: #fbede7;
+  --plan-color: #e8672f;
+  --plan-text: #e8672f;
 }
 
 .choose-plan .choose-plan-features ul {
@@ -79,59 +64,191 @@
 
 .choose-plan .choose-plan-features li {
   position: relative;
-  margin: 0 0 8px;
-  padding-left: 22px;
 }
 
 .choose-plan .choose-plan-features li::before {
-  content: "✓";
+  content: "";
   position: absolute;
   left: 0;
-  top: 0;
-  color: var(--plan-tick);
-  font-weight: 700;
-}
-
-/* footnotes (lines starting with *): small grey text, no tick */
-.choose-plan .choose-plan-features .choose-plan-footnote {
-  padding-left: 0;
-  color: #6b7280;
-  font-size: 13px;
-  font-weight: 400;
 }
 
 .choose-plan .choose-plan-features li.choose-plan-footnote::before {
   content: none;
 }
 
-/* optional call to action */
+/* optional call to action: full-width outline button, no arrow (as on the live site) */
 .choose-plan .choose-plan-cta {
-  margin: 24px 0 0;
+  margin: auto 0 0;
+  padding-top: 24px;
+}
+
+.choose-plan .choose-plan-cta p {
+  margin: 0;
 }
 
 .choose-plan a.button.choose-plan-button {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  border: 1px solid #1a1a2e;
-  border-radius: 2.4em;
-  padding: 12px 28px;
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+  border: 1px solid #141414;
+  border-radius: 999px;
+  padding: 10px 24px;
   background: transparent;
-  color: var(--text-color);
-  font-size: var(--body-font-size-s);
-  font-weight: 500;
-}
-
-.choose-plan a.button.choose-plan-button::after {
-  content: "→";
-  font-weight: 400;
+  color: #141414;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .choose-plan a.button.choose-plan-button:hover,
 .choose-plan a.button.choose-plan-button:focus-visible {
-  background: var(--text-color);
-  color: #fff;
+  background: #fff7e8;
+  color: #141414;
   text-decoration: none;
+}
+
+.choose-plan a.button.choose-plan-button:focus-visible {
+  outline: 2px solid #141414;
+  outline-offset: 2px;
+}
+
+/* default look: values follow the live choosePlanCards component (mobile first) */
+
+/* like the live site the block sets its own side padding (16px, 45px on desktop),
+   so the section and wrapper padding around it are cleared */
+main > .section.choose-plan-container:has(> div > .choose-plan:not(.icons)) {
+  padding-inline: 0;
+}
+
+main > .section.choose-plan-container > div:has(> .choose-plan:not(.icons)) {
+  max-width: none;
+  padding-inline: 0;
+}
+
+.choose-plan:not(.icons) {
+  padding-inline: 16px;
+}
+
+.choose-plan:not(.icons) .choose-plan-intro {
+  text-align: left;
+}
+
+.choose-plan:not(.icons) .choose-plan-intro :is(h1, h2, h3) {
+  margin: 0 0 2px;
+  color: #141414;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 33.6px;
+}
+
+.choose-plan:not(.icons) .choose-plan-intro p {
+  color: #8c8e90;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.5px;
+}
+
+/* mobile: cards overlap slightly like stacked sheets */
+.choose-plan:not(.icons) .choose-plan-plan {
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+  padding: 17px 15px;
+}
+
+.choose-plan:not(.icons) .choose-plan-plan:where(:nth-child(1)) {
+  z-index: 3;
+}
+
+.choose-plan:not(.icons) .choose-plan-plan:where(:nth-child(2)) {
+  z-index: 2;
+}
+
+.choose-plan:not(.icons) .choose-plan-plan:where(:nth-child(3)) {
+  z-index: 1;
+}
+
+.choose-plan:not(.icons) .choose-plan-plan:where(:not(:first-child)) {
+  margin-top: -26px;
+  padding-top: 26px;
+}
+
+.choose-plan:not(.icons) .choose-plan-header :is(h1, h2, h3, h4) {
+  margin: 0 0 8px;
+  color: var(--plan-color);
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: 0.5px;
+}
+
+.choose-plan:not(.icons) .choose-plan-features {
+  flex: 1 1 auto;
+}
+
+/* group labels such as "Includes:" and "Warranty" */
+.choose-plan:not(.icons) .choose-plan-features p {
+  margin: 0 0 8px;
+  color: #75787b;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16.8px;
+}
+
+/* padding, not margin, so the last item's margin adds to the 16px group gap as on the live site */
+.choose-plan:not(.icons) .choose-plan-features ul {
+  margin: 0;
+  padding-bottom: 16px;
+}
+
+.choose-plan:not(.icons) .choose-plan-features li {
+  display: flex;
+  align-items: center;
+  margin: 0 0 2px;
+  color: var(--plan-text);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+/* 8x6 tick from the live site, in each plan's text colour */
+.choose-plan:not(.icons) .choose-plan-features li::before {
+  position: static;
+  flex: none;
+  width: 8px;
+  height: 6px;
+  margin-right: 10px;
+  background-color: var(--plan-tick);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 6'%3E%3Cpath d='M7.76458 1.38965L3.40584 5.78964C3.26784 5.92899 3.08631 6.00428 2.89912 5.99981C2.71193 5.99534 2.53353 5.91145 2.40115 5.76564L0.221779 3.36565C0.152395 3.29185 0.0970515 3.20358 0.0589787 3.10597C0.0209058 3.00837 0.000865626 2.90339 2.74288e-05 2.79717C-0.000810769 2.69095 0.0175697 2.5856 0.0540966 2.48729C0.0906235 2.38897 0.144565 2.29965 0.212774 2.22454C0.280983 2.14942 0.362093 2.09002 0.451372 2.0498C0.540651 2.00957 0.636311 1.98933 0.732769 1.99025C0.829227 1.99117 0.924553 2.01324 1.01318 2.05517C1.10181 2.0971 1.18197 2.15804 1.24899 2.23445L2.93655 4.09285L6.78241 0.210458C6.9244 0.067029 7.11232 -0.00840648 7.30483 0.000745265C7.49733 0.00989701 7.67865 0.102887 7.80889 0.259258C7.93913 0.415629 8.00763 0.622573 7.99932 0.834563C7.99101 1.04655 7.90657 1.24623 7.76458 1.38965Z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* footnotes (lines starting with *): small, no tick */
+.choose-plan:not(.icons) .choose-plan-features .choose-plan-footnote {
+  display: block;
+  margin: 10px 0 0;
+  color: #97836a;
+  font-size: 11px;
+  line-height: 15px;
+}
+
+/* a footnote under a list sits close to it and keeps 22px above the button, as on the live site */
+.choose-plan:not(.icons) .choose-plan-features p.choose-plan-footnote {
+  margin: -12px 0 22px;
+}
+
+.choose-plan:not(.icons) .choose-plan-cta {
+  padding-top: 0;
+}
+
+.choose-plan:not(.icons) a.button.choose-plan-button {
+  padding: 6px 24px;
+  font-size: 14px;
+  line-height: 22px;
 }
 
 /* icons variant: header image with the plan name, white cards with a shadow */
@@ -208,12 +325,14 @@
   padding: 24px 24px 20px;
   color: #222;
   font-size: var(--body-font-size-s);
+  line-height: 1.5;
 }
 
 .choose-plan.icons .choose-plan-features p {
   margin: 0 0 8px;
   color: #555;
   font-size: 15px;
+  font-weight: 600;
 }
 
 .choose-plan.icons .choose-plan-features ul {
@@ -231,7 +350,6 @@
 
 /* thin tick like the AEM component */
 .choose-plan.icons .choose-plan-features li::before {
-  content: "";
   top: 0.45em;
   width: 12px;
   height: 12px;
@@ -257,23 +375,20 @@
 
 /* tablet */
 @media (width >= 600px) {
-  .choose-plan .choose-plan-plans {
+  .choose-plan.icons .choose-plan-plans {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* desktop */
+/* desktop: icons look */
 @media (width >= 900px) {
-  .choose-plan .choose-plan-plans {
+  .choose-plan.icons .choose-plan-plans {
     grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
   }
 
   .choose-plan.icons .choose-plan-intro {
     margin-bottom: 24px;
-  }
-
-  .choose-plan.icons .choose-plan-plans {
-    gap: 48px;
   }
 
   .choose-plan.icons .choose-plan-header {
@@ -291,5 +406,71 @@
 
   .choose-plan.icons .choose-plan-cta {
     padding: 0 32px 28px;
+  }
+}
+
+/* desktop: default look, intro on the left and the plans beside it, full page width */
+@media (width >= 992px) {
+  .choose-plan:not(.icons) {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    align-items: stretch;
+    gap: 32px;
+    padding-inline: 45px;
+  }
+
+  .choose-plan:not(.icons) .choose-plan-plans {
+    display: contents;
+  }
+
+  .choose-plan:not(.icons) .choose-plan-intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8px 0;
+  }
+
+  .choose-plan:not(.icons) .choose-plan-intro :is(h1, h2, h3) {
+    margin: 0 0 16px;
+    font-size: 40px;
+    line-height: 1.1;
+  }
+
+  .choose-plan:not(.icons) .choose-plan-intro p {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .choose-plan:not(.icons) .choose-plan-plan {
+    margin-top: 0;
+    border-radius: 8px;
+    padding: 40px 30px 32px;
+  }
+
+  .choose-plan:not(.icons) .choose-plan-header :is(h1, h2, h3, h4) {
+    margin: 0 0 20px;
+    font-size: 35px;
+  }
+
+  .choose-plan:not(.icons) .choose-plan-features p {
+    color: #8c8e90;
+    line-height: 22px;
+  }
+
+  .choose-plan:not(.icons) .choose-plan-features li {
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .choose-plan:not(.icons) .choose-plan-cta {
+    padding-top: 24px;
+  }
+
+  .choose-plan:not(.icons) a.button.choose-plan-button {
+    padding: 10px 24px;
+    font-size: 16px;
   }
 }

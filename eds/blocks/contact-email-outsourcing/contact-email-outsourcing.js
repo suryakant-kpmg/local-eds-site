@@ -11,6 +11,8 @@
  *       | description text | email link |   (two cells), or
  *       a single cell holding the description text and an email link.
  */
+import { trackEvent, pushAdobeCtaClickEvent } from '../../scripts/analytics_1.js';
+
 export default function decorate(block) {
   const rows = [...block.children];
 
@@ -21,7 +23,8 @@ export default function decorate(block) {
   // Remaining rows: email cards.
   const cards = rows.map((row) => {
     const cells = [...row.children];
-    const link = row.querySelector('a[href]');
+    // clone drops the global bindButtonContainerTracking listener (custom_cta_click)
+    const link = row.querySelector('a[href]')?.cloneNode(true) || null;
     let description = '';
 
     if (cells.length >= 2) {
@@ -77,6 +80,14 @@ export default function decorate(block) {
         strong.textContent = label;
         link.append(strong);
         link.classList.add('contact-email-outsourcing-email');
+        link.addEventListener('click', () => {
+          const cta = link.textContent.trim();
+          const destinationUrl = link.getAttribute('href') || '';
+          trackEvent('contact_us_click_whatsapp', { cta_: cta });
+          pushAdobeCtaClickEvent({
+            cta, event: 'contact_us_click_whatsapp',
+          });
+        });
         item.append(link);
       }
 

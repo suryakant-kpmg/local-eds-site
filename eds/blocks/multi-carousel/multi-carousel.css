@@ -1,0 +1,419 @@
+.multi-carousel {
+  text-align: left;
+}
+
+/* default variant: 16px left padding on mobile, 40px left margin on desktop */
+.multi-carousel:not(.magazine) {
+  padding-left: 16px;
+}
+
+/* title with the arrows on the right */
+.multi-carousel .multi-carousel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.multi-carousel .multi-carousel-header :is(h1, h2, h3) {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* arrows are hidden on mobile, where the dots are used instead */
+.multi-carousel .multi-carousel-nav {
+  display: none;
+  flex-shrink: 0;
+  gap: 16px;
+}
+
+.multi-carousel .multi-carousel-nav button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  border: 1px solid #222;
+  border-radius: 50%;
+  padding: 0;
+  background: transparent;
+  color: #222;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.multi-carousel .multi-carousel-nav button::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  background-color: currentcolor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.multi-carousel .multi-carousel-nav .multi-carousel-prev::before {
+  transform: scaleX(-1);
+}
+
+.multi-carousel .multi-carousel-nav button:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
+.multi-carousel .multi-carousel-nav button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.multi-carousel .multi-carousel-nav button:hover:not(:disabled) {
+  background-color: var(--light-color);
+}
+
+/* hidden when swiper finds all cards fit (watchOverflow) */
+.multi-carousel .multi-carousel-nav button.swiper-button-lock {
+  display: none;
+}
+
+/* swiper card list; the gap between cards is set by swiper (spaceBetween) */
+.multi-carousel .multi-carousel-track {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* cards stretch to the tallest card so the download links line up */
+.multi-carousel .multi-carousel-card {
+  display: flex;
+  flex-direction: column;
+  width: calc((100% - 12px) / 1.75); /* swiper sets the final width */
+  height: auto;
+  min-width: 0;
+}
+
+.multi-carousel .multi-carousel-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.multi-carousel .multi-carousel-image {
+  aspect-ratio: 2 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+  line-height: 0;
+  background-color: #f1f1fa;
+}
+
+.multi-carousel .multi-carousel-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.multi-carousel .multi-carousel-body :is(h2, h3, h4) {
+  margin: 12px 0 8px;
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.multi-carousel .multi-carousel-body p {
+  margin: 0 0 16px;
+  color: #000;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.multi-carousel .multi-carousel-body p.multi-carousel-cta {
+  margin: auto 0 0;
+}
+
+/* download pdf link with a download icon */
+.multi-carousel .multi-carousel-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* same download icon as the AEM component (15x18) */
+.multi-carousel .multi-carousel-download::after {
+  content: "";
+  width: 15px;
+  height: 18px;
+  background-color: currentcolor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 18' fill='none'%3E%3Cpath d='M0.901855 16.1472C1.23911 16.4766 1.69653 16.6616 2.17348 16.6616H12.9636C13.4405 16.6616 13.8979 16.4766 14.2352 16.1472M7.56953 1.66162V11.6137M7.56953 11.6137L11.68 7.81104M7.56953 11.6137L3.45902 7.81104' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* no hover effect: keeps the global a:hover colour from applying */
+.multi-carousel .multi-carousel-download:hover {
+  color: #000;
+  text-decoration: none;
+}
+
+/* pagination dots (mobile only); the current card's dot is a wider pill */
+.multi-carousel .multi-carousel-dots {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 16px;
+  line-height: 0;
+}
+
+/* 6px dot with 2px between dots; the transparent border widens the tap area */
+.multi-carousel .multi-carousel-dot {
+  box-sizing: content-box;
+  width: 6px;
+  height: 6px;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 5px 0;
+  background-color: #d9d9d9;
+  background-clip: content-box;
+  cursor: pointer;
+  transition: width 0.2s ease, background-color 0.2s ease;
+}
+
+.multi-carousel .multi-carousel-dot.multi-carousel-dot-active {
+  width: 18px;
+  background-color: #4a4a4a;
+}
+
+.multi-carousel .multi-carousel-dot:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: -2px;
+}
+
+/* tablet and up: arrows instead of dots, larger text */
+@media (width >= 600px) {
+  .multi-carousel .multi-carousel-nav {
+    display: flex;
+  }
+
+  .multi-carousel .multi-carousel-dots {
+    display: none;
+  }
+
+  .multi-carousel .multi-carousel-header {
+    margin-bottom: 24px;
+  }
+
+  .multi-carousel .multi-carousel-header :is(h1, h2, h3) {
+    font-size: var(--heading-font-size-m);
+  }
+
+  .multi-carousel .multi-carousel-image {
+    border-radius: 12px;
+  }
+
+  .multi-carousel .multi-carousel-download {
+    gap: 10px;
+    font-size: var(--body-font-size-s);
+  }
+
+  .multi-carousel .multi-carousel-body :is(h2, h3, h4) {
+    font-size: var(--heading-font-size-s);
+  }
+
+  .multi-carousel .multi-carousel-body p {
+    font-size: var(--body-font-size-m);
+    line-height: 1.75;
+  }
+}
+
+/* desktop: full page width like the AEM component, wider arrow spacing */
+@media (width >= 900px) {
+  main > .section.multi-carousel-container > div {
+    max-width: none;
+  }
+
+  .multi-carousel:not(.magazine) {
+    margin-left: 40px;
+    padding-left: 0;
+  }
+
+  .multi-carousel .multi-carousel-header {
+    margin-bottom: 32px;
+  }
+
+  .multi-carousel .multi-carousel-header :is(h1, h2, h3) {
+    font-size: var(--heading-font-size-l);
+  }
+
+  .multi-carousel .multi-carousel-nav {
+    gap: 24px;
+  }
+
+  .multi-carousel:not(.magazine) .multi-carousel-body :is(h2, h3, h4) {
+    margin: 12px 0 10px;
+    color: #000;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .multi-carousel:not(.magazine) .multi-carousel-download {
+    color: #000;
+    font-size: 16px;
+  }
+
+  .multi-carousel:not(.magazine) .multi-carousel-body p:not(.multi-carousel-cta) {
+    margin-bottom: 18px;
+    color: #000;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28.8px;
+  }
+}
+
+/* magazine variant: values follow the live shade-tool-magazines component.
+   Dark section, no arrows or dots; cards stack below 992px and sit in a
+   3-column grid on desktop */
+main > .section:has(.multi-carousel.magazine) {
+  padding: 20px 16px;
+  background-color: #232426;
+}
+
+/* the section sets the side padding, so the wrapper's padding is cleared */
+main > .section:has(.multi-carousel.magazine) > div:has(> .multi-carousel.magazine) {
+  max-width: none;
+  padding: 0;
+}
+
+.multi-carousel.magazine {
+  color: #fff;
+  font-family: Manrope, var(--body-font-family);
+}
+
+/* headings and links set their own font globally, so pass Manrope on */
+.multi-carousel.magazine :is(h1, h2, h3, h4, a) {
+  font-family: inherit;
+}
+
+.multi-carousel.magazine .multi-carousel-header {
+  margin-bottom: 30px;
+}
+
+.multi-carousel.magazine .multi-carousel-header :is(h1, h2, h3) {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 27.32px;
+  text-align: left;
+}
+
+.multi-carousel.magazine .multi-carousel-nav {
+  display: none;
+}
+
+/* swiper is not initialised here, so the list is laid out as a grid */
+.multi-carousel.magazine .multi-carousel-swiper {
+  overflow: visible;
+}
+
+.multi-carousel.magazine .multi-carousel-track {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 30px;
+}
+
+.multi-carousel.magazine .multi-carousel-card {
+  width: auto;
+}
+
+.multi-carousel.magazine .multi-carousel-image {
+  aspect-ratio: 328 / 277;
+  border-radius: 6px;
+  background-color: #2f3033;
+}
+
+.multi-carousel.magazine .multi-carousel-body :is(h2, h3, h4) {
+  margin: 13px 0 7px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 28.8px;
+}
+
+.multi-carousel.magazine .multi-carousel-body p {
+  margin: 0 0 14px;
+  color: #8c8e90;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+}
+
+.multi-carousel.magazine .multi-carousel-body p.multi-carousel-cta {
+  margin: auto 0 0;
+  letter-spacing: normal;
+}
+
+/* pill button: white text on the dark background */
+.multi-carousel.magazine .multi-carousel-download {
+  box-sizing: border-box;
+  height: 38px;
+  border-radius: 45px;
+  padding: 14px 20px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 22px;
+}
+
+.multi-carousel.magazine .multi-carousel-download::after {
+  width: 18px;
+  height: 18px;
+}
+
+.multi-carousel.magazine .multi-carousel-download:hover {
+  color: #fff;
+}
+
+.multi-carousel.magazine .multi-carousel-download:focus-visible {
+  outline: 1px solid #fff;
+}
+
+.multi-carousel.magazine .multi-carousel-dots {
+  display: none;
+}
+
+@media (width >= 992px) {
+  main > .section:has(.multi-carousel.magazine) {
+    padding: 60px 40px;
+  }
+
+  .multi-carousel.magazine .multi-carousel-header {
+    justify-content: center;
+  }
+
+  .multi-carousel.magazine .multi-carousel-header :is(h1, h2, h3) {
+    font-size: 32px;
+    line-height: 41.6px;
+    text-align: center;
+  }
+
+  .multi-carousel.magazine .multi-carousel-track {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .multi-carousel.magazine .multi-carousel-body :is(h2, h3, h4) {
+    font-size: 28px;
+    line-height: 36.4px;
+  }
+
+  .multi-carousel.magazine .multi-carousel-body p {
+    font-size: 18px;
+    line-height: 28.8px;
+  }
+
+  .multi-carousel.magazine .multi-carousel-download {
+    font-size: 16px;
+  }
+}

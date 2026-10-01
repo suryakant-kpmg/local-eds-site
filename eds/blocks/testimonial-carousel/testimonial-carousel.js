@@ -336,11 +336,16 @@ function buildSlide(row, block, playIcon) {
       e.stopPropagation();
       if (isHomeWork) openVideoModal(block, videoLink, videoTitle || 'Video');
       else openVideoModal(block, videoLink);
-      trackEvent('test_open');
-      pushAdobeCtaClickEvent({
-        title: videoTitle,
-        event: 'test_open',
+      
+      trackEvent('test_open', {
+        testTitle: nameCol?.textContent?.trim() || ''
       });
+      
+      pushAdobeCtaClickEvent({
+      title: nameCol?.textContent?.trim() || '',
+      event: 'test_open'
+      })
+
     });
   }
 

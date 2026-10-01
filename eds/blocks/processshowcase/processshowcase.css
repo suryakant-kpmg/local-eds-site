@@ -5,10 +5,13 @@
  * (title | subtitle). Every following row is one of three kinds:
  *   Step card : [ Tab name | Image | Step label | Step title | Description ]
  *   Video     : [ Tab name | Video thumbnail(s) | video | YouTube URL ]
- *   CTA       : [ cta | Cluster image | Stat count | Stat label | Action link ]
+ *   CTA       : [ cta | Cluster image | Stat count | Stat label | Action link |
+ *               Mobile action text (optional) ]
  * Cards/videos sharing the same "Tab name" are grouped under one tab, in the
  * order the tabs first appear. The video renders after that tab's cards. The
- * "cta" row is section-level and renders once, below the panels.
+ * "cta" row is section-level and renders once, below the panels. Its optional
+ * 6th cell is the action text shown below 992px (e.g. "Talk to a painting
+ * expert"); without it the link text shows at every size.
  *
  * The video thumbnail cell accepts ONE image (used at every size) or TWO — the
  * first is the mobile thumbnail, the second the desktop one; the block builds a
@@ -26,251 +29,302 @@
  *   | cta            | <img>    | 10Lakhs + | Satisfied  | [Get a FREE...](/) |
  *   +----------------+----------+-----------+------------+--------------------+
  *
- * VARIANTS (add as classes on the block, e.g. "processshowcase (center)"):
- *   (none required) — tabs auto-center on desktop, scroll horizontally on mobile.
+ * VARIANTS: none. Tabs are centred on desktop and scroll horizontally on
+ * mobile; step cards sit five across on desktop and scroll on mobile.
+ *
+ * STYLING reproduces the live asianpaints.com section (section.process-showcase)
+ * value for value, in the source's rule order: desktop values first, then the
+ * mobile overrides (up to 991px), then its 992px card rule and its 768–1399px
+ * description rule. The play button is part of the video thumbnail image (the
+ * source draws none). Side padding is the source's (40px desktop, 16px
+ * mobile); the gaps above and below come from the page.
  */
 
+.processshowcase {
+  max-width: 100%;
+  padding-inline: 40px;
+  color: #222;
+  font-family: Manrope, manrope-fallback, sans-serif;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+/* --- header --- */
 .processshowcase .processshowcase-header {
+  margin: 0 0 28px;
   text-align: center;
-  margin-bottom: 20px;
 }
 
 .processshowcase .processshowcase-title {
-  margin: 0;
-  font-size: var(--heading-font-size-s);
+  margin: 0 0 10px;
+  color: #000;
+  font-family: inherit;
+  font-size: 40px;
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 42px;
+  letter-spacing: -0.02em;
 }
 
 .processshowcase .processshowcase-subtitle {
-  margin: 6px 0 0;
-  font-size: var(--body-font-size-xs);
-  color: var(--dark-color);
+  margin: 0;
+  color: #75787b;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: 0;
 }
 
 /* --- tabs --- */
 .processshowcase .processshowcase-tabs {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 28px;
-  justify-content: flex-start;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  border-bottom: 1px solid #eaeaea;
-  margin-bottom: 20px;
-}
-
-.processshowcase .processshowcase-tabs::-webkit-scrollbar {
-  display: none;
+  margin: 0 0 32px;
 }
 
 .processshowcase .processshowcase-tab {
   position: relative;
-  flex: 0 0 auto;
   margin: 0;
-  padding: 6px 2px 12px;
+  padding: 6px 2px 10px;
   border: 0;
-  background: transparent;
-  color: var(--text-color);
-  font-family: var(--body-font-family);
-  font-size: var(--body-font-size-xs);
-  font-weight: 700;
-  line-height: 1.2;
-  white-space: nowrap;
+  background: none;
+  color: #53565a;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 132%;
+  letter-spacing: 0;
   cursor: pointer;
-  opacity: 0.55;
+  transition: color 0.2s;
+}
+
+.processshowcase .processshowcase-tab:hover {
+  color: #333;
 }
 
 .processshowcase .processshowcase-tab[aria-selected="true"] {
-  opacity: 1;
+  color: #111;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .processshowcase .processshowcase-tab[aria-selected="true"]::after {
   content: "";
   position: absolute;
-  left: 0;
-  bottom: -1px;
+  bottom: 0;
+  left: 50%;
   width: 48px;
+  max-width: 100%;
   height: 2px;
-  background-color: var(--text-color);
+  border-radius: 2px;
+  background: #111;
+  transform: translateX(-50%);
 }
 
 .processshowcase .processshowcase-tab:focus-visible {
-  outline: 2px solid var(--link-color);
-  outline-offset: 2px;
-  opacity: 1;
+  border-radius: 4px;
+  outline: 2px solid #2f3b8b;
+  outline-offset: 4px;
 }
 
-/* --- cards (horizontal scroll on mobile) --- */
+/* --- step cards --- */
 .processshowcase .processshowcase-cards {
   display: flex;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 40px;
   margin: 0;
-  padding: 0 0 8px;
+  padding: 0;
   list-style: none;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-.processshowcase .processshowcase-cards::-webkit-scrollbar {
-  display: none;
 }
 
 .processshowcase .processshowcase-card {
-  flex: 0 0 auto;
-  width: 150px;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
 }
 
 .processshowcase .processshowcase-card-image {
-  border-radius: 5px;
+  width: 100%;
+  border-radius: 10px;
   overflow: hidden;
-  line-height: 0;
+  background: #eee;
+}
+
+.processshowcase .processshowcase-card-image picture {
+  display: block;
 }
 
 .processshowcase .processshowcase-card-image img {
+  display: block;
   width: 100%;
+  height: 100%;
   aspect-ratio: 16 / 10;
   object-fit: cover;
 }
 
 .processshowcase .processshowcase-card-body {
-  padding-top: 8px;
+  padding: 12px 2px 0;
 }
 
 .processshowcase .processshowcase-step {
   display: block;
-  font-size: 10px;
-  font-weight: 300;
-  color: var(--dark-color);
+  margin-bottom: -4px;
+  color: #8c8e90;
+  font-size: 12px;
+  font-weight: 400;
 }
 
 .processshowcase .processshowcase-card-title {
-  margin: 2px 0 4px;
-  font-family: var(--body-font-family);
-  font-size: var(--body-font-size-xs);
-  font-weight: 500;
-  line-height: 1.3;
-  color: var(--text-color);
+  margin: 0;
+  color: #232426;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 44px;
+  letter-spacing: 0;
 }
 
 .processshowcase .processshowcase-card-desc {
   margin: 0;
-  font-size: var(--body-font-size-xs);
-  line-height: 1.35;
-  color: var(--dark-color);
+  color: #75787b;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0;
 }
 
-/* --- per-tab video thumbnail --- */
+/* --- per-tab video thumbnail (the play button is in the image) --- */
 .processshowcase .processshowcase-video {
+  position: relative;
   display: block;
   width: 100%;
-  margin-top: 16px;
+  height: 670px;
+  max-height: 100vh;
+  margin: 32px 0 0;
   padding: 0;
   border: 0;
   border-radius: 10px 10px 0 0;
   overflow: hidden;
-  background: var(--light-color);
+  background: #eee;
+  color: #000;
   cursor: pointer;
-  line-height: 0;
-  position: relative;
+}
+
+.processshowcase .processshowcase-video picture {
+  display: block;
 }
 
 .processshowcase .processshowcase-video img {
+  display: block;
   width: 100%;
-  aspect-ratio: 2 / 1;
+  height: 100%;
   object-fit: cover;
 }
 
-/* play glyph overlay */
-.processshowcase .processshowcase-video::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: rgb(0 0 0 / 55%) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>') no-repeat center / 24px 24px;
-}
-
-.processshowcase .processshowcase-video:hover::after,
-.processshowcase .processshowcase-video:focus-visible::after {
-  background-color: rgb(0 0 0 / 75%);
-}
-
 .processshowcase .processshowcase-video:focus-visible {
-  outline: 2px solid var(--link-color);
-  outline-offset: 2px;
+  outline: 2px solid #2f3b8b;
+  outline-offset: 4px;
 }
 
 /* --- section CTA --- */
 .processshowcase .processshowcase-cta {
   display: flex;
-  flex-direction: column;
   border-radius: 0 0 10px 10px;
   overflow: hidden;
 }
 
 .processshowcase .processshowcase-cta-stats {
   display: flex;
+  flex: 1 1 50%;
   align-items: center;
+  justify-content: space-between;
   gap: 16px;
-  padding: 16px 20px;
-  background-color: #000;
+  min-width: 0;
+  height: 120px;
+  padding: 0 32px;
+  background: #000;
 }
 
 .processshowcase .processshowcase-cta-text {
   display: flex;
   flex-direction: column;
+  gap: 4px;
 }
 
 .processshowcase .processshowcase-cta-count {
-  font-size: var(--heading-font-size-s);
-  font-weight: 700;
-  line-height: 1.1;
   color: #fff;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 38px;
+  letter-spacing: 0;
 }
 
 .processshowcase .processshowcase-cta-label {
-  font-size: var(--body-font-size-xs);
   color: #b0b1b3;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: 0;
 }
 
 .processshowcase .processshowcase-cta-cluster {
-  margin-left: auto;
-  line-height: 0;
+  display: block;
+  flex: 0 0 auto;
+}
+
+.processshowcase .processshowcase-cta-cluster picture {
+  display: block;
 }
 
 .processshowcase .processshowcase-cta-cluster img {
-  height: 32px;
+  display: block;
   width: auto;
+  height: 44px;
 }
 
 .processshowcase .processshowcase-cta-action {
   display: flex;
+  flex: 1 1 50%;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  padding: 14px 24px;
-  background-color: #fdbf45;
+  min-width: 0;
+  height: 120px;
+  padding: 0 24px;
+  background: #fdbf45;
   color: #000;
+  font-size: 24px;
   font-weight: 800;
-  font-size: var(--body-font-size-s);
-  text-decoration: none;
+  line-height: 33.6px;
+  letter-spacing: 0;
   text-align: center;
+  text-decoration: none;
 }
 
+/* desktop / mobile action text (source: .cta-action-label-desktop / -mobile) */
+.processshowcase .processshowcase-cta-action-label-mobile {
+  display: none;
+}
+
+/* the source's arrow icon (24px, stroke 2, round caps) */
 .processshowcase .processshowcase-cta-action::after {
-  content: "→";
-  font-weight: 400;
+  content: "";
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M4 12h15m0 0-6-6m6 6-6 6" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat center / 100% 100%;
 }
 
-.processshowcase .processshowcase-cta-action:hover,
-.processshowcase .processshowcase-cta-action:focus-visible {
-  background-color: #eaad2f;
+/* no hover change on the source; keep global link hovers off */
+.processshowcase .processshowcase-cta-action:hover {
   color: #000;
   text-decoration: none;
+}
+
+.processshowcase .processshowcase-cta-action:focus-visible {
+  outline: 2px solid #2f3b8b;
+  outline-offset: -4px;
 }
 
 /* --- video lightbox --- */
@@ -281,7 +335,7 @@
 .processshowcase .processshowcase-modal {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -291,20 +345,25 @@
 .processshowcase .processshowcase-modal-backdrop {
   position: absolute;
   inset: 0;
-  background: rgb(0 0 0 / 80%);
+  background: rgb(0 0 0 / 78%);
 }
 
 .processshowcase .processshowcase-modal-dialog {
   position: relative;
-  width: min(960px, 100%);
-  aspect-ratio: 16 / 9;
-  background: #000;
-  border-radius: 8px;
-  overflow: hidden;
+  width: 100%;
+  max-width: 900px;
 }
 
-.processshowcase .processshowcase-modal-frame,
+.processshowcase .processshowcase-modal-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #000;
+}
+
 .processshowcase .processshowcase-modal-frame iframe {
+  display: block;
   width: 100%;
   height: 100%;
   border: 0;
@@ -312,98 +371,204 @@
 
 .processshowcase .processshowcase-modal-close {
   position: absolute;
-  top: -44px;
-  right: 0;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 36px;
   height: 36px;
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: rgb(255 255 255 / 90%);
-  color: #000;
+  background: rgb(0 0 0 / 60%);
+  color: #fff;
   font-size: 24px;
   line-height: 1;
   cursor: pointer;
+  transition: background 0.2s;
+}
+
+.processshowcase .processshowcase-modal-close:hover {
+  background: rgb(0 0 0 / 85%);
 }
 
 .processshowcase .processshowcase-modal-close:focus-visible {
-  outline: 2px solid var(--link-color);
+  outline: 2px solid #fff;
   outline-offset: 2px;
 }
 
-/* --- desktop --- */
-@media (width >=768px) {
+/* --- mobile (source: 320–991px) --- */
+@media (width <= 991px) {
+  .processshowcase {
+    padding-inline: 16px;
+  }
+
+  .processshowcase .processshowcase-header,
+  .processshowcase .processshowcase-tabs {
+    padding: 0 16px;
+  }
 
   .processshowcase .processshowcase-title {
-    font-size: var(--heading-font-size-xl);
+    max-width: 90%;
+    margin: 0 auto;
+    font-size: 24px;
+    line-height: 24px;
+    letter-spacing: 0;
+    text-align: center;
   }
 
   .processshowcase .processshowcase-subtitle {
-    font-size: var(--body-font-size-s);
+    margin-top: 10px;
+    color: #8c8e90;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    text-align: center;
   }
 
   .processshowcase .processshowcase-tabs {
-    justify-content: center;
-    overflow-x: visible;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
     gap: 28px;
+    margin-bottom: 17px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .processshowcase .processshowcase-tabs::-webkit-scrollbar {
+    display: none;
   }
 
   .processshowcase .processshowcase-tab {
-    font-size: var(--body-font-size-s);
+    flex: 0 0 auto;
+    font-size: 12px;
+    white-space: nowrap;
   }
 
-  /* all cards fill the row in equal columns */
-  .processshowcase .processshowcase-cards {
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    gap: 24px;
-    overflow-x: visible;
+  .processshowcase .processshowcase-tab[aria-selected="true"] {
+    font-size: 12px;
   }
 
-  .processshowcase .processshowcase-card {
-    flex: 1 1 0;
-    width: auto;
-    min-width: 0;
+  .processshowcase .processshowcase-tab[aria-selected="true"]::after {
+    width: 50%;
+    max-width: 48px;
+  }
+
+  .processshowcase .processshowcase-step {
+    font-size: 10px;
+    font-weight: 300;
   }
 
   .processshowcase .processshowcase-card-title {
-    font-size: var(--heading-font-size-xs);
+    max-width: 85%;
+    margin: 8px 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
   }
 
   .processshowcase .processshowcase-card-desc {
-    font-size: var(--body-font-size-s);
+    color: #8c8e90;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 13px;
   }
 
-  /* video + cta span the full section width (full-bleed rounded card) */
+  .processshowcase .processshowcase-cards {
+    flex-wrap: nowrap;
+    gap: 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .processshowcase .processshowcase-cards::-webkit-scrollbar {
+    display: none;
+  }
+
+  .processshowcase .processshowcase-card {
+    flex: 0 0 137px;
+    scroll-snap-align: start;
+  }
+
+  .processshowcase .processshowcase-card-image {
+    height: 80px;
+    border-radius: 5px;
+  }
+
+  .processshowcase .processshowcase-card-image img {
+    height: 80px;
+    aspect-ratio: auto;
+  }
+
   .processshowcase .processshowcase-video {
-    margin-top: 32px;
+    height: auto;
+    margin-top: 24px;
   }
 
   .processshowcase .processshowcase-cta {
-    flex-direction: row;
-    align-items: stretch;
+    flex-direction: column;
   }
 
   .processshowcase .processshowcase-cta-stats {
-    flex: 1;
-    padding: 20px 40px;
+    height: auto;
+    min-height: 70px;
+    padding: 0 20px 0 14px;
+    border-radius: 0 0 10px 10px;
   }
 
+  /* the source uses line-height: normal, which is 1.366 for Manrope; set it
+     explicitly so the height is the same even if the font falls back */
   .processshowcase .processshowcase-cta-count {
-    font-size: var(--heading-font-size-l);
+    font-size: 20px;
+    line-height: 1.366;
   }
 
   .processshowcase .processshowcase-cta-label {
-    font-size: var(--body-font-size-s);
-  }
-
-  .processshowcase .processshowcase-cta-action {
-    flex: 0 0 auto;
-    padding: 0 48px;
-    font-size: var(--heading-font-size-xs);
+    font-size: 12px;
   }
 
   .processshowcase .processshowcase-cta-cluster img {
-    height: 44px;
+    width: 115px;
+    height: 35px;
+  }
+
+  .processshowcase .processshowcase-cta-action {
+    height: auto;
+    min-height: 50px;
+    margin-top: -5px;
+    font-size: 12px;
+  }
+
+  .processshowcase .processshowcase-cta-action::after {
+    width: 16px;
+    height: 16px;
+  }
+
+  .processshowcase .processshowcase-cta-action-label-desktop {
+    display: none;
+  }
+
+  .processshowcase .processshowcase-cta-action-label-mobile {
+    display: inline;
+  }
+}
+
+/* --- desktop: five step cards per row --- */
+@media (width >= 992px) {
+  .processshowcase .processshowcase-card {
+    box-sizing: border-box;
+    flex: 0 0 calc(20% - 32px);
+    min-width: 0;
+  }
+}
+
+/* the source's in-between description size (overrides the mobile size at 768–991px) */
+@media (width >= 768px) and (width <= 1399px) {
+  .processshowcase .processshowcase-card-desc {
+    font-size: 15px;
+    line-height: 19px;
   }
 }

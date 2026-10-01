@@ -1,0 +1,276 @@
+.warranty-container {
+  /* brand accent for the CTA; no matching token in styles.css */
+  --warranty-container-accent: #fcaf17;
+  --warranty-container-rule: color-mix(in srgb, var(--dark-color) 20%, transparent);
+  --warranty-container-list-height: 575px;
+
+  display: grid;
+  grid-template-areas:
+    'banner'
+    'header'
+    'list';
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 24px;
+  font-size: var(--body-font-size-xs);
+  color: var(--text-color);
+}
+
+/* list title */
+.warranty-container .warranty-container-header {
+  grid-area: header;
+}
+
+.warranty-container .warranty-container-header > * {
+  margin: 0;
+}
+
+.warranty-container .warranty-container-header > :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--heading-font-family);
+  font-size: 0.95em;
+  font-weight: 800;
+  line-height: 1.8;
+}
+
+/* scrolling list */
+.warranty-container .warranty-container-scroller {
+  grid-area: list;
+  max-height: var(--warranty-container-list-height);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.warranty-container .warranty-container-header + .warranty-container-scroller {
+  margin-top: -24px;
+}
+
+.warranty-container .warranty-container-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.warranty-container .warranty-container-item {
+  margin-right: 5px;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--warranty-container-rule);
+}
+
+.warranty-container .warranty-container-item > * {
+  margin: 0;
+}
+
+.warranty-container .warranty-container-item-heading {
+  font-family: var(--body-font-family);
+  font-size: 0.95em;
+  font-weight: 700;
+  line-height: 1.6;
+  text-transform: capitalize;
+}
+
+.warranty-container .warranty-container-item-heading button {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+/* plus / minus drawn with two bars so it scales with the text */
+.warranty-container .warranty-container-icon {
+  position: relative;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 0.3em;
+}
+
+.warranty-container .warranty-container-icon::before,
+.warranty-container .warranty-container-icon::after {
+  content: '';
+  position: absolute;
+  inset: 7px 0 auto;
+  height: 2px;
+  background-color: currentcolor;
+  transition: transform 0.2s;
+}
+
+.warranty-container .warranty-container-icon::after {
+  transform: rotate(90deg);
+}
+
+.warranty-container [aria-expanded='true'] .warranty-container-icon::after {
+  transform: rotate(0deg);
+}
+
+.warranty-container .warranty-container-terms {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 8px;
+}
+
+.warranty-container .warranty-container-terms > div {
+  display: flex;
+  gap: 0.3em;
+  font-size: 0.85em;
+  font-weight: 700;
+  line-height: 2;
+}
+
+.warranty-container .warranty-container-terms dt {
+  text-transform: lowercase;
+}
+
+.warranty-container .warranty-container-terms dt::after {
+  content: ' :';
+}
+
+.warranty-container .warranty-container-terms dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+.warranty-container .warranty-container-guide {
+  padding-top: 8px;
+}
+
+.warranty-container .warranty-container-guide a {
+  display: inline-block;
+  padding: 4px 0;
+  border-bottom: 2px solid var(--link-color);
+  font-size: 0.75em;
+  font-weight: 500;
+  line-height: 1.5;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+.warranty-container .warranty-container-guide a:hover {
+  border-bottom-color: var(--link-hover-color);
+}
+
+.warranty-container .warranty-container-panel {
+  padding-top: 15px;
+}
+
+.warranty-container .warranty-container-panel > * {
+  margin: 0 0 14px;
+  font-size: 0.85em;
+  font-weight: 300;
+  line-height: 2;
+  letter-spacing: 0.5px;
+}
+
+.warranty-container .warranty-container-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* banner with CTA laid over the image */
+.warranty-container .warranty-container-banner {
+  grid-area: banner;
+  position: relative;
+  align-self: start;
+}
+
+.warranty-container .warranty-container-banner picture {
+  display: block;
+}
+
+.warranty-container .warranty-container-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 500 / 630;
+  object-fit: cover;
+}
+
+.warranty-container .warranty-container-cta {
+  position: absolute;
+  top: 49%;
+  left: 8%;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 4px 30px;
+  border-radius: 45px;
+  background-color: var(--warranty-container-accent);
+  color: var(--text-color);
+  font-size: 0.95em;
+  font-weight: 800;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.warranty-container .warranty-container-cta:hover {
+  background-color: color-mix(in srgb, var(--warranty-container-accent) 85%, var(--text-color));
+}
+
+.warranty-container .warranty-container-item-heading button:focus-visible,
+.warranty-container .warranty-container-guide a:focus-visible,
+.warranty-container .warranty-container-cta:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .warranty-container .warranty-container-icon::before,
+  .warranty-container .warranty-container-icon::after {
+    transition: none;
+  }
+}
+
+@media (width >= 992px) {
+  .warranty-container {
+    --warranty-container-list-height: 630px;
+
+    grid-template:
+      'header banner' auto
+      'list banner' 1fr / minmax(0, 3fr) minmax(0, 2fr);
+    gap: 0 7%;
+  }
+
+  .warranty-container .warranty-container-header + .warranty-container-scroller {
+    margin-top: 0;
+  }
+
+  .warranty-container .warranty-container-header > :is(h1, h2, h3, h4, h5, h6) {
+    font-size: var(--heading-font-size-m);
+  }
+
+  .warranty-container .warranty-container-item {
+    padding: 15px 6px;
+  }
+
+  .warranty-container .warranty-container-item-heading {
+    font-size: var(--heading-font-size-s);
+  }
+
+  .warranty-container .warranty-container-terms > div,
+  .warranty-container .warranty-container-panel > * {
+    font-size: 1em;
+  }
+
+  .warranty-container .warranty-container-guide a {
+    font-size: 0.93em;
+  }
+
+  .warranty-container .warranty-container-cta {
+    padding: 4px 40px;
+    font-size: var(--heading-font-size-m);
+  }
+}

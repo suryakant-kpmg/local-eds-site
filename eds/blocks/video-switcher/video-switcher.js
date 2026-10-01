@@ -3,24 +3,29 @@
  * One large muted autoplay video with a strip of thumbnails that switch between videos.
  * Advances to the next video when the current one ends.
  *
- * Authoring: one row per video, one cell each (Video block convention: video source + poster):
- *   | poster/thumbnail image, desktop video link, optional mobile link, heading, description |
- * Content is located by type, not position, so authors may also split it across cells.
- * The first link is the desktop video; a second link is used below 992px.
+ * Authoring: one row per slide, one column per field (read by position):
+ *   | title | subtitle | image | desktop video link | mobile video link |
+ * The image is the thumbnail and the video poster. The mobile video (below 992px) is optional and
+ * falls back to the desktop one; a slide with only a mobile video uses it everywhere. Rows without
+ * any video are skipped. Plain-text URLs work as well as links.
+ * Older content with everything in one cell (image, desktop link, optional mobile link, heading,
+ * description) is still read, by content type.
  *
  * Playback: autoplays (muted, inline) when the block scrolls into view, pauses while it is
  * out of view. There is no play/pause button.
  */
 import { createOptimizedPicture } from '../../scripts/aem.js';
-import { moveInstrumentation } from '../../scripts/scripts.js';
+import { moveInstrumentation , } from '../../scripts/scripts.js';
+import { trackEvent , pushAdobeCtaClickEvent } from '../../scripts/analytics_1.js';  
 
 const DESKTOP = window.matchMedia('(min-width: 992px)');
 const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
 const VIDEO_EXT = /\.(mp4|webm|ogv|mov|m4v)$/i;
 const SVG_NS = 'http://www.w3.org/2000/svg';
+// straight arrows, as on the source's round prev/next buttons
 const ICONS = {
-  prev: 'M15 5l-7 7 7 7',
-  next: 'M9 5l7 7-7 7',
+  prev: 'M19 12H5M11 6l-6 6 6 6',
+  next: 'M5 12h14M13 6l6 6-6 6',
 };
 
 let instances = 0;
@@ -55,11 +60,69 @@ function posterUrl(img, width) {
   return url.href;
 }
 
+const COLUMNS = ['title', 'subtitle', 'image', 'desktop', 'mobile'];
+
+// a video URL from a column: its link, or a URL typed as plain text. A full video URL in the text
+// wins over the href, since content syncs can rewrite the href to a site-relative path that 404s
+function videoUrl(cell) {
+  const text = cell?.textContent.trim() || '';
+  const href = cell?.querySelector('a[href]')?.href || text;
+  try {
+    if (/^https?:\/\/\S+$/i.test(text) && VIDEO_EXT.test(new URL(text).pathname)) return new URL(text).href;
+    return href ? new URL(href, window.location.href).href : '';
+  } catch (e) {
+    return '';
+  }
+}
+
 /**
- * Reads one authored row into an item. Rows without any link are skipped.
+ * Reads one row in the column layout: | title | subtitle | image | desktop | mobile |.
+ * @param {Element} row The authored row
+ */
+function parseColumns(row) {
+  const cells = Object.fromEntries(COLUMNS.map((name, i) => [name, row.children[i]]));
+  const desktop = videoUrl(cells.desktop) || videoUrl(cells.mobile);
+  if (!desktop) return null;
+
+  const caption = document.createElement('div');
+  caption.className = 'video-switcher-caption';
+  moveInstrumentation(row, caption);
+
+  const titleText = cells.title?.textContent.trim() || '';
+  if (titleText) {
+    const title = document.createElement('h3');
+    title.className = 'video-switcher-title';
+    title.textContent = titleText;
+    moveInstrumentation(cells.title, title);
+    caption.append(title);
+  }
+  if (cells.subtitle?.textContent.trim()) {
+    if (cells.subtitle.children.length) caption.append(...cells.subtitle.children);
+    else {
+      const p = document.createElement('p');
+      p.textContent = cells.subtitle.textContent.trim();
+      caption.append(p);
+    }
+  }
+
+  const img = cells.image?.querySelector('img') || null;
+  return {
+    caption,
+    img,
+    label: titleText || img?.alt || '',
+    desktop,
+    mobile: videoUrl(cells.mobile) || desktop,
+  };
+}
+
+/**
+ * Reads one authored row into an item. Rows without any video are skipped.
  * @param {Element} row The authored row
  */
 function parseItem(row) {
+  // the column layout; rows with fewer cells are the older one-cell content
+  if (row.children.length >= 4) return parseColumns(row);
+
   const links = [...row.querySelectorAll('a[href]')];
   const videoLinks = links.filter((a) => VIDEO_EXT.test(new URL(a.href).pathname));
   const [desktop, mobile] = videoLinks.length ? videoLinks : links;
@@ -195,9 +258,14 @@ export default function decorate(block) {
     controls.prepend(prev);
     controls.append(next);
 
-    tabs.addEventListener('click', (e) => {
-      const tab = e.target.closest('.video-switcher-tab');
-      if (tab) select(items.findIndex((item) => item.tab === tab));
+    items.forEach(({ tab }, index) => {
+      tab.addEventListener('click', () => {
+        const cta = tab.getAttribute('aria-label') || '';
+        const parentTitle = block.closest('.section')?.querySelector('h1, h2, h3, h4, h5, h6')?.textContent.trim() || '';
+        trackEvent('custom_cta_click', { cta_: cta, parentTitle });
+        pushAdobeCtaClickEvent({ cta, parentTitle, event: 'custom_cta_click' });
+        select(index);
+      });
     });
     tabs.addEventListener('keydown', (e) => {
       const moves = {

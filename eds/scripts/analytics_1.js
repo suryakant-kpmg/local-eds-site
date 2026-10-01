@@ -54,6 +54,10 @@ const DATASTREAM_UUIDS = {
 //const FALLBACK_UUID = 'STAGING_DATASTREAM_UUID_TO_BE_CREATED';
 
 const ALLOY_SRC = '/eds/scripts/vendor/alloy.min.js';
+// Public CDN fallback — used only if the self-hosted copy fails to load
+// (transient hosting/CDN error), so a single bad fetch doesn't silently
+// leave window.alloy queuing forever with no beacon ever firing.
+const ALLOY_CDN_FALLBACK_SRC = 'https://cdn1.adoberesources.net/alloy/2.33.1/alloy.min.js';
 const LOGIN_SUCCESS_PENDING_KEY = 'ap_login_success_pending';
 
 // ============================================================
@@ -718,10 +722,73 @@ async function buildAnalyticsPayload() {
 }
 
 // ============================================================
+// ADOBE LAUNCH BOOTSTRAP
+// ============================================================
+
+const ADOBE_LAUNCH_SCRIPT = 'https://assets.adobedtm.com/ef0f7eb243a4/50bf6aad1917/launch-1fb344a8e349-development.min.js';
+
+// Sequencing script tags can't order the two libraries' interact calls —
+// Launch fires its own embedded Web SDK request from its rule engine on
+// its own async timeline, well after its script tag finishes loading.
+// Load both in parallel; ordering the network calls isn't controllable
+// from here without a real signal from the Launch container itself.
+// Preconnecting these in the static <head> competed with the LCP image
+// for early bandwidth/CPU; adding them here (lazy phase, JS-driven)
+// still saves the DNS+TLS handshake before Launch's own Web SDK
+// instance fires, without touching the eager/LCP critical path.
+function preconnectAdobeLaunchOrigins() {
+  ['https://assets.adobedtm.com', 'https://apl.data.adobedc.net'].forEach((href) => {
+    if (document.querySelector(`link[rel="preconnect"][href="${href}"]`)) return;
+    const link = document.createElement('link');
+    link.rel = 'preconnect';
+    link.href = href;
+    link.crossOrigin = 'anonymous';
+    document.head.appendChild(link);
+  });
+}
+
+function bootstrapAdobeLaunch() {
+  preconnectAdobeLaunchOrigins();
+  const script = document.createElement('script');
+  script.src = ADOBE_LAUNCH_SCRIPT;
+  script.async = true;
+  document.head.appendChild(script);
+}
+
+// ============================================================
 // ALLOY BOOTSTRAP
 // ============================================================
 
+/**
+ * Injects the alloy.min.js <script> tag, retrying against `sources` in
+ * order (self-hosted copy, then Adobe's public CDN) so a single
+ * transient load failure doesn't leave window.alloy's stub queuing
+ * forever with no beacon ever firing.
+ */
+function loadAlloyScript(sources) {
+  const [src, ...rest] = sources;
+  if (!src) {
+    // eslint-disable-next-line no-console
+    console.error('[analytics] alloy.min.js failed to load from all sources');
+    return;
+  }
+
+  const script = document.createElement('script');
+  script.src = src;
+  script.async = true;
+  // Bump priority so the 151 KB alloy bundle isn't deprioritized behind
+  // header/footer/lazy CSS — needed to keep beacon firing within ~1–2 s
+  // of LCP instead of 10–15 s.
+  script.setAttribute('fetchpriority', 'high');
+  script.addEventListener('error', () => {
+    script.remove();
+    loadAlloyScript(rest);
+  }, { once: true });
+  document.head.appendChild(script);
+}
+
 function bootstrapAlloy() {
+  bootstrapAdobeLaunch();
   // Standard queue stub — buffers calls until alloy.min.js loads
   !function (n, o) {
     o.forEach(function (o) {
@@ -733,21 +800,72 @@ function bootstrapAlloy() {
     });
   }(window, ['alloy']);
 
-  const script = document.createElement('script');
-  script.src = ALLOY_SRC;
-  script.async = true;
-  // Bump priority so the 151 KB alloy bundle isn't deprioritized behind
-  // header/footer/lazy CSS — needed to keep beacon firing within ~1–2 s
-  // of LCP instead of 10–15 s.
-  script.setAttribute('fetchpriority', 'high');
-  document.head.appendChild(script);
+  loadAlloyScript([ALLOY_SRC, ALLOY_CDN_FALLBACK_SRC]);
 }
 
 function getEdgeConfigId() {
   return DATASTREAM_UUIDS[location.hostname] || FALLBACK_UUID;
 }
 
+// Host used by Launch's own embedded Web SDK instance for its interact
+// call — observing this is the only reliable signal that Launch's Target
+// activity request has actually gone out (script 'load' fires long before
+// its rule engine calls sendEvent).
+const LAUNCH_INTERACT_HOST = 'apl.data.adobedc.net';
 
+/**
+ * Resolves once a fetch/XHR request whose URL contains `urlSubstring` is
+ * observed, or after `timeoutMs` elapses — whichever comes first — so a
+ * blocked/slow/removed Launch container can never permanently stall our
+ * own analytics. Restores the original fetch/XHR.open on settle.
+ */
+function waitForNetworkCall(urlSubstring, timeoutMs) {
+  return new Promise((resolve) => {
+    let settled = false;
+    const originalFetch = window.fetch?.bind(window);
+    const originalOpen = window.XMLHttpRequest?.prototype.open;
+
+    const settle = () => {
+      if (settled) return;
+      settled = true;
+      if (originalFetch) window.fetch = originalFetch;
+      if (originalOpen) window.XMLHttpRequest.prototype.open = originalOpen;
+      resolve();
+    };
+
+    if (originalFetch) {
+      window.fetch = (...args) => {
+        const url = typeof args[0] === 'string' ? args[0] : args[0]?.url;
+        if (url && url.includes(urlSubstring)) settle();
+        return originalFetch(...args);
+      };
+    }
+
+    if (originalOpen) {
+      window.XMLHttpRequest.prototype.open = function patchedOpen(method, url, ...rest) {
+        if (typeof url === 'string' && url.includes(urlSubstring)) settle();
+        return originalOpen.call(this, method, url, ...rest);
+      };
+    }
+
+    setTimeout(settle, timeoutMs);
+  });
+}
+
+/**
+ * Runs `fn` and retries once (after a short delay) if it throws/rejects,
+ * so a single transient sendEvent failure (network blip, edge timeout)
+ * doesn't silently drop the pageview beacon.
+ */
+async function withRetry(fn, retries = 1, delayMs = 1000) {
+  try {
+    return await fn();
+  } catch (err) {
+    if (retries <= 0) throw err;
+    await new Promise((resolve) => { setTimeout(resolve, delayMs); });
+    return withRetry(fn, retries - 1, delayMs);
+  }
+}
 
 // ============================================================
 // PUBLIC API
@@ -826,7 +944,13 @@ export async function initAnalytics() {
     // jQuery preload triggered, behaviour identical to today.
     //const targetParams = buildTargetMboxParams();
     const analyticsPayload = await buildAnalyticsPayload();
-    const response = await window.alloy('sendEvent', {
+
+    // Only the actual network call is held back — alloy is already
+    // configured/ready above — so Launch's own interact call (or a 4s
+    // safety timeout) lands first without delaying alloy's init.
+    await waitForNetworkCall(LAUNCH_INTERACT_HOST, 4000);
+
+    const response = await withRetry(() => window.alloy('sendEvent', {
       renderDecisions: false,
       data: {
         __adobe: {
@@ -837,7 +961,7 @@ export async function initAnalytics() {
           //...(Object.keys(targetParams).length && { target: targetParams }),
         },
       },
-    });
+    }));
 
     const propositions = response?.propositions || [];
     if (propositions.length) {
@@ -1053,7 +1177,7 @@ const EVENT_REGISTRY = {
   },
   // Spec uses snake_case `test_open` for the same testimonial-video-play
   // event (EDS Home Page sheet row 16).
-  test_open: { events: 'event298' },
+  test_open: { events: 'event298' , eVars: { testTitle: 'eVar67' }   },
   // short_video_play — spec uses videoTitle as the key (legacy code
   // passed viewsCount). Map both to eVar35.
   short_video_play: { events: 'event296', eVars: { viewsCount: 'eVar35', videoTitle: 'eVar35' } },
@@ -1543,6 +1667,7 @@ export function triggerCtaLinkText(btnTitle, ctaLink, parentTitle = '') {
     cta: btnTitle,
     parentTitle,
     destinationUrl: normalizeTrackedUrl(ctaLink),
+    event: 'cta_link_text',
   })
 }
 

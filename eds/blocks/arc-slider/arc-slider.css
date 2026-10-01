@@ -1,0 +1,442 @@
+/*
+ * arc-slider — start screen + lookbook carousel with an arched preview.
+ * Source: https://www.asianpaints.com/nilaya-arc-inspiration.html (.arcslider)
+ *
+ * AUTHORING (DA table; first cell = row keyword):
+ *
+ *   | arc-slider |                                   |                 |                   |                      |         |
+ *   | start      | <mobile banner> <desktop banner>  | Enter           |                   |                      |         |
+ *   | label      | Nilaya Arc lookbook               |                 |                   |                      |         |
+ *   | slide      | <mobile bg> <desktop bg>          |                 | <mob art> <desk art> | ## The Unfolding / Step into… | #52735F |
+ *   | slide      | <mobile bg> <desktop bg>          | <arch preview>  | <mob art> <desk art> | ## Legacy Of Lime Plaster / … | #385244 |
+ *   | …          |                                   |                 |                   |                      |         |
+ *   | end        | <arch image on the last slide>    |                 |                   |                      |         |
+ *
+ * - start (optional): banner image(s) and the button label. The banner's alt
+ *   text must say what the artwork says (e.g. "Get inside the world of Asian
+ *   Paints Nilaya Arc"). Without a start row the carousel shows straight away.
+ * - label (optional): the carousel's name for screen readers.
+ * - slide: background image(s) | arch preview | text art image(s) |
+ *   heading + description | text panel colour (hex).
+ *   · The arch preview is shown in the arch while the PREVIOUS slide is
+ *     open (slide 1 needs none).
+ *   · Text art is authored at 2x and shown at half its pixel size. The
+ *     heading + description are the real text: read by screen readers and
+ *     search engines, and shown visibly when no text art is authored.
+ * - end (optional): the arch image on the last slide, where the next button
+ *   turns into "start again".
+ * - Image cells take ONE image (all sizes) or TWO: mobile first, desktop
+ *   second (desktop from 992px).
+ *
+ * BEHAVIOUR: "Enter" opens slide 1. Next grows the next slide out of the arch
+ * (1.5s); previous shrinks the current slide back into it. The text panel
+ * colour crossfades (0.8s). Previous on slide 1 and next on the last slide
+ * return to the start screen. Left/Right arrow keys move between slides.
+ * Motion is skipped when the visitor prefers reduced motion.
+ *
+ * STYLING: the source's exact values, as --arc-slider-* custom properties;
+ * white reuses the repo's --background-color. Breakpoint: 992px (source).
+ * The source font is Manrope (the source's stack is just "Manrope"); this
+ * repo does not load it (see HANDOFF).
+ */
+
+/* full-bleed, like the boilerplate hero */
+.arc-slider-container .arc-slider-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+.arc-slider {
+  --arc-slider-font: "Manrope", sans-serif;
+  --arc-slider-white: var(--background-color);
+  --arc-slider-ink: #222;
+  --arc-slider-enter-hover: #fcaf17;
+  --arc-slider-enter-focus: #e59f15;
+  --arc-slider-enter-shadow: 0 5px 15px rgb(0 0 0 / 30%);
+  --arc-slider-icon: #2e2f32;
+  --arc-slider-nav-hover: #f0f0f0;
+  --arc-slider-arch-shadow: #3b5246;
+  --arc-slider-panel-bg: transparent;
+
+  position: relative;
+  font-family: var(--arc-slider-font);
+}
+
+.arc-slider [hidden] {
+  display: none !important;
+}
+
+.arc-slider .arc-slider-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.arc-slider picture {
+  display: block;
+}
+
+/* --- start screen --- */
+.arc-slider .arc-slider-start {
+  position: relative;
+}
+
+.arc-slider .arc-slider-start img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.arc-slider .arc-slider-enter {
+  position: absolute;
+  right: 50%;
+  bottom: 19%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-sizing: border-box;
+  width: 132px;
+  height: 52px;
+  margin: 0;
+  padding: 14px 20px;
+  border: 0;
+  border-radius: 45px;
+  background: var(--arc-slider-white);
+  box-shadow: var(--arc-slider-enter-shadow);
+  color: var(--arc-slider-ink);
+  font-family: var(--arc-slider-font);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  white-space: nowrap;
+  cursor: pointer;
+  transform: translateX(50%);
+}
+
+.arc-slider .arc-slider-enter svg {
+  flex: none;
+  width: 17px;
+  height: 20px;
+  color: #000;
+}
+
+.arc-slider .arc-slider-enter:hover {
+  background: var(--arc-slider-enter-hover);
+}
+
+.arc-slider .arc-slider-enter:focus {
+  background: var(--arc-slider-enter-focus);
+}
+
+/* the source removes the outline; a visible ring is added for WCAG 2.4.7 */
+.arc-slider .arc-slider-enter:focus-visible {
+  outline: 2px solid var(--arc-slider-ink);
+  outline-offset: 3px;
+}
+
+/* --- stage --- */
+.arc-slider .arc-slider-stage {
+  position: relative;
+  width: 100%;
+  height: 640px;
+  overflow: hidden;
+  color: var(--arc-slider-white);
+}
+
+.arc-slider .arc-slider-stage:focus {
+  outline: none;
+}
+
+.arc-slider .arc-slider-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 660px;
+}
+
+.arc-slider .arc-slider-slide.is-entering,
+.arc-slider .arc-slider-slide.is-leaving {
+  z-index: 2;
+}
+
+.arc-slider .arc-slider-bg {
+  position: absolute;
+  inset: 0;
+}
+
+/* mobile: the source stretches the background to 100% x 46% of the slide */
+.arc-slider .arc-slider-bg img {
+  display: block;
+  width: 100%;
+  height: 46%;
+  object-fit: fill;
+}
+
+.arc-slider .arc-slider-bg picture {
+  height: 100%;
+}
+
+.arc-slider .arc-slider-panel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  width: 100%;
+  height: 55%;
+  padding: 160px 12px 12px;
+  background: var(--arc-slider-panel-bg);
+  transition: background 0.8s ease-in-out;
+}
+
+.arc-slider .arc-slider-art img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* shown only when no text art is authored (the source has no live text) */
+.arc-slider .arc-slider-copy {
+  font-family: var(--arc-slider-font);
+}
+
+.arc-slider .arc-slider-copy :is(h1, h2, h3, h4, h5, h6) {
+  margin: 0 0 12px;
+  color: inherit;
+  font-family: inherit;
+}
+
+.arc-slider .arc-slider-copy p {
+  margin: 0;
+}
+
+/* --- arch, nav, dots --- */
+.arc-slider .arc-slider-arch-wrap {
+  position: absolute;
+  top: 185px;
+  right: 0;
+  left: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.arc-slider .arc-slider-arch {
+  position: relative;
+  z-index: 4;
+  box-sizing: border-box;
+  width: 170px;
+  height: 198px;
+  border: 2px solid var(--arc-slider-white);
+  border-radius: 250px 250px 0 0;
+  overflow: hidden;
+  background-color: var(--arc-slider-white);
+  box-shadow: inset 20px 80px 84px -10px var(--arc-slider-arch-shadow);
+}
+
+.arc-slider .arc-slider-arch picture {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+
+.arc-slider .arc-slider-arch picture.is-shown {
+  opacity: 1;
+}
+
+.arc-slider .arc-slider-arch img {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+  object-position: center;
+}
+
+.arc-slider .arc-slider-nav {
+  position: relative;
+  bottom: 25px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+}
+
+.arc-slider .arc-slider-nav button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--arc-slider-white);
+  color: var(--arc-slider-icon);
+  cursor: pointer;
+  transition: background-color 0.8s ease-in-out;
+}
+
+.arc-slider .arc-slider-nav button:hover {
+  background: var(--arc-slider-nav-hover);
+}
+
+/* two-tone ring: visible on light and dark imagery */
+.arc-slider .arc-slider-nav button:focus-visible {
+  outline: 2px solid var(--arc-slider-white);
+  outline-offset: 0;
+  box-shadow: 0 0 0 4px var(--arc-slider-ink);
+}
+
+.arc-slider .arc-slider-nav button:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.arc-slider .arc-slider-nav .arc-slider-prev {
+  width: 35px;
+  height: 35px;
+}
+
+.arc-slider .arc-slider-nav svg {
+  width: 26px;
+  height: 26px;
+}
+
+.arc-slider .arc-slider-nav .arc-slider-prev svg {
+  width: 17px;
+  height: 17px;
+}
+
+.arc-slider .arc-slider-dots {
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: -10px;
+}
+
+.arc-slider .arc-slider-dots span {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--arc-slider-white);
+  border-radius: 50%;
+  background: transparent;
+  opacity: 0.4;
+  transition: all 0.8s ease-in-out;
+}
+
+.arc-slider .arc-slider-dots span.is-active {
+  background: var(--arc-slider-white);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arc-slider .arc-slider-panel,
+  .arc-slider .arc-slider-arch picture,
+  .arc-slider .arc-slider-nav button,
+  .arc-slider .arc-slider-dots span {
+    transition: none;
+  }
+}
+
+/* --- desktop (source: 992px and up) --- */
+@media (width >= 992px) {
+  .arc-slider .arc-slider-enter {
+    right: 22%;
+    bottom: 14%;
+    width: 11%;
+    min-width: max-content;
+    transform: translateX(22%);
+  }
+
+  .arc-slider .arc-slider-stage {
+    height: 660px;
+  }
+
+  /* desktop: the source's background-size: contain, anchored top left */
+  .arc-slider .arc-slider-bg img {
+    height: auto;
+    object-fit: contain;
+  }
+
+  .arc-slider .arc-slider-bg picture {
+    height: auto;
+  }
+
+  .arc-slider .arc-slider-panel {
+    align-items: center;
+    height: 180px;
+    padding: 35px;
+  }
+
+  .arc-slider .arc-slider-arch-wrap {
+    top: 130px;
+    right: 140px;
+    left: auto;
+    align-items: stretch;
+  }
+
+  .arc-slider .arc-slider-arch {
+    width: 405px;
+    height: 410px;
+    border-width: 4px;
+  }
+
+  .arc-slider .arc-slider-arch img {
+    object-position: left center;
+  }
+
+  .arc-slider .arc-slider-nav {
+    bottom: 37.5px;
+    gap: 10px;
+  }
+
+  .arc-slider .arc-slider-nav button {
+    width: 75px;
+    height: 75px;
+  }
+
+  .arc-slider .arc-slider-nav .arc-slider-prev {
+    width: 60px;
+    height: 60px;
+  }
+
+  .arc-slider .arc-slider-nav svg,
+  .arc-slider .arc-slider-nav .arc-slider-prev svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .arc-slider .arc-slider-dots {
+    margin-top: 0;
+  }
+
+  .arc-slider .arc-slider-dots span {
+    width: 10px;
+    height: 10px;
+  }
+}

@@ -814,14 +814,52 @@
 }
 
 /* ==================== grid-variant : start ==================== */
+
+/* values follow the live AEM city cards (apCityCarousel) on the painting service page */
+
+/* full page width like live, the side padding comes from the 4% / 4.5% margin below */
+main > .section > div:has(> .city-carousel.grid-variant) {
+    max-width: none;
+    padding: 0;
+}
+
 .city-carousel.grid-variant .contractors-in-your-city {
-    margin-right: 40px;
+    margin: 0 4%;
+    font-family: Manrope, var(--body-font-family);
+}
+
+.city-carousel.grid-variant .contractors-in-your-city .contractors-in-your-city-title {
+    max-width: none;
+    margin: 0 0 46px;
+    color: #000;
+    font-family: inherit;
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 42px;
+    letter-spacing: 0.5px;
+    text-align: left;
+}
+
+/* title sits 8px above the sub heading when both are present */
+.city-carousel.grid-variant .contractors-in-your-city-title:has(+ .contractors-in-your-city-subtitle) {
+    margin-bottom: 8px;
+}
+
+.city-carousel.grid-variant .contractors-in-your-city .contractors-in-your-city-subtitle {
+    margin: 0 0 46px;
+    padding: 0;
+    color: #75787b;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0.5px;
+    text-align: left;
 }
 
 .city-carousel.grid-variant .contractors-in-your-city .contractors-in-your-city-cards {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 32px 30px;
+    gap: 40px;
     overflow: visible;
 }
 
@@ -835,6 +873,7 @@
     cursor: pointer;
 }
 
+/* same shape as the live city images (229 x 210), so nothing is cropped or stretched */
 .city-carousel.grid-variant .contractors-in-your-city-card-img {
     width: 100%;
     height: auto;
@@ -852,39 +891,53 @@
     transform: scale(1.05);
 }
 
+/* city name sits right under the image, left aligned */
 .city-carousel.grid-variant .contractors-in-your-city-card-title {
+    margin: 0;
+    color: #232426;
+    font-family: inherit;
     font-size: 20px;
     font-weight: 700;
     line-height: 28px;
-    margin: 12px 0 0;
+    text-align: left;
 }
 
+/* mobile and tablet (below 992px like the live site): 2 cards per row */
 @media (width <= 991px) {
     .city-carousel.grid-variant .contractors-in-your-city {
-        margin-right: 16px;
+        margin: 0 4.5%;
     }
 
     .city-carousel.grid-variant .contractors-in-your-city .contractors-in-your-city-title {
-        max-width: none;
+        margin-bottom: 20px;
+        color: #000;
+        font-size: 24px;
+        font-weight: 800;
+        line-height: 33.6px;
+        letter-spacing: normal;
+    }
+
+    .city-carousel.grid-variant .contractors-in-your-city-title:has(+ .contractors-in-your-city-subtitle) {
+        margin-bottom: 4px;
+    }
+
+    .city-carousel.grid-variant .contractors-in-your-city .contractors-in-your-city-subtitle {
+        margin-bottom: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 13px;
     }
 
     .city-carousel.grid-variant .contractors-in-your-city .contractors-in-your-city-cards {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 20px 16px;
     }
 
     .city-carousel.grid-variant .contractors-in-your-city-card-title {
+        margin: 0;
         font-size: 16px;
-        font-weight: 700;
-        line-height: 22px;
-        text-align: center;
-        margin-top: 8px;
-    }
-}
-
-@media (width <= 599px) {
-    .city-carousel.grid-variant .contractors-in-your-city .contractors-in-your-city-cards {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        line-height: 24px;
+        text-align: left;
     }
 }
 

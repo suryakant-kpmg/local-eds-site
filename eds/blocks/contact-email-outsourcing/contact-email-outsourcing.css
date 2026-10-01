@@ -6,7 +6,7 @@
 
 .contact-email-outsourcing .contact-email-outsourcing-cin {
   margin-bottom: 32px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.04em;
 }
@@ -60,7 +60,7 @@
   .contact-email-outsourcing .contact-email-outsourcing-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 24px 20px;
+    gap: 19px 15px;
   }
 
   .contact-email-outsourcing .contact-email-outsourcing-card {
@@ -71,4 +71,9 @@
   .contact-email-outsourcing {
       padding: 0 10px;
   }
+  
+  .contact-email-outsourcing .contact-email-outsourcing-card p{
+      color: #222;
+      margin: 0 0 -5px;
+    }
 }

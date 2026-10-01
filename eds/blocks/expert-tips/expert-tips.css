@@ -1,3 +1,9 @@
+/* full width with the source's inset (16px, 40px on desktop) instead of the centred 1200px column */
+main > .section > .expert-tips-wrapper {
+  max-width: none;
+  padding: 0 16px;
+}
+
 .expert-tips {
   --expert-tips-gap: 18px;
   --expert-tips-card-width: 227px;
@@ -14,12 +20,13 @@
   margin: 0;
 }
 
+/* as on the source: Manrope extra bold */
 .expert-tips .expert-tips-intro > :is(h1, h2, h3, h4, h5, h6) {
-  font-family: var(--heading-font-family);
-  font-size: var(--heading-font-size-s);
+  font-family: manrope, var(--heading-font-family);
+  font-size: 24px;
   font-weight: 800;
   line-height: 1.4;
-  color: var(--text-color);
+  color: #000;
 }
 
 .expert-tips .expert-tips-intro > p {
@@ -68,20 +75,23 @@
   margin: 0;
 }
 
+/* the date (e.g. "Feb 10"), as on the source: Manrope medium in its light grey */
 .expert-tips .expert-tips-card-eyebrow {
-  font-size: 0.75em;
+  font-family: manrope, var(--body-font-family);
+  font-size: 10.78px;
   font-weight: 500;
   line-height: 1.5;
-  color: var(--dark-color);
+  color: #8c8e90;
 }
 
+/* the card title, as on the source: Manrope medium */
 .expert-tips .expert-tips-card-body > .expert-tips-card-title {
   margin-top: 10px;
-  font-family: var(--body-font-family);
-  font-size: 1em;
+  font-family: manrope, var(--body-font-family);
+  font-size: 15.4px;
   font-weight: 500;
   line-height: 1.15;
-  color: var(--text-color);
+  color: #232426;
 }
 
 .expert-tips .expert-tips-card-body > .expert-tips-card-cta {
@@ -89,14 +99,17 @@
   padding-top: 24px;
 }
 
+/* "Read article", as on the source: Manrope bold */
 .expert-tips .expert-tips-card-cta a {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   min-height: 24px;
-  font-size: 0.8em;
+  font-family: manrope, var(--body-font-family);
+  font-size: 10.78px;
   font-weight: 700;
-  color: var(--text-color);
+  line-height: 1.5;
+  color: #000;
   text-decoration: none;
 }
 
@@ -218,6 +231,10 @@
 }
 
 @media (width >= 992px) {
+  main > .section > .expert-tips-wrapper {
+    padding: 0 40px;
+  }
+
   .expert-tips {
     --expert-tips-gap: 20px;
     --expert-tips-card-padding: 20px;
@@ -231,9 +248,12 @@
     padding-right: 25px;
   }
 
+  /* one word per line, as on the source ("Expert" / "Tips") */
   .expert-tips .expert-tips-intro > :is(h1, h2, h3, h4, h5, h6) {
-    font-size: var(--heading-font-size-xxl);
-    line-height: 1.18;
+    width: min-content;
+    max-width: 100%;
+    font-size: 44px;
+    line-height: 52px;
   }
 
   /* three cards fill the rail; more than three scroll */
@@ -242,11 +262,11 @@
   }
 
   .expert-tips .expert-tips-card-eyebrow {
-    font-size: 1em;
+    font-size: 14px;
   }
 
   .expert-tips .expert-tips-card-body > .expert-tips-card-title {
-    font-size: var(--heading-font-size-s);
+    font-size: 20px;
   }
 
   .expert-tips .expert-tips-card-body > .expert-tips-card-cta {
@@ -254,7 +274,9 @@
   }
 
   .expert-tips .expert-tips-card-cta a {
-    font-size: 0.93em;
+    font-size: 13px;
+    line-height: 21px;
+    color: #232426;
   }
 
   .expert-tips .expert-tips-controls {

@@ -1,0 +1,222 @@
+import { createOptimizedPicture } from '../../scripts/aem.js';
+
+/**
+ * CWAP Banner
+ * "Colour With Asian Paints" app banner: gradient title, caption, store
+ * buttons (with optional QR codes on desktop) and a phone-framed video.
+ *
+ * Authoring model (all content lives in DA; the first cell is the row label):
+ *   Background    | desktop image | mobile image
+ *   Title         | one line per paragraph (each line gets the gradient)
+ *   Caption       | Visualize your dream home
+ *   Download text | Download our visualizer app now (desktop only)
+ *   Play store    | store badge image | store link | QR code image (optional)
+ *   App store     | store badge image | store link | QR code image (optional)
+ *                   (store rows render in authored order)
+ *   Video         | link to the video file
+ *
+ * @param {Element} block The block element
+ */
+
+const DEFAULT_VIDEO_LABEL = 'Phone screen showing the launch of Colour with Asian Paints Visualizer';
+
+const STORE_LABELS = ['play store', 'app store'];
+
+const rowLabel = (row) => row.children[0]?.textContent.trim().toLowerCase().replace(/\s+/g, ' ') || '';
+
+/** Splits a rich-text cell into its lines (paragraphs and line breaks). */
+function getLines(cell) {
+  const parts = cell.querySelector('p') ? [...cell.querySelectorAll('p')] : [cell];
+  return parts.flatMap((part) => {
+    const clone = part.cloneNode(true);
+    clone.querySelectorAll('br').forEach((br) => br.replaceWith('\n'));
+    return clone.textContent.split('\n');
+  }).map((line) => line.trim()).filter(Boolean);
+}
+
+function getLink(cell) {
+  const a = cell?.querySelector('a');
+  if (a) return a.href;
+  const text = cell?.textContent.trim();
+  return text || '';
+}
+
+function buildBackground(desktopImg, mobileImg, eager) {
+  const picture = createOptimizedPicture(mobileImg.src, '', eager, [{ width: '750' }]);
+  const desktop = createOptimizedPicture(desktopImg.src, '', eager, [
+    { media: '(min-width: 900px)', width: '2000' },
+    { width: '750' },
+  ]);
+  picture.prepend(...desktop.querySelectorAll('source[media]'));
+  const img = picture.querySelector('img');
+  if (eager) img.fetchPriority = 'high';
+
+  const bg = document.createElement('div');
+  bg.className = 'cwap-banner-bg';
+  bg.setAttribute('aria-hidden', 'true');
+  bg.append(picture);
+  return bg;
+}
+
+function buildStore(cells) {
+  const [, badgeCell, linkCell, qrCell] = cells;
+  const badgeImg = badgeCell?.querySelector('img');
+  const href = getLink(linkCell);
+  if (!badgeImg && !href) return null;
+
+  const item = document.createElement('li');
+  item.className = 'cwap-banner-store';
+
+  const qrImg = qrCell?.querySelector('img');
+  if (qrImg) {
+    const qr = createOptimizedPicture(qrImg.src, qrImg.alt || 'QR code to download the app', false, [{ width: '300' }]);
+    qr.classList.add('cwap-banner-qr');
+    item.append(qr);
+  }
+
+  const link = document.createElement(href ? 'a' : 'span');
+  link.className = 'cwap-banner-store-link';
+  if (href) {
+    link.href = href;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+  }
+  if (badgeImg) {
+    const badge = createOptimizedPicture(badgeImg.src, badgeImg.alt || 'Download the app', false, [{ width: '360' }]);
+    const img = badge.querySelector('img');
+    img.width = 180;
+    img.height = 53;
+    link.append(badge);
+  } else {
+    link.textContent = 'Download the app';
+  }
+  item.append(link);
+  return item;
+}
+
+function buildVideo(cell) {
+  const src = getLink(cell);
+  if (!src) return null;
+
+  const text = cell.textContent.trim();
+  const label = text && !/^(https?:)?\/\//.test(text) && !text.startsWith('/') ? text : DEFAULT_VIDEO_LABEL;
+
+  const media = document.createElement('div');
+  media.className = 'cwap-banner-media';
+
+  const video = document.createElement('video');
+  video.className = 'cwap-banner-video';
+  video.muted = true;
+  video.loop = true;
+  video.autoplay = true;
+  video.playsInline = true;
+  video.controls = true;
+  video.preload = 'none';
+  ['muted', 'loop', 'autoplay', 'playsinline'].forEach((attr) => video.setAttribute(attr, ''));
+  video.setAttribute('aria-label', label);
+  media.append(video);
+
+  // load the video only once the banner is close to the viewport
+  const observer = new IntersectionObserver((entries) => {
+    if (!entries.some((entry) => entry.isIntersecting)) return;
+    observer.disconnect();
+    video.src = src;
+    video.play().catch(() => { /* autoplay blocked: controls remain available */ });
+  }, { rootMargin: '200px' });
+  observer.observe(media);
+
+  return media;
+}
+
+/**
+ * On desktop, sizes the banner to the real space left below the header
+ * (viewport units can disagree with the window size under OS/browser zoom).
+ * Mobile keeps the CSS svh value so the banner doesn't jump with the URL bar.
+ */
+function fitToViewport(block) {
+  const desktop = window.matchMedia('(width >= 900px)');
+  let frame;
+  const update = () => {
+    frame = null;
+    if (!desktop.matches) {
+      block.style.removeProperty('--cwap-vh');
+      return;
+    }
+    const header = document.querySelector('header');
+    const headerHeight = header ? header.getBoundingClientRect().height : 0;
+    block.style.setProperty('--cwap-vh', `${Math.round(window.innerHeight - headerHeight)}px`);
+  };
+  const schedule = () => {
+    if (!frame) frame = requestAnimationFrame(update);
+  };
+  update();
+  window.addEventListener('resize', schedule);
+  desktop.addEventListener('change', schedule);
+}
+
+export default function decorate(block) {
+  const rows = [...block.children];
+  const byLabel = (name) => rows.find((row) => rowLabel(row) === name);
+  const valueCell = (name) => byLabel(name)?.children[1];
+
+  const isFirstSection = block.closest('.section') === block.closest('main')?.querySelector('.section');
+
+  const inner = document.createElement('div');
+  inner.className = 'cwap-banner-inner';
+
+  const content = document.createElement('div');
+  content.className = 'cwap-banner-content';
+
+  const titleCell = valueCell('title');
+  if (titleCell) {
+    const title = document.createElement(isFirstSection ? 'h1' : 'h2');
+    title.className = 'cwap-banner-title';
+    getLines(titleCell).forEach((line) => {
+      const span = document.createElement('span');
+      span.textContent = line;
+      title.append(span, ' ');
+    });
+    content.append(title);
+  }
+
+  const caption = valueCell('caption')?.textContent.trim();
+  if (caption) {
+    const el = document.createElement(isFirstSection ? 'h2' : 'h3');
+    el.className = 'cwap-banner-caption';
+    el.textContent = caption;
+    content.append(el);
+  }
+
+  const downloadText = valueCell('download text')?.textContent.trim();
+  if (downloadText) {
+    const el = document.createElement('p');
+    el.className = 'cwap-banner-download';
+    el.textContent = downloadText;
+    content.append(el);
+  }
+
+  const stores = rows
+    .filter((row) => STORE_LABELS.includes(rowLabel(row)))
+    .map((row) => buildStore([...row.children]))
+    .filter(Boolean);
+  if (stores.length) {
+    const list = document.createElement('ul');
+    list.className = 'cwap-banner-stores';
+    list.append(...stores);
+    content.append(list);
+  }
+
+  inner.append(content);
+
+  const videoCell = valueCell('video');
+  const media = videoCell ? buildVideo(videoCell) : null;
+  if (media) inner.append(media);
+
+  const bgRow = byLabel('background');
+  const [desktopImg, mobileImg = desktopImg] = bgRow ? bgRow.querySelectorAll('img') : [];
+
+  block.replaceChildren();
+  if (desktopImg) block.append(buildBackground(desktopImg, mobileImg, isFirstSection));
+  block.append(inner);
+  fitToViewport(block);
+}

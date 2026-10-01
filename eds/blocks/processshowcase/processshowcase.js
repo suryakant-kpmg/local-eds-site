@@ -1,4 +1,5 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
+import {   trackEvent , pushAdobeCtaClickEvent } from '../../scripts/analytics_1.js';
 
 /**
  * processshowcase — a tabbed process/step showcase with per-tab video and a
@@ -9,13 +10,17 @@ import { createOptimizedPicture } from '../../scripts/aem.js';
  *   Header : [ title | subtitle ]
  *   Card   : [ tab name | image | step label | step title | description ]
  *   Video  : [ tab name | video thumbnail(s) | "video" | youtube url ]
- *   CTA    : [ "cta" | cluster image | stat count | stat label | action link ]
+ *   CTA    : [ "cta" | cluster image | stat count | stat label | action link
+ *             | mobile action text (optional) ]
  * The video thumbnail cell may hold ONE image (used at all sizes) or TWO
  * images — the first is the mobile thumbnail, the second the desktop one; they
  * render as a responsive <picture> (desktop swaps in at >=768px).
  * Cards/videos are grouped into panels by their (case-insensitive) tab name,
  * in first-seen order. The video (if any) renders after that tab's cards.
- * The CTA row is section-level and renders once, below the panels.
+ * The CTA row is section-level and renders once, below the panels. Its
+ * optional 6th cell replaces the action text below 992px (the source shows
+ * "Talk to a painting expert" on mobile, "Get a FREE Site Inspection" on
+ * desktop); without it the link text shows at every size.
  *
  * Implements the WAI-ARIA Tabs pattern (roving tabindex; Left/Right/Home/End;
  * aria-selected / aria-controls) and an accessible video lightbox (focus trap,
@@ -205,6 +210,7 @@ export default function decorate(block) {
         count: text(cells[2]),
         label: text(cells[3]),
         actionCell: cells[4],
+        mobileLabel: text(cells[5]),
       };
       return;
     }
@@ -320,7 +326,19 @@ export default function decorate(block) {
       const alt = vImgs[0].alt || `${group.name} video`;
       trigger.append(buildVideoThumb(vImgs, alt));
       const embed = toEmbedUrl(group.video.url);
-      trigger.addEventListener('click', () => openVideo(embed, trigger));
+      trigger.addEventListener('click', () => {
+        openVideo(embed, trigger);
+
+        trackEvent('video_playbotton_click', {
+          videoTitle: titleEl?.textContent?.trim() || '',
+        });
+
+        pushAdobeCtaClickEvent({
+          title: titleEl?.textContent?.trim() || '',
+          event: 'video_playbotton_click',
+        });
+
+      });
       panel.append(trigger);
     }
 
@@ -345,7 +363,23 @@ export default function decorate(block) {
   });
 
   tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => activateTab(tabs, panels, i));
+    tab.addEventListener('click', () => {
+      activateTab(tabs, panels, i);
+
+      const btnTitle = tab.textContent.trim();
+      const parentTitle = titleEl?.textContent?.trim() || '';
+
+      trackEvent('custom_cta_click', {
+        cta_: btnTitle,
+        parentTitle,
+        event: 'custom_cta_click',
+      });
+      pushAdobeCtaClickEvent({
+        cta: btnTitle,
+        parentTitle,
+        event: 'custom_cta_click',
+      });
+    });
   });
 
   // --- section CTA ---
@@ -393,7 +427,18 @@ export default function decorate(block) {
       const action = document.createElement('a');
       action.className = 'processshowcase-cta-action';
       action.href = actionLink ? actionLink.getAttribute('href') : '#';
-      action.textContent = actionLink ? actionLink.textContent.trim() : actionLabel;
+      const label = document.createElement('span');
+      label.className = 'processshowcase-cta-action-label';
+      label.textContent = actionLink ? actionLink.textContent.trim() : actionLabel;
+      action.append(label);
+      // optional mobile text: only one label is displayed (and announced) at a time
+      if (cta.mobileLabel && cta.mobileLabel !== label.textContent) {
+        label.classList.add('processshowcase-cta-action-label-desktop');
+        const mobile = document.createElement('span');
+        mobile.className = 'processshowcase-cta-action-label processshowcase-cta-action-label-mobile';
+        mobile.textContent = cta.mobileLabel;
+        action.append(mobile);
+      }
       ctaEl.append(action);
     }
   }

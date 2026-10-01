@@ -1,5 +1,3 @@
-/* stylelint-disable selector-class-pattern, no-descending-specificity -- this block uses BEM (__/--) class names; legacy rules are ordered by layout, not specificity */
-
 .section.discover-collections-container {
   margin-top: -10px;
   background: #f4f2ee;
@@ -31,7 +29,6 @@
   letter-spacing: 0;
   margin-bottom: 2rem;
 }
-
 .discover-collections__block-title span {
   font-size: inherit;
   line-height: inherit;
@@ -45,7 +42,6 @@
   margin-left: 10px;
   background: linear-gradient(270deg, #f8a12e, #be2a1d 50.07%, #45216c 98.1%);
   -webkit-text-fill-color: transparent;
-  /* stylelint-disable-next-line property-no-vendor-prefix -- gradient text in older Safari */
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -60,35 +56,29 @@
 }
 
 
-@media (width <= 991px) {
+@media (max-width: 991px) {
    .discover-collections__group.discover-collections__group--primary , .discover-collections__group.discover-collections__group--secondary {
       width:100%
   }
-
   .discover-collections__variant .discover-collections__collage .discover-collections__group.discover-collections__group--primary  .discover-collections__text {
     width: 100%;
   }
-
    .discover-collections__variant.discover-collections__variant--left .discover-collections__collage .discover-collections__group.discover-collections__group--primary .one-to-three {
     display: none;
   }
-
   .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .discover-collections__group.discover-collections__group--primary .one-to-three  {
       display: none;
   }
-
   .discover-collections__variant.discover-collections__variant--left .discover-collections__group.discover-collections__group--secondary {
     display: flex;
     gap: 10px;
   }
-
   .discover-collections__variant.discover-collections__variant--left .discover-collections__group.discover-collections__group--secondary  .column-one {
     margin-top: 22px;
     display: flex;
     flex-direction: column;
     gap:10px;
   }
-
   .discover-collections__variant.discover-collections__variant--left .discover-collections__group.discover-collections__group--secondary  .column-two {
         justify-content: flex-start;
     margin-top: -40px;
@@ -96,17 +86,14 @@
     flex-direction: column;
     gap:10px
   }
-
    .discover-collections__variant.discover-collections__variant--left .discover-collections__group.discover-collections__group--secondary .discover-collections__image {
       display: flex;
       flex-direction: column;
       row-gap: 10px;
    }
-
    .discover-collections__variant.discover-collections__variant--left .discover-collections__group.discover-collections__group--secondary .discover-collections__image.discover-collections__image--6 {
     display: none;
    }
-
    .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .discover-collections__group.discover-collections__group--secondary {
     display: flex;
     gap: 10px;
@@ -114,14 +101,12 @@
         flex-direction: row-reverse;
 
    }
-
     .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .discover-collections__group.discover-collections__group--secondary .column-one {
       display: flex;
     flex-direction: column;
     margin-top: -40px;
     gap:10px;
     }
-
     .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .discover-collections__group.discover-collections__group--secondary .column-two {
               margin-top: 22px;
               display: flex;
@@ -130,50 +115,41 @@
     gap:10px;
     }
 }
-
-@media (width >= 992px) {
+@media (min-width: 992px) {
   .discover-collections__collage {
     display: flex;
     gap: 10px;
 }
-
   .discover-collections__variant .discover-collections__collage .discover-collections__group.discover-collections__group--primary  .discover-collections__text{
     width: 425px;
   }
-
   .discover-collections__group.discover-collections__group--primary , .discover-collections__group.discover-collections__group--secondary {
       width:50%
   }
-
   .discover-collections__group.discover-collections__group--primary .one-to-three {
         display: flex;
         gap: 10px;
   }
-
   .discover-collections__group.discover-collections__group--primary .one-to-three .column-one {
     margin-top: 50px;
     width: -webkit-fill-available;
   }
-
   .discover-collections__group.discover-collections__group--primary .one-to-three .column-two {
     width: -webkit-fill-available;
     flex-direction: column;
     display: flex;
     row-gap: 10px;
   }
-
   .discover-collections__group.discover-collections__group--secondary {
     display: flex;
     gap: 10px;
   }
-
   .discover-collections__group.discover-collections__group--secondary .column-one {
     width: -webkit-fill-available;
     row-gap: 10px;
     display: flex;
     flex-direction: column;
   }
-
   .discover-collections__group.discover-collections__group--secondary .column-two {
     width: -webkit-fill-available;
     display: flex;
@@ -181,19 +157,15 @@
     row-gap: 10px;
     justify-content: center;
   }
-
   .discover-collections__variant.discover-collections__variant--right .discover-collections__collage {
     flex-direction: row-reverse;
   }
-
    .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .discover-collections__group.discover-collections__group--primary .discover-collections__text {
     margin-left: 40px;
    }
-
    .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .one-to-three {
     flex-direction: row-reverse;
    }
-
    .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .discover-collections__group.discover-collections__group--primary .one-to-three .column-one {
     margin-top: 40px;
     display: flex;
@@ -201,15 +173,12 @@
     width: -webkit-fill-available;
     flex-direction: column;
    }
-
       .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .discover-collections__group.discover-collections__group--primary .one-to-three .column-two {
         margin-top: 60px;
       }
-
       .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .discover-collections__group.discover-collections__group--secondary {
         flex-direction: row-reverse;
       }
-
       .discover-collections__variant.discover-collections__variant--right .discover-collections__collage .discover-collections__group.discover-collections__group--secondary .column-two {
         justify-content: flex-start;
     margin-top: 60px;
@@ -292,9 +261,8 @@
  background: #feeecf;
     border: 1px solid #232426;
   text-decoration: none;
-  color: #222;
+  color: #222222;
 }
-
 .discover-collections__image {
   overflow: hidden;
   border-radius: 8px;
@@ -329,6 +297,13 @@
   }
 }
 
+.discover-collections__image picture,
+.discover-collections__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .discover-collections__image img {
   object-fit: cover;
   transition: transform 0.3s ease;
@@ -341,7 +316,7 @@
 
 
 
-@media (width >= 992px) and (width <= 1279px) {
+@media (min-width: 992px) and (max-width: 1279px) {
   .discover-collections__block-title {
     font-size: 44px;
   }
@@ -360,7 +335,7 @@
   } */
 }
 
-@media (width <= 991px) {
+@media (max-width: 991px) {
   .discover-collections {
     padding-right: 4.5%;
     padding-left: 4.5%;
@@ -474,160 +449,3 @@
   margin-top: 4rem;
  }
 }
-
-/* =============================================
-   Variant: single — Discover Collections (single)
-   One collage led by a logo with a "Download PDF" button and a centred title + line
-   above it (e.g. LuxIndica on /paint-products/exterior-wall-paints). The collage side
-   comes from the authored column; the layout is the default block's. Spacing measured
-   from asianpaints.com.
-   ============================================= */
-.section.discover-collections-container:has(> .discover-collections-wrapper > .discover-collections.single) {
-  padding: 10px 0 60px;
-}
-
-.discover-collections.single {
-  --dc-ink: var(--text-color);
-  --dc-hover-bg: #feeecf;
-}
-
-.discover-collections.single .discover-collections__block-header {
-  flex-direction: column;
-  margin: 22px 0 47px;
-}
-
-.discover-collections.single .discover-collections__block-title {
-  margin: 0;
-  line-height: 24px;
-  text-align: center;
-}
-
-.discover-collections.single .discover-collections__block-subtitle {
-  margin: 23px 0 0;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 22px;
-  color: var(--dc-ink);
-  text-align: center;
-}
-
-.discover-collections.single .discover-collections__variant--right .discover-collections__collage {
-  margin-top: 0;
-}
-
-.discover-collections.single .discover-collections__logo {
-  width: 272px;
-  max-width: 100%;
-  aspect-ratio: 272 / 146;
-}
-
-.discover-collections.single .discover-collections__logo picture,
-.discover-collections.single .discover-collections__logo img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: left top;
-}
-
-.discover-collections.single .discover-collections__subtitle {
-  max-width: none;
-  margin: 20px 0 40px;
-  padding-right: 0;
-  font-size: 14px;
-  line-height: 21px;
-}
-
-/* Download PDF as an outlined pill with the icon after the label */
-.discover-collections.single .discover-collections__download {
-  flex-direction: row-reverse;
-  gap: 10px;
-  min-height: 38px;
-  padding: 0 18px;
-  border: 1px solid var(--dark-color);
-  border-radius: 45px;
-  font-weight: 700;
-  color: var(--dc-ink);
-  text-decoration: none !important;
-  transition: background-color 0.2s ease;
-}
-
-.discover-collections.single .discover-collections__download:hover {
-  background: var(--dc-hover-bg);
-  color: var(--dc-ink);
-}
-
-.discover-collections.single .discover-collections__download:focus-visible {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
-}
-
-/* square tiles keep their space before the lazy images load */
-.discover-collections.single .discover-collections__image {
-  aspect-ratio: 1;
-}
-
-@media (width <= 991px) {
-  /* the source shows 4 images on mobile */
-  .discover-collections.single .discover-collections__image--6 {
-    display: none;
-  }
-
-  /* equal columns, so the square tiles reserve their height before the images load */
-  .discover-collections.single .discover-collections__group--secondary > div {
-    flex: 1 1 0;
-    min-width: 0;
-  }
-
-  /* the source wraps this line at ~300px */
-  .discover-collections.single .discover-collections__block-subtitle {
-    max-width: 300px;
-  }
-
-  /* the images on the right start 40px above the end of the text column, as on the source */
-  .discover-collections.single .discover-collections__text {
-    padding-bottom: 10px;
-  }
-}
-
-@media (width >= 992px) {
-  .section.discover-collections-container:has(> .discover-collections-wrapper > .discover-collections.single) {
-    padding: 50px 0 100px;
-  }
-
-  .discover-collections.single .discover-collections__block-header {
-    margin: 26px 0 72px;
-  }
-
-  .discover-collections.single .discover-collections__block-title {
-    max-width: 600px;
-    line-height: 29px;
-  }
-
-  .discover-collections.single .discover-collections__block-subtitle {
-    margin-top: 25px;
-  }
-
-  .discover-collections.single .discover-collections__subtitle {
-    margin: 27px 0 40px;
-    font-size: 16px;
-    line-height: 24px;
-  }
-
-  .discover-collections.single .discover-collections__download {
-    padding: 0 20px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .discover-collections.single .discover-collections__image.is-hidden-before-animation,
-  .discover-collections.single .discover-collections__image.animate-grow-from-center {
-    visibility: visible;
-    transform: none;
-    animation: none;
-  }
-}
-
-/* =============================================
-   End: single variant
-   ============================================= */

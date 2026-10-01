@@ -56,9 +56,12 @@
 }
 
 .contact-complaint-bot .contact-complaint-bot-cta:hover {
-  background: #37105c;
+  /* background: #37105c; */
   border-color: #37105c;
   color: #fff;
+  background: #5e25b2;
+  -webkit-box-shadow: 0 10px 16px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
+  box-shadow: 0 10px 16px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
 }
 
 /* Paints panel email link */
@@ -102,9 +105,9 @@
     flex-direction: row;
     align-items: center;
     gap: 0;
-    margin: 0 4%;
+    /* margin: 0 4%; */
     width: auto;
-    padding: 52px 40px;
+    padding: 52px 80px;
     background-color: #f8f8f8;
   }
 
@@ -151,5 +154,12 @@
   .contact-complaint-bot{
     padding-right: 4%;
     padding-left: 4%;
+  }
+
+  .contact-complaint-bot {
+      margin-top: 0;
+    }
+  .contact-complaint-bot .contact-complaint-bot-cta{
+      padding: 9px 20px !important;
   }
 }

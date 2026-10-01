@@ -219,7 +219,7 @@ function buildVariant2(block) {
       try {
         absoluteHref = new URL(it.href, window.location.origin).href;
       } catch (e) { absoluteHref = it.href || ''; }
-      trackEvent('product_tile_click', {
+      trackEvent('custom_cta_click', {
         productName: it.cityTitle || '',
         param1: absoluteHref,
         Title: title || '',
@@ -229,7 +229,7 @@ function buildVariant2(block) {
         productName: it.cityTitle || '',
         title: title || '',
         destinationUrl: absoluteHref,
-        event: 'product_tile_click',
+        event: 'custom_cta_click',
       });
     });
 

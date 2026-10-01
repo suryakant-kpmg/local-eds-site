@@ -1,0 +1,428 @@
+/* ---- self-contained base ----
+   Everything this block needs from the site styles (styles/styles.css, styles/fonts.css), so the
+   block folder can be copied to another project and look the same: the design tokens, fonts and
+   text defaults, scoped to the block's section, plus the section layout. The text defaults have
+   element-level specificity (:where), so they beat a host site's plain element rules but the
+   block's own rules always win.
+   The section layout this block expects is at the end of this file.
+   Copying to another project: also copy fonts/roboto-*.woff2 into that project's fonts folder. */
+/* stylelint-disable max-line-length */
+@font-face {
+  font-family: roboto-condensed;
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../../fonts/roboto-condensed-bold.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: roboto;
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../../fonts/roboto-bold.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../../fonts/roboto-medium.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: roboto;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../fonts/roboto-regular.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: roboto-condensed-fallback;
+  size-adjust: 88.82%;
+  src: local('Arial');
+}
+
+@font-face {
+  font-family: roboto-fallback;
+  size-adjust: 99.529%;
+  src: local('Arial');
+}
+
+main > .section.service-steps-container {
+  --background-color: white;
+  --light-color: #f8f8f8;
+  --dark-color: #505050;
+  --text-color: #131313;
+  --link-color: #3b63fb;
+  --link-hover-color: #1d3ecf;
+  --body-font-family: roboto, roboto-fallback, sans-serif;
+  --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
+  --body-font-size-m: 22px;
+  --body-font-size-s: 19px;
+  --body-font-size-xs: 17px;
+  --heading-font-size-xxl: 55px;
+  --heading-font-size-xl: 44px;
+  --heading-font-size-l: 34px;
+  --heading-font-size-m: 27px;
+  --heading-font-size-s: 24px;
+  --heading-font-size-xs: 22px;
+  --nav-height: 64px;
+
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-m);
+  line-height: 1.6;
+}
+
+@media (width >= 900px) {
+  main > .section.service-steps-container {
+    --body-font-size-m: 18px;
+    --body-font-size-s: 16px;
+    --body-font-size-xs: 14px;
+    --heading-font-size-xxl: 45px;
+    --heading-font-size-xl: 36px;
+    --heading-font-size-l: 28px;
+    --heading-font-size-m: 22px;
+    --heading-font-size-s: 20px;
+    --heading-font-size-xs: 18px;
+  }
+}
+
+/* the browser's box model, in case the host site sets box-sizing on everything */
+:where(main > .section.service-steps-container), :where(main > .section.service-steps-container) *, :where(main > .section.service-steps-container) ::before, :where(main > .section.service-steps-container) ::after {
+  box-sizing: revert;
+}
+
+:where(main > .section.service-steps-container) :is(h1, h2, h3, h4, h5, h6) {
+  margin-top: 0.8em;
+  margin-bottom: 0.25em;
+  font-family: var(--heading-font-family);
+  font-weight: 600;
+  line-height: 1.25;
+  color: inherit;
+  scroll-margin: 40px;
+}
+
+:where(main > .section.service-steps-container) h1 { font-size: var(--heading-font-size-xxl); }
+:where(main > .section.service-steps-container) h2 { font-size: var(--heading-font-size-xl); }
+:where(main > .section.service-steps-container) h3 { font-size: var(--heading-font-size-l); }
+:where(main > .section.service-steps-container) h4 { font-size: var(--heading-font-size-m); }
+:where(main > .section.service-steps-container) h5 { font-size: var(--heading-font-size-s); }
+:where(main > .section.service-steps-container) h6 { font-size: var(--heading-font-size-xs); }
+
+:where(main > .section.service-steps-container) :is(p, dl, ol, ul, pre, blockquote) {
+  margin-top: 0.8em;
+  margin-bottom: 0.25em;
+}
+
+:where(main > .section.service-steps-container) a:where(:any-link) {
+  color: var(--link-color);
+  text-decoration: none;
+  overflow-wrap: break-word;
+}
+
+:where(main > .section.service-steps-container) a:where(:hover) {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+:where(main > .section.service-steps-container) img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  vertical-align: baseline;
+}
+
+:where(main > .section.service-steps-container) :is(input, textarea, select, button) {
+  font: inherit;
+}
+
+/* stylelint-enable max-line-length */
+
+/* ---- end of self-contained base ---- */
+
+/* painting service promo band, edge to edge (section layout at the end of this file) */
+.service-steps {
+  /* brand colours with no token in styles.css: the source teal (also the fallback behind the
+     video, 5.4:1 with white text) and the yellow CTA gradient */
+  --service-steps-teal: #097370;
+  --service-steps-overlay: linear-gradient(82deg, rgb(14 132 128 / 60%), rgb(9 115 112 / 0%) 93.55%);
+  --service-steps-accent: linear-gradient(#fec940, #f90);
+
+  position: relative;
+  display: grid;
+  min-height: 425px;
+  overflow: hidden;
+  background-color: var(--service-steps-teal);
+  color: var(--background-color);
+  font-size: var(--body-font-size-xs);
+}
+
+.service-steps .service-steps-video,
+.service-steps .service-steps-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.service-steps .service-steps-video {
+  object-fit: cover;
+}
+
+.service-steps .service-steps-overlay {
+  background: var(--service-steps-overlay);
+}
+
+.service-steps .service-steps-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 17px 18px;
+
+  /* keeps the white text readable over bright video frames */
+  text-shadow: 0 1px 2px rgb(0 0 0 / 35%);
+}
+
+.service-steps .service-steps-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.service-steps .service-steps-logo {
+  margin-left: 3px;
+}
+
+.service-steps .service-steps-logo img {
+  display: block;
+  width: 100px;
+  height: auto;
+  aspect-ratio: 171 / 162;
+}
+
+.service-steps .service-steps-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 13px;
+  margin-top: 24px;
+}
+
+.service-steps .service-steps-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: 45px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  text-shadow: none;
+  cursor: pointer;
+}
+
+.service-steps .service-steps-button.primary {
+  background: var(--service-steps-accent);
+  color: var(--text-color);
+}
+
+.service-steps .service-steps-button.secondary {
+  border-color: var(--background-color);
+  background: none;
+  color: var(--background-color);
+}
+
+.service-steps .service-steps-button::after {
+  content: '→' / '';
+  font-size: 1.2em;
+  line-height: 1;
+}
+
+.service-steps .service-steps-button.service-steps-download::after {
+  content: '↓' / '';
+}
+
+.service-steps .service-steps-button:hover {
+  text-decoration: underline;
+}
+
+.service-steps .service-steps-button:focus-visible {
+  outline: 2px solid var(--background-color);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--text-color);
+}
+
+.service-steps .service-steps-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.service-steps .service-steps-heading {
+  margin: 13px 0 0 4px;
+  padding-bottom: 14px;
+  color: inherit;
+  font-family: var(--body-font-family);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.service-steps .service-steps-list {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 -6px;
+  padding: 0;
+  list-style: none;
+}
+
+.service-steps .service-steps-list li {
+  display: flex;
+  flex: 0 1 91px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.service-steps .service-steps-icon img {
+  display: block;
+  width: 46px;
+  height: auto;
+  aspect-ratio: 62 / 69;
+}
+
+.service-steps .service-steps-list p {
+  margin: 0;
+  padding-top: 20px;
+  font-size: 0.6875rem;
+  line-height: 1.45;
+}
+
+@media (width >= 992px) {
+  .service-steps {
+    min-height: 349px;
+  }
+
+  .service-steps .service-steps-inner {
+    display: grid;
+    grid-template-columns: 479px minmax(0, 1fr);
+    padding: 43px 36px;
+  }
+
+  .service-steps .service-steps-intro {
+    justify-content: space-between;
+  }
+
+  .service-steps .service-steps-logo {
+    margin: -23px 0 0 14px;
+  }
+
+  .service-steps .service-steps-logo img {
+    width: 171px;
+  }
+
+  .service-steps .service-steps-buttons {
+    gap: 8px;
+    margin-top: 0;
+  }
+
+  .service-steps .service-steps-button {
+    padding: 10px 20px;
+  }
+
+  .service-steps .service-steps-steps {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .service-steps .service-steps-heading {
+    margin: 0;
+    padding-bottom: 35px;
+    font-size: 1.25rem;
+    text-align: center;
+  }
+
+  .service-steps .service-steps-list {
+    align-self: stretch;
+    justify-content: space-around;
+    margin: 0;
+  }
+
+  .service-steps .service-steps-list li {
+    flex-basis: 133px;
+  }
+
+  .service-steps .service-steps-icon img {
+    width: 67px;
+  }
+
+  .service-steps .service-steps-list p {
+    padding-top: 27px;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.375;
+  }
+}
+
+/* the source zooms the whole page below 1440px; scale the band the same way */
+@media (width >= 992px) and (width < 1100px) {
+  .service-steps {
+    zoom: calc(0.7 / var(--body-zoom, 1));
+  }
+}
+
+@media (width >= 1100px) and (width < 1200px) {
+  .service-steps {
+    zoom: calc(0.75 / var(--body-zoom, 1));
+  }
+}
+
+@media (width >= 1200px) and (width < 1280px) {
+  .service-steps {
+    zoom: calc(0.8 / var(--body-zoom, 1));
+  }
+}
+
+@media (width >= 1280px) and (width < 1366px) {
+  .service-steps {
+    zoom: calc(0.85 / var(--body-zoom, 1));
+  }
+}
+
+@media (width >= 1366px) and (width < 1440px) {
+  .service-steps {
+    zoom: calc(0.9 / var(--body-zoom, 1));
+  }
+}
+
+
+/* ---- section layout (part of the self-contained base, see the top of this file) ---- */
+/* stylelint-disable max-line-length, no-duplicate-selectors */
+
+/* section layout: edge to edge (was Section Metadata "Style: full-width") */
+main > .section.service-steps-container > div {
+  max-width: none;
+  padding: 0;
+}
+
+/* stylelint-enable max-line-length, no-duplicate-selectors */
+
+/* ---- end of section layout ---- */

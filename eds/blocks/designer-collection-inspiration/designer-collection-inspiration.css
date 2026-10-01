@@ -117,3 +117,19 @@
 .designer-collection-inspiration .link-icon {
     filter: invert(1);
 }
+.designer-collection-inspiration > div > .designer-collection-inspiration-default {
+    background-image: var(--bg-mobile);
+    background-size: cover;
+
+    @media (min-width: 1024px) {
+        background-image: var(--bg-desktop);
+    }
+}
+
+.designer-collection-inspiration > div a img {
+    vertical-align: middle;
+}
+
+.designer-collection-inspiration .link-icon.link-icon-download {
+    filter: none;
+}

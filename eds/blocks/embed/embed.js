@@ -1,4 +1,4 @@
-import { getDigitalData, trackEvent , pushAdobeCtaClickEvent } from '../../scripts/analytics_1.js';
+import { getDigitalData, trackEvent, pushAdobeCtaClickEvent } from '../../scripts/analytics_1.js';
 
 /*
  * Embed Block
@@ -9,6 +9,33 @@ import { getDigitalData, trackEvent , pushAdobeCtaClickEvent } from '../../scrip
  * - default: standard embed (YouTube, Vimeo, Twitter, iframe)
  * - media: adds direct video file support, image-only banners, autoplay/loop/muted options
  */
+
+/*
+** Authoring format (default variant) **
+
+Each row is a label / value pair. Col 1 is the label, Col 2 is the value.
+Only the Play icon label is read by code (must contain "play").
+
+Row 1 (Video Link)
+Col 2 → YouTube / Vimeo / Twitter URL (link)
+
+Row 2 (Desktop Thumbnail)
+Col 2 → Desktop placeholder image (picture)
+
+Row 3 (Mobile Thumbnail)
+Col 2 → Mobile placeholder image (picture)
+
+Row 4 (Play icon)
+Col 2 → Play icon image (picture), rendered inside the play button
+
+Notes:
+- The first link found in the block is used as the video URL.
+- Pictures are picked up in row order: 1st → desktop, 2nd → mobile.
+  If only one picture is authored it is used for all screen sizes.
+- Thumbnail rows are optional; without them the video loads lazily
+  when the block scrolls into view.
+- Clicking the placeholder loads the embed with autoplay.
+*/
 
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
@@ -124,7 +151,7 @@ function trackYoutubePlay(block, link) {
   pushAdobeCtaClickEvent({
     event: 'youtube_play',
     destinationUrl: videoPlayUrl,
-  }); 
+  });
 
 }
 
@@ -164,6 +191,7 @@ export default function decorate(block) {
 
   let link = '';
   const placeholders = [];
+  let playIcon = null;
 
   rows.forEach((row) => {
     const a = row.querySelector('a');
@@ -171,7 +199,11 @@ export default function decorate(block) {
       link = a.href;
     }
     const pics = [...row.querySelectorAll('picture')];
-    if (pics.length > 0) {
+    if (pics.length === 0) return;
+    const label = row.firstElementChild?.textContent.trim().toLowerCase() || '';
+    if (!isMedia && !playIcon && label.includes('play')) {
+      [playIcon] = pics;
+    } else {
       placeholders.push(...pics);
     }
   });
@@ -216,6 +248,11 @@ export default function decorate(block) {
     wrapper.className = 'embed-placeholder';
     wrapper.innerHTML = '<div class="embed-placeholder-play"><button type="button" aria-label="Play Video"></button></div>';
     const playButton = wrapper.querySelector('.embed-placeholder-play button');
+    if (playIcon) {
+      const img = playIcon.querySelector('img');
+      if (img) img.alt = '';
+      playButton.append(playIcon);
+    }
 
     if (placeholders.length >= 2) {
       placeholders[0].classList.add('embed-placeholder-desktop');

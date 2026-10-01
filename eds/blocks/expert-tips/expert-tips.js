@@ -4,10 +4,13 @@
  * scroll horizontally with scroll-snap when they don't fit. Dot (mobile) or
  * prev/next (desktop) controls appear only when the cards overflow.
  *
- * Authoring (Cards convention, 2 columns):
+ * Authoring:
  *   optional first row, one cell: heading (+ optional description) -> block title
- *   each further row: | image | eyebrow text, heading, description, link |
- * Content is located by type, so missing or extra cells are tolerated.
+ *   each further row, one column per field:
+ *     | desktop image | mobile image | eyebrow text, heading, description, link |
+ *   The desktop image is used from 992px (the block's desktop layout), the mobile image below;
+ *   either one alone is used everywhere.
+ * Older content with two columns (| image | text |) is still read, by content type.
  */
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import { moveInstrumentation } from '../../scripts/scripts.js';
@@ -19,6 +22,7 @@ const ICONS = {
   external: 'M7 17L17 7M9 7h8v8',
 };
 const HEADINGS = 'h1, h2, h3, h4, h5, h6';
+const DESKTOP_MEDIA = '(min-width: 992px)';
 
 let instances = 0;
 
@@ -52,6 +56,36 @@ function cellChildren(cell) {
   return [...cell.children];
 }
 
+/** The card image: desktop from 992px, mobile below (the same image when only one is set). */
+function buildPicture(desktop, mobile) {
+  const alt = desktop.alt || mobile?.alt || '';
+  if (!mobile || mobile.src === desktop.src) {
+    return createOptimizedPicture(desktop.src, alt, false, [
+      { media: '(min-width: 600px)', width: '750' },
+      { width: '450' },
+    ]);
+  }
+  const picture = createOptimizedPicture(mobile.src, alt, false, [{ width: '450' }]);
+  const wide = createOptimizedPicture(desktop.src, '', false, [
+    { media: DESKTOP_MEDIA, width: '750' },
+    { width: '450' },
+  ]);
+  picture.prepend(...wide.querySelectorAll(`source[media="${DESKTOP_MEDIA}"]`));
+  return picture;
+}
+
+/** Splits a card row into its images and text cells (column layout or the older 2-column one). */
+function readRow(row) {
+  const cells = [...row.children];
+  if (cells.length >= 3) {
+    const [desktopCell, mobileCell, ...textCells] = cells;
+    const desktop = desktopCell.querySelector('img');
+    const mobile = mobileCell.querySelector('img');
+    return { desktop: desktop || mobile, mobile: desktop ? mobile : null, textCells };
+  }
+  return { desktop: row.querySelector('picture img'), mobile: null, textCells: cells };
+}
+
 function buildCard(row, id) {
   const li = document.createElement('li');
   li.className = 'expert-tips-card';
@@ -60,8 +94,8 @@ function buildCard(row, id) {
   const body = document.createElement('div');
   body.className = 'expert-tips-card-body';
 
-  const img = row.querySelector('picture img');
-  [...row.children].forEach((cell) => {
+  const { desktop: img, mobile, textCells } = readRow(row);
+  textCells.forEach((cell) => {
     cellChildren(cell).forEach((el) => {
       if (el.matches('picture') || el.querySelector('picture')) return;
       if (el.textContent.trim()) body.append(el);
@@ -91,10 +125,7 @@ function buildCard(row, id) {
   if (img) {
     const media = document.createElement('div');
     media.className = 'expert-tips-card-image';
-    const picture = createOptimizedPicture(img.src, img.alt, false, [
-      { media: '(min-width: 600px)', width: '750' },
-      { width: '450' },
-    ]);
+    const picture = buildPicture(img, mobile);
     moveInstrumentation(img, picture.querySelector('img'));
     media.append(picture);
     li.append(media);

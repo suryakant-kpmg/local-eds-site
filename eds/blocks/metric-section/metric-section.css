@@ -18,143 +18,171 @@
  * Renders a heading + subheading and a row of stats (icon + big count + label),
  * marked up as a description list. Header row is optional.
  *
- * VARIANTS (add as classes on the block): none required — stats are 1-up on
- * mobile and 3-up on desktop.
+ * VARIANTS: none. Stats stack one per row (icon | count | label) on mobile
+ * and sit in a row beside the header on desktop.
+ *
+ * STYLING reproduces the live asianpaints.com "Why choose us" band
+ * (.explore-store.bhps-whychoos) value for value, with its breakpoint:
+ * mobile below 992px, desktop from 992px. Side padding and the gaps above
+ * and below the block come from the page (section / spacing classes such as
+ * desktop-side-padding-40 / mobile-side-padding-16), as on the client site;
+ * the source uses 40px (desktop) and 15px (mobile).
  */
 
+/* --- mobile (source: 320–991px) --- */
+.metric-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  column-gap: 15px;
+  color: #222;
+  font-family: Manrope, manrope-fallback, sans-serif;
+}
 
 .metric-section .metric-section-header {
-  margin-bottom: 16px;
+  width: 100%;
+  margin: 0;
 }
 
 .metric-section .metric-section-title {
-  margin: 0;
-  font-size: var(--heading-font-size-l);
+  width: 100%;
+  max-width: 100%;
+  margin: 0 0 5px;
+  color: #232426;
+  font-family: inherit;
+  font-size: 24px;
   font-weight: 800;
-  line-height: 1.15;
+  line-height: 27px;
+  letter-spacing: -2px;
 }
 
 .metric-section .metric-section-subtitle {
-  margin: 4px 0 0;
-  font-size: var(--body-font-size-xs);
-  color: #7a7c80;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  color: #8c8e90;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
 }
 
-/* --- stats (mobile: one per row as icon | big count | label, with the three
-   parts aligned in shared columns so every label starts at the same x) --- */
+/* one stat per row: icon | count | label */
 .metric-section .metric-section-stats {
-  display: grid;
-  grid-template-columns: auto auto 1fr;
-  align-items: center;
-  gap: 36px 14px;
-  margin: 24px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  margin: 30px 0 0;
 }
 
-/* the stat wrapper steps aside so its icon/count/label sit in the dl grid */
 .metric-section .metric-section-stat {
-  display: contents;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  margin: 0;
+  padding: 0 0 16px;
 }
 
+/* fixed width: a global img max-width: 100% would otherwise let it shrink */
 .metric-section .metric-section-stat-icon {
-  grid-column: 1;
+  flex: none;
   line-height: 0;
 }
 
 .metric-section .metric-section-stat-icon img {
-  width: auto;
-  height: 44px;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
 }
 
 .metric-section .metric-section-stat-count {
-  grid-column: 2;
+  width: 37%;
   margin: 0;
-  font-family: var(--heading-font-family);
-  font-size: 44px;
-  font-weight: 300;
-  line-height: 1;
-  white-space: nowrap;
   color: #5d4f43;
+  font-family: inherit;
+  font-size: 38px;
+  font-weight: 400;
+  line-height: 68px;
+  letter-spacing: 0.5px;
 }
 
 .metric-section .metric-section-stat-label {
-  grid-column: 3;
-  margin: 0 0 0 6px;
-  font-size: 16px;
-  line-height: 1.3;
+  width: 85%;
+  margin: 0;
   color: #5d4f43;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: 0.5px;
 }
 
-/* --- tablet+: 3-up, each stat stacked (icon above count above label) --- */
-@media (width >=600px) {
+@media (width <= 400px) {
+  .metric-section .metric-section-stat-count {
+    width: 50%;
+  }
+}
+
+@media (width >= 991px) and (width <= 1524px) {
+  .metric-section .metric-section-stat-label {
+    width: 94%;
+  }
+}
+
+@media (width >= 1225px) and (width <= 1438px) {
+  .metric-section .metric-section-stat-label {
+    width: 86%;
+  }
+}
+
+/* --- desktop (source: 992px and up): header left, stats right --- */
+@media (width >= 992px) {
+  .metric-section {
+    flex-direction: row;
+    column-gap: 50px;
+  }
+
+  /* 35% + 65% + the 50px gap overflow slightly; both shrink in proportion,
+     exactly as on the source */
+  .metric-section .metric-section-header {
+    width: 35%;
+  }
+
+  .metric-section .metric-section-title {
+    max-width: 80%;
+    margin-bottom: 15px;
+    font-size: 70px;
+    line-height: 70px;
+  }
+
+  .metric-section .metric-section-subtitle {
+    color: #75787b;
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  /* four equal tracks for three stats, as on the source */
   .metric-section .metric-section-stats {
-    grid-template-columns: repeat(3, 1fr);
-    align-items: start;
-    gap: 32px;
-    margin-top: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: space-between;
+    gap: 50px;
+    width: 65%;
+    margin: 0;
   }
 
   .metric-section .metric-section-stat {
     display: block;
-  }
-
-  .metric-section .metric-section-stat-icon {
-    margin-bottom: 8px;
+    width: auto;
   }
 
   .metric-section .metric-section-stat-icon img {
-    height: 48px;
+    width: auto;
+    height: auto;
   }
 
   .metric-section .metric-section-stat-count {
-    font-size: var(--heading-font-size-l);
+    width: auto;
     font-weight: 700;
-    line-height: 1.1;
-    white-space: normal;
-  }
-
-  .metric-section .metric-section-stat-label {
-    margin: 2px 0 0;
-    font-size: var(--body-font-size-s);
-  }
-}
-
-/* --- desktop: header on the left, stats to the right --- */
-@media (width >=900px) {
-  .metric-section {
-    display: flex;
-    align-items: flex-start;
-    gap: 48px;
-  }
-
-  .metric-section .metric-section-header {
-    flex: 0 0 30%;
-    max-width: 360px;
-    margin-bottom: 0;
-  }
-
-  .metric-section .metric-section-stats {
-    flex: 1;
-  }
-
-  .metric-section .metric-section-title {
-    /* large display title matching the source (~70px), scaled to viewport */
-    font-size: clamp(2.75rem, 4vw, 4.375rem);
-    line-height: 1.05;
-  }
-
-  .metric-section .metric-section-subtitle {
-    font-size: var(--body-font-size-s);
-  }
-
-  .metric-section .metric-section-stat-count {
-    font-size: var(--heading-font-size-xl);
-  }
-
-  .metric-section .metric-section-stat-label {
-    font-size: var(--body-font-size-m);
-  }
-
-  .metric-section .metric-section-stat-icon img {
-    height: 64px;
   }
 }

@@ -21,18 +21,10 @@
     width: 100%;
 }
 
+/* Swiper drives transform/transition; this keeps the first slide laid out
+   correctly before swiper.css/js load (and for single-slide banners). */
 .carousel__track {
     display: flex;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    transform: translateX(0);
-    transition: transform 350ms ease;
-    will-change: transform;
-}
-
-.carousel--fade .carousel__track {
-    transition: none;
 }
 
 .carousel__slide {
@@ -44,42 +36,81 @@
     flex: 0 0 93.5%; /* ~1.07 slides visible */
 }
 
-.carousel__nav {
+.carousel__wrap {
+    position: relative;
+}
+
+/* Pill with prev arrow, dots and next arrow, centred at the bottom */
+.carousel__controls {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    bottom: 40px;
+    transform: translateX(-50%);
     z-index: 5;
-    width: 44px;
-    height: 44px;
-    border: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
     border-radius: 999px;
-    background: rgba(0, 0, 0, 0.55);
-    color: #fff;
-    font-size: 28px;
+    background: var(--ap-white);
+}
+
+.carousel__nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #000;
     cursor: pointer;
 }
 
-.carousel__prev { left: 10px; }
-.carousel__next { right: 10px; }
+.carousel__prev svg {
+    transform: scaleX(-1);
+}
 
-.carousel__dots {
+/* Swiper pagination el; reset swiper.css horizontal-bullets left/width */
+.carousel__controls .carousel__dots {
     display: flex;
+    align-items: center;
     gap: 8px;
-    justify-content: center;
-    margin-top: 14px;
+    width: auto;
+    left: auto;
 }
 
 .carousel__dot {
-    width: 10px;
-    height: 10px;
+    width: 6px;
+    height: 6px;
+    padding: 0;
     border: 0;
-    border-radius: 50%;
-    background: rgba(42, 42, 42, 0.22);
+    border-radius: 999px;
+    background: #8e8e8e;
     cursor: pointer;
+    transition: width 250ms ease, background-color 250ms ease;
 }
 
 .carousel__dot.is-active {
-    background: var(--ap-link-border);
+    width: 40px;
+    background: #000;
+}
+
+@media (width <= 767px) {
+    .carousel__controls {
+        bottom: 16px;
+        padding: 10px 12px;
+    }
+
+    /* Mobile: dots only, no arrows (swipe-style pill) */
+    .carousel__nav {
+        display: none;
+    }
+
+    .carousel__dot.is-active {
+        width: 36px;
+    }
 }
 
 /* =============================

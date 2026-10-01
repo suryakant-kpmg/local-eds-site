@@ -11,6 +11,8 @@
  *       Each cell holds its own heading, paragraph(s) and a link. In the left
  *       (complaint) panel the first link renders as the purple CTA button.
  */
+import { trackEvent, pushAdobeCtaClickEvent } from '../../scripts/analytics_1.js';
+
 function isColorConfig(row) {
   const first = row.children[0];
   if (!first) return false;
@@ -45,9 +47,21 @@ export default function decorate(block) {
   const left = document.createElement('div');
   left.className = 'contact-complaint-bot-panel contact-complaint-bot-complaint';
   if (leftCell) {
-    const firstLink = leftCell.querySelector('a[href]');
+    const authoredLink = leftCell.querySelector('a[href]');
+    // clone drops the global bindButtonContainerTracking listener (custom_cta_click)
+    const firstLink = authoredLink ? authoredLink.cloneNode(true) : null;
     if (firstLink) {
+      authoredLink.replaceWith(firstLink);
       firstLink.classList.add('contact-complaint-bot-cta');
+      firstLink.addEventListener('click', () => {
+        const cta = firstLink.textContent.trim();
+        const parentTitle = left.querySelector('h1, h2, h3, h4, h5, h6')?.textContent.trim() || '';
+        const destinationUrl = firstLink.href;
+        trackEvent('contact_us_click_whatsapp', { cta_: cta, parentTitle, redirectionLink: destinationUrl });
+        pushAdobeCtaClickEvent({
+          cta, parentTitle, destinationUrl, event: 'contact_us_click_whatsapp',
+        });
+      });
       try {
         const url = new URL(firstLink.href, window.location.href);
         if (url.origin !== window.location.origin) {
@@ -84,8 +98,20 @@ export default function decorate(block) {
   const right = document.createElement('div');
   right.className = 'contact-complaint-bot-panel contact-complaint-bot-paints';
   if (rightCell) {
-    rightCell.querySelectorAll('a[href]').forEach((a) => {
+    rightCell.querySelectorAll('a[href]').forEach((authored) => {
+      // clone drops the global bindButtonContainerTracking listener (custom_cta_click)
+      const a = authored.cloneNode(true);
+      authored.replaceWith(a);
       a.classList.add('contact-complaint-bot-email');
+      a.addEventListener('click', () => {
+        const cta = a.textContent.trim();
+        const parentTitle = right.querySelector('h1, h2, h3, h4, h5, h6')?.textContent.trim() || '';
+        const destinationUrl = a.getAttribute('href') || '';
+        trackEvent('cta_link_text', { cta_: cta, parentTitle, param1: destinationUrl });
+        pushAdobeCtaClickEvent({
+          cta, parentTitle, destinationUrl, event: 'cta_link_text',
+        });
+      });
     });
     while (rightCell.firstChild) right.append(rightCell.firstChild);
   }

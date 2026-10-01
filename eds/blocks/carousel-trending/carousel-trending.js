@@ -29,7 +29,7 @@ and each card shows its title in a white box with an arrow icon at the bottom of
 (e.g. "Our Services" → Interior Painting, Exterior Painting, Waterproofing Service ...)
 */
 
-import { triggerCTAClickWithLinkAndTitle } from '../../scripts/analytics_1.js';
+import {  trackEvent , pushAdobeCtaClickEvent } from '../../scripts/analytics_1.js';
 
 // Get Swiper instance
 async function getSwiper() {
@@ -193,7 +193,7 @@ export default async function decorate(block) {
         || block.querySelector('h2, h3, h4')?.textContent?.trim()
         || cardTitle;
 
-      triggerCTAClickWithLinkAndTitle(buttonLink, btnText, sectionHeading);
+      // triggerCTAClickWithLinkAndTitle(buttonLink, btnText, sectionHeading);
 
       if (buttonLink) {
         if (targetAttr.indexOf('blank') > -1) {
@@ -242,6 +242,28 @@ export default async function decorate(block) {
 
     $inner.append($img, $body);
     $card.append($inner, $overlay);
+
+    $card[0].addEventListener('click', () => {
+      const btnTitle = $card[0].querySelector('.card-body-text')?.textContent?.trim() || '';
+      // anchor.href resolves to the absolute URL (with domain)
+      const ctaLink = $card[0].querySelector('a')?.href || '';
+      const parentTitle = block.querySelector('.carousel-trending-header .carousel-trending-title')?.textContent?.trim() || '';
+
+      trackEvent('cta_link_text', {
+        cta_: btnTitle,
+        parentTitle,
+        param1: ctaLink,
+      });
+
+      pushAdobeCtaClickEvent({
+        cta: btnTitle,
+        parentTitle,
+        destinationUrl: ctaLink,
+        event: 'cta_link_text',
+      });
+
+
+    });
 
     return $card;
   }

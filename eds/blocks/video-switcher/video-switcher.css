@@ -10,10 +10,18 @@
   --video-switcher-scrim: color-mix(in srgb, var(--text-color) 75%, transparent);
   --video-switcher-dim: color-mix(in srgb, var(--text-color) 40%, transparent);
   --video-switcher-on-media: var(--background-color);
-  --video-switcher-on-media-muted: color-mix(in srgb, var(--background-color) 75%, transparent);
+  --video-switcher-on-media-muted: #b0b1b3;
 
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+
+  /* the source's space below the component: 16px under the thumbnails (with their 4px focus
+     padding); the next component adds its own */
+  padding-bottom: 12px;
+}
+
+main > .section.video-switcher-container {
+  margin-bottom: 0;
 }
 
 .video-switcher .video-switcher-media {
@@ -59,24 +67,29 @@
   height: 44px;
   margin: 0;
   padding: 0;
-  border: 2px solid var(--video-switcher-on-media);
+
+  /* the source's thin white ring on the video, no fill */
+  border: 1.5px solid var(--video-switcher-on-media);
   border-radius: 50%;
-  background-color: var(--video-switcher-dim);
+  background-color: transparent;
   color: var(--video-switcher-on-media);
   cursor: pointer;
+
+  /* keeps the thin ring and arrow visible over bright video frames */
+  filter: drop-shadow(0 0 1px rgb(0 0 0 / 45%));
   transition: background-color 0.2s;
 }
 
 .video-switcher .video-switcher-controls button:hover {
-  background-color: var(--video-switcher-scrim);
+  background-color: var(--video-switcher-dim);
 }
 
 .video-switcher .video-switcher-controls svg {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   fill: none;
   stroke: currentcolor;
-  stroke-width: 2;
+  stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -96,12 +109,13 @@
   color: var(--video-switcher-on-media);
 }
 
+/* the subtitle, as on the source: Manrope medium in light grey, 14px below it */
 .video-switcher .video-switcher-caption > * {
-  margin: 0;
-  font-family: var(--body-font-family);
-  font-size: var(--body-font-size-xs);
+  margin: 0 0 14px;
+  font-family: manrope, var(--body-font-family);
+  font-size: 14px;
   font-weight: 500;
-  line-height: 1.3;
+  line-height: 15px;
   color: var(--video-switcher-on-media-muted);
 }
 
@@ -216,6 +230,9 @@
     --video-switcher-bottom: 56px;
 
     grid-template-columns: minmax(0, 1fr) auto;
+
+    /* 40px under the video, as on the source (scaled like the source page below 1440px) */
+    padding-bottom: 40px;
   }
 
   .video-switcher .video-switcher-media {
@@ -244,8 +261,8 @@
   .video-switcher .video-switcher-caption > * {
     max-width: 438px;
     margin-left: auto;
-    font-size: var(--heading-font-size-m);
-    line-height: 1.27;
+    font-size: 22px;
+    line-height: 28px;
   }
 
   .video-switcher .video-switcher-caption > .video-switcher-title {
@@ -262,5 +279,36 @@
     align-items: flex-end;
     min-height: 0;
     margin: 0 26px calc(var(--video-switcher-bottom) - 4px) 0;
+  }
+}
+
+/* the source zooms the whole page below 1440px, so its 40px under the video shrinks too */
+@media (width >= 992px) and (width < 1100px) {
+  .video-switcher {
+    padding-bottom: 28px;
+  }
+}
+
+@media (width >= 1100px) and (width < 1200px) {
+  .video-switcher {
+    padding-bottom: 30px;
+  }
+}
+
+@media (width >= 1200px) and (width < 1280px) {
+  .video-switcher {
+    padding-bottom: 32px;
+  }
+}
+
+@media (width >= 1280px) and (width < 1366px) {
+  .video-switcher {
+    padding-bottom: 34px;
+  }
+}
+
+@media (width >= 1366px) and (width < 1440px) {
+  .video-switcher {
+    padding-bottom: 36px;
   }
 }

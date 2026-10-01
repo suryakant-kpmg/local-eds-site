@@ -53,7 +53,7 @@
 .contact-get-in-touch .contact-get-in-touch-column b,
 .contact-get-in-touch .contact-get-in-touch-column strong {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 2px;
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -75,14 +75,34 @@
   color: #333;
 }
 
+/* Column label paragraph (e.g. "Head Office"); the class is added in JS */
+.contact-get-in-touch .contact-get-in-touch-column .contact-get-in-touch-column-title {
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 800;
+  margin-bottom: 0;
+}
+
+/* Column body paragraph (address, phone, etc.); the class is added in JS */
+.contact-get-in-touch .contact-get-in-touch-column .contact-get-in-touch-column-text {
+  line-height: 28px;
+}
+
+/* Bold label inside the title paragraph; the class is added in JS */
+.contact-get-in-touch .contact-get-in-touch-column .contact-get-in-touch-column-label {
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 16px;
+}
+
 /* Underlined CTA link */
 .contact-get-in-touch .contact-get-in-touch-cta {
   display: inline-block;
   margin-top: 8px;
-  padding: 0 0 2px;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 12px;
+  padding: 0 0 6px;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 10px;
   letter-spacing: 1px;
   text-transform: uppercase;
   text-decoration: none;
@@ -94,7 +114,7 @@
 .contact-get-in-touch .contact-get-in-touch-cta:active {
   background: transparent;
   box-shadow: none;
-  font-weight: 700;
+  font-weight: 800;
   border-bottom: 2px solid #431a80;
 }
 
@@ -120,10 +140,42 @@
   }
 }
 
-@media (min-width: 320px) and (max-width: 991px) {
+@media (width >= 320px) and (width <= 991px) {
   .contact-get-in-touch .contact-get-in-touch-content {
     padding: 22px 0 10px;
     padding-left: 20px;
     margin-top: 30px;
   }
+  .contact-get-in-touch .contact-get-in-touch-heading{
+      margin: 0 0 20px;
+  }
+ 
+   .contact-get-in-touch-column,
+   .contact-get-in-touch .contact-get-in-touch-column p {
+        color: #222;
+    }
+
+    .contact-get-in-touch .contact-get-in-touch-media img{
+      object-fit: fill;
+      display: block;
+      width: 100%;
+      height: auto;
+      min-height: 450px;
+    }
+    .contact-get-in-touch .contact-get-in-touch-column b, .contact-get-in-touch .contact-get-in-touch-column strong{
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 16px;
+    }
+    .contact-get-in-touch .contact-get-in-touch-cta{
+        line-height: 12px;
+        font-size: 12px;
+        margin-top: 2px;
+    }
+    .contact-get-in-touch-columns .contact-get-in-touch-column:nth-child(2) .contact-get-in-touch-column-text strong{
+        margin-bottom: 7px;
+    }
+    .section.contact-get-in-touch-container {
+        margin-bottom: 2px;
+    }
 }
