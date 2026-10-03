@@ -447,7 +447,7 @@
   font-size: 32px;
   font-weight: 800;
   line-height: 35.2px;
-  letter-spacing: normal;
+  letter-spacing: -1.65px;
   color: var(--text-color);
 }
 
@@ -466,8 +466,8 @@
   font-size: 11px;
   font-weight: 400;
   line-height: normal;
-  letter-spacing: normal;
-  color: var(--text-color);
+  letter-spacing: 0.62px;
+  color: #000;
 }
 
 /* swatches */
@@ -534,7 +534,7 @@
 }
 
 .popular-shades.exterior .popular-shades__cta {
-  gap: 14px;
+  gap: 10px;
   height: auto;
   min-height: 38px;
   margin: 0;
@@ -550,25 +550,14 @@
   color: var(--text-color);
 }
 
-/* drawn arrow instead of the text glyph */
+/* the source arrow image (17x20, bold), in place of the text glyph */
 .popular-shades.exterior .popular-shades__cta-icon {
-  position: relative;
-  width: 16px;
-  height: 2px;
+  flex: none;
+  width: 17px;
+  height: 20px;
   font-size: 0;
-  background-color: currentcolor;
-}
-
-.popular-shades.exterior .popular-shades__cta-icon::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: 0;
-  width: 7px;
-  height: 7px;
-  border: solid currentcolor;
-  border-width: 2px 2px 0 0;
-  transform: translateY(-50%) rotate(45deg);
+  background: url('/eds/icons/arrow-icon-new.svg') no-repeat;
+  filter: contrast(10) invert(1) sepia(1) saturate(100) hue-rotate(90deg);
 }
 
 .popular-shades.exterior .popular-shades__swatch:focus-visible,
@@ -586,10 +575,13 @@
     --pse-inline: 40px;
   }
 
+  /* source: image 70% | text 30% (from a 3% gap) of the block less 29px on the right */
   .popular-shades.exterior .popular-shades__wrapper {
-    grid-template-columns: minmax(0, 68.6%) minmax(0, 1fr);
+    box-sizing: border-box;
+    grid-template-columns: minmax(0, 70%) minmax(0, 1fr);
     grid-template-rows: auto auto auto 1fr;
-    column-gap: 42px;
+    column-gap: 3%;
+    padding-right: 29px;
   }
 
   .popular-shades.exterior .popular-shades__media {
@@ -598,15 +590,17 @@
     padding: 0;
   }
 
-  /* source geometry: 988x538 frame, house right-aligned and running off the left edge */
+  /* source geometry: a 538px-tall frame; the house is the frame width plus 175px,
+     right-aligned so it runs 175px off the left edge, stretched to fit */
   .popular-shades.exterior .popular-shades__image-wrap {
-    aspect-ratio: 988 / 538;
+    aspect-ratio: auto;
+    height: 538px;
     margin: 0;
   }
 
   .popular-shades.exterior .popular-shades__picture {
     inset: 0 0 0 auto;
-    width: 117.7%;
+    width: calc(100% + 175px);
   }
 
   .popular-shades.exterior .popular-shades__picture img {
@@ -615,16 +609,17 @@
 
   .popular-shades.exterior .popular-shades__title {
     grid-area: 1 / 2;
-    margin: 72px 0 40px;
-    padding: 0 30px 0 0;
+    margin: calc(42.4px + 7.78%) 0 40px;
+    padding: 0;
     font-size: 64px;
     line-height: 70.4px;
+    letter-spacing: -2.56px;
   }
 
   .popular-shades.exterior .popular-shades__description {
     grid-area: 2 / 2;
     margin: 0;
-    padding: 0 30px 0 0;
+    padding: 0;
     font-size: 16px;
     line-height: 22.72px;
   }
