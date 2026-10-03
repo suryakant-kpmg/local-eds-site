@@ -851,8 +851,9 @@
 
 /* ============================================
    Variant: images — Collage Slideshow (images)
-   Image-only slides laid out by cell count (nine / six / five); sizes are fractions of the
-   collage width (cqw), taken from the source at 355px (mobile) and 705px (desktop).
+   Image-only slides laid out by cell count (nine / six / five). As on the source, image
+   heights are fixed per breakpoint and widths follow the collage, which fills its column
+   (less 90px on desktop).
    ============================================ */
 .collage-slideshow.images {
   /* block palette: the source's title gradient and dot colours have no global tokens */
@@ -872,34 +873,25 @@
 }
 
 .collage-slideshow.images .collage-slideshow__collage--images {
-  /* mobile geometry (355px reference) */
-  --cs-col-w: 23.66cqw;
-  --cs-col-gap: 1.78cqw;
-  --cs-img-h: 22.54cqw;
-  --cs-row-gap: 1.69cqw;
-  --cs-logo-w: 45.07cqw;
-  --cs-logo-h: 19.15cqw;
-  --cs-logo-top: 3.94cqw;
-  --cs-logo-gap: 3.38cqw;
-  --cs-col2-top: 28.17cqw;
-  --cs-col4-top: 22.54cqw;
-  --cs-half-gap: 1.69cqw;
-  --cs-six-logo-w: 41.97cqw;
-  --cs-six-logo-h: 18.03cqw;
-  --cs-six-logo-top: 3.66cqw;
-  --cs-six-logo-left: 1.69cqw;
-  --cs-six-logo-gap: 8.17cqw;
-  --cs-large-h: 44.51cqw;
-  --cs-wide-h: 21.97cqw;
-  --cs-small-h: 21.69cqw;
-  --cs-stack-gap: 1.13cqw;
-  --cs-tall-h: 44.51cqw;
+  /* mobile / tablet geometry */
+  --cs-gap: 6px;
+  --cs-row-gap: 6px;
+  --cs-img-h: 80px;
+  --cs-col2-top: 100px;
+  --cs-col4-top: 80px;
+  --cs-large-h: 158px;
+  --cs-wide-h: 78px;
+  --cs-small-h: 77px;
+  --cs-small-gap: 4px;
+  --cs-tall-h: 158px;
+  --cs-bottom-pad: 35px;
+  --cs-six-logo-w: 149px;
+  --cs-six-logo-gap: 42px;
 
-  container-type: inline-size;
   display: flex;
   align-items: flex-start;
+  gap: var(--cs-gap);
   width: 100%;
-  max-width: 705px;
 }
 
 .collage-slideshow.images .collage-slideshow__collage--images .collage-slideshow__media {
@@ -920,9 +912,18 @@
   object-fit: cover;
 }
 
+/* logos keep their own proportions */
 .collage-slideshow.images .collage-slideshow__collage--images .collage-slideshow__media--logo {
   display: block;
+  height: auto;
+  overflow: visible;
   border-radius: 0;
+  transform: translate(4%, 20%);
+}
+
+.collage-slideshow.images .collage-slideshow__collage--images .collage-slideshow__media--logo picture,
+.collage-slideshow.images .collage-slideshow__collage--images .collage-slideshow__media--logo img {
+  height: auto;
 }
 
 .collage-slideshow.images .collage-slideshow__collage--images .collage-slideshow__media--logo img {
@@ -930,17 +931,11 @@
   object-position: left top;
 }
 
-/* cqw lengths resolve against the collage only on its descendants, so gaps are child margins */
-
 /* nine: logo + 8 images in four staggered columns */
 .collage-slideshow.images .collage-slideshow__collage--nine .collage-slideshow__column {
-  flex: 0 0 var(--cs-col-w);
+  flex: 1 1 0;
   gap: var(--cs-row-gap);
   min-width: 0;
-}
-
-.collage-slideshow.images .collage-slideshow__collage--nine .collage-slideshow__column + .collage-slideshow__column {
-  margin-left: var(--cs-col-gap);
 }
 
 .collage-slideshow.images .collage-slideshow__collage--nine .collage-slideshow__column--2 {
@@ -955,10 +950,15 @@
   height: var(--cs-img-h);
 }
 
+/* source: a 200% logo image in a box 95% of the column wide, nudged 4% / 20% of that box */
 .collage-slideshow.images .collage-slideshow__collage--nine .collage-slideshow__media--logo {
-  width: var(--cs-logo-w);
-  height: var(--cs-logo-h);
-  margin: var(--cs-logo-top) 0 calc(var(--cs-logo-gap) - var(--cs-row-gap));
+  width: 190%;
+  height: auto;
+  transform: translate(2%, 20%);
+}
+
+.collage-slideshow.images .collage-slideshow__collage--nine .collage-slideshow__media--logo + .collage-slideshow__media {
+  margin-top: 20px;
 }
 
 /* six / five: logo + large image | wide image over the smaller ones */
@@ -971,13 +971,12 @@
 }
 
 .collage-slideshow.images .collage-slideshow__images-right {
-  margin-left: var(--cs-half-gap);
+  gap: var(--cs-gap);
 }
 
 .collage-slideshow.images .collage-slideshow__images-left .collage-slideshow__media--logo {
   width: var(--cs-six-logo-w);
-  height: var(--cs-six-logo-h);
-  margin: var(--cs-six-logo-top) 0 var(--cs-six-logo-gap) var(--cs-six-logo-left);
+  margin-bottom: var(--cs-six-logo-gap);
 }
 
 .collage-slideshow.images .collage-slideshow__images-left .collage-slideshow__media:not(.collage-slideshow__media--logo) {
@@ -990,35 +989,43 @@
 
 .collage-slideshow.images .collage-slideshow__images-bottom {
   display: flex;
-  justify-content: space-between;
-  margin-top: var(--cs-half-gap);
-}
-
-.collage-slideshow.images .collage-slideshow__collage--five .collage-slideshow__images-bottom > * + * {
-  margin-left: var(--cs-half-gap);
+  gap: var(--cs-gap);
+  padding-bottom: var(--cs-bottom-pad);
 }
 
 .collage-slideshow.images .collage-slideshow__images-stack {
   display: flex;
-  flex: 0 0 var(--cs-col-w);
+  flex: 1 1 0;
   flex-direction: column;
+  min-width: 0;
 }
 
 .collage-slideshow.images .collage-slideshow__images-stack > * + * {
-  margin-top: var(--cs-stack-gap);
+  margin-top: var(--cs-small-gap);
 }
 
 .collage-slideshow.images .collage-slideshow__images-stack .collage-slideshow__media {
   height: var(--cs-small-h);
 }
 
+/* six: the tall image keeps its proportions and is at least as tall as the stack beside it */
 .collage-slideshow.images .collage-slideshow__images-bottom > .collage-slideshow__media {
-  flex: 0 0 var(--cs-col-w);
-  height: var(--cs-tall-h);
+  flex: 1 1 0;
+  min-width: 0;
+  height: auto;
+}
+
+.collage-slideshow.images .collage-slideshow__collage--five .collage-slideshow__images-bottom {
+  padding-bottom: 0;
 }
 
 .collage-slideshow.images .collage-slideshow__collage--five .collage-slideshow__images-bottom > .collage-slideshow__media {
-  flex: 1 1 0;
+  height: var(--cs-tall-h);
+}
+
+/* the source slider window is 271px tall below desktop */
+.collage-slideshow-container .collage-slideshow-wrapper .collage-slideshow.images .collage-slideshow__left .collage-slideshow__swiper {
+  height: 271px;
 }
 
 .collage-slideshow-container .collage-slideshow-wrapper .collage-slideshow.images .collage-slideshow__left .collage-slideshow__swiper .collage-slideshow__slide {
@@ -1030,7 +1037,7 @@
 .collage-slideshow.images .collage-slideshow__controls {
   display: flex;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 24px;
 }
 
 .collage-slideshow-container .collage-slideshow-wrapper .collage-slideshow.images .collage-slideshow__left .collage-slideshow__pagination {
@@ -1148,28 +1155,44 @@
   }
 
   .collage-slideshow.images .collage-slideshow__collage--images {
-    /* desktop geometry (705px reference) */
-    --cs-col-w: 23.97cqw;
-    --cs-col-gap: 1.37cqw;
-    --cs-img-h: 15.89cqw;
-    --cs-row-gap: 0.71cqw;
-    --cs-logo-w: 44.26cqw;
-    --cs-logo-h: 18.87cqw;
-    --cs-logo-top: 0;
-    --cs-logo-gap: 13.33cqw;
-    --cs-col2-top: 18.44cqw;
-    --cs-col4-top: 11.35cqw;
-    --cs-half-gap: 1.42cqw;
-    --cs-six-logo-w: 32.91cqw;
-    --cs-six-logo-h: 14.04cqw;
-    --cs-six-logo-top: 4.26cqw;
-    --cs-six-logo-left: 0;
-    --cs-six-logo-gap: 2.41cqw;
-    --cs-large-h: 34.04cqw;
-    --cs-wide-h: 16.74cqw;
-    --cs-small-h: 17.02cqw;
-    --cs-stack-gap: 1.13cqw;
-    --cs-tall-h: 35.18cqw;
+    /* desktop geometry */
+    --cs-gap: 10px;
+    --cs-row-gap: 5px;
+    --cs-img-h: 112px;
+    --cs-col2-top: 130px;
+    --cs-large-h: 240px;
+    --cs-wide-h: 118px;
+    --cs-small-h: 120px;
+    --cs-small-gap: 8px;
+    --cs-tall-h: 248px;
+    --cs-bottom-pad: 0;
+    --cs-six-logo-w: 232px;
+    --cs-six-logo-gap: 47px;
+  }
+
+  /* the source image column keeps 90px clear before the text; the slider window stops there */
+  .collage-slideshow.images .collage-slideshow__left {
+    box-sizing: border-box;
+    padding-right: 90px;
+  }
+
+  .collage-slideshow-container .collage-slideshow-wrapper .collage-slideshow.images .collage-slideshow__left .collage-slideshow__swiper {
+    height: auto;
+  }
+
+  .collage-slideshow.images .collage-slideshow__collage--images .collage-slideshow__media--logo {
+    transform: translateY(30%);
+  }
+
+  /* nine: 312px logo in a 212px-tall slot, no offset */
+  .collage-slideshow.images .collage-slideshow__collage--nine .collage-slideshow__media--logo {
+    width: 312px;
+    height: 212px;
+    transform: none;
+  }
+
+  .collage-slideshow.images .collage-slideshow__collage--nine .collage-slideshow__media--logo + .collage-slideshow__media {
+    margin-top: 10px;
   }
 
   .collage-slideshow.images .collage-slideshow__controls {
