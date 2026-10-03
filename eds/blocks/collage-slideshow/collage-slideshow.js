@@ -819,7 +819,9 @@ export default async function decorate(block) {
       loop: false,
       watchOverflow: true,
       autoHeight: false,
-      spaceBetween: 0,
+      // images: Swiper rounds slide widths to whole pixels, so with no gap a sliver of the
+      // neighbouring slide shows at the window edge on fractional widths
+      spaceBetween: isImages ? 2 : 0,
       pagination: {
         el: pagination,
         clickable: true,
