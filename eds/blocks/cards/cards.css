@@ -2051,10 +2051,12 @@
     min-height: 89px;
   }
 
+  /* source title: 10.5px line in a taller box, which leaves the space between the name and "Upto" */
   .cards.tabs .cards-tabs-title {
+    min-height: 43.1px;
     margin-bottom: 0;
     font-size: 32px;
-    line-height: 1.35;
+    line-height: 10.5px;
   }
 
   .cards.tabs .cards-tabs-info p:first-of-type {
@@ -2099,4 +2101,11 @@
     padding: 14px 20px;
   }
 
+}
+
+/* zoomed desktop range: the source card is taller here and the extra goes under the title */
+@media (width >= 992px) and (width <= 1439px) {
+  .cards.tabs .cards-tabs-title {
+    min-height: 50.85px;
+  }
 }
