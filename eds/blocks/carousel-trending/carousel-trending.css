@@ -268,7 +268,7 @@
     font-weight: 800;
     letter-spacing: -0.02em;
     /* -2% */
-    margin: 0 0 4px;
+    margin: 0;
 }
 
 .carousel-trending.service-variant .carousel-trending-subtitle {
@@ -336,7 +336,7 @@
 
 /* Text wraps within ~75% of the box, leaving room for the arrow */
 .carousel-trending.service-variant .card .card-body-text {
-    max-width: 75%;
+    max-width: 73%;
 }
 
 /* Arrow pinned to the bottom-right corner of the box */
@@ -361,11 +361,37 @@
     }
 
     .carousel-trending.service-variant .carousel-trending-title {
-        font-size: 26px;
+        font-size: 24px;
+    }
+
+    .carousel-trending.service-variant .carousel-trending-subtitle {
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 16px;
+        color: #8c8e90;
+        margin-bottom: 0;
+    }
+
+    .carousel-trending.service-variant .card .card-body {
+        font-size: 25px;
+    }
+
+    .carousel-trending.service-variant .card .card-body-text {
+        max-width: 67%;
+    }
+
+    .carousel-trending.service-variant .swiper-pagination {
+        display: none;
     }
 
     .carousel-trending.service-variant .card {
         height: 500px;
+    }
+}
+
+@media screen and (min-width: 1366px) and (max-width: 1400px) {
+    .carousel-trending.service-variant .card .card-body-text {
+        max-width: 70%;
     }
 }
 

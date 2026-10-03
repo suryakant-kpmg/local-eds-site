@@ -83,9 +83,9 @@ export default function decorate(block) {
         link.addEventListener('click', () => {
           const cta = link.textContent.trim();
           const destinationUrl = link.getAttribute('href') || '';
-          trackEvent('contact_us_click_whatsapp', { cta_: cta });
+          trackEvent('cta_link_text', { cta_: cta, parentTitle: description, param1: destinationUrl });
           pushAdobeCtaClickEvent({
-            cta, event: 'contact_us_click_whatsapp',
+            cta, parentTitle: description, destinationUrl, event: 'cta_link_text',
           });
         });
         item.append(link);

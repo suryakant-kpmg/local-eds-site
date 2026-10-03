@@ -1,3 +1,5 @@
+/* stylelint-disable selector-class-pattern, no-descending-specificity, no-duplicate-selectors -- BEM class names are set by form.js and existing rule order is load-bearing */
+
 /* Override section and wrapper inherited styles */
 .section.form-container {
   padding: 0 40px;
@@ -135,13 +137,13 @@
   width: 100%;
 }
 
-@media (min-width:992px) {
+@media (width >=992px) {
   .form.block .form-fields-area {
     gap: 0;
   }
 
   .form.block .form-consent-area {
-    margin-top: 0px;
+    margin-top: 0;
   }
 
   .form.block .form-button-cell {
@@ -297,7 +299,7 @@
 }
 
 .form.block .form-consent-text-whatsapp {
-  color: #000000;
+  color: #000;
   font-weight: 500;
 }
 
@@ -511,6 +513,7 @@
   height: 100%;
   background: #fff;
   border-radius: 20px;
+
   /* overflow: hidden; */
 }
 
@@ -526,11 +529,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
   /* width: 56px;
   height: 56px; */
   padding: 0;
   border: none;
   border-radius: 50%;
+
   /* background: rgb(255 255 255 / 88%); */
   background: none;
   color: #1a1a1a;
@@ -946,11 +951,9 @@
      lockBodyScroll()/unlockBodyScroll() in form.js. */
   .form.block.popup-active {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    right: auto;
-    bottom: auto;
+    inset: 50% auto auto 50%;
     transform: translate(-50%, 0%);
+
     /* Below .header .header-brands/.header-sticky (z-index: 1001/1000 in
        header.css) so the header stays visible above this popup instead
        of being covered by it. Those header elements are siblings of
@@ -1043,7 +1046,7 @@
   }
 
   .form.block .form-fields-area {
-    gap: 0px;
+    gap: 0;
   }
 
   .form.block .form-inputs-grid {
@@ -1064,7 +1067,7 @@
   .form.block .form-input,
   .form.block .form-control.form-input {
     height: 52px;
-    padding: 18px 18px 18px;
+    padding: 18px;
     font-size: 16px;
   }
 
@@ -1246,8 +1249,7 @@
   }
 }
 
-@media (min-width: 1201px) and (max-width: 1440px) {
-
+@media (width >= 1201px) and (width <= 1440px) {
   .form.block .form-row .form-description-cell {
     flex: 0 33%;
     min-width: unset;
@@ -1260,7 +1262,7 @@
   }
 }
 
-@media (min-width: 1440px) {
+@media (width >= 1440px) {
   .form.block .form-row .form-description-cell {
     flex: 0 32%;
     min-width: unset;
@@ -1276,7 +1278,7 @@
 /* ============================================
    Variant: Form — Blue Form
    ============================================ */
-@media screen and (min-width: 992px) {
+@media screen and (width >= 992px) {
   .royale-play-form .form.block.blue-form .form-title-large {
     font-size: 14px;
     line-height: 22px;
@@ -1313,8 +1315,7 @@
   }
 
   .form.block.blue-form .form-inputs-grid {
-    row-gap: 25px;
-    column-gap: 6%;
+    gap: 25px 6%;
   }
 
   .form.block.blue-form .form-input,
@@ -1323,7 +1324,7 @@
   }
 }
 
-@media (min-width: 1201px) and (max-width: 1440px) {
+@media (width >= 1201px) and (width <= 1440px) {
   .form.block.blue-form .form-row .form-description-cell {
     flex: 0 42%;
   }
@@ -1366,7 +1367,7 @@
 
 .form.block.blue-form .form-field.is-focused .form-input,
 .form.block.blue-form .form-field.has-value .form-input,
-.form.block.blue-form .form-field:not(.is-focused):not(.has-value) .form-input {
+.form.block.blue-form .form-field:not(.is-focused, .has-value) .form-input {
   border-color: #fff;
 }
 
@@ -1412,7 +1413,7 @@
   overflow-wrap: break-word;
 }
 
-@media (min-width: 1201px) and (max-width: 1440px) {
+@media (width >= 1201px) and (width <= 1440px) {
   .form.block.blue-form .form-title-large {
     max-width: 100%;
   }
@@ -1431,8 +1432,8 @@
   color: #fff !important;
 }
 
-/* Tablet and below adjustments for blue form*/
-@media screen and (max-width: 992px) {
+/* Tablet and below adjustments for blue form */
+@media screen and (width <= 992px) {
   .form.block.blue-form .form-title-small {
     font-size: 24px;
     padding-bottom: 0;
@@ -1449,25 +1450,23 @@
   }
 }
 
-/********WHite Form Styling Changes***********/
+/******** WHite Form Styling Changes ***********/
 
-@media screen and (min-width: 992px) {
+@media screen and (width >= 992px) {
   .form.block .form-inputs-grid {
-    row-gap: 15px;
-    column-gap: 6%;
+    gap: 15px 6%;
   }
 
   .form.block .form-consent-area {
-    margin-top: 0px;
+    margin-top: 0;
   }
 
   .form-title-small {
-
     color: #2e2f32 !important;
     font-size: 20px !important;
     font-weight: 700 !important;
     line-height: 28px !important;
-    margin: 0 0 0 0 !important;
+    margin: 0 !important;
   }
 
   .form-title-small p {
@@ -1479,7 +1478,7 @@
   }
 
   .form-title-large {
-    margin: 0 0 15px 0 !important;
+    margin: 0 0 15px !important;
     font-size: 57px !important;
     font-weight: 800 !important;
     line-height: 56.4px !important;
@@ -1528,7 +1527,7 @@
 
 }
 
-@media (max-width:992px) {
+@media (width <=992px) {
   .fitcontent.form-container .form.block {
     padding: 27px 20px !important;
   }
@@ -1549,7 +1548,7 @@
 }
 
 .royale-play-form:not(.royale-play-form ~ .royale-play-form) .thank-you-active.popup-active {
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, .1), 0 0 1px 0 rgba(0, 0, 0, .1);
+  box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%), 0 0 1px 0 rgb(0 0 0 / 10%);
 }
 
 /* ============================================
@@ -1714,7 +1713,7 @@
   margin-top: 25px;
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (width >= 992px) {
   .form.block .form-bhps-footer {
     flex-direction: row;
     align-items: center;
@@ -1773,3 +1772,18 @@
 }
 
 /* isBhpsForm styling ends here */
+
+/* Variant: interior-paints-and-textures */
+@media (width <= 991px) {
+  .form.block.interior-paints-and-textures .form-title-large {
+    font-size: 26px !important;
+    line-height: 32.6px !important;
+  }
+}
+
+@media (width > 991px) {
+  .form.block.interior-paints-and-textures .form-title-large {
+    font-size: 33px !important;
+    line-height: 40.4px !important;
+  }
+}

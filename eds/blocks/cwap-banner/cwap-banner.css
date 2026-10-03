@@ -9,21 +9,33 @@
   padding: 0;
 }
 
+/* the next band starts right below, like the reference page */
+main > .section.cwap-banner-container {
+  margin-bottom: 0;
+  padding: 0;
+}
+
+/* page font for the banner text and headings (site headings default to another font) */
+.cwap-banner,
+.cwap-banner :is(h1, h2, h3) {
+  font-family: manrope, sans-serif;
+}
+
+/* sizes below are the reference page's (cwapbanner on asianpaints.com) */
 .cwap-banner {
   --cwap-text: #222;
   --cwap-fade: #fff5eb;
   --cwap-gradient: linear-gradient(91deg, #431a80 1.46%, #ee4137 51.38%, #feb940);
 
-  /* visible area below the fixed header: the banner never exceeds it */
-  --cwap-vh: calc(100svh - var(--header-height, 0px));
+  color: var(--cwap-text);
+}
 
+.cwap-banner .cwap-banner-hero {
   position: relative;
   box-sizing: border-box;
-  height: var(--cwap-vh);
-  min-height: 480px;
+  height: 640px;
   overflow: hidden;
-  padding: 27px 0 20px;
-  color: var(--cwap-text);
+  padding: 27px 0 0;
 }
 
 /* background image with a fade to cream on mobile */
@@ -58,29 +70,31 @@
   align-items: center;
 }
 
+/* text column: as wide as its widest line (the store buttons on mobile) */
 .cwap-banner .cwap-banner-content {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  width: 100%;
 }
 
-/* title: every line carries its own gradient */
+/* title: every line carries its own gradient across the column */
 .cwap-banner .cwap-banner-title {
-  margin: 0;
+  margin: 0 0 14px;
   font-size: 32px;
   font-weight: 800;
   line-height: 35.2px;
+  text-align: center;
 }
 
 .cwap-banner .cwap-banner-title span {
   display: block;
-  width: fit-content;
-  margin-inline: auto;
   background: var(--cwap-gradient);
   background-clip: text;
   color: transparent;
+}
+
+/* the reference title ends in a non-breaking space, which sets the column width */
+.cwap-banner .cwap-banner-title span:last-child::after {
+  content: '\00a0';
 }
 
 .cwap-banner .cwap-banner-caption {
@@ -98,7 +112,6 @@
 /* store buttons */
 .cwap-banner .cwap-banner-stores {
   display: flex;
-  justify-content: center;
   column-gap: 10px;
   margin: 0;
   padding: 0;
@@ -124,14 +137,13 @@
   outline-offset: 2px;
 }
 
-/* phone-framed video: the bezel is drawn in CSS */
+/* phone-framed video; without authored frame images the bezel is drawn in CSS */
 .cwap-banner .cwap-banner-media {
   position: relative;
   box-sizing: border-box;
-
-  /* height is whatever is left under the text (~230px), width follows */
-  height: clamp(220px, calc(var(--cwap-vh) - 230px), min(140vw, 520px));
-  aspect-ratio: 1 / 2;
+  flex-shrink: 0;
+  width: 177px;
+  height: 354px;
   margin-top: 20px;
   border: 6px solid #111;
   border-radius: 28px;
@@ -152,24 +164,12 @@
   outline: 1px solid #000;
 }
 
-@media (width >= 600px) {
-  .cwap-banner .cwap-banner-bg img {
-    object-fit: cover;
-  }
-}
-
 /* =============================================
    DESKTOP
    ============================================= */
-@media (width >= 900px) {
-  /* banner fills the viewport below the header; text keeps its design
-     size, only the gaps and the phone adapt */
-  .cwap-banner {
-    --cwap-h: var(--cwap-vh);
-
-    height: var(--cwap-h);
-    min-height: 0;
-    padding: min(40px, calc(var(--cwap-h) * 0.057)) 0;
+@media (width >= 992px) {
+  .cwap-banner .cwap-banner-hero {
+    padding: 42px 0 24px;
   }
 
   .cwap-banner .cwap-banner-bg::after {
@@ -177,38 +177,33 @@
   }
 
   .cwap-banner .cwap-banner-bg img {
+    object-fit: cover;
     object-position: 50%;
   }
 
+  /* row as tall as the phone (575px), centred like the reference */
   .cwap-banner .cwap-banner-inner {
     flex-direction: row;
     justify-content: center;
-    gap: 8%;
-    height: 100%;
+    gap: 15%;
+    height: 575px;
   }
 
   .cwap-banner .cwap-banner-content {
     align-items: flex-start;
-    width: auto;
-    text-align: left;
+    max-width: 500px;
   }
 
   .cwap-banner .cwap-banner-title {
     font-size: 80px;
-    font-weight: 800;
     line-height: 85px;
     letter-spacing: -3px;
-  }
-
-  .cwap-banner .cwap-banner-title span {
-    margin-inline: 0;
-    white-space: nowrap;
+    text-align: left;
   }
 
   .cwap-banner .cwap-banner-caption {
-    margin: 15px 0 min(67px, calc(var(--cwap-h) * 0.095));
+    margin: 15px 0 27px;
     font-size: 32px;
-    line-height: 1.1;
   }
 
   .cwap-banner .cwap-banner-download {
@@ -221,44 +216,42 @@
 
   .cwap-banner .cwap-banner-stores {
     align-items: flex-end;
-    justify-content: flex-start;
-    column-gap: 24px;
+    column-gap: 20px;
     margin-top: 15px;
   }
 
+  /* each store: its QR code above its 150 x 43 button */
   .cwap-banner .cwap-banner-store {
     display: flex;
     flex-direction: column;
     align-items: center;
-    row-gap: 20px;
+    row-gap: 16px;
   }
 
   .cwap-banner .cwap-banner-qr {
     display: block;
     box-sizing: border-box;
-    width: 124px;
-    height: 124px;
-    padding: 8px;
-    border: 1px solid var(--cwap-text);
+    width: 110px;
+    height: 110px;
+    padding: 10px;
+    border: 1px solid #000;
     border-radius: 8px;
-    background: #fff;
   }
 
   .cwap-banner .cwap-banner-qr img {
     display: block;
-    width: 100%;
-    height: 100%;
+    width: 88px;
+    height: 88px;
   }
 
   .cwap-banner .cwap-banner-store-link img {
-    width: 180px;
-    height: 53px;
+    width: 150px;
+    height: 43px;
   }
 
   .cwap-banner .cwap-banner-media {
-    flex-shrink: 0;
-    height: min(620px, 100%);
-    aspect-ratio: 296 / 620;
+    width: 287px;
+    height: 575px;
     margin-top: 0;
     border-width: 8px;
     border-radius: 44px;
@@ -269,15 +262,106 @@
   }
 }
 
-/* short desktop screens: no room for the QR codes */
-@media (width >= 900px) and (height < 800px) {
-  .cwap-banner .cwap-banner-qr {
-    display: none;
+/* smaller desktops: the reference page zooms out in these steps */
+@media (width >= 992px) and (width < 1100px) {
+  .cwap-banner .cwap-banner-hero {
+    zoom: 0.7;
   }
 }
 
-@media (width >= 1200px) {
-  .cwap-banner .cwap-banner-inner {
-    gap: 15%;
+@media (width >= 1100px) and (width < 1200px) {
+  .cwap-banner .cwap-banner-hero {
+    zoom: 0.75;
+  }
+}
+
+@media (width >= 1200px) and (width < 1280px) {
+  .cwap-banner .cwap-banner-hero {
+    zoom: 0.8;
+  }
+}
+
+@media (width >= 1280px) and (width < 1366px) {
+  .cwap-banner .cwap-banner-hero {
+    zoom: 0.85;
+  }
+}
+
+@media (width >= 1366px) and (width < 1440px) {
+  .cwap-banner .cwap-banner-hero {
+    zoom: 0.9;
+  }
+}
+
+/* authored phone frame (as on the reference page): the frame image is the media
+   background and the video plays on top of it, inside the frame's screen area
+   (video 158 x 338 at 10, 8 on mobile; 256 x 550 at 16, 12 on desktop) */
+.cwap-banner .cwap-banner-media.has-frame {
+  border: 0;
+  border-radius: 20px;
+  background: var(--cwap-frame-mobile) center / contain no-repeat;
+  box-shadow: none;
+}
+
+.cwap-banner .cwap-banner-media.has-frame .cwap-banner-video {
+  position: absolute;
+  top: 2.26%;
+  left: 5.65%;
+  width: 89.27%;
+  height: 95.48%;
+  border-radius: 12.66% / 5.92%;
+}
+
+@media (width >= 992px) {
+  .cwap-banner .cwap-banner-media.has-frame {
+    background-image: var(--cwap-frame-desktop);
+  }
+
+  .cwap-banner .cwap-banner-media.has-frame .cwap-banner-video {
+    top: 12px;
+    left: 16px;
+    width: 256.36px;
+    height: 550.3px;
+    border-radius: 33px;
+  }
+}
+
+/* =============================================
+   IMAGE SECTIONS (e.g. "Discover our new Color Picker Tool")
+   The whole component is one authored image per layout, on the reference's
+   full-width cream band. The crops below fit the authored images: they drop
+   the empty cream above the mobile text (rows 0-418 of 1624, so the text
+   starts at the top of the band like the reference) and the black strip
+   at the bottom of both images.
+   ============================================= */
+.cwap-banner .cwap-banner-feature {
+  background: var(--cwap-fade);
+}
+
+.cwap-banner .cwap-banner-feature picture {
+  display: block;
+  max-width: 430px;
+  aspect-ratio: 722 / 1163;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.cwap-banner .cwap-banner-feature img {
+  display: block;
+  width: 100%;
+  height: auto;
+
+  /* percentage margins follow the width: 418px of a 722px-wide image */
+  margin-top: -57.9%;
+}
+
+@media (width >= 992px) {
+  .cwap-banner .cwap-banner-feature picture {
+    max-width: 1440px;
+    aspect-ratio: 4320 / 1884;
+  }
+
+  .cwap-banner .cwap-banner-feature img {
+    margin-top: 0;
   }
 }

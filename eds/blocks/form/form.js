@@ -109,10 +109,10 @@ function getRowValue(row) {
   if (!row) return '';
 
   const cells = [...row.children];
-  const preferred = cells[1]?.textContent?.trim();
-  if (preferred) return preferred;
+  // | label | value | rows: an empty value must not fall back to the label text
+  if (cells.length > 1) return cells[1].textContent?.trim() || '';
 
-  return cells.map((cell) => cell.textContent?.trim()).filter(Boolean).join(' ').trim();
+  return cells[0]?.textContent?.trim() || '';
 }
 
 function getCellText(cell) {

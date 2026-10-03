@@ -585,6 +585,40 @@ function preloadLcpImage(doc) {
   }
 }
 
+// get-inspired: defer non-active tab images - start
+/**
+ * Strips image sources from every `.get-inspired` tab except the first,
+ * before `body.appear` reveals the raw block markup. Otherwise the browser
+ * starts fetching those lazy images in the window between `appear` and the
+ * block's decorate() (block CSS/JS still loading), competing with the LCP
+ * image. Sources are parked in `data-defer-*` attributes, which the block's
+ * hydratePanelImages() restores when a tab is activated.
+ * @param {Element} main The main element
+ */
+function deferGetInspiredTabImages(main) {
+  const park = (el, attr, key) => {
+    const value = el.getAttribute(attr);
+    if (!value) return;
+    el.dataset[key] = value;
+    el.removeAttribute(attr);
+  };
+
+  main.querySelectorAll('.get-inspired > div:not(:first-child)').forEach((row) => {
+    row.querySelectorAll('picture').forEach((picture) => {
+      picture.querySelectorAll('source').forEach((source) => {
+        park(source, 'srcset', 'deferSrcset');
+        park(source, 'sizes', 'deferSizes');
+      });
+      const img = picture.querySelector('img');
+      if (!img) return;
+      park(img, 'src', 'deferSrc');
+      park(img, 'srcset', 'deferSrcset');
+      park(img, 'sizes', 'deferSizes');
+    });
+  });
+}
+// get-inspired: defer non-active tab images - end
+
 /**
  * Loads only the assets and logic required for the initial render / LCP.
  * Analytics is intentionally excluded from this phase to avoid blocking
@@ -603,6 +637,9 @@ async function loadEager(doc) {
   if (main) {
     decorateMain(main);
     ensureDocumentPrimaryHeading(doc, main);
+    // get-inspired: defer non-active tab images - start
+    deferGetInspiredTabImages(main);
+    // get-inspired: defer non-active tab images - end
     document.body.classList.add('appear');
 
     // Eagerly load sections. Section-walking is scoped to pages that

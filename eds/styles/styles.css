@@ -416,17 +416,6 @@ main>.section:first-of-type {
   margin-top: 0;
 }
 
-/* Constrained width for default content (text, etc.) */
-main>.section>.default-content-wrapper {
-  margin: auto;
-  padding: 0 30px;
-}
-
-@media (max-width: 990px) {
-  main>.section>.default-content-wrapper {
-    padding: 0 15px;
-  }
-}
 
 /* section metadata */
 main .section.light,
@@ -499,10 +488,6 @@ main .section.section-padding-top {
 
 main .section.section-padding-top-15 {
   padding-top: 15px;
-}
-
-main .section.text-grey {
-  color: rgb(93, 79, 67);
 }
 
 main .section .default-content-wrapper #how-to-hire-an-asian-paints-contractor+p+ol li:first-child a,
@@ -1106,7 +1091,7 @@ main>.section:has(.embed-wrapper)>.default-content-wrapper:last-of-type a:hover 
 /* end animation styles */
 
 /* title styles for inspiration page */
-.default-content-wrapper #ideas-gallery {
+.default-content-wrapper h4  {
   font-weight: 400;
   font-size: 28px;
   line-height: 36.4px;

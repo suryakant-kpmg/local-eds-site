@@ -1,0 +1,1303 @@
+{
+ "Exteriors": {
+  "Ace": {
+   "Undercoat": {
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "+30",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "+30",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "0051",
+   "Quantity": "+30",
+   "Unit": "L"
+  },
+  "Apex Dustproof": {
+   "Undercoat": {
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Exterior": {
+     "SKU_Code": "5626",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Exterior Advanced": {
+     "SKU_Code": "6791",
+     "Quantity": "+40",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "0012",
+   "Quantity": "+40",
+   "Unit": "L"
+  },
+  "Apex Ultima": {
+   "Undercoat": {
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "ASIAN PAINTS DAMP PROOF SUPERFLEX ": {
+     "SKU_Code": "5457",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Exterior": {
+     "SKU_Code": "5626",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Exterior Advanced": {
+     "SKU_Code": "6791",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "ASIAN PAINTS DAMP PROOF XTREME SALT SHIELD": {
+     "SKU_Code": "1B71",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Proof": {
+     "SKU_Code": "1048",
+     "Quantity": "+40",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "0068",
+   "Quantity": "+40",
+   "Unit": "L"
+  },
+  "Apex Shyne Dustproof": {
+   "Undercoat": {
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Exterior": {
+     "SKU_Code": "5626",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Exterior Advanced": {
+     "SKU_Code": "6791",
+     "Quantity": "+40",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "5673",
+   "Quantity": "+40",
+   "Unit": "L"
+  },
+  "Apex Ultima Protek": {
+   "Undercoat": {
+    "Apex Ultima Protek Basecoat": {
+     "SKU_Code": "1090",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "ASIAN PAINTS DAMP PROOF SUPERFLEX ": {
+     "SKU_Code": "5457",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Exterior": {
+     "SKU_Code": "5626",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Exterior Advanced": {
+     "SKU_Code": "6791",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "ASIAN PAINTS DAMP PROOF XTREME SALT SHIELD": {
+     "SKU_Code": "1B71",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Proof": {
+     "SKU_Code": "1048",
+     "Quantity": "+40",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "1090",
+   "Quantity": "+40",
+   "Unit": "L"
+  },
+  "Apex Ultima Stretch": {
+   "Undercoat": {
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "ASIAN PAINTS DAMP PROOF SUPERFLEX ": {
+     "SKU_Code": "5457",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Exterior": {
+     "SKU_Code": "5626",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Exterior Advanced": {
+     "SKU_Code": "6791",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "ASIAN PAINTS DAMP PROOF XTREME SALT SHIELD": {
+     "SKU_Code": "1B71",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Proof": {
+     "SKU_Code": "1048",
+     "Quantity": "+40",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "6789",
+   "Quantity": "+40",
+   "Unit": "L"
+  },
+  "Apex Floor Guard": {
+   "ShowShadeCode": "Y",
+   "SKU_Code": "5443",
+   "Quantity": "6",
+   "Unit": "L"
+  },
+  "Ace Advanced": {
+   "Undercoat": {
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "+30",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "+30",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "0052",
+   "Quantity": "+30",
+   "Unit": "L"
+  },
+  "Apex Ultima Allura Concordia": {
+   "Undercoat": {
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "N",
+   "SKU_Code": "1A98",
+   "Quantity": "60",
+   "Unit": "kg"
+  },
+  "Apex Ultima Allura Reserva": {
+   "Undercoat": {
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "N",
+   "SKU_Code": "1B02",
+   "Quantity": "60",
+   "Unit": "kg"
+  },
+  "Apex Createx Dholpur": {
+   "Undercoat": {
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "N",
+   "SKU_Code": "6711",
+   "Quantity": "50",
+   "Unit": "kg"
+  },
+  "Apex Ultima Allura Meraki": {
+   "Undercoat": {
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "N",
+   "SKU_Code": "1A99",
+   "Quantity": "60",
+   "Unit": "kg"
+  },
+  "Ace Sparc Colours": {
+   "Undercoat": {
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "+30",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "+30",
+     "Unit": "L"
+    },
+    "TruCare Sparc Exterior Wall Primer": {
+     "SKU_Code": "6A24",
+     "Quantity": "+30",
+     "Unit": "L"
+    },
+    "TruCare Sparc Ultraa Exterior Wall Primer": {
+     "SKU_Code": "6A51",
+     "Quantity": "+30",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "6798",
+   "Quantity": "+30",
+   "Unit": "L"
+  },
+  "Apex Ultima Protek Advanced": {
+   "Undercoat": {
+    "Apex Ultima Protek Basecoat": {
+     "SKU_Code": "1090",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "ASIAN PAINTS DAMP PROOF SUPERFLEX ": {
+     "SKU_Code": "5457",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Exterior": {
+     "SKU_Code": "5626",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Exterior Advanced": {
+     "SKU_Code": "6791",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "ASIAN PAINTS DAMP PROOF XTREME SALT SHIELD": {
+     "SKU_Code": "1B71",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Proof": {
+     "SKU_Code": "1048",
+     "Quantity": "+40",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "6B02",
+   "Quantity": "+40",
+   "Unit": "L"
+  },
+  "Apex Createx Sandstone": {
+   "Undercoat": {
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "N",
+   "SKU_Code": "6770",
+   "Quantity": "50",
+   "Unit": "kg"
+  },
+  "Ace Sparc": {
+   "Undercoat": {
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "+30",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "+30",
+     "Unit": "L"
+    },
+    "TruCare Sparc Exterior Wall Primer": {
+     "SKU_Code": "6A24",
+     "Quantity": "+30",
+     "Unit": "L"
+    },
+    "TruCare Sparc Ultraa Exterior Wall Primer": {
+     "SKU_Code": "6A51",
+     "Quantity": "+30",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "6716",
+   "Quantity": "+30",
+   "Unit": "L"
+  },
+  "Apex Advanced Dustproof": {
+   "Undercoat": {
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Exterior": {
+     "SKU_Code": "5626",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Exterior Advanced": {
+     "SKU_Code": "6791",
+     "Quantity": "+40",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "0024",
+   "Quantity": "+40",
+   "Unit": "L"
+  },
+  "Ace Sparc Ultraa": {
+   "Undercoat": {
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "+30",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "+30",
+     "Unit": "L"
+    },
+    "TruCare Sparc Exterior Wall Primer": {
+     "SKU_Code": "6A24",
+     "Quantity": "+30",
+     "Unit": "L"
+    },
+    "TruCare Sparc Ultraa Exterior Wall Primer": {
+     "SKU_Code": "6A51",
+     "Quantity": "+30",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "6788",
+   "Quantity": "+30",
+   "Unit": "L"
+  },
+  "Apex Tile Guard": {
+   "ShowShadeCode": "Y",
+   "SKU_Code": "1007",
+   "Quantity": "6",
+   "Unit": "L"
+  },
+  "Apex Ultima Protek Duralife": {
+   "Undercoat": {
+    "Apex Ultima Protek Basecoat": {
+     "SKU_Code": "1090",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "ASIAN PAINTS DAMP PROOF SUPERFLEX ": {
+     "SKU_Code": "5457",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Exterior": {
+     "SKU_Code": "5626",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Exterior Advanced": {
+     "SKU_Code": "6791",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "ASIAN PAINTS DAMP PROOF XTREME SALT SHIELD": {
+     "SKU_Code": "1B71",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "Apex Ultima Protek Duralife Basecoat": {
+     "SKU_Code": "1100",
+     "Quantity": "+40",
+     "Unit": "L"
+    },
+    "SmartCare Damp Proof": {
+     "SKU_Code": "1048",
+     "Quantity": "+40",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "1100",
+   "Quantity": "+40",
+   "Unit": "L"
+  },
+  "Ace Shyne": {
+   "Undercoat": {
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "+30",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "+30",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "5759",
+   "Quantity": "+30",
+   "Unit": "L"
+  },
+  "Ace Shyne Advanced": {
+   "Undercoat": {
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "+30",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "+30",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "6B03",
+   "Quantity": "+30",
+   "Unit": "L"
+  },
+  "Apex Createx": {
+   "Undercoat": {
+    "TruCare Exterior Wall Primer": {
+     "SKU_Code": "0065",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Exterior Wall Primer Advanced": {
+     "SKU_Code": "5633",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "N",
+   "SKU_Code": "1B53",
+   "Quantity": "50",
+   "Unit": "kg"
+  }
+ },
+ "Enamels": {
+  "Apcolite Advanced 2pk Epoxy Finish": {
+   "Undercoat": {
+    "Apcolite Advanced 2pk Epoxy Primer Grey": {
+     "SKU_Code": "0109",
+     "Quantity": "4",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "N",
+   "SKU_Code": "0110",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Apcolite Premium Satin Enamel": {
+   "Undercoat": {
+    "TruCare Yellow Metal PU Primer": {
+     "SKU_Code": "1087",
+     "Quantity": "4",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "N",
+   "SKU_Code": "0064",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Apcolite Premium Gloss Enamel": {
+   "Undercoat": {
+    "TruCare Yellow Metal PU Primer": {
+     "SKU_Code": "1087",
+     "Quantity": "4",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "N",
+   "SKU_Code": "0001",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Apcolite Rustshield PU Enamel": {
+   "ShowShadeCode": "N",
+   "SKU_Code": "5658",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Apcolite Advanced PU Enamel": {
+   "Undercoat": {
+    "TruCare Yellow Metal PU Primer": {
+     "SKU_Code": "1087",
+     "Quantity": "4",
+     "Unit": "L"
+    },
+    "TruCare Grey 1pk Epoxy Primer": {
+     "SKU_Code": "0113",
+     "Quantity": "4",
+     "Unit": "L"
+    },
+    "TruCare Red Oxide Metal Primer": {
+     "SKU_Code": "0005",
+     "Quantity": "4",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "N",
+   "SKU_Code": "0050",
+   "Quantity": "4",
+   "Unit": "L"
+  }
+ },
+ "Interiors": {
+  "Royale Lustre": {
+   "Undercoat": {
+    "Royale Wall Basecoat": {
+     "SKU_Code": "0025",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior": {
+     "SKU_Code": "5503",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior Advanced": {
+     "SKU_Code": "5902",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "0125",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Apcolite Premium Emulsion": {
+   "Undercoat": {
+    "TruCare Interior Wall Primer - WT": {
+     "SKU_Code": "0360",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior": {
+     "SKU_Code": "5503",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Interior Wall Primer Advanced - WT": {
+     "SKU_Code": "0361",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior Advanced": {
+     "SKU_Code": "5902",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "0011",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Royale Glitz Ultra Matt": {
+   "Undercoat": {
+    "Royale Wall Basecoat": {
+     "SKU_Code": "0025",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "1B36",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Royale Glitz Reserv": {
+   "Undercoat": {
+    "Royale Wall Basecoat": {
+     "SKU_Code": "0025",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "1C01",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Royale Advanced Luxury Emulsion": {
+   "Undercoat": {
+    "Royale Wall Basecoat": {
+     "SKU_Code": "0025",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior": {
+     "SKU_Code": "5503",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior Advanced": {
+     "SKU_Code": "5902",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "6782",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Tractor Emulsion Advanced": {
+   "Undercoat": {
+    "TruCare Interior Wall Primer - WT": {
+     "SKU_Code": "0360",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Sparc Interior Wall Primer - WT": {
+     "SKU_Code": "1A01",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior": {
+     "SKU_Code": "5503",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Interior Wall Primer Advanced - WT": {
+     "SKU_Code": "0361",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior Advanced": {
+     "SKU_Code": "5902",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "0056",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Royale Luxury Emulsion": {
+   "Undercoat": {
+    "Royale Wall Basecoat": {
+     "SKU_Code": "0025",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior": {
+     "SKU_Code": "5503",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior Advanced": {
+     "SKU_Code": "5902",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "0030",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Tractor Emulsion": {
+   "Undercoat": {
+    "TruCare Interior Wall Primer - WT": {
+     "SKU_Code": "0360",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Sparc Interior Wall Primer - WT": {
+     "SKU_Code": "1A01",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior": {
+     "SKU_Code": "5503",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Interior Wall Primer Advanced - WT": {
+     "SKU_Code": "0361",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior Advanced": {
+     "SKU_Code": "5902",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "0057",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Tractor Emulsion Sparc": {
+   "Undercoat": {
+    "TruCare Interior Wall Primer - WT": {
+     "SKU_Code": "0360",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Sparc Interior Wall Primer - WT": {
+     "SKU_Code": "1A01",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior": {
+     "SKU_Code": "5503",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Interior Wall Primer Advanced - WT": {
+     "SKU_Code": "0361",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior Advanced": {
+     "SKU_Code": "5902",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "6721",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Apcolite All Protek Matt": {
+   "Undercoat": {
+    "TruCare Interior Wall Primer - WT": {
+     "SKU_Code": "0360",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior": {
+     "SKU_Code": "5503",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Interior Wall Primer Advanced - WT": {
+     "SKU_Code": "0361",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior Advanced": {
+     "SKU_Code": "5902",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "1A05",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Tractor Emulsion Shyne": {
+   "Undercoat": {
+    "TruCare Interior Wall Primer - WT": {
+     "SKU_Code": "0360",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Sparc Interior Wall Primer - WT": {
+     "SKU_Code": "1A01",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior": {
+     "SKU_Code": "5503",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Interior Wall Primer Advanced - WT": {
+     "SKU_Code": "0361",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior Advanced": {
+     "SKU_Code": "5902",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "0046",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Royale Matt Luxury Emulsion": {
+   "Undercoat": {
+    "Royale Wall Basecoat": {
+     "SKU_Code": "0025",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior": {
+     "SKU_Code": "5503",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior Advanced": {
+     "SKU_Code": "5902",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "0033",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Apcolite Advanced Heavy": {
+   "Undercoat": {
+    "TruCare Interior Wall Primer - WT": {
+     "SKU_Code": "0360",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior": {
+     "SKU_Code": "5503",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Interior Wall Primer Advanced - WT": {
+     "SKU_Code": "0361",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior Advanced": {
+     "SKU_Code": "5902",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "Duty Emulsion",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Apcolite Premium Satin Emulsion": {
+   "Undercoat": {
+    "TruCare Interior Wall Primer - WT": {
+     "SKU_Code": "0360",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior": {
+     "SKU_Code": "5503",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Interior Wall Primer Advanced - WT": {
+     "SKU_Code": "0361",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior Advanced": {
+     "SKU_Code": "5902",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "0074",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Apcolite All Protek Shyne": {
+   "Undercoat": {
+    "TruCare Interior Wall Primer - WT": {
+     "SKU_Code": "0360",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior": {
+     "SKU_Code": "5503",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Interior Wall Primer Advanced - WT": {
+     "SKU_Code": "0361",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior Advanced": {
+     "SKU_Code": "5902",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "1A06",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Royale Glitz Ultra Sheen": {
+   "Undercoat": {
+    "Royale Wall Basecoat": {
+     "SKU_Code": "0025",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "1A29",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Apcolite Advanced Shyne": {
+   "Undercoat": {
+    "TruCare Interior Wall Primer - WT": {
+     "SKU_Code": "0360",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior": {
+     "SKU_Code": "5503",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Interior Wall Primer Advanced - WT": {
+     "SKU_Code": "0361",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior Advanced": {
+     "SKU_Code": "5902",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "0038",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Tractor Emulsion Sparc Ultraa": {
+   "Undercoat": {
+    "TruCare Interior Wall Primer - WT": {
+     "SKU_Code": "0360",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Sparc Interior Wall Primer - WT": {
+     "SKU_Code": "1A01",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior": {
+     "SKU_Code": "5503",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "TruCare Interior Wall Primer Advanced - WT": {
+     "SKU_Code": "0361",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior Advanced": {
+     "SKU_Code": "5902",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "6787",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Royale Shyne Luxury Emulsion": {
+   "Undercoat": {
+    "Royale Wall Basecoat": {
+     "SKU_Code": "0025",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior": {
+     "SKU_Code": "5503",
+     "Quantity": "",
+     "Unit": "L"
+    },
+    "SmartCare Damp Sheath Interior Advanced": {
+     "SKU_Code": "5902",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "0029",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "Royale Aspira Luxury Emulsion": {
+   "Undercoat": {
+    "Royale Wall Basecoat": {
+     "SKU_Code": "0025",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "Y",
+   "SKU_Code": "1058",
+   "Quantity": "4",
+   "Unit": "L"
+  }
+ },
+ "Wallpapers": {
+  "Nilaya": {
+   "Undercoat": {
+    "Premium Wall Covering Adhesive": {
+     "SKU_Code": "W037",
+     "Quantity": "1",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "N",
+   "SKU_Code": "W001",
+   "Quantity": "2",
+   "Unit": "rolls"
+  }
+ },
+ "Wood Finishes": {
+  "Woodtech Touchwood Gold 1K PU Silk Matt": {
+   "ShowShadeCode": "N",
+   "SKU_Code": "6A72",
+   "Quantity": "5",
+   "Unit": "L"
+  },
+  "Woodtech Touchwood Gold 1K PU Glossy": {
+   "ShowShadeCode": "N",
+   "SKU_Code": "6A73",
+   "Quantity": "5",
+   "Unit": "L"
+  }
+ },
+ "Waterproofing": {
+  "ASIAN PAINTS DAMP PROOF SUPERFLEX ": {
+   "ShowShadeCode": "N",
+   "SKU_Code": "5457",
+   "Quantity": "40",
+   "Unit": "L"
+  },
+  "SmartCare Damp Block 2K Prime": {
+   "Undercoat": {
+    "SmartCare Vitalia Neo": {
+     "SKU_Code": "5675",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "N",
+   "SKU_Code": "1A60",
+   "Quantity": "9",
+   "Unit": "kg"
+  },
+  "SmartCare Epoxy Tri Block": {
+   "ShowShadeCode": "N",
+   "SKU_Code": "5467",
+   "Quantity": "5",
+   "Unit": "kg"
+  },
+  "ASIAN PAINTS DAMP PROOF XTREME SALT SHIELD": {
+   "ShowShadeCode": "N",
+   "SKU_Code": "1B71",
+   "Quantity": "40",
+   "Unit": "L"
+  },
+  "SmartCare Hydroloc Xtreme": {
+   "ShowShadeCode": "N",
+   "SKU_Code": "1B72",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "SmartCare Damp Proof": {
+   "ShowShadeCode": "N",
+   "SKU_Code": "1048",
+   "Quantity": "40",
+   "Unit": "L"
+  },
+  "SmartCare Tile Coat": {
+   "ShowShadeCode": "N",
+   "SKU_Code": "1B18",
+   "Quantity": "15",
+   "Unit": "L"
+  },
+  "ASIAN PAINTS DAMP PROOF ULTRA COOL PU": {
+   "ShowShadeCode": "N",
+   "SKU_Code": "5698",
+   "Quantity": "40",
+   "Unit": "L"
+  },
+  "SmartCare Damp Proof Play": {
+   "Undercoat": {
+    "SmartCare Damp Proof": {
+     "SKU_Code": "1048",
+     "Quantity": "40",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "N",
+   "SKU_Code": "6A54",
+   "Quantity": "20",
+   "Unit": "L"
+  },
+  "SmartCare Damp Block 2K": {
+   "Undercoat": {
+    "SmartCare Vitalia Neo": {
+     "SKU_Code": "5675",
+     "Quantity": "",
+     "Unit": "L"
+    }
+   },
+   "ShowShadeCode": "N",
+   "SKU_Code": "5610",
+   "Quantity": "9",
+   "Unit": "kg"
+  },
+  "SmartCare Damp Sheath Exterior": {
+   "ShowShadeCode": "N",
+   "SKU_Code": "5626",
+   "Quantity": "25",
+   "Unit": "L"
+  },
+  "SmartCare Damp Sheath Exterior Advanced": {
+   "ShowShadeCode": "N",
+   "SKU_Code": "6791",
+   "Quantity": "25",
+   "Unit": "L"
+  },
+  "SmartCare Damp Sheath Interior": {
+   "ShowShadeCode": "N",
+   "SKU_Code": "5503",
+   "Quantity": "4",
+   "Unit": "L"
+  },
+  "SmartCare Ultra Block 2K": {
+   "ShowShadeCode": "N",
+   "SKU_Code": "6885",
+   "Quantity": "12",
+   "Unit": "kg"
+  },
+  "SmartCare Damp Sheath Interior Advanced": {
+   "ShowShadeCode": "N",
+   "SKU_Code": "5902",
+   "Quantity": "4",
+   "Unit": "L"
+  }
+ }
+}

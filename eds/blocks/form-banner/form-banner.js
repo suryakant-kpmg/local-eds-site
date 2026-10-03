@@ -1,9 +1,10 @@
 ﻿/*
 ** Authoring format **
 
-Row 1 (Images)
-Col 1 → Desktop banner image (picture)
-Col 2 → Mobile banner image (picture)
+Row 1 (Slides)
+Each column → one carousel slide: desktop banner image, then mobile banner image
+  (two pictures in the same cell). Columns without an image are skipped.
+  More than one slide → Swiper carousel with dot pagination; the form stays put.
 
 Row 2 (Form Labels)
 Col 1 → Name label
@@ -11,6 +12,20 @@ Col 2 → Email label
 Col 3 → Mobile number label
 Col 4 → Pincode label
 Col 5 → Submit button label
+
+Settings rows (label | value, anywhere after Row 1)
+"Form title" → form-banner__card-title text (e.g. Let our experts help you!)
+"autoplay"   → true/false — auto-rotate the slides
+"interval"   → milliseconds between slides when autoplay is on (default 5000)
+"Update me on WhatsApp" → display/hide — show the WhatsApp opt-in (default display;
+                 when hidden, the lead is submitted without WhatsApp consent)
+"Is it a BHPS form"     → true/false — true shows the opt-in as a checkbox
+                 ("Get updates on WhatsApp") plus the BHPS questions below;
+                 false keeps the toggle and no questions (default false)
+"BHPS question 1" | question text | bullet list of options (radio buttons)
+"BHPS question 2" | question text | bullet list of options (radio buttons)
+                 Shown only on BHPS forms; each question shown is required.
+  Removed before the rows below are read, so their numbering is unchanged.
 
 Row 3 (Input Placeholders)
 Col 1 → Name placeholder
@@ -24,25 +39,18 @@ Col 1 → form-consent-note rich text — authored markup (incl. <a> links)
   by applyConsentLinkAttributes() (blue, opens in a new tab). No note is
   rendered at all when this row/cell is empty (no hardcoded fallback).
 
-Row 5 (Success Popup Images)
-Col 1 → Desktop success image
-Col 2 → Mobile success image
-
-Row 6 (Error Popup Images)
-Col 1 → Desktop error image
-Col 2 → Mobile error image
-
-Row 7 (Success CTA Link)
-Col 1 → Label (e.g. SUCCESS_CTA_LINK)
-Col 2 → URL
-
-Row 8 (Error CTA Link)
-Col 1 → Label (e.g. ERROR_CTA_LINK)
-Col 2 → URL
-
-Row 9 (Error Download Link)
-Col 1 → Label (e.g. ERROR_DOWNLOAD_LINK)
-Col 2 → URL
+Popup rows (label | value, read by label like the settings rows)
+"Default success image"       | desktop image | mobile image
+"Default error image"         | desktop image | mobile image
+"Default SUCCESS_CTA_LINK"    | URL
+"Default ERROR_CTA_LINK"      | URL
+"Default ERROR_DOWNLOAD_LINK" | URL
+"BHPS THANK_YOU_DESKTOP_VIDEO" | URL — BHPS success popup video (desktop)
+"BHPS THANK_YOU_MOBILE_VIDEO"  | URL — BHPS success popup video (up to 991px)
+"BHPS THANK_YOU_CTA_LINK"      | URL — "Book FREE site visit" hotspot over the video
+  BHPS forms always show this video popup on success; non-BHPS forms show the
+  default thank-you popup (Default success image). Same flow and styling as the
+  form block's thank-you screen.
 
 ----------------------------------------
 
@@ -215,6 +223,10 @@ function applyConsentLinkAttributes(container) {
 }
 
 let SUCCESS_CTA_LINK = '';
+// BHPS success popup: thank-you video + "Book FREE site visit" hotspot
+let BHPS_THANK_YOU_DESKTOP_VIDEO = '';
+let BHPS_THANK_YOU_MOBILE_VIDEO = '';
+let BHPS_THANK_YOU_CTA_LINK = '';
 let ERROR_CTA_LINK = '';
 let ERROR_DOWNLOAD_LINK = '';
 // Popup content title (rendered as a <p>, not a heading) — used as
@@ -249,7 +261,7 @@ function cloneSourcesToPicture(targetPicture, sourcePicture, mediaQuery) {
   });
 }
 
-function createResponsivePicture(desktopPicture, mobilePicture, altText = '') {
+function createResponsivePicture(desktopPicture, mobilePicture, altText = '', eager = true) {
   const desktopImg = desktopPicture?.querySelector('img');
   const mobileImg = mobilePicture?.querySelector('img');
 
@@ -264,9 +276,9 @@ function createResponsivePicture(desktopPicture, mobilePicture, altText = '') {
   const img = document.createElement('img');
   img.src = mobileImg?.src || desktopImg?.src || '';
   img.alt = mobileImg?.alt || desktopImg?.alt || altText;
-  img.loading = 'eager';
+  img.loading = eager ? 'eager' : 'lazy';
   img.decoding = 'async';
-  img.setAttribute('fetchpriority', 'high');
+  if (eager) img.setAttribute('fetchpriority', 'high');
 
   if (desktopImg?.width) img.width = desktopImg.width;
   if (desktopImg?.height) img.height = desktopImg.height;
@@ -335,6 +347,25 @@ function bindNumericInputFilter(input) {
   });
 }
 
+// Lead API field names for the two BHPS questions (read by form-submit-common.js)
+const BHPS_FIELD_NAMES = [
+  'NEW_CUSTOM_CHECKBOX_customer_response_one',
+  'NEW_CUSTOM_CHECKBOX_customer_response_two',
+];
+
+/**
+ * Analytics answer for a BHPS question: the authored label of the checked option.
+ * @param {Element} form The form
+ * @param {number} index The question index (0 or 1)
+ * @returns {string|undefined} undefined when the question is not on the form
+ */
+function getBhpsAnswer(form, index) {
+  const name = BHPS_FIELD_NAMES[index];
+  if (!form.querySelector(`[name="${name}"]`)) return undefined;
+  const checked = form.querySelector(`[name="${name}"]:checked`);
+  return checked?.dataset.label || checked?.value || '';
+}
+
 function yesNo(checked) {
   return checked ? 'Yes' : 'No';
 }
@@ -351,6 +382,12 @@ function trackFormSubmission(form) {
   const constructionField = form.querySelector('[name="constructionWorkGoingOn"]');
   const localPainterField = form.querySelector('[name="localPainterHired"]');
 
+  // BHPS forms answer these as radio questions instead
+  const contruction = constructionField
+    ? yesNo(constructionField.checked) : getBhpsAnswer(form, 0);
+  const localpainter = localPainterField
+    ? yesNo(localPainterField.checked) : getBhpsAnswer(form, 1);
+
   const formData = {
     formName,
     campaignId,
@@ -359,8 +396,8 @@ function trackFormSubmission(form) {
     // undefined-filter. QA relies on the presence of the value for reporting.
     whatsappOptIn: isWhatsappChecked ? 'checked' : 'unchecked',
     dataDestination: form.dataset.dataDestination || 'both',
-    contruction: constructionField ? yesNo(constructionField.checked) : undefined,
-    localpainter: localPainterField ? yesNo(localPainterField.checked) : undefined,
+    contruction,
+    localpainter,
   };
 
   getDigitalData().form = formData;
@@ -374,8 +411,8 @@ function trackFormSubmission(form) {
     formName: formName,
     event : 'form_submit',
     whatsappOptIn: isWhatsappChecked ? 'checked' : 'unchecked',
-    contruction: constructionField ? yesNo(constructionField.checked) : undefined,
-    localpainter: localPainterField ? yesNo(localPainterField.checked) : undefined,
+    contruction,
+    localpainter,
     dataDestination: form.dataset?.dataDestination || 'both'
   });
 
@@ -583,24 +620,154 @@ input.addEventListener('focus', () => {
   cell.appendChild(field);
 }
 
-function createConsentArea(consentNoteHtml) {
+/**
+ * Reads a BHPS question row: label | question text | bullet list of options.
+ * @param {Element} [row] The authored row
+ * @returns {{question: string, options: string[]}|null} null when incomplete
+ */
+function getBhpsQuestion(row) {
+  if (!row) return null;
+  const cells = [...row.children];
+  const question = cells[1]?.textContent?.trim() || '';
+  const options = [...(cells[2]?.querySelectorAll('li') || [])]
+    .map((li) => li.textContent.trim())
+    .filter(Boolean);
+  return question && options.length ? { question, options } : null;
+}
+
+/**
+ * The backend expects "Immediate" and "Within a month" as one merged value for
+ * question 1 (same mapping as the form block); the authored label is kept for analytics.
+ * @param {string} label The authored option label
+ * @param {number} index The question index (0 or 1)
+ * @returns {string} The value to submit
+ */
+function bhpsOptionValue(label, index) {
+  const normalized = label.trim().toLowerCase();
+  if (index === 0 && (normalized === 'immediate' || normalized === 'within a month')) {
+    return 'Immediate/Within 1 Month';
+  }
+  return label;
+}
+
+function clearBhpsGroupError(group) {
+  group.classList.remove('has-error');
+  group.querySelector('.form-field-error')?.remove();
+}
+
+/**
+ * Builds the BHPS questions as required radio groups.
+ * @param {Array<object|null>} questions Configs from getBhpsQuestion
+ * @returns {HTMLDivElement|null} The questions, or null when none are authored
+ */
+function buildBhpsQuestions(questions) {
+  const groups = questions.map((config, index) => {
+    if (!config) return null;
+    const group = document.createElement('div');
+    group.className = 'disclaimer-group';
+    const fieldset = document.createElement('fieldset');
+    const legend = document.createElement('legend');
+    legend.append(config.question, ' ');
+    const required = document.createElement('span');
+    required.className = 'form-global__required';
+    required.setAttribute('aria-hidden', 'true');
+    required.textContent = '*';
+    legend.append(required);
+
+    const options = document.createElement('div');
+    options.className = 'radio-options-wrapper';
+    config.options.forEach((label) => {
+      const option = document.createElement('label');
+      option.className = 'disclaimer-radio-label';
+      const input = document.createElement('input');
+      input.type = 'radio';
+      input.name = BHPS_FIELD_NAMES[index];
+      input.value = bhpsOptionValue(label, index);
+      input.required = true;
+      input.dataset.label = label;
+      input.className = 'form-radio-input__field';
+      input.addEventListener('change', () => clearBhpsGroupError(group));
+      const circle = document.createElement('span');
+      circle.className = 'form-radio-input__custom-element';
+      circle.setAttribute('aria-hidden', 'true');
+      const text = document.createElement('span');
+      text.className = 'form-global__custom-label-text';
+      text.textContent = label;
+      option.append(input, circle, text);
+      options.append(option);
+    });
+
+    fieldset.append(legend, options);
+    group.append(fieldset);
+    return group;
+  }).filter(Boolean);
+
+  if (!groups.length) return null;
+  const wrapper = document.createElement('div');
+  wrapper.className = 'new-disclaimer-questions';
+  wrapper.append(...groups);
+  return wrapper;
+}
+
+/**
+ * Required check for a BHPS radio group; shows "Field is required" when empty.
+ * @param {Element} group The .disclaimer-group
+ * @returns {boolean} Whether an option is selected
+ */
+function validateBhpsGroup(group) {
+  if (group.querySelector('.form-radio-input__field:checked')) {
+    clearBhpsGroupError(group);
+    return true;
+  }
+  if (!group.querySelector('.form-field-error')) {
+    const error = createErrorMessageElement();
+    error.textContent = 'Field is required';
+    group.querySelector('fieldset').append(error);
+  }
+  group.classList.add('has-error');
+  return false;
+}
+
+/**
+ * @param {string} consentNoteHtml Authored consent note markup
+ * @param {object} [options]
+ * @param {boolean} [options.showWhatsapp] Whether to render the WhatsApp opt-in
+ * @param {boolean} [options.isBhps] BHPS forms show a checkbox instead of the toggle
+ * @param {Array<object|null>} [options.questions] BHPS questions (from getBhpsQuestion)
+ */
+function createConsentArea(consentNoteHtml, {
+  showWhatsapp = true,
+  isBhps = false,
+  questions = [],
+} = {}) {
   const consentArea = document.createElement('div');
   consentArea.className = 'form-consent-area d-flex flex-column';
 
-  consentArea.innerHTML = `
+  if (showWhatsapp) {
+    const control = isBhps
+      ? `<span class="form-consent-check" aria-hidden="true"></span>
+        <span class="form-consent-text">Get updates on WhatsApp</span>`
+      : `<span class="form-consent-toggle" aria-hidden="true"></span>
+        <span class="form-consent-text">Update me on WhatsApp</span>`;
+    consentArea.innerHTML = `
     <div class="form-consent-options d-flex flex-wrap align-items-center">
-      <label class="form-consent-item form-consent-item--toggle">
+      <label class="form-consent-item ${isBhps ? 'form-consent-item--checkbox' : 'form-consent-item--toggle'}">
         <input
           type="checkbox"
           class="form-consent-input whatsAppConsentFormFld"
           name="updateMeOnWhatsapp"
           value="true"
         />
-        <span class="form-consent-toggle" aria-hidden="true"></span>
-        <span class="form-consent-text">Update me on WhatsApp</span>
+        ${control}
       </label>
     </div>
   `;
+  }
+
+  if (isBhps) {
+    const questionsEl = buildBhpsQuestions(questions);
+    if (questionsEl) consentArea.append(questionsEl);
+  }
 
   if (consentNoteHtml) {
     const consentNote = document.createElement('div');
@@ -691,6 +858,12 @@ function getAuthoredImageFromCell(cell) {
  * Close active popup
  */
 function closeActivePopup(block, overlay) {
+  const video = overlay?.querySelector('video');
+  if (video) {
+    video.pause();
+    video.removeAttribute('src');
+    video.load();
+  }
   overlay?.remove();
   block.classList.remove('success-active', 'error-active', 'popup-active');
   delete block.dataset.successShown;
@@ -821,6 +994,52 @@ function createPopupScreen(block, type = 'success') {
 }
 
 /**
+ * BHPS success popup (same as the form block's thank-you screen): the
+ * thank-you video for the viewport, with a transparent "Book FREE site visit"
+ * link laid over the button drawn in the video.
+ */
+function createBhpsThankYouScreen(block) {
+  const overlay = document.createElement('div');
+  overlay.className = 'form-popup-overlay form-popup-overlay--success form-popup-overlay--bhps';
+
+  const closeBtn = createCloseButton('Close thank you popup');
+  closeBtn.addEventListener('click', () => {
+    closeActivePopup(block, overlay);
+  });
+
+  const isMobile = window.matchMedia('(max-width: 991px)').matches;
+  const video = document.createElement('video');
+  video.className = 'form-popup-success-video';
+  video.muted = true;
+  video.playsInline = true;
+  video.autoplay = true;
+  video.preload = 'auto';
+  video.setAttribute('muted', '');
+  video.setAttribute('playsinline', '');
+  video.setAttribute('aria-label', 'thank-you');
+  video.src = (isMobile ? BHPS_THANK_YOU_MOBILE_VIDEO : BHPS_THANK_YOU_DESKTOP_VIDEO)
+    || BHPS_THANK_YOU_DESKTOP_VIDEO || BHPS_THANK_YOU_MOBILE_VIDEO;
+
+  overlay.append(closeBtn, video);
+
+  if (BHPS_THANK_YOU_CTA_LINK) {
+    const ctaLabel = 'Book FREE site visit';
+    const cta = document.createElement('a');
+    cta.className = 'form-popup-success-cta';
+    cta.href = BHPS_THANK_YOU_CTA_LINK;
+    cta.target = '_blank';
+    cta.rel = 'noopener noreferrer';
+    cta.setAttribute('aria-label', ctaLabel);
+    cta.addEventListener('click', () => {
+      triggerCTAClickWithLinkAndTitle(BHPS_THANK_YOU_CTA_LINK, ctaLabel, POPUP_BANNER_TITLE);
+    });
+    overlay.append(cta);
+  }
+
+  return overlay;
+}
+
+/**
  * Show success overlay
  */
 function showSuccessScreen(block) {
@@ -833,7 +1052,10 @@ function showSuccessScreen(block) {
     return;
   }
 
-  const overlay = createPopupScreen(block, 'success');
+  // BHPS forms get the thank-you video popup; other forms the default image popup
+  const overlay = block.classList.contains('bhps-form')
+    ? createBhpsThankYouScreen(block)
+    : createPopupScreen(block, 'success');
   block.appendChild(overlay);
   block.dataset.successShown = 'true';
   block.classList.add('success-active', 'popup-active');
@@ -882,6 +1104,15 @@ function bindSubmitHandler(block, row, buttonCell) {
       }
     });
 
+    // BHPS questions are required too
+    row.querySelectorAll('.disclaimer-group').forEach((group) => {
+      if (!validateBhpsGroup(group)) {
+        isValid = false;
+        const question = group.querySelector('legend')?.firstChild?.textContent?.trim();
+        failedFields.push(question || 'BHPS question');
+      }
+    });
+
     if (!isValid) {
       trackFormError({ campaignId, formName, formError: failedFields });
       return;
@@ -919,7 +1150,7 @@ function bindSubmitHandler(block, row, buttonCell) {
   });
 }
 
-function buildFormCard(block, labelsRow, inputsRow, consentNoteHtml) {
+function buildFormCard(block, labelsRow, inputsRow, consentNoteHtml, cardTitle, consentOptions) {
   const labelCells = [...labelsRow.children];
   const inputCellsSource = [...inputsRow.children];
 
@@ -928,7 +1159,7 @@ function buildFormCard(block, labelsRow, inputsRow, consentNoteHtml) {
 
   const title = document.createElement('h3');
   title.className = 'form-banner__card-title';
-  title.textContent = 'Let our experts help you!';
+  title.textContent = cardTitle || 'Let our experts help you!';
   formName = title.textContent?.trim() || 'Form Banner';
 
   const formRow = document.createElement('div');
@@ -978,7 +1209,7 @@ function buildFormCard(block, labelsRow, inputsRow, consentNoteHtml) {
 
   formRow.appendChild(inputsGrid);
 
-  const consentArea = createConsentArea(consentNoteHtml);
+  const consentArea = createConsentArea(consentNoteHtml, consentOptions);
   formRow.appendChild(consentArea);
 
   // Keep toggle ON by default on page load
@@ -1033,85 +1264,195 @@ function buildFormCard(block, labelsRow, inputsRow, consentNoteHtml) {
   return formCard;
 }
 
+// first-column labels of the label | value settings rows
+const SETTING_LABELS = [
+  'form title', 'autoplay', 'interval', 'update me on whatsapp', 'is it a bhps form',
+  'bhps question 1', 'bhps question 2',
+  'default success image', 'default error image',
+  'default success_cta_link', 'default error_cta_link', 'default error_download_link',
+  'bhps thank_you_desktop_video', 'bhps thank_you_mobile_video', 'bhps thank_you_cta_link',
+];
+
+/**
+ * Builds the banner media: a single picture, or a Swiper carousel with dot
+ * pagination when there is more than one slide.
+ * @param {HTMLPictureElement[]} pictures One picture per slide
+ * @returns {HTMLDivElement} The media element
+ */
+function buildMedia(pictures) {
+  const media = document.createElement('div');
+  media.className = 'form-banner__media';
+  if (pictures.length < 2) {
+    media.append(pictures[0]);
+    return media;
+  }
+
+  media.classList.add('swiper');
+  const track = document.createElement('div');
+  track.className = 'swiper-wrapper';
+  pictures.forEach((picture, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'swiper-slide form-banner__slide';
+    slide.setAttribute('aria-label', `${i + 1} / ${pictures.length}`);
+    slide.append(picture);
+    track.append(slide);
+  });
+
+  // static dots until Swiper loads and renders its own, so nothing shifts
+  const pagination = document.createElement('div');
+  pagination.className = 'swiper-pagination form-banner__pagination';
+  pictures.forEach((_, i) => {
+    const dot = document.createElement('span');
+    dot.className = 'swiper-pagination-bullet';
+    if (i === 0) dot.classList.add('swiper-pagination-bullet-active');
+    pagination.append(dot);
+  });
+
+  media.append(track, pagination);
+  return media;
+}
+
+/**
+ * Starts the carousel. Swiper loads on the first interaction with the banner,
+ * or on a timer, to keep it out of LCP/TBT. With autoplay the timer is the
+ * interval itself, and the first slide change happens right at init.
+ * @param {HTMLDivElement} media The media element built by buildMedia
+ * @param {number} [autoplayDelay] Milliseconds between slides; 0 turns autoplay off
+ */
+function initCarousel(media, autoplayDelay = 0) {
+  if (!media.classList.contains('swiper')) return;
+
+  let started = false;
+  const start = async (fromTimer = false) => {
+    if (started) return;
+    started = true;
+    // later slides were lazy; fetch them now so they are ready when shown
+    media.querySelectorAll('img[loading="lazy"]').forEach((img) => { img.loading = 'eager'; });
+    try {
+      const Swiper = window.Swiper || await window.loadSwiper?.();
+      if (!Swiper) return;
+      const swiper = new Swiper(media, {
+        slidesPerView: 1,
+        rewind: true,
+        speed: 600,
+        autoplay: autoplayDelay ? {
+          delay: autoplayDelay,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        } : false,
+        pagination: {
+          el: media.querySelector('.form-banner__pagination'),
+          clickable: true,
+        },
+      });
+      // the first interval already passed while waiting on the timer
+      if (fromTimer && autoplayDelay) swiper.slideNext();
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error('form-banner: Swiper init failed', e);
+    }
+  };
+
+  ['pointerenter', 'touchstart', 'focusin'].forEach((evt) => {
+    media.addEventListener(evt, () => start(), { once: true, passive: true });
+  });
+  setTimeout(() => start(true), autoplayDelay || 6000);
+}
+
 export default function decorate(block) {
   extractFormConfig(block);
   formStarted = false;
   formName = '';
 
-  const rows = [...block.children];
+  // label | value settings rows: read them, then drop them so the rows below keep their positions
+  const settings = {};
+  const settingRows = {};
+  const rows = [...block.children].filter((row) => {
+    // compare without whitespace: DA labels can be split by <br> or across <p>s
+    // ("Default<br>ERROR_CTA_LINK" reads as "DefaultERROR_CTA_LINK")
+    const text = (row.children[0]?.textContent || '').toLowerCase().replace(/\s+/g, '');
+    const label = SETTING_LABELS.find((l) => l.replace(/\s+/g, '') === text);
+    if (!label) return true;
+    settings[label] = row.children[1]?.textContent?.trim() || '';
+    settingRows[label] = row;
+    return false;
+  });
+  const cardTitle = settings['form title'] || '';
+  const autoplay = /^(true|yes)$/i.test(settings.autoplay || '');
+  const interval = Math.max(1000, parseInt(settings.interval, 10) || 5000);
+  const consentOptions = {
+    showWhatsapp: !/^hide$/i.test(settings['update me on whatsapp'] || ''),
+    isBhps: /^true$/i.test(settings['is it a bhps form'] || ''),
+    questions: [
+      getBhpsQuestion(settingRows['bhps question 1']),
+      getBhpsQuestion(settingRows['bhps question 2']),
+    ],
+  };
   if (rows.length < 3) return;
 
   const imageRow = rows[0];
   const labelsRow = rows[1];
   const inputsRow = rows[2];
 
-  const imageCell = imageRow.children[0];
-  if (!imageCell) return;
+  // Row 1 -> one slide per column that has an image (desktop picture, then mobile)
+  const slidePictures = [...imageRow.children]
+    .map((cell) => getPicturesFromCell(cell))
+    .filter((pictures) => pictures.length)
+    .map((pictures, i) => createResponsivePicture(
+      pictures[0],
+      pictures[1] || pictures[0],
+      'Form banner background',
+      i === 0,
+    ))
+    .filter(Boolean);
 
-  const pictures = getPicturesFromCell(imageCell);
-
-  const desktopPicture = pictures[0] || null;
-  const mobilePicture = pictures[1] || pictures[0] || null;
-
-  const responsivePicture = createResponsivePicture(
-    desktopPicture,
-    mobilePicture,
-    'Form banner background',
-  );
-
-  if (!responsivePicture) return;
+  if (!slidePictures.length) return;
 
   // Row 4, col 1 -> form-consent-note rich text
   const consentNoteHtml = extractConsentNoteHtml(rows[3]);
 
-  // Row 5 -> success popup images
-  if (rows[4]) {
-    const successRowCells = [...rows[4].children];
-    SUCCESS_DESKTOP_IMAGE = getAuthoredImageFromCell(successRowCells[0]);
-    SUCCESS_MOBILE_IMAGE = getAuthoredImageFromCell(successRowCells[1]);
-  }
+  // popup images: label | desktop image | mobile image
+  const successCells = [...(settingRows['default success image']?.children || [])];
+  SUCCESS_DESKTOP_IMAGE = getAuthoredImageFromCell(successCells[1]);
+  SUCCESS_MOBILE_IMAGE = getAuthoredImageFromCell(successCells[2]);
 
-  // Row 6 -> error popup images
-  if (rows[5]) {
-    const errorRowCells = [...rows[5].children];
-    ERROR_DESKTOP_IMAGE = getAuthoredImageFromCell(errorRowCells[0]);
-    ERROR_MOBILE_IMAGE = getAuthoredImageFromCell(errorRowCells[1]);
-  }
+  const errorCells = [...(settingRows['default error image']?.children || [])];
+  ERROR_DESKTOP_IMAGE = getAuthoredImageFromCell(errorCells[1]);
+  ERROR_MOBILE_IMAGE = getAuthoredImageFromCell(errorCells[2]);
 
-  // Row 7 -> success CTA link (col 1: label, col 2: URL)
-  if (rows[6]) {
-    const successLinkCells = [...rows[6].children];
-    SUCCESS_CTA_LINK = getAuthoredLinkFromCell(successLinkCells[1]) || SUCCESS_CTA_LINK;
-  }
-
-  // Row 8 -> error CTA link (col 1: label, col 2: URL)
-  if (rows[7]) {
-    const errorLinkCells = [...rows[7].children];
-    ERROR_CTA_LINK = getAuthoredLinkFromCell(errorLinkCells[1]) || ERROR_CTA_LINK;
-  }
-
-  // Row 9 -> error download link (col 1: label, col 2: URL)
-  if (rows[8]) {
-    const downloadLinkCells = [...rows[8].children];
-    ERROR_DOWNLOAD_LINK = getAuthoredLinkFromCell(downloadLinkCells[1]) || ERROR_DOWNLOAD_LINK;
-  }
+  // popup links: label | URL (keep the built-in default when not authored)
+  const linkFrom = (label) => getAuthoredLinkFromCell(settingRows[label]?.children[1]);
+  SUCCESS_CTA_LINK = linkFrom('default success_cta_link') || SUCCESS_CTA_LINK;
+  ERROR_CTA_LINK = linkFrom('default error_cta_link') || ERROR_CTA_LINK;
+  ERROR_DOWNLOAD_LINK = linkFrom('default error_download_link') || ERROR_DOWNLOAD_LINK;
+  BHPS_THANK_YOU_DESKTOP_VIDEO = linkFrom('bhps thank_you_desktop_video');
+  BHPS_THANK_YOU_MOBILE_VIDEO = linkFrom('bhps thank_you_mobile_video');
+  BHPS_THANK_YOU_CTA_LINK = linkFrom('bhps thank_you_cta_link');
 
   block.innerHTML = '';
   block.classList.add('form-banner');
+  // BHPS-only styles are scoped to this class (see form-banner.css)
+  if (consentOptions.isBhps) block.classList.add('bhps-form');
 
   const wrapper = document.createElement('div');
   wrapper.className = 'form-banner__wrapper';
 
-  const media = document.createElement('div');
-  media.className = 'form-banner__media';
-  media.appendChild(responsivePicture);
+  const media = buildMedia(slidePictures);
 
   const overlay = document.createElement('div');
   overlay.className = 'form-banner__overlay';
 
-  const formCard = buildFormCard(block, labelsRow, inputsRow, consentNoteHtml);
+  const formCard = buildFormCard(
+    block,
+    labelsRow,
+    inputsRow,
+    consentNoteHtml,
+    cardTitle,
+    consentOptions,
+  );
 
   overlay.appendChild(formCard);
   wrapper.append(media, overlay);
   block.appendChild(wrapper);
+  initCarousel(media, autoplay ? interval : 0);
 }

@@ -1,0 +1,91 @@
+.cta {
+  --cta-accent: #431a80;
+  --cta-hover: #5e25b2;
+
+  margin-bottom: 50px;
+}
+
+.cta .cta-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.cta.left .cta-buttons {
+  justify-content: flex-start;
+}
+
+.cta.right .cta-buttons {
+  justify-content: flex-end;
+}
+
+/* outline (default) – AEM whiteBtn */
+.cta .cta-button {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 9px 20px;
+  border: 1px solid var(--cta-accent);
+  border-radius: 2px;
+  background-color: transparent;
+  color: var(--cta-accent);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.86px;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* hover / focus / active – same as the original (both styles) */
+.cta .cta-button:hover,
+.cta .cta-button:active,
+.cta .cta-button:focus-visible {
+  background-color: var(--cta-hover);
+  color: #fff;
+  text-decoration: none;
+}
+
+.cta .cta-button:focus-visible {
+  outline: 2px solid var(--cta-accent);
+  outline-offset: 2px;
+}
+
+/* filled variant */
+.cta.filled .cta-button {
+  background-color: var(--cta-accent);
+  color: #fff;
+}
+
+.cta.filled .cta-button:hover,
+.cta.filled .cta-button:active,
+.cta.filled .cta-button:focus-visible {
+  background-color: var(--cta-hover);
+}
+
+/* shown after login if the browser blocked the new tab */
+.cta .cta-ready {
+  margin: 12px 0 0;
+  font-size: 13px;
+  text-align: center;
+}
+
+.cta .cta-ready a {
+  color: var(--cta-accent);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+@media (width >= 768px) {
+  .cta {
+    margin-bottom: 100px;
+  }
+
+  .cta .cta-button {
+    width: 270px;
+    padding: 16px 20px;
+    font-size: 13px;
+  }
+}

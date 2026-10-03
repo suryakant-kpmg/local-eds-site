@@ -1,5 +1,6 @@
 /*
- * colour-quiz — step-by-step colour quiz; results come from an authored sheet.
+ * colour-quiz — step-by-step colour quiz with the source's lead form; results
+ * come from the source's recommendation API, or an authored sheet as fallback.
  *
  * AUTHORING (DA table). First cell of each row is a keyword:
  *
@@ -22,9 +23,12 @@
  *   preview image for mobile (or all sizes), preview image for desktop
  *   (>= 992px). Missing preview images fall back to the card image.
  * - results: link to the results sheet | heading | restart button label.
- *   Sheet columns: one per question id (blank or `*` = any) +
- *   `shade 1 name`, `shade 1 code`, `shade 1 hex` … up to 6. Most specific
- *   matching row wins.
+ *   The sheet is used when the recommendation API is not reachable (any host
+ *   but www.asianpaints.com). Columns: one per question id (blank or `*` =
+ *   any) + `shade N name` / `code` / `hex` / `link` (1–4 = first
+ *   recommendation, 5–8 = second), optional `description 1`/`2`, `image`
+ *   (room render) and `texture N name` / `image` / `link` / `top coat` /
+ *   `base coat`. Most specific matching row wins.
  *
  * LEAD FORM (optional; mandatory last step before results when present):
  *   | form    | One last step… | View Recommendations | <endpoint URL> | Our recommendations are just a click away. |
@@ -34,20 +38,30 @@
  *   | field   | pincode | PIN Code | PIN Code | Enter a valid 6 digit Zip Code |
  *   | choice  | painting-service | Are you looking for a home-painting service? | Yes, No | Field is required |
  *   | consent | By proceeding, I authorize … [Terms & Conditions](…) and [Privacy Policy](…). |
- * - form: step label | submit label | endpoint | label for a visitor who
- *   already submitted this session (they get the button only).
- * - The form POSTs `{ data: { name, email, phone: "+91…", pincode,
- *   painting-service, quiz-<question id>…, page, submittedAt } }` as JSON to the
- *   endpoint. No endpoint = nothing is sent (safe for previews).
+ * - form: step label | submit label | save-lead endpoint (or use the
+ *   `lead endpoint` config row) | label for a visitor who already submitted
+ *   on this page view (they get the button only).
+ * - Requests replicate the source (see lead-api.js): AES-encrypted lead
+ *   POSTed form-urlencoded to the save-lead endpoint -> recommendation API ->
+ *   results PDF (html2canvas + jsPDF) uploaded -> lead row + PDF link sent to
+ *   Salesforce. No endpoint = nothing is sent.
+ *
+ * CONFIG rows (`config | key | value`; the importer fills them from the source):
+ *   lead endpoint, recommendations, pdf upload, salesforce (relative paths),
+ *   node, page path, campaign id, campaign name, form name, pdf name,
+ *   pdf logo (image), and labels: download label, share label, primary label,
+ *   complimentary label, texture title, texture title exterior, texture label,
+ *   wallpaper label, one liner 1, one liner 2.
  *
  * Typography and colours are the source's literal computed values, declared
- * once below. The font stack is the source's exact stack (`Manrope`, no
- * fallback) — this repo does not load Manrope (see HANDOFF.md).
+ * once below. The font is the source's `Manrope` plus a generic `sans-serif`
+ * fallback (added on request: this repo does not load Manrope, and without a
+ * fallback browsers show their default serif; see HANDOFF.md).
  */
 
 .colour-quiz {
   /* source values (asianpaints.com .ccQuiz computed styles) */
-  --colour-quiz-font: "Manrope";
+  --colour-quiz-font: "Manrope", sans-serif;
   --colour-quiz-text: #222;
   --colour-quiz-ink: #232426;
   --colour-quiz-on-dark: #fff;
@@ -75,6 +89,14 @@
   --colour-quiz-choice-checked: #7ad06d;
   --colour-quiz-link: #00e;
   --colour-quiz-submit-bg: #feb940;
+  --colour-quiz-submit-disabled-bg: #ddd;
+  --colour-quiz-submit-disabled-text: #979797;
+
+  /* results (source .ccQuizResult computed styles) */
+  --colour-quiz-rec-title: #000;
+  --colour-quiz-rec-border: #c2c2c2;
+  --colour-quiz-extra-label: #6f6b6b;
+  --colour-quiz-rule: rgb(0 0 0 / 10%);
 
   font-family: var(--colour-quiz-font);
   font-size: 14px;
@@ -640,11 +662,20 @@
   cursor: progress;
 }
 
+/* any field showing an error greys the button out; a click still validates */
+.colour-quiz .colour-quiz-submit.colour-quiz-submit-disabled,
+.colour-quiz .colour-quiz-submit.colour-quiz-submit-disabled:hover,
+.colour-quiz .colour-quiz-submit.colour-quiz-submit-disabled:focus-visible {
+  background: var(--colour-quiz-submit-disabled-bg);
+  color: var(--colour-quiz-submit-disabled-text);
+}
+
 .colour-quiz .colour-quiz-spinner {
   display: none;
 }
 
-.colour-quiz .colour-quiz-submit[aria-busy="true"] .colour-quiz-spinner {
+.colour-quiz .colour-quiz-submit[aria-busy="true"] .colour-quiz-spinner,
+.colour-quiz .colour-quiz-download[aria-busy="true"] .colour-quiz-spinner {
   display: inline-block;
   animation: colour-quiz-spin 1s linear infinite;
 }
@@ -658,7 +689,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .colour-quiz .colour-quiz-submit[aria-busy="true"] .colour-quiz-spinner {
+  .colour-quiz .colour-quiz-submit[aria-busy="true"] .colour-quiz-spinner,
+  .colour-quiz .colour-quiz-download[aria-busy="true"] .colour-quiz-spinner {
     animation: none;
   }
 }
@@ -802,8 +834,10 @@
   outline: none;
 }
 
+/* the two pills wrap rather than overflow when the font runs wider */
 .colour-quiz .colour-quiz-results-actions {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
   gap: 9px;
   padding-top: 17px;
@@ -831,57 +865,345 @@
   outline-offset: 2px;
 }
 
-.colour-quiz .colour-quiz-shades {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 24px;
-  margin: 32px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.colour-quiz .colour-quiz-shade {
-  display: flex;
-  flex-direction: column;
-}
-
-.colour-quiz .colour-quiz-shade-chip {
-  display: block;
-  aspect-ratio: 123 / 134;
-  border-radius: 5px 60px 5px 5px;
-  background-color: var(--colour-quiz-shade, var(--light-color));
-  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 8%);
-}
-
-.colour-quiz .colour-quiz-shade-name {
-  margin-top: 8px;
+/* "Share on WhatsApp" pill next to "Do it again" (mobile only, as on the source) */
+.colour-quiz .colour-quiz-share {
+  box-sizing: border-box;
+  display: inline-block;
+  height: 38px;
+  padding: 10px 17px 11px 20px;
+  border: 1px solid var(--colour-quiz-on-dark);
+  border-radius: 45px;
+  background: transparent;
+  color: var(--colour-quiz-on-dark);
   font-size: 14px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.86px;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.colour-quiz .colour-quiz-share:hover {
+  border: 0;
+  background: var(--colour-quiz-pill-bg);
+  color: var(--colour-quiz-pill-text);
+}
+
+.colour-quiz .colour-quiz-share:focus-visible {
+  outline: 2px solid var(--colour-quiz-on-dark);
+  outline-offset: 2px;
+}
+
+/* recommendations (source .main-container; mobile / tablet first).
+   The source sizes them by viewport, with 45px page gutters; this block sits
+   in a narrower section, so the desktop rules below are container queries at
+   the source's content widths (viewport - 90px): 902px (992px viewport),
+   935px (1025px), 1110px (1200px) and 1350px (1440px). */
+.colour-quiz .colour-quiz-recs {
+  container: colour-quiz-recs / inline-size;
+}
+
+.colour-quiz .colour-quiz-rec {
+  margin: 36px 0 30px;
+}
+
+.colour-quiz .colour-quiz-rec + .colour-quiz-rec {
+  margin-top: 88px;
+}
+
+.colour-quiz .colour-quiz-rec-title {
+  margin: 0 0 31px 32px;
+  color: var(--colour-quiz-rec-title);
+  font-size: 20px;
   font-weight: 700;
-  line-height: 22px;
+  line-height: 24px;
+  letter-spacing: 0.2px;
+}
+
+.colour-quiz .colour-quiz-rec-body {
+  margin: 0 15px;
+  padding: 14px;
+  border: 1px solid var(--colour-quiz-rec-border);
+  border-radius: 8px;
+}
+
+.colour-quiz .colour-quiz-combo {
+  border-radius: 8px;
+}
+
+.colour-quiz .colour-quiz-combo + .colour-quiz-combo {
+  margin-top: 22px;
+}
+
+/* second combination: room first in the markup, shades on top on mobile */
+.colour-quiz .colour-quiz-combo-alt {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.colour-quiz .colour-quiz-combo-shades {
+  width: 185px;
+  margin: 0 auto;
+}
+
+.colour-quiz .colour-quiz-combo-label {
+  margin: 16px 0 0;
+  color: var(--colour-quiz-text);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 0.2px;
+}
+
+.colour-quiz .colour-quiz-combo-label-second {
+  margin-top: 38px;
+}
+
+.colour-quiz .colour-quiz-card {
+  box-sizing: border-box;
+  display: block;
+  width: 185px;
+  height: 260px;
+  margin-top: 10px;
+  padding: 3px;
+  border: 1px solid var(--colour-quiz-rec-border);
+  border-radius: 5px 50px 5px 5px;
+  color: var(--colour-quiz-rec-title);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.2px;
+  text-decoration: none;
+}
+
+.colour-quiz a.colour-quiz-card:hover {
+  color: var(--colour-quiz-rec-title);
+  text-decoration: none;
+}
+
+.colour-quiz .colour-quiz-card:focus-visible {
+  outline: 2px solid var(--colour-quiz-hover-border);
+  outline-offset: 2px;
+}
+
+.colour-quiz .colour-quiz-card-swatch {
+  display: block;
+  width: 175px;
+  height: 205px;
+  border-radius: 5px 50px 5px 5px;
+}
+
+.colour-quiz .colour-quiz-card-name {
+  display: block;
+  margin-top: 12px;
+  padding-left: 13px;
   text-transform: capitalize;
 }
 
-.colour-quiz .colour-quiz-shade-code {
-  font-size: 13px;
-  line-height: 18px;
+.colour-quiz .colour-quiz-card-code {
+  display: block;
+  padding-left: 13px;
 }
 
-.colour-quiz .colour-quiz-shades-empty {
-  grid-column: 1 / -1;
-  font-size: 14px;
+/* source sprite arrow (Icons-Sprite-firstFold -148px -126px), drawn as SVG */
+.colour-quiz .colour-quiz-arrow {
+  display: block;
+  float: right;
+  width: 25px;
+  height: 13px;
+  margin: -15px 2px 0 0;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 13"><path d="M1 6.5h21.5M16 1l6 5.5-6 5.5" fill="none" stroke="%23333" stroke-width="1.3"/></svg>') no-repeat center / 25px 13px;
+}
+
+/* room render: wall rectangles in the shade colours behind the room cut-out */
+.colour-quiz .colour-quiz-room {
+  position: relative;
+  overflow: hidden;
+  width: 272px;
+  height: 205px;
+  margin: 30px auto 0;
+  border-radius: 5px;
+}
+
+.colour-quiz .colour-quiz-room svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.colour-quiz .colour-quiz-room [class^="colour-quiz-wall-secondary"] {
+  display: none;
+}
+
+.colour-quiz .colour-quiz-room .colour-quiz-wall-secondary-small,
+.colour-quiz .colour-quiz-room .colour-quiz-wall-secondary-print {
+  display: inline;
+}
+
+.colour-quiz .colour-quiz-room-image {
+  position: absolute;
+  inset: 0;
+  border-radius: 5px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none;
+}
+
+/* texture / wallpaper suggestion */
+.colour-quiz .colour-quiz-extras-title {
+  margin: 20px 0 24px;
+  color: var(--colour-quiz-text);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.colour-quiz .colour-quiz-extra {
+  display: grid;
+  justify-content: center;
+  margin-bottom: 56px;
+  color: var(--colour-quiz-text);
+  text-decoration: none;
+}
+
+.colour-quiz a.colour-quiz-extra:hover {
+  color: var(--colour-quiz-text);
+  text-decoration: none;
+}
+
+.colour-quiz .colour-quiz-extra:focus-visible {
+  outline: 2px solid var(--colour-quiz-hover-border);
+  outline-offset: 2px;
+}
+
+.colour-quiz .colour-quiz-extra-label {
+  display: block;
+  width: 168px;
+  margin: 0 auto;
+  color: var(--colour-quiz-extra-label);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.2px;
+}
+
+.colour-quiz .colour-quiz-extra-image {
+  display: block;
+  width: 168px;
+  height: 179px;
+  margin: 10px 0 auto;
+  border-radius: 0 50px 0 0;
+}
+
+.colour-quiz .colour-quiz-extra .colour-quiz-extra-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.colour-quiz .colour-quiz-extra-name,
+.colour-quiz .colour-quiz-extra-code {
+  display: block;
+  width: 168px;
+  margin: 10px 0 auto;
+  color: var(--colour-quiz-rec-title);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.2px;
+}
+
+.colour-quiz .colour-quiz-extra .colour-quiz-arrow {
+  float: left;
+  margin: 0 0 0 147px;
+}
+
+.colour-quiz .colour-quiz-extra-coat {
+  display: block;
+  margin-top: -15px;
+}
+
+.colour-quiz .colour-quiz-extra-coat + .colour-quiz-extra-coat {
+  margin-top: -4px;
+}
+
+/* print layout (source .pdfHTML): kept off-screen; html2canvas renders its
+   copy at a 1350px window width, i.e. with the desktop rules below */
+.colour-quiz .colour-quiz-print {
+  position: absolute;
+  top: 0;
+  left: -10000px;
+  box-sizing: border-box;
+  width: 1350px;
+  padding: 0 53px 0 45px;
+  background: #fff;
+}
+
+.colour-quiz .colour-quiz-print.colour-quiz-print-active {
+  left: 0;
+}
+
+.colour-quiz .colour-quiz-print-logo {
+  display: block;
+  width: 207px;
+}
+
+.colour-quiz .colour-quiz-print .colour-quiz-print-header {
+  box-sizing: border-box;
+  height: 245px;
+  margin-top: 20px;
+  padding: 70px 0;
+}
+
+.colour-quiz .colour-quiz-print .colour-quiz-results-header.colour-quiz-print-header h2 {
+  margin: 0;
+  padding: 0 100px;
+  color: var(--colour-quiz-on-dark);
+  font-family: var(--colour-quiz-font);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 48px;
   text-align: center;
 }
 
-.colour-quiz .colour-quiz-results-cta {
-  display: flex;
-  justify-content: center;
-  padding: 10px 0 16px;
+.colour-quiz .colour-quiz-print-part:first-child .colour-quiz-rec {
+  padding-bottom: 150px;
 }
 
-.colour-quiz .colour-quiz-restart {
+.colour-quiz .colour-quiz-print-part + .colour-quiz-print-part .colour-quiz-rec {
+  margin-top: 88px;
+}
+
+.colour-quiz .colour-quiz-print .colour-quiz-arrow {
+  display: none;
+}
+
+/* print: the second combination's shades sit 30px in, widening their column */
+.colour-quiz .colour-quiz-print .colour-quiz-combo-alt .colour-quiz-combo-shades {
+  width: auto;
+}
+
+.colour-quiz .colour-quiz-print .colour-quiz-combo-alt .colour-quiz-combo-label,
+.colour-quiz .colour-quiz-print .colour-quiz-combo-alt .colour-quiz-card {
+  margin-left: 30px;
+}
+
+.colour-quiz .colour-quiz-print .colour-quiz-extras {
+  flex-shrink: 0;
+}
+
+.colour-quiz .colour-quiz-results-cta {
+  padding: 10px 0 16px;
+  text-align: center;
+}
+
+.colour-quiz .colour-quiz-restart,
+.colour-quiz .colour-quiz-download {
   box-sizing: border-box;
+  display: block;
   width: 212px;
-  margin: 0;
+  margin: 0 auto;
   padding: 17px 10px;
   border: 1px solid var(--colour-quiz-restart-border);
   border-radius: 4px;
@@ -902,9 +1224,92 @@
   box-shadow: none;
 }
 
-.colour-quiz .colour-quiz-restart:focus-visible {
+.colour-quiz .colour-quiz-download {
+  margin-top: 15px;
+  border: 0;
+  background: var(--colour-quiz-submit-bg);
+  color: var(--colour-quiz-text);
+}
+
+.colour-quiz .colour-quiz-restart:focus-visible,
+.colour-quiz .colour-quiz-download:focus-visible {
   outline: 2px solid var(--colour-quiz-hover-border);
   outline-offset: 2px;
+}
+
+.colour-quiz .colour-quiz-download[hidden] {
+  display: none;
+}
+
+.colour-quiz .colour-quiz-download:hover,
+.colour-quiz .colour-quiz-download:focus-visible {
+  background: var(--colour-quiz-restart-hover);
+  color: var(--colour-quiz-text);
+}
+
+.colour-quiz .colour-quiz-download[aria-busy="true"] {
+  cursor: progress;
+}
+
+.colour-quiz .colour-quiz-results-rule {
+  height: 0;
+  margin: 14px 0;
+  border: 0;
+  border-top: 1px solid var(--colour-quiz-rule);
+  background: #000;
+  opacity: 0.2;
+}
+
+/* source: smallest phones get smaller result buttons */
+@media (width <= 360px) {
+  .colour-quiz .colour-quiz-restart-pill,
+  .colour-quiz .colour-quiz-share,
+  .colour-quiz .colour-quiz-restart,
+  .colour-quiz .colour-quiz-download {
+    font-size: 12px;
+    padding: 12px 12px 12px 14px;
+  }
+}
+
+/* room render size per source breakpoint (mobile / tablet) */
+@media (width < 360px) {
+  .colour-quiz .colour-quiz-room {
+    width: 240px;
+    height: 180px;
+  }
+}
+
+@media (width >= 576px) and (width < 768px) {
+  .colour-quiz .colour-quiz-room {
+    width: 100%;
+    height: 276px;
+    margin: 30px 0 0;
+  }
+
+  .colour-quiz .colour-quiz-room-image {
+    background-size: cover;
+  }
+}
+
+@container colour-quiz-recs (width >= 902px) {
+  .colour-quiz .colour-quiz-room .colour-quiz-wall-secondary-small {
+    display: none;
+  }
+
+  .colour-quiz .colour-quiz-room .colour-quiz-wall-secondary-medium {
+    display: inline;
+  }
+
+  .colour-quiz .colour-quiz-room-image {
+    background-size: 100% 100%;
+  }
+}
+
+@container colour-quiz-recs (902px <= width < 935px) {
+  .colour-quiz .colour-quiz-room {
+    width: 275px;
+    height: 230px;
+  }
 }
 
 /* screen-reader-only live status */
@@ -930,8 +1335,12 @@
     min-height: 480px;
     padding: 40px 115px 40px 80px;
     border-radius: 12px;
+
+    /* source: the artwork is stretched to the panel (100% 100%), so the
+       "Colour Quiz" wordmark at its bottom left shows at any width */
     background-image: var(--colour-quiz-bg-desktop);
     background-position: left center;
+    background-size: 100% 100%;
   }
 
   .colour-quiz .colour-quiz-steps {
@@ -1039,7 +1448,7 @@
   }
 
   .colour-quiz .colour-quiz-results-header {
-    min-height: 245px;
+    height: 245px;
     padding: 55px 0;
     background-image: var(--colour-quiz-results-gradient), var(--colour-quiz-bg-desktop);
   }
@@ -1051,17 +1460,135 @@
   }
 
   .colour-quiz .colour-quiz-results-cta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
     gap: 17px;
     padding: 50px 0 60px;
+    text-align: start;
   }
 
-  .colour-quiz .colour-quiz-restart {
+  .colour-quiz .colour-quiz-restart,
+  .colour-quiz .colour-quiz-download {
     width: 270px;
+    margin: 0;
     padding: 16px 10px;
   }
 
   .colour-quiz .colour-quiz-restart:hover,
-  .colour-quiz .colour-quiz-restart:focus-visible {
+  .colour-quiz .colour-quiz-restart:focus-visible,
+  .colour-quiz .colour-quiz-download:hover,
+  .colour-quiz .colour-quiz-download:focus-visible {
     padding: 17px 10px;
+  }
+
+  .colour-quiz .colour-quiz-share {
+    display: none;
+  }
+}
+
+/* --- recommendations side by side (source: from a 1025px viewport) --- */
+@container colour-quiz-recs (width >= 935px) {
+  .colour-quiz .colour-quiz-rec-title {
+    margin-left: 0;
+  }
+
+  .colour-quiz .colour-quiz-rec-body {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .colour-quiz .colour-quiz-combo,
+  .colour-quiz .colour-quiz-combo-alt {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 926px;
+    height: 642px;
+    border: 1px solid var(--colour-quiz-rec-border);
+    border-radius: 8px;
+  }
+
+  .colour-quiz .colour-quiz-combo-shades {
+    margin: 0;
+  }
+
+  .colour-quiz .colour-quiz-room {
+    width: 690px;
+    height: 580px;
+    margin: 40px 0 0;
+  }
+
+  .colour-quiz .colour-quiz-extras {
+    box-sizing: border-box;
+    min-width: 0;
+    width: 326px;
+    overflow-wrap: break-word;
+    height: 343px;
+    padding: 0 20px 20px;
+  }
+
+  .colour-quiz .colour-quiz-extras-title {
+    margin: 0 0 140px;
+    font-size: 40px;
+    line-height: 49px;
+  }
+
+  .colour-quiz .colour-quiz-extra {
+    display: block;
+    margin-bottom: 126px;
+  }
+
+  .colour-quiz .colour-quiz-extra-label {
+    width: auto;
+    margin: 0;
+  }
+
+  .colour-quiz .colour-quiz-extra-image {
+    margin: 10px 0 0;
+  }
+
+  .colour-quiz .colour-quiz-extra-name,
+  .colour-quiz .colour-quiz-extra-code {
+    width: auto;
+    margin: 8px 0 0;
+  }
+
+  .colour-quiz .colour-quiz-extra-coat,
+  .colour-quiz .colour-quiz-extra-coat + .colour-quiz-extra-coat {
+    margin-top: 0;
+  }
+}
+
+@container colour-quiz-recs (width >= 1110px) {
+  .colour-quiz .colour-quiz-extra .colour-quiz-arrow {
+    position: absolute;
+  }
+}
+
+@container colour-quiz-recs (width >= 1350px) {
+  .colour-quiz .colour-quiz-combo,
+  .colour-quiz .colour-quiz-combo-alt {
+    width: 1076px;
+  }
+
+  .colour-quiz .colour-quiz-room {
+    width: 840px;
+  }
+
+  .colour-quiz .colour-quiz-room-image {
+    background-position: center top;
+  }
+
+  .colour-quiz .colour-quiz-room .colour-quiz-wall-secondary-medium {
+    display: none;
+  }
+
+  .colour-quiz .colour-quiz-room .colour-quiz-wall-secondary-large {
+    display: inline;
   }
 }

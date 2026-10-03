@@ -313,7 +313,7 @@ export default async function decorate(block) {
     // Init swiper after DOM is appended
     setTimeout(() => {
       swiper = new Swiper($swiper[0], {
-        loop: slideCount > 1,
+        loop: slideCount > 1 && !$block.hasClass('service-variant'),
         slidesPerView: 1.2,
         spaceBetween: 10,
         pagination: {

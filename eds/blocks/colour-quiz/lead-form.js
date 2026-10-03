@@ -1,41 +1,153 @@
+import {
+  ltyEncrypt, saveLead, sendToSalesforce, marketingChannel, mcvid, gaClientId, utmValues,
+  rememberVisit, track,
+} from './lead-api.js';
+
 /**
  * colour-quiz lead form — the last quiz step, shown before the results.
+ * Behaviour, validation and requests replicate the source quiz
+ * (asianpaints.com home-colour-guide, colourconsultancy component).
  *
  * Authoring rows (first cell is the keyword; see colour-quiz.css header):
- *   form    | step label | submit label | endpoint URL | returning-visitor label
+ *   form    | step label | submit label | save-lead endpoint | returning-visitor label
  *   field   | key | label | placeholder | error message
  *   choice  | key | question | options (comma separated) | error message
  *   consent | rich text (links allowed)
- * Known field keys get the matching input type and validation: `name`,
- * `email`, `phone` (10-digit Indian mobile, shown with +91) and `pincode`
- * (6-digit PIN). Any other key is a required text field.
+ * plus `config | key | value` rows read by colour-quiz.js (`lead endpoint`
+ * — used when the form row has none —, `node`, `campaign id`,
+ * `campaign name`, `salesforce`, `form name`).
+ * Known field keys get the source's input filters and checks: `name`,
+ * `email`, `phone` (10 digits, not starting 0, shown with +91) and `pincode`
+ * (6 digits). Any other key is a required text field. The first choice is
+ * sent as `remarks`, a second one as `answer`.
  *
- * Submission: when an endpoint is set, the form POSTs JSON
- * `{ data: { ...fields, ...quiz answers, page, submittedAt } }` to it. With no
- * endpoint nothing is sent and the visitor goes straight to the results.
- * Only a "submitted" flag is kept (sessionStorage) so a returning visitor in
- * the same session skips re-entering details; no personal data is stored.
+ * Submit (as on the source): name split into first/last word, fields
+ * AES-encrypted (lead-api.js) and POSTed to the save-lead endpoint; the
+ * returned row id is later sent to Salesforce with the results PDF link.
+ * The source also keeps name|email|mobile|PIN in a `CCFormFields` cookie
+ * (30 days) to prefill the form, and the quiz state in localStorage
+ * `storeQuizResult`. A visitor who already submitted on this page view gets
+ * the button only. With no endpoint nothing is sent.
  */
 
 const REQUIRED = 'Field is required';
-const STORAGE_KEY = 'colour-quiz-lead-submitted';
+const COOKIE = 'CCFormFields';
+const STORE_KEY = 'storeQuizResult';
+
+// question id -> source quiz field (storeQuizResult / recommendation request)
+const QUIZ_FIELDS = {
+  space: 'requestType',
+  room: 'roomType',
+  style: 'roomStyle',
+  vibe: 'roomPersonality',
+  'building-style': 'buildingStyle',
+  'building-vibe': 'buildingVibe',
+};
+
+// source keydown filters (inline onkeydown on the inputs); shortcuts with
+// Ctrl/Cmd and Enter/Home/End are also let through here
+const NAV_KEYS = ['Tab', 'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Enter', 'Home', 'End'];
+const digitsOnly = (e) => NAV_KEYS.includes(e.code) || NAV_KEYS.includes(e.key)
+  || (!Number.isNaN(Number(e.key)) && e.code !== 'Space');
+const lettersOnly = (e) => /[a-z, ]/i.test(e.key);
 
 const FIELD_TYPES = {
   name: {
-    type: 'text', autocomplete: 'name', maxLength: 30, test: (v) => /^[\p{L}][\p{L} .'-]{1,29}$/u.test(v),
+    type: 'text', autocomplete: 'name', maxLength: 30, filter: lettersOnly, test: (v) => /^([a-zA-Z]+\s?)*[a-zA-Z]+$/.test(v.trim()),
   },
   email: {
-    type: 'email', autocomplete: 'email', maxLength: 254, test: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v),
+    type: 'text', autocomplete: 'email', inputMode: 'email', test: (v) => /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i.test(v),
   },
   phone: {
-    type: 'tel', autocomplete: 'tel-national', inputMode: 'numeric', maxLength: 10, test: (v) => /^[6-9]\d{9}$/.test(v),
+    type: 'tel', autocomplete: 'tel-national', inputMode: 'numeric', filter: digitsOnly, test: (v) => /^[1-9]\d{9}$/.test(v),
   },
   pincode: {
-    type: 'text', autocomplete: 'postal-code', inputMode: 'numeric', maxLength: 6, test: (v) => /^[1-9]\d{5}$/.test(v),
+    type: 'text', autocomplete: 'postal-code', inputMode: 'numeric', maxLength: 6, filter: digitsOnly, test: (v) => /^[0-9]{6}$/.test(v),
   },
 };
 
 const text = (el) => (el?.textContent || '').trim();
+
+/**
+ * Lead + quiz state for this page view (the source resets it on load):
+ * `quiz` is the source's storeQuizResult with its placeholder defaults.
+ */
+const session = {
+  submitted: false,
+  rowId: '',
+  lead: null,
+  dbFlag: false,
+  analyticsSent: false,
+  quiz: {
+    userName: 'userFullName',
+    userEmail: 'userEmailId',
+    requestType: 'intVal1',
+    roomType: 'intVal2',
+    roomStyle: 'intVal5',
+    roomPersonality: 'intVal6',
+    buildingVibe: 'extVal3',
+    buildingStyle: 'extVal4',
+    userPhone: 'userPhoneNum',
+    userPinCode: 'userPINCode',
+    userCity: 'userCity',
+    formPreviouslySubmitted: false,
+  },
+};
+
+function storeQuiz() {
+  session.quiz.formPreviouslySubmitted = session.submitted;
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(session.quiz));
+  } catch (e) { /* storage unavailable */ }
+}
+
+/** Keep the source's quiz state in step with an answer (it sends this object to the API). */
+export function recordAnswer(id, value) {
+  const field = QUIZ_FIELDS[id];
+  if (!field) return;
+  session.quiz[field] = value;
+  storeQuiz();
+}
+
+/** The recommendation request object (storeQuizResult). */
+export const quizRequest = () => ({ ...session.quiz });
+
+/** "Type : Interior | RoomType : … " filter string used by the source analytics. */
+function quizFilter() {
+  const q = session.quiz;
+  if (q.requestType === 'Interior') return `Type : ${q.requestType} | RoomType : ${q.roomType} | RoomStyle : ${q.roomStyle} | RoomVibe : ${q.roomPersonality}`;
+  if (q.requestType === 'Exterior') return `Type : ${q.requestType} | BuildingStyle : ${q.buildingStyle} | BuildingVibe : ${q.buildingVibe}`;
+  return '';
+}
+
+function trackSubmit() {
+  const filter = quizFilter();
+  const ga4 = { event: 'colour_quiz_submit' };
+  const [space, rooms, style, vibe] = filter.split('|').map((part) => (part.split(':')[1] || '').trim());
+  if (space) ga4.select_space = space;
+  if (rooms) ga4.select_rooms = rooms;
+  if (style) ga4.select_style = style;
+  if (vibe) ga4.preferred_vibe = vibe;
+  track('HCG_submit', { filter, flowType: '' }, { ga4 });
+}
+
+function readCookie() {
+  const raw = document.cookie.split('; ').find((c) => c.startsWith(`${COOKIE}=`));
+  if (!raw) return null;
+  const [name, email, phone, pincode, city] = decodeURIComponent(raw.slice(COOKIE.length + 1)).split('|');
+  const ok = (v) => (v && v !== 'undefined' ? v : '');
+  return {
+    name: ok(name), email: ok(email), phone: ok(phone), pincode: ok(pincode), city: ok(city),
+  };
+}
+
+function writeCookie(values) {
+  const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString();
+  // fName + " " + lName | email | mobile | PIN | city — the source's format
+  // (an unset city or last name is written as "undefined" / empty)
+  const body = `${values.fName} ${values.lName}|${values.email}|${values.phone}|${values.pincode}|${values.city}`;
+  document.cookie = `${COOKIE}=${body};expires=${expires};path=/`;
+}
 
 /** Collect lead-form rows while the block table is parsed. */
 export function readLeadRow(kind, cells, lead) {
@@ -71,20 +183,57 @@ export const emptyLead = () => ({
   enabled: false, fields: [], choices: [], consent: null,
 });
 
-export const leadSubmitted = () => {
-  try { return sessionStorage.getItem(STORAGE_KEY) === '1'; } catch (e) { return false; }
-};
+/** Already submitted on this page view (the source then shows the button only). */
+export const leadSubmitted = () => session.submitted;
 
-function markSubmitted() {
-  try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) { /* storage unavailable */ }
+const allowedOrigin = () => ['www.asianpaints.com', 'beta.asianpaints.com', 'localhost'].includes(window.location.hostname);
+
+/**
+ * After the results PDF is uploaded (or the results failed): send the lead
+ * row to Salesforce with the PDF link, then the one-time form_submit event —
+ * the source's leadstosalesforce step.
+ * @param {object} settings block config (`salesforce`, `form name`, `page path`)
+ * @param {string} pdfUrl uploaded PDF link ('' when none)
+ */
+export async function completeLead(settings, pdfUrl) {
+  const url = settings.get('salesforce');
+  if (!session.rowId || !session.lead || !url) return;
+  const salesforce = await sendToSalesforce(url, session.lead, session.rowId, pdfUrl);
+  const pagePath = settings.get('page path') || '';
+  if (session.analyticsSent || !(session.dbFlag || salesforce)) return;
+  if (!(pagePath.includes('/content/ap/en/') || allowedOrigin())) return;
+  session.analyticsSent = true;
+  let destination = 'Both';
+  if (!salesforce) destination = 'DB';
+  else if (!session.dbFlag) destination = 'Salesforce';
+  track('form_submit', {
+    formName: settings.get('form name') || '',
+    pincode: session.lead.plainPin,
+    whatsappOptIn: '',
+    contruction: session.lead.remarks || '',
+    localpainter: session.lead.answer || '',
+    campaignId: session.lead.campaignId,
+    dataDestination: destination,
+    filterValue: '',
+    flowType: '',
+    language: '',
+    GSTNo: '',
+    shopAdress: '',
+    userType: '',
+  });
 }
 
 /**
  * Build the form card.
  * @param {object} lead parsed config
- * @param {object} opts { uid, getAnswers: () => object, onDone: () => void }
+ * @param {object} opts { uid, settings: Map, onDone: () => Promise }
  */
-export function buildLeadForm(lead, { uid, getAnswers, onDone }) {
+export function buildLeadForm(lead, { uid, settings, onDone }) {
+  rememberVisit();
+  const utm = utmValues();
+  const endpoint = lead.endpoint || settings.get('lead endpoint');
+  const prefill = readCookie();
+
   const card = document.createElement('div');
   card.className = 'colour-quiz-form';
   const form = document.createElement('form');
@@ -92,12 +241,23 @@ export function buildLeadForm(lead, { uid, getAnswers, onDone }) {
   form.setAttribute('aria-labelledby', `colour-quiz-${uid}-q`);
   card.append(form);
 
-  const controls = [];
+  const submit = document.createElement('button');
+  submit.type = 'submit';
+  submit.className = 'colour-quiz-submit';
+  submit.innerHTML = '<span class="colour-quiz-submit-label"></span><span class="colour-quiz-spinner" aria-hidden="true"></span>';
+  submit.firstChild.textContent = lead.submit;
+
+  const fieldControls = [];
+  const choiceControls = [];
   const setError = (wrap, input, message) => {
     let msg = wrap.querySelector('.colour-quiz-field-message');
     wrap.classList.toggle('colour-quiz-field-error', !!message);
     input.setAttribute('aria-invalid', message ? 'true' : 'false');
-    if (!message) { msg?.remove(); return; }
+    if (!message) {
+      msg?.remove();
+      input.removeAttribute('aria-describedby');
+      return;
+    }
     if (!msg) {
       msg = document.createElement('p');
       msg.className = 'colour-quiz-field-message';
@@ -108,11 +268,18 @@ export function buildLeadForm(lead, { uid, getAnswers, onDone }) {
     input.setAttribute('aria-describedby', msg.id);
   };
 
-  // text inputs
+  // the source greys the button out while any text field shows an error
   const inputs = document.createElement('div');
+  const syncSubmit = () => {
+    const blocked = !!inputs.querySelector('.colour-quiz-field-error');
+    submit.classList.toggle('colour-quiz-submit-disabled', blocked);
+    submit.setAttribute('aria-disabled', String(blocked));
+  };
+
+  // text inputs
   inputs.className = 'colour-quiz-form-fields';
   lead.fields.forEach((field) => {
-    const spec = FIELD_TYPES[field.id] || { type: 'text', test: (v) => v.length > 0 };
+    const spec = FIELD_TYPES[field.id] || { type: 'text', test: (v) => v.trim().length > 0 };
     const wrap = document.createElement('div');
     wrap.className = `colour-quiz-field colour-quiz-field-${field.id}`;
     const inputId = `colour-quiz-${uid}-${field.id}`;
@@ -127,6 +294,7 @@ export function buildLeadForm(lead, { uid, getAnswers, onDone }) {
     if (spec.autocomplete) input.autocomplete = spec.autocomplete;
     if (spec.inputMode) input.inputMode = spec.inputMode;
     if (spec.maxLength) input.maxLength = spec.maxLength;
+    if (prefill?.[field.id]) input.value = prefill[field.id];
     const control = document.createElement('div');
     control.className = 'colour-quiz-field-control';
     if (field.id === 'phone') {
@@ -140,26 +308,32 @@ export function buildLeadForm(lead, { uid, getAnswers, onDone }) {
     wrap.append(label, control);
     inputs.append(wrap);
 
+    // source: required check, then the field's format check, on blur;
+    // any key press clears the field's error until the next blur
     const validate = () => {
-      if (spec.inputMode === 'numeric') input.value = input.value.replace(/\D/g, '');
-      const value = input.value.trim();
+      const { value } = input;
       let message = '';
-      if (!value) message = REQUIRED;
+      if (!value.length) message = REQUIRED;
       else if (!spec.test(value)) message = field.error || `${label.firstChild.textContent} is invalid`;
       setError(wrap, input, message);
+      syncSubmit();
       return !message;
     };
     input.addEventListener('blur', validate);
-    input.addEventListener('input', () => {
-      if (wrap.classList.contains('colour-quiz-field-error')) validate();
+    input.addEventListener('keydown', (e) => {
+      if (spec.filter && !e.ctrlKey && !e.metaKey && !spec.filter(e)) e.preventDefault();
+      if (wrap.classList.contains('colour-quiz-field-error')) {
+        setError(wrap, input, '');
+        syncSubmit();
+      }
     });
-    controls.push({
-      validate, focus: () => input.focus(), value: () => input.value.trim(), id: field.id,
+    fieldControls.push({
+      validate, focus: () => input.focus(), value: () => input.value, id: field.id,
     });
   });
   form.append(inputs);
 
-  // single-choice questions (pill radios)
+  // single-choice questions (pill radios); nothing is preselected
   lead.choices.forEach((choice) => {
     const set = document.createElement('fieldset');
     set.className = 'colour-quiz-choice';
@@ -189,7 +363,7 @@ export function buildLeadForm(lead, { uid, getAnswers, onDone }) {
       return ok;
     };
     radios.forEach((r) => r.addEventListener('change', validate));
-    controls.push({
+    choiceControls.push({
       validate,
       focus: () => radios[0].focus(),
       value: () => radios.find((r) => r.checked)?.value || '',
@@ -207,64 +381,108 @@ export function buildLeadForm(lead, { uid, getAnswers, onDone }) {
     });
     form.append(consent);
   }
+  form.append(submit);
 
-  const formError = document.createElement('p');
-  formError.className = 'colour-quiz-form-error';
-  formError.setAttribute('role', 'alert');
-
-  const submit = document.createElement('button');
-  submit.type = 'submit';
-  submit.className = 'colour-quiz-submit';
-  submit.innerHTML = '<span class="colour-quiz-submit-label"></span><span class="colour-quiz-spinner" aria-hidden="true"></span>';
-  submit.firstChild.textContent = lead.submit;
-  form.append(formError, submit);
+  const value = (id) => fieldControls.find((c) => c.id === id)?.value() || '';
+  const choice = (i) => choiceControls[i]?.value();
 
   let busy = false;
+  const setBusy = (on, btn) => {
+    busy = on;
+    btn.toggleAttribute('disabled', on);
+    if (on) btn.setAttribute('aria-busy', 'true');
+    else btn.removeAttribute('aria-busy');
+  };
+
+  /** Save the lead (first submit on this page view), then show the results. */
+  const proceed = async (btn) => {
+    const name = value('name').trim();
+    const [fName, lName = ''] = name.includes(' ') ? name.split(' ') : [name];
+    const values = {
+      fName,
+      lName,
+      email: value('email').trim(),
+      phone: value('phone'),
+      pincode: value('pincode'),
+      city: undefined,
+    };
+    writeCookie(values);
+    trackSubmit();
+
+    // storeQuizResult as the source fills it on submit (it reads the mobile
+    // number from the exterior form, which is only filled by the cookie
+    // prefill on the interior branch)
+    const exterior = session.quiz.requestType === 'Exterior';
+    session.quiz.userPinCode = values.pincode;
+    delete session.quiz.userCity;
+    session.quiz.userPhone = exterior ? values.phone : (prefill?.phone || '');
+    storeQuiz();
+
+    setBusy(true, btn);
+    try {
+      if (!session.submitted && endpoint) {
+        const node = settings.get('node') || '';
+        const lt = await Promise.all([fName, lName, values.email, values.phone, values.pincode]
+          .map((v) => ltyEncrypt(v)));
+        session.lead = {
+          pageUrl: window.location.href,
+          node,
+          remarks: choice(0) ?? '',
+          answer: choice(1) ?? '',
+          fName: lt[0],
+          lName: lt[1],
+          email: lt[2],
+          mobileNo: lt[3],
+          pinCode: lt[4],
+          plainPin: values.pincode,
+          city: values.city,
+          visitorId: mcvid(),
+          gaId: gaClientId(),
+          campaignId: utm.campaign || settings.get('campaign id') || '',
+          campaignName: utm.campaign || settings.get('campaign name') || '',
+          channel: marketingChannel(),
+          utm,
+        };
+        const saved = await saveLead(endpoint, session.lead);
+        session.dbFlag = saved.ok;
+        if (saved.ok && saved.rowId) {
+          session.rowId = saved.rowId;
+          session.submitted = true;
+          storeQuiz();
+        } else if (!saved.ok && node.includes('/ap/en/') && settings.get('salesforce')) {
+          // source: leads the database rejected still go to Salesforce
+          sendToSalesforce(settings.get('salesforce'), session.lead, `${Date.now()}-nondblead`, '');
+        }
+      }
+      await onDone();
+    } finally {
+      setBusy(false, btn);
+    }
+  };
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (busy) return;
-    formError.textContent = '';
-    const results = controls.map((c) => c.validate());
-    const firstBad = results.indexOf(false);
-    if (firstBad > -1) { controls[firstBad].focus(); return; }
-
-    if (lead.endpoint) {
-      const data = Object.fromEntries(controls.map((c) => [c.id, c.value()]));
-      if (data.phone) data.phone = `+91${data.phone}`;
-      Object.entries(getAnswers()).forEach(([id, v]) => { data[`quiz-${id}`] = v; });
-      data.page = window.location.href;
-      data.submittedAt = new Date().toISOString();
-      busy = true;
-      submit.disabled = true;
-      submit.setAttribute('aria-busy', 'true');
-      try {
-        const resp = await fetch(lead.endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ data }),
-        });
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-      } catch (err) {
-        formError.textContent = 'Something went wrong. Please try again.';
-        return;
-      } finally {
-        busy = false;
-        submit.disabled = false;
-        submit.removeAttribute('aria-busy');
-      }
+    const fieldsOk = fieldControls.map((c) => c.validate());
+    const choicesOk = choiceControls.map((c) => c.validate());
+    const firstBad = [...fieldsOk, ...choicesOk].indexOf(false);
+    if (firstBad > -1) {
+      [...fieldControls, ...choiceControls][firstBad].focus();
+      return;
     }
-    markSubmitted();
-    onDone();
+    if (submit.classList.contains('colour-quiz-submit-disabled')) return;
+    await proceed(submit);
   });
 
-  // returning visitor (already submitted this session): button only
+  // returning visitor (already submitted on this page view): button only
   const again = document.createElement('div');
   again.className = 'colour-quiz-form colour-quiz-form-returning';
   const againBtn = document.createElement('button');
   againBtn.type = 'button';
   againBtn.className = 'colour-quiz-submit';
-  againBtn.textContent = lead.submit;
-  againBtn.addEventListener('click', onDone);
+  againBtn.innerHTML = '<span class="colour-quiz-submit-label"></span><span class="colour-quiz-spinner" aria-hidden="true"></span>';
+  againBtn.firstChild.textContent = lead.submit;
+  againBtn.addEventListener('click', () => { if (!busy) proceed(againBtn); });
   again.append(againBtn);
 
   return { card, returningCard: again };

@@ -1,0 +1,118 @@
+.titleimagedescription {
+  --titleimagedescription-text: #222;
+  --titleimagedescription-cta: #3b3b3b;
+  --titleimagedescription-underline: #5e25b2;
+
+  /* self-contained container (original: 1286px, centered) */
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1286px;
+  margin-inline: auto;
+  color: var(--titleimagedescription-text);
+}
+
+/* section title */
+.titleimagedescription .titleimagedescription-title {
+  margin: 0 0 20px;
+  color: var(--titleimagedescription-text);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+/* cards – mobile/tablet: stacked */
+.titleimagedescription .titleimagedescription-list {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.titleimagedescription .titleimagedescription-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.titleimagedescription .titleimagedescription-media {
+  width: 100%;
+}
+
+.titleimagedescription .titleimagedescription-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.titleimagedescription .titleimagedescription-name {
+  margin: 20px 0 0;
+  color: var(--titleimagedescription-text);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.titleimagedescription .titleimagedescription-desc p {
+  margin: 5px 0 10px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0.58px;
+}
+
+.titleimagedescription .titleimagedescription-cta {
+  padding-bottom: 2px;
+  border-bottom: 2px solid var(--titleimagedescription-underline);
+  color: var(--titleimagedescription-cta);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 12px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.titleimagedescription .titleimagedescription-cta:hover {
+  color: var(--titleimagedescription-underline);
+  text-decoration: none;
+}
+
+.titleimagedescription .titleimagedescription-cta:focus-visible {
+  outline: 2px solid var(--titleimagedescription-underline);
+  outline-offset: 2px;
+}
+
+/* desktop: 2 cards per row */
+@media (width >= 992px) {
+  .titleimagedescription .titleimagedescription-title {
+    margin-bottom: 55px;
+    font-size: 30px;
+    line-height: 40px;
+  }
+
+  .titleimagedescription .titleimagedescription-list {
+    flex-flow: row wrap;
+    gap: 40px 4%;
+  }
+
+  .titleimagedescription .titleimagedescription-card {
+    flex: 0 1 48%;
+  }
+
+  .titleimagedescription .titleimagedescription-name {
+    font-size: 20px;
+    line-height: 40px;
+  }
+
+  .titleimagedescription .titleimagedescription-desc p {
+    margin: 5px 0 15px;
+    line-height: 24px;
+    letter-spacing: 0.54px;
+  }
+
+  .titleimagedescription .titleimagedescription-cta {
+    font-size: 13px;
+  }
+}

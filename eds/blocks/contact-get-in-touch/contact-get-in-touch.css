@@ -34,6 +34,8 @@
   font-weight: 800;
   letter-spacing: normal;
   text-transform: uppercase;
+  line-height: 22px;
+  letter-spacing: -0.1px;
 }
 
 .contact-get-in-touch .contact-get-in-touch-heading {
@@ -138,6 +140,9 @@
   .contact-get-in-touch .contact-get-in-touch-column {
     flex: 0 1 auto;
   }
+  .contact-get-in-touch-columns .contact-get-in-touch-column:nth-child(2) .contact-get-in-touch-column-text:nth-child(2){
+        margin-top: 10px;
+    }
 }
 
 @media (width >= 320px) and (width <= 991px) {
@@ -175,7 +180,10 @@
     .contact-get-in-touch-columns .contact-get-in-touch-column:nth-child(2) .contact-get-in-touch-column-text strong{
         margin-bottom: 7px;
     }
+
+     
     .section.contact-get-in-touch-container {
         margin-bottom: 2px;
     }
 }
+

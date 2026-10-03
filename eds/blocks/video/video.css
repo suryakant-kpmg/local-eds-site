@@ -224,7 +224,7 @@
   border-radius: 12px; */
 }
 
-@media (max-width: 1024px) {
+@media (width <= 1024px) {
   .video.promo {
     grid-template-columns: 1fr;
     gap: 40px;
@@ -251,7 +251,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (width <= 600px) {
   .section.video-container:has(.video.promo) {
     padding: 0 16px;
   }
@@ -278,7 +278,7 @@
   }
 }
 
-/* ---- Custom Code * -----*/
+/* ---- Custom Code * ----- */
 @media(width > 992px) {
   .video.promo .video-promo-text {
     padding: 40px;

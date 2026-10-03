@@ -999,12 +999,14 @@ main > .section > div:has(> .city-carousel.grid-variant) {
         font-weight: 500;
         font-size: 12px;
         line-height: 13px;
+        letter-spacing: 0.5px;
         transform: none;
+        margin-top: 4px;
         margin-bottom: 16px;
     }
 
     .city-carousel.before-after-variant .contractors-in-your-city .contractors-in-your-city-cards .contractors-in-your-city-card {
-        width: 282px;
+        width: 256px;
     }
 
     .city-carousel.before-after-variant .contractors-in-your-city-card-img {

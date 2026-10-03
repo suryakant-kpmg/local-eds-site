@@ -1,0 +1,536 @@
+/* Breakpoints match the AEM component: 576px (after-mobile), 992px (tab-to-large) */
+
+.circle-filters {
+  --circle-filters-ring: #431a80;
+  --circle-filters-cta-accent: #5e25b2;
+  --circle-filters-text: #222;
+  --circle-filters-muted: #838383;
+  --circle-filters-circle: 100px;
+  --circle-filters-item: 115px;
+  --circle-filters-gap: 10px;
+  --circle-filters-ring-inset: 6px;
+  --circle-filters-hover-room: 16px;
+
+  color: var(--circle-filters-text);
+  font-family: var(--manrope-font-family);
+  font-size: 13px;
+}
+
+/* heading above the grey panel; sizes match the AEM title component */
+.circle-filters .circle-filters-heading {
+  margin: 0 0 7px;
+  color: #000;
+  font-family: var(--manrope-font-family);
+  font-weight: 700;
+  letter-spacing: normal;
+  text-align: left;
+  scroll-margin-top: calc(var(--nav-height) + 16px);
+}
+
+.circle-filters h1.circle-filters-heading {
+  font-size: 40px;
+  line-height: 40px;
+}
+
+.circle-filters h2.circle-filters-heading {
+  font-size: 22px;
+  line-height: 24px;
+}
+
+.circle-filters h3.circle-filters-heading {
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.circle-filters h4.circle-filters-heading,
+.circle-filters h5.circle-filters-heading,
+.circle-filters h6.circle-filters-heading {
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.circle-filters h4.circle-filters-heading {
+  font-size: 21px;
+}
+
+.circle-filters h5.circle-filters-heading {
+  font-size: 17.5px;
+}
+
+.circle-filters h6.circle-filters-heading {
+  font-size: 14px;
+}
+
+.circle-filters .circle-filters-heading a:any-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.circle-filters .circle-filters-heading a:hover {
+  text-decoration: underline;
+}
+
+/* grey panel holding the circles, description and CTA */
+.circle-filters .circle-filters-panel {
+  background-color: var(--light-color);
+  padding-top: 30px;
+  text-align: center;
+}
+
+.circle-filters .circle-filters-carousel {
+  position: relative;
+}
+
+/* headroom so the lifted circle and its shadow aren't clipped by the scroll area;
+   the negative margin keeps the circles where they were */
+.circle-filters .circle-filters-scroller {
+  position: relative;
+  overflow-x: auto;
+  margin-top: calc(-1 * var(--circle-filters-hover-room));
+  padding-top: var(--circle-filters-hover-room);
+  padding-bottom: 30px;
+  scrollbar-width: none;
+}
+
+.circle-filters .circle-filters-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.circle-filters .circle-filters-list {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--circle-filters-gap);
+  width: max-content;
+  margin: 0 auto;
+  padding: 0 10px;
+  list-style: none;
+}
+
+.circle-filters .circle-filters-item {
+  flex: none;
+  width: var(--circle-filters-item);
+}
+
+.circle-filters .circle-filters-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.circle-filters a.circle-filters-link:focus-visible {
+  outline: 2px solid var(--circle-filters-ring);
+  outline-offset: 4px;
+}
+
+/* circle */
+.circle-filters .circle-filters-image {
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  width: var(--circle-filters-circle);
+  height: var(--circle-filters-circle);
+  margin: 0 auto;
+  border-radius: 50%;
+}
+
+.circle-filters .circle-filters-image picture {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: var(--background-color);
+}
+
+.circle-filters .circle-filters-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.circle-filters .selected .circle-filters-image {
+  border: 1px solid var(--circle-filters-ring);
+}
+
+.circle-filters .selected .circle-filters-image picture {
+  inset: var(--circle-filters-ring-inset);
+}
+
+/* title and description under the circle */
+.circle-filters .circle-filters-text {
+  display: block;
+  padding-top: 22px;
+}
+
+.circle-filters .circle-filters-title {
+  display: block;
+  margin-bottom: 14px;
+  color: var(--circle-filters-muted);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.92px;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.circle-filters .selected .circle-filters-title {
+  color: var(--circle-filters-text);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: 1.27px;
+}
+
+.circle-filters .circle-filters-description {
+  display: block;
+  margin-bottom: 14px;
+  color: var(--circle-filters-muted);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+/* text areas: intro above and footer (description + CTA) below the circles */
+.circle-filters .circle-filters-intro {
+  padding: 0 5% 22px;
+}
+
+.circle-filters .circle-filters-intro p {
+  max-width: 733px;
+  margin: 0 auto;
+  color: var(--circle-filters-muted);
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 22px;
+  letter-spacing: 0.5px;
+}
+
+/* bottom spacing is padding (not margin) so it stays inside the grey box */
+.circle-filters .circle-filters-footer {
+  padding: 0 20px 30px;
+}
+
+.circle-filters .circle-filters-footer p {
+  max-width: 733px;
+  margin: 0 auto 25px;
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: 0.5px;
+}
+
+.circle-filters .circle-filters-footer p:last-child {
+  margin-bottom: 0;
+}
+
+.circle-filters a.circle-filters-cta {
+  display: inline-block;
+  padding-bottom: 2px;
+  border-bottom: 2px solid var(--circle-filters-cta-accent);
+  border-radius: 2px;
+  color: #3b3b3b;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.circle-filters a.circle-filters-cta:hover {
+  color: var(--circle-filters-cta-accent);
+}
+
+/* carousel controls (carousel variant only) */
+.circle-filters .circle-filters-prev,
+.circle-filters .circle-filters-next,
+.circle-filters .circle-filters-dots {
+  display: none;
+}
+
+@media (width >= 576px) {
+  .circle-filters {
+    --circle-filters-circle: 150px;
+    --circle-filters-item: 150px;
+    --circle-filters-gap: 38px;
+    --circle-filters-ring-inset: 10px;
+  }
+
+  .circle-filters .circle-filters-panel {
+    padding-top: 50px;
+  }
+
+  .circle-filters .circle-filters-scroller {
+    padding-bottom: 16px;
+  }
+
+  .circle-filters .circle-filters-list {
+    padding: 0 30px;
+  }
+
+  .circle-filters .circle-filters-title {
+    font-size: 13px;
+    line-height: normal;
+    letter-spacing: 1px;
+  }
+
+  .circle-filters .selected .circle-filters-title {
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 1.08px;
+  }
+
+  .circle-filters .circle-filters-intro {
+    padding-bottom: 30px;
+  }
+
+  .circle-filters .circle-filters-footer p {
+    margin-bottom: 50px;
+  }
+
+  .circle-filters .circle-filters-footer {
+    padding-bottom: 70px;
+  }
+
+  .circle-filters a.circle-filters-cta {
+    font-size: 13px;
+  }
+}
+
+@media (width >= 992px) {
+  .circle-filters .circle-filters-image picture {
+    inset: 3px;
+  }
+
+  .circle-filters h1.circle-filters-heading {
+    font-size: 60px;
+    line-height: 60px;
+  }
+
+  .circle-filters h2.circle-filters-heading {
+    font-size: 30px;
+    line-height: 34px;
+  }
+
+  .circle-filters h3.circle-filters-heading {
+    font-size: 20px;
+    line-height: 22px;
+  }
+}
+
+/* carousel variant (AP Homes) */
+.circle-filters.carousel {
+  --circle-filters-circle: 120px;
+  --circle-filters-item: 120px;
+  --circle-filters-gap: 20px;
+
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.circle-filters.carousel .circle-filters-panel {
+  padding: 0;
+  background-color: transparent;
+}
+
+.circle-filters.carousel .circle-filters-intro {
+  padding-bottom: 20px;
+}
+
+.circle-filters.carousel .circle-filters-scroller {
+  margin-top: 0;
+  padding-bottom: 20px;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 20px;
+}
+
+.circle-filters.carousel .circle-filters-list {
+  padding: 0 20px;
+}
+
+.circle-filters.carousel .circle-filters-item {
+  scroll-snap-align: start;
+}
+
+.circle-filters.carousel .circle-filters-image {
+  border: 0;
+  box-shadow: 0 6px 8px 1px #c7c7c7;
+}
+
+.circle-filters.carousel .circle-filters-image picture {
+  inset: 0;
+}
+
+.circle-filters.carousel .circle-filters-text {
+  padding-top: 10px;
+}
+
+.circle-filters.carousel .circle-filters-title {
+  margin-bottom: 5px;
+  color: #2a2a2a;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: normal;
+}
+
+.circle-filters.carousel .circle-filters-description {
+  color: #777;
+}
+
+.circle-filters.carousel .circle-filters-prev,
+.circle-filters.carousel .circle-filters-next,
+.circle-filters.carousel .circle-filters-dot {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.circle-filters.carousel .circle-filters-dots {
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+  padding: 0 0 10px;
+  list-style: none;
+}
+
+.circle-filters.carousel .is-scrollable .circle-filters-dots {
+  display: flex;
+}
+
+.circle-filters.carousel .circle-filters-dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #c7c7c7;
+}
+
+.circle-filters.carousel .circle-filters-dot[aria-current="true"] {
+  background-color: #2a2a2a;
+}
+
+@media (width >= 992px) {
+  .circle-filters.carousel {
+    --circle-filters-circle: 192px;
+    --circle-filters-item: 212px;
+    --circle-filters-gap: 0;
+  }
+
+  .circle-filters.carousel .circle-filters-intro {
+    padding-bottom: 45px;
+  }
+
+  .circle-filters.carousel .circle-filters-carousel {
+    padding: 0 110px;
+  }
+
+  .circle-filters.carousel .circle-filters-scroller {
+    scroll-padding-left: 0;
+  }
+
+  .circle-filters.carousel .circle-filters-list {
+    padding: 0;
+  }
+
+  .circle-filters.carousel .circle-filters-item {
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+
+  .circle-filters.carousel .circle-filters-image picture {
+    inset: 3px;
+  }
+
+  .circle-filters.carousel .is-scrollable .circle-filters-dots {
+    display: none;
+  }
+
+  .circle-filters.carousel .is-scrollable .circle-filters-prev,
+  .circle-filters.carousel .is-scrollable .circle-filters-next {
+    display: block;
+    position: absolute;
+    top: calc(100px + var(--circle-filters-hover-room));
+    width: 40px;
+    height: 40px;
+    transform: translateY(-50%);
+  }
+
+  .circle-filters.carousel .is-scrollable .circle-filters-prev {
+    left: 50px;
+  }
+
+  .circle-filters.carousel .is-scrollable .circle-filters-next {
+    right: 50px;
+  }
+
+  .circle-filters.carousel .circle-filters-prev::before,
+  .circle-filters.carousel .circle-filters-next::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid #2a2a2a;
+    border-right: 2px solid #2a2a2a;
+  }
+
+  .circle-filters.carousel .circle-filters-prev::before {
+    transform: translateX(2px) rotate(-135deg);
+  }
+
+  .circle-filters.carousel .circle-filters-next::before {
+    transform: translateX(-2px) rotate(45deg);
+  }
+}
+
+/* service variant */
+.circle-filters.service {
+  --circle-filters-circle: 132px;
+}
+
+.circle-filters.service .circle-filters-panel {
+  background-color: var(--background-color);
+  padding: 0;
+}
+
+.circle-filters.service .circle-filters-scroller {
+  margin-top: 0;
+  padding-bottom: 0;
+}
+
+.circle-filters.service .circle-filters-title,
+.circle-filters.service .selected .circle-filters-title {
+  color: var(--circle-filters-text);
+  font-size: 14px;
+  line-height: 20px;
+  text-transform: none;
+}
+
+@media (width < 992px) {
+  .circle-filters.service .circle-filters-list {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: auto;
+    padding: 0 30px;
+  }
+
+  .circle-filters.service .circle-filters-item {
+    width: auto;
+    min-width: 100px;
+  }
+}
+
+@media (width >= 768px) and (width < 992px) {
+  .circle-filters.service .circle-filters-item {
+    flex: 1 1 28.3%;
+  }
+}
+
+@media (width >= 992px) {
+  .circle-filters.service .circle-filters-panel {
+    padding-bottom: 40px;
+  }
+}

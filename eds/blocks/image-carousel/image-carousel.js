@@ -1,4 +1,4 @@
-const VERSION = 'image-carousel@v4 (desktopImage+mobileImage comma lists, responsive picture)';
+const VERSION = 'image-carousel@v5 (per-slide CTA label, new tab, alignment)';
 
 /*
 ** Authoring format **
@@ -6,15 +6,21 @@ const VERSION = 'image-carousel@v4 (desktopImage+mobileImage comma lists, respon
 Config rows (Col 1 → key, Col 2 → value)
 autoplay  → true / false
 interval  → slide interval in ms (min 1000)
+Overlay breadcrumb → true / false, default false. Overlays the breadcrumb block from
+                     the same section on top of the banner (desktop only)
 
 Header row (ignored by code)
-Desktop image | Mobile image | Redirection link
+Desktop image | Mobile image | Redirection link | CTA Label | Open in new tab | CTA alignment
 
 Slide rows (one per slide)
 Col 1 → Desktop image (picture)
 Col 2 → Mobile image (picture), used at ≤ 767px; falls back to desktop
 Col 3 → Redirection link (text or link), optional.
         With a link the slide is clickable; without one, no hand cursor.
+Col 4 → CTA Label, optional. Shown as a button over the slide when a
+        redirection link is set.
+Col 5 → Open in new tab (true / false), optional, default false
+Col 6 → CTA alignment (left / center / right), optional, default center
 */
 
 // Right-pointing arrow; the prev button mirrors it via CSS
@@ -40,6 +46,21 @@ function yesNo(val, def = false) {
   return def;
 }
 
+const CTA_ALIGNMENTS = ['left', 'center', 'right'];
+
+function ctaAlignment(val) {
+  const v = String(val || '').trim().toLowerCase();
+  return CTA_ALIGNMENTS.includes(v) ? v : 'center';
+}
+
+function escapeHTML(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 function splitUrls(raw) {
   return String(raw || '')
     .split(',')
@@ -52,6 +73,7 @@ function parseConfig(block) {
     autoplay: true,
     interval: 5000,
     fade: false,
+    breadcrumb: false,
     clickable: false,
     ctaLink: '',
     overlaySubtitle: '',
@@ -88,12 +110,16 @@ function parseConfig(block) {
 
   readRows().forEach((cells) => {
     // Slide row: Desktop image | Mobile image | Redirection link
+    //           | CTA Label | Open in new tab | CTA alignment
     if (cells.some((c) => c.querySelector('picture, img'))) {
       const getPic = (c) => c?.querySelector('picture') || c?.querySelector('img');
       cfg.slides.push({
         desktopPic: getPic(cells[0]),
         mobilePic: getPic(cells[1]),
         link: cellHrefOrText(cells[2]),
+        ctaLabel: cellText(cells[3]),
+        newTab: yesNo(cellText(cells[4]), false),
+        ctaAlign: ctaAlignment(cellText(cells[5])),
       });
       return;
     }
@@ -110,6 +136,7 @@ function parseConfig(block) {
       if (!Number.isNaN(n) && n >= 1000) cfg.interval = n;
     }
     if (key === 'fade') cfg.fade = yesNo(valText, false);
+    if (key === 'overlay breadcrumb' || key === 'breadcrumb') cfg.breadcrumb = yesNo(valText, false);
     if (key === 'clickable') cfg.clickable = yesNo(valText, false);
     if (key === 'ctalink') cfg.ctaLink = valHrefOrText;
     if (key === 'overlaysubtitle') cfg.overlaySubtitle = valText;
@@ -237,6 +264,7 @@ mobileImage  | https://.../banner-mobile.png
 
   block.classList.add('image-carousel');
   if (cfg.fade) block.classList.add('carousel--fade');
+  if (cfg.breadcrumb) block.classList.add('breadcrumb-overlay');
 
   const overlay = overlayHTML(cfg);
 
@@ -250,11 +278,18 @@ mobileImage  | https://.../banner-mobile.png
     // row is needed; it only remains for old pages using the legacy ctaLink.
     const href = s.link || (cfg.clickable ? cfg.ctaLink : '');
 
+    const target = href && s.newTab ? ' target="_blank" rel="noopener noreferrer"' : '';
     const wrapStart = href
-      ? `<a class="full-banner-click" href="${href}">`
-      : `<div class="full-banner-click">`;
+      ? `<a class="full-banner-click" href="${href}"${target}>`
+      : '<div class="full-banner-click">';
 
-    const wrapEnd = href ? `</a>` : `</div>`;
+    // CTA sits inside the slide link (a nested <a> is invalid), so it is a
+    // button-styled span and the whole slide stays clickable.
+    const cta = href && s.ctaLabel
+      ? `<div class="carousel__cta-wrap carousel__cta-wrap--${s.ctaAlign || 'center'}"><span class="carousel__cta">${escapeHTML(s.ctaLabel)}${ARROW_SVG}</span></div>`
+      : '';
+
+    const wrapEnd = href ? '</a>' : '</div>';
 
     return `
       <div class="swiper-slide carousel__slide" data-i="${i}">
@@ -262,6 +297,7 @@ mobileImage  | https://.../banner-mobile.png
           ${wrapStart}
             <div class="prodBannerImage">${pic}</div>
             ${overlay}
+            ${cta}
           ${wrapEnd}
         </div>
       </div>

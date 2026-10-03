@@ -9,12 +9,12 @@
  *   banner row    an image and a link                   -> promo banner with CTA button
  *   item rows     | product name, "Label: value" lines, guide link | description |
  *
- * Warranty registration: when the page has `warranty-encryption-key` metadata, the banner CTA
- * opens the 3-step registration form (warranty-registration.js, loaded on click) against the
- * Asian Paints services at `warranty-api-base` (default: same origin). Without it the CTA is a
- * plain link.
+ * Warranty registration: the banner CTA opens the 3-step registration form
+ * (warranty-registration.js, loaded on click) against the Asian Paints services at
+ * `warranty-api-base` (default: same origin). It needs the `warranty-encryption-key` metadata to
+ * send the OTP; `warranty-demo: true` simulates the services on preview hosts.
  */
-import { createOptimizedPicture, getMetadata } from '../../scripts/aem.js';
+import { createOptimizedPicture } from '../../scripts/aem.js';
 import { moveInstrumentation } from '../../scripts/scripts.js';
 
 const HEADINGS = 'h1, h2, h3, h4, h5, h6';
@@ -48,29 +48,26 @@ function buildBanner(row, eager) {
 
   const link = row.querySelector('a[href]');
   if (link) {
-    link.className = 'warranty-container-cta';
-    aside.append(link);
-    if (getMetadata('warranty-encryption-key')) {
-      // opens the form in place, so it is a button, not a link
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = link.className;
-      button.textContent = link.textContent;
-      moveInstrumentation(link, button);
-      link.replaceWith(button);
-      button.addEventListener('click', async () => {
-        button.disabled = true;
-        button.setAttribute('aria-busy', 'true');
-        try {
-          const { default: openRegistration, getRegistrationConfig } = await import('./warranty-registration.js');
-          await openRegistration(aside, getRegistrationConfig());
-        } catch (error) {
-          // eslint-disable-next-line no-console
-          console.error('warranty registration failed to load', error);
-          window.location.href = link.href;
-        }
-      });
-    }
+    // opens the registration form in place, so it is a button, not a link; the form itself says
+    // when online registration is not set up (no warranty-encryption-key metadata)
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'warranty-container-cta';
+    button.textContent = link.textContent;
+    moveInstrumentation(link, button);
+    aside.append(button);
+    button.addEventListener('click', async () => {
+      button.disabled = true;
+      button.setAttribute('aria-busy', 'true');
+      try {
+        const { default: openRegistration, getRegistrationConfig } = await import('./warranty-registration.js');
+        await openRegistration(aside, getRegistrationConfig());
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('warranty registration failed to load', error);
+        window.location.href = link.href;
+      }
+    });
   }
   return aside;
 }
@@ -137,8 +134,13 @@ function buildItem(row, id) {
   li.append(...extra);
 
   linkEls.forEach((el) => {
+    // a host project's button decoration must not restyle the guide link
+    el.classList.remove('button-container');
     el.classList.add('warranty-container-guide');
     el.querySelectorAll('a[href]').forEach((a) => {
+      a.classList.remove('button', 'primary', 'secondary', 'accent');
+      // the visible text plus the hint below is the accessible name
+      a.removeAttribute('aria-label');
       // guides are PDFs that open in a new tab; say so for screen reader users
       if (a.target === '_blank' || /\.pdf$/i.test(new URL(a.href).pathname)) {
         a.target = '_blank';

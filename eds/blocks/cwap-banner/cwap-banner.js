@@ -13,7 +13,11 @@ import { createOptimizedPicture } from '../../scripts/aem.js';
  *   Play store    | store badge image | store link | QR code image (optional)
  *   App store     | store badge image | store link | QR code image (optional)
  *                   (store rows render in authored order)
- *   Video         | link to the video file
+ *   Video         | link to the video file | desktop phone frame | mobile phone frame (optional)
+ *
+ * Any other row with images (e.g. "Colour Picker") is a full-width image section
+ * shown below the banner, in authored order:
+ *   Colour Picker | desktop image | mobile image (optional, defaults to the desktop image)
  *
  * @param {Element} block The block element
  */
@@ -21,6 +25,12 @@ import { createOptimizedPicture } from '../../scripts/aem.js';
 const DEFAULT_VIDEO_LABEL = 'Phone screen showing the launch of Colour with Asian Paints Visualizer';
 
 const STORE_LABELS = ['play store', 'app store'];
+
+// rows that build the banner itself; any other row with images is an image section
+const BANNER_LABELS = ['background', 'title', 'caption', 'download text', ...STORE_LABELS, 'video'];
+
+// the banner and image sections switch to their desktop layout here, like the reference page
+const FEATURE_DESKTOP = '(min-width: 992px)';
 
 const rowLabel = (row) => row.children[0]?.textContent.trim().toLowerCase().replace(/\s+/g, ' ') || '';
 
@@ -44,7 +54,7 @@ function getLink(cell) {
 function buildBackground(desktopImg, mobileImg, eager) {
   const picture = createOptimizedPicture(mobileImg.src, '', eager, [{ width: '750' }]);
   const desktop = createOptimizedPicture(desktopImg.src, '', eager, [
-    { media: '(min-width: 900px)', width: '2000' },
+    { media: FEATURE_DESKTOP, width: '2000' },
     { width: '750' },
   ]);
   picture.prepend(...desktop.querySelectorAll('source[media]'));
@@ -56,6 +66,30 @@ function buildBackground(desktopImg, mobileImg, eager) {
   bg.setAttribute('aria-hidden', 'true');
   bg.append(picture);
   return bg;
+}
+
+/**
+ * Image section row: label | desktop image | mobile image. The whole component
+ * is authored as one image per layout; the label names it for screen readers
+ * unless the image has its own alt text.
+ */
+function buildFeature(row) {
+  const [desktopImg, mobileImg = desktopImg] = row.querySelectorAll('img');
+  if (!desktopImg) return null;
+  const label = row.children[0]?.textContent.trim() || '';
+  const alt = desktopImg.getAttribute('alt') || label;
+
+  const picture = createOptimizedPicture(mobileImg.src, alt, false, [{ width: '750' }]);
+  const desktop = createOptimizedPicture(desktopImg.src, alt, false, [
+    { media: FEATURE_DESKTOP, width: '2880' },
+    { width: '750' },
+  ]);
+  picture.prepend(...desktop.querySelectorAll('source[media]'));
+
+  const feature = document.createElement('div');
+  feature.className = 'cwap-banner-feature';
+  feature.append(picture);
+  return feature;
 }
 
 function buildStore(cells) {
@@ -94,7 +128,24 @@ function buildStore(cells) {
   return item;
 }
 
-function buildVideo(cell) {
+/** Optimized URL for an authored image used as a CSS background. */
+function imageUrl(img, width) {
+  const url = new URL(img.getAttribute('src'), window.location.href);
+  if (url.pathname.includes('media_')) {
+    url.searchParams.set('width', width);
+    url.searchParams.set('format', 'webply');
+    url.searchParams.set('optimize', 'medium');
+  }
+  return url.href;
+}
+
+/**
+ * Video row: Video | link to the video file | desktop phone frame image |
+ * mobile phone frame image (optional, defaults to the desktop frame).
+ * The video plays on top of the frame image, inside its screen area.
+ */
+function buildVideo(row) {
+  const [, cell, ...frameCells] = [...row.children];
   const src = getLink(cell);
   if (!src) return null;
 
@@ -103,6 +154,15 @@ function buildVideo(cell) {
 
   const media = document.createElement('div');
   media.className = 'cwap-banner-media';
+
+  const [desktopFrame, mobileFrame = desktopFrame] = frameCells
+    .map((frameCell) => frameCell.querySelector('img'))
+    .filter(Boolean);
+  if (desktopFrame) {
+    media.classList.add('has-frame');
+    media.style.setProperty('--cwap-frame-desktop', `url('${imageUrl(desktopFrame, '750')}')`);
+    media.style.setProperty('--cwap-frame-mobile', `url('${imageUrl(mobileFrame, '400')}')`);
+  }
 
   const video = document.createElement('video');
   video.className = 'cwap-banner-video';
@@ -126,32 +186,6 @@ function buildVideo(cell) {
   observer.observe(media);
 
   return media;
-}
-
-/**
- * On desktop, sizes the banner to the real space left below the header
- * (viewport units can disagree with the window size under OS/browser zoom).
- * Mobile keeps the CSS svh value so the banner doesn't jump with the URL bar.
- */
-function fitToViewport(block) {
-  const desktop = window.matchMedia('(width >= 900px)');
-  let frame;
-  const update = () => {
-    frame = null;
-    if (!desktop.matches) {
-      block.style.removeProperty('--cwap-vh');
-      return;
-    }
-    const header = document.querySelector('header');
-    const headerHeight = header ? header.getBoundingClientRect().height : 0;
-    block.style.setProperty('--cwap-vh', `${Math.round(window.innerHeight - headerHeight)}px`);
-  };
-  const schedule = () => {
-    if (!frame) frame = requestAnimationFrame(update);
-  };
-  update();
-  window.addEventListener('resize', schedule);
-  desktop.addEventListener('change', schedule);
 }
 
 export default function decorate(block) {
@@ -208,15 +242,23 @@ export default function decorate(block) {
 
   inner.append(content);
 
-  const videoCell = valueCell('video');
-  const media = videoCell ? buildVideo(videoCell) : null;
+  const videoRow = byLabel('video');
+  const media = videoRow ? buildVideo(videoRow) : null;
   if (media) inner.append(media);
 
   const bgRow = byLabel('background');
   const [desktopImg, mobileImg = desktopImg] = bgRow ? bgRow.querySelectorAll('img') : [];
 
-  block.replaceChildren();
-  if (desktopImg) block.append(buildBackground(desktopImg, mobileImg, isFirstSection));
-  block.append(inner);
-  fitToViewport(block);
+  // the banner keeps its viewport height; image sections follow it at their own size
+  const hero = document.createElement('div');
+  hero.className = 'cwap-banner-hero';
+  if (desktopImg) hero.append(buildBackground(desktopImg, mobileImg, isFirstSection));
+  hero.append(inner);
+
+  const features = rows
+    .filter((row) => !BANNER_LABELS.includes(rowLabel(row)))
+    .map(buildFeature)
+    .filter(Boolean);
+
+  block.replaceChildren(hero, ...features);
 }

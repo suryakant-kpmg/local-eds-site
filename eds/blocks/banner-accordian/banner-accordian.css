@@ -1,0 +1,347 @@
+/* values follow the live AEM bannerAccordian (wood finish variant); desktop layout from 992px like the live site */
+
+/* full page width like live, the side padding is 4% of the page */
+main > .section.banner-accordian-container:has(.banner-accordian) {
+  margin: 0 0 25px;
+}
+
+main > .section > div:has(> .banner-accordian) {
+  max-width: none;
+  padding: 0;
+}
+
+.banner-accordian {
+  padding: 30px 0 16px;
+  font-family: Manrope, var(--body-font-family);
+}
+
+/* tabs */
+.banner-accordian .banner-accordian-tabs {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 0 0 25px;
+}
+
+.banner-accordian .banner-accordian-tabs[hidden] {
+  display: none;
+}
+
+.banner-accordian .banner-accordian-tab {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: #2e2f32;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  cursor: pointer;
+}
+
+.banner-accordian .banner-accordian-tab[aria-selected="true"] {
+  font-weight: 700;
+  line-height: normal;
+}
+
+/* same underline image and position as live */
+.banner-accordian .banner-accordian-tab[aria-selected="true"]::before {
+  content: url("../../icons/icon-line-mob.svg");
+  position: absolute;
+  top: 11px;
+  display: flex;
+  width: 32px;
+}
+
+.banner-accordian .banner-accordian-tab:focus-visible {
+  outline: 2px solid #2e2f32;
+  outline-offset: 4px;
+}
+
+/* tab content */
+.banner-accordian .banner-accordian-panel {
+  position: relative;
+  padding: 0 4%;
+}
+
+.banner-accordian .banner-accordian-panel[hidden] {
+  display: none;
+}
+
+/* mobile: swipe slider, 300 x 383 cards */
+.banner-accordian .banner-accordian-cards {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.banner-accordian .banner-accordian-cards::-webkit-scrollbar {
+  display: none;
+}
+
+.banner-accordian .banner-accordian-card {
+  position: relative;
+  display: flex;
+  flex: 0 0 300px;
+  justify-content: center;
+  height: 383px;
+  overflow: hidden;
+  text-align: center;
+  scroll-snap-align: start;
+  cursor: pointer;
+}
+
+/* only the outer corners are rounded */
+.banner-accordian .banner-accordian-card:first-child {
+  border-radius: 8px 0 0 8px;
+}
+
+.banner-accordian .banner-accordian-card:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+.banner-accordian .banner-accordian-card:focus-visible {
+  outline: 1px solid #fff;
+  outline-offset: -1px;
+}
+
+.banner-accordian .banner-accordian-card-image {
+  position: absolute;
+  inset: 0;
+}
+
+.banner-accordian .banner-accordian-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* dark gradient behind the text, always on mobile */
+.banner-accordian .banner-accordian-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(0deg, rgb(17 13 11 / 62%) 0, rgb(31 25 23 / 60%) 60%, rgb(24 20 19 / 0%));
+  opacity: 1;
+  transition: opacity 0.7s ease;
+  pointer-events: none;
+}
+
+.banner-accordian .banner-accordian-card-details {
+  position: absolute;
+  left: 25px;
+  right: 25px;
+  bottom: 30px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.banner-accordian .banner-accordian-card-title {
+  width: 100%;
+  margin: 0;
+  color: #fff;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.banner-accordian .banner-accordian-card-description {
+  width: 250px;
+  max-width: 100%;
+  margin: 10px 0;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16.8px;
+  letter-spacing: 0.5px;
+}
+
+.banner-accordian .banner-accordian-card-cta {
+  display: flex;
+  justify-content: center;
+}
+
+.banner-accordian .banner-accordian-card-cta a {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 5.5px 16px;
+  border: 1px solid #fff;
+  border-radius: 50px;
+  background: transparent;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 21px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.banner-accordian .banner-accordian-card-cta a:hover,
+.banner-accordian .banner-accordian-card-cta a:focus-visible {
+  border-color: #232426;
+  background: #fff7e8;
+  color: #000;
+  text-decoration: none;
+}
+
+/* arrow takes the text colour: white, black on hover */
+.banner-accordian .banner-accordian-arrow {
+  display: flex;
+  flex: none;
+  width: 17px;
+  height: 17px;
+  margin: -4px 0 0 3px;
+  background-color: currentcolor;
+  mask: url("../../icons/arrow-right.svg") center / 100% 100% no-repeat;
+}
+
+/* slider dots, 22px under the cards */
+.banner-accordian .banner-accordian-dots {
+  position: absolute;
+  top: calc(100% + 22px);
+  left: calc(4% - 2px);
+  display: flex;
+  gap: 5px;
+}
+
+.banner-accordian .banner-accordian-dot {
+  width: 8px;
+  height: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: rgb(128 128 128 / 25%);
+  cursor: pointer;
+}
+
+.banner-accordian .banner-accordian-dot.is-active {
+  width: 24px;
+  background: #2e2f32;
+}
+
+@media (width >= 992px) {
+  main > .section.banner-accordian-container:has(.banner-accordian) {
+    margin-bottom: 50px;
+  }
+
+  .banner-accordian {
+    padding: 50px 0 16px;
+  }
+
+  .banner-accordian .banner-accordian-tabs {
+    align-items: normal;
+    gap: 50px;
+    padding-bottom: 50px;
+  }
+
+  .banner-accordian .banner-accordian-tab {
+    color: #000;
+    font-size: 24px;
+    line-height: 26.4px;
+  }
+
+  .banner-accordian .banner-accordian-tab[aria-selected="true"] {
+    font-weight: 800;
+    line-height: 26.4px;
+  }
+
+  .banner-accordian .banner-accordian-tab[aria-selected="true"]::before {
+    content: url("../../icons/icon-line-desk.svg");
+    top: 16px;
+    width: 57px;
+  }
+
+  /* four cards side by side, max 330px each */
+  .banner-accordian .banner-accordian-cards {
+    justify-content: center;
+    gap: 5px;
+    height: 568px;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+
+  .banner-accordian .banner-accordian-card {
+    flex: 1 1 33%;
+    max-width: 330px;
+    height: auto;
+  }
+
+  .banner-accordian .banner-accordian-card::after {
+    opacity: 0;
+  }
+
+  .banner-accordian .banner-accordian-card-details {
+    left: 0;
+    right: 0;
+  }
+
+  .banner-accordian .banner-accordian-card-title {
+    font-size: 32px;
+    line-height: 41px;
+  }
+
+  /* description and CTA only on hover */
+  .banner-accordian .banner-accordian-card-description {
+    display: none;
+    margin: 8px 0 30px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+  }
+
+  .banner-accordian .banner-accordian-card-cta {
+    display: none;
+  }
+
+  .banner-accordian .banner-accordian-card:hover::after,
+  .banner-accordian .banner-accordian-card:focus-within::after {
+    opacity: 1;
+  }
+
+  .banner-accordian .banner-accordian-card:hover .banner-accordian-card-description,
+  .banner-accordian .banner-accordian-card:hover .banner-accordian-card-cta,
+  .banner-accordian .banner-accordian-card:focus-within .banner-accordian-card-description,
+  .banner-accordian .banner-accordian-card:focus-within .banner-accordian-card-cta {
+    display: block;
+  }
+
+  .banner-accordian .banner-accordian-card-cta a {
+    gap: 10px;
+    height: 38px;
+    padding: 14px 20px;
+    border-radius: 45px;
+    line-height: 22px;
+  }
+
+  .banner-accordian .banner-accordian-arrow {
+    margin: 0;
+  }
+
+  .banner-accordian .banner-accordian-dots {
+    display: none;
+  }
+}
+
+@media (width >= 1440px) {
+  .banner-accordian .banner-accordian-cards {
+    height: 550px;
+  }
+}

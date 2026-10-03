@@ -3,24 +3,45 @@ import { createOptimizedPicture } from '../../scripts/aem.js';
 /**
  * colour-explorer — pick a shade from a swatch strip and preview it in place.
  *
- * Authoring model (see README in colour-explorer.css header). One row per
- * shade, columns:
- *   [ room image(s) | shade name | code | hex | link ]
- * The room image cell holds ONE image (all sizes) or TWO — first mobile, second
- * desktop (>=992px) — rendered as a responsive <picture>.
- * The swatch tile is pure CSS, painted from the hex (as on the live site).
- * Text-only rows (no image, no hex) are copy: before the first shade they form
- * the intro (heading + text), after the last shade the footer (text + CTA).
+ * Authoring format (DA table):
+ *
+ * | colour-explorer                                                            |
+ * | Title           | Popular Shades                                           |
+ * | Sub title       | Choose a Colour to see How it Looks on the Wall!         |
+ * | Note            | Didn't find the right shade for your home? ...           |
+ * | CTA             | [VIEW ALL COLOURS](/colour-catalogue)                    |
+ * | Open in new tab | false                                                    |
+ * | Desktop image   | Mobile image   | Name        | Code | Hex                |
+ * | <image>         | <image>        | Sun Screen  | 7868 | #F7F2DA            |
+ * | <image>         | <image>        | Intense ... | 7166 | #8A7FC0            |
+ * | ...one row per shade...                                                    |
+ *
+ * - Title -> heading, Sub title -> intro text (above the swatches).
+ * - Note + CTA -> footer (below the swatches). "Open in new tab" = true opens
+ *   the CTA in a new tab.
+ * - The "Desktop image | Mobile image | Name | Code | Hex" label row is optional and
+ *   is skipped.
+ * - Desktop image is used at >=992px, Mobile image below; if only one is
+ *   authored it is used for all sizes.
+ * - Hex is mandatory: the swatch tile is pure CSS, painted from it
+ *   (e.g. #F7F2DA or F7F2DA).
  *
  * Clicking a swatch never navigates: it swaps the preview image (as on the
  * source, there is no visible caption) and announces the shade to screen
- * readers through a visually hidden live region. The link column is kept in
- * the model for authors but is not rendered.
+ * readers through a visually hidden live region.
  */
 
 const HEX = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i;
 const DESKTOP_MEDIA = '(min-width: 992px)';
 const DEFAULT_ROOM_SIZE = { w: 673, h: 560 };
+const CONFIG_KEYS = {
+  title: 'title',
+  'sub title': 'subtitle',
+  subtitle: 'subtitle',
+  note: 'note',
+  cta: 'cta',
+  'open in new tab': 'newTab',
+};
 
 const text = (cell) => (cell?.textContent || '').trim();
 
@@ -65,13 +86,17 @@ function toHex(value) {
   return `#${v.toLowerCase()}`;
 }
 
-const isShadeRow = (cells) => cells.some((c) => c.querySelector('img') || HEX.test(text(c)));
+const isShadeRow = (cells) => cells.some((c) => c.querySelector('img'));
 
 function parseShade(cells) {
-  const [roomCell, nameCell, codeCell, hexCell] = cells;
+  const [desktopCell, mobileCell, nameCell, codeCell, hexCell] = cells;
   const name = text(nameCell);
   const code = text(codeCell);
-  const [mobile, desktop] = roomCell ? [...roomCell.querySelectorAll('img')] : [];
+  const desktopImg = desktopCell?.querySelector('img');
+  const mobileImg = mobileCell?.querySelector('img');
+  // buildRoomPicture uses the mobile image as base and swaps desktop in
+  const mobile = mobileImg || desktopImg;
+  const desktop = mobileImg && desktopImg ? desktopImg : null;
   const authoredAlt = mobile?.getAttribute('alt') || desktop?.getAttribute('alt');
   return {
     name,
@@ -83,31 +108,69 @@ function parseShade(cells) {
   };
 }
 
-/** Move a row's content into a copy container; lone links become CTA buttons. */
-function buildCopy(rows, className) {
-  const copy = document.createElement('div');
-  copy.className = className;
-  rows.forEach((cells) => cells.forEach((cell) => copy.append(...cell.childNodes)));
-  copy.querySelectorAll('p a[href]').forEach((a) => {
-    const p = a.closest('p');
-    if (p.textContent.trim() !== a.textContent.trim()) return;
-    p.className = 'colour-explorer-cta-wrapper';
-    a.className = 'colour-explorer-cta';
+/** Label/value rows (Title, Sub title, Note, CTA, Open in new tab). */
+function readConfig(rows) {
+  const config = {};
+  rows.forEach((cells) => {
+    if (cells.length < 2) return;
+    const key = CONFIG_KEYS[text(cells[0]).toLowerCase()];
+    if (key) [, config[key]] = cells;
   });
-  return copy;
+  return config;
+}
+
+function buildIntro({ title, subtitle }) {
+  if (!text(title) && !text(subtitle)) return null;
+  const intro = document.createElement('div');
+  intro.className = 'colour-explorer-intro';
+  if (text(title)) {
+    const h2 = document.createElement('h2');
+    h2.textContent = text(title);
+    intro.append(h2);
+  }
+  if (text(subtitle)) {
+    const p = document.createElement('p');
+    p.textContent = text(subtitle);
+    intro.append(p);
+  }
+  return intro;
+}
+
+function buildFooter({ note, cta, newTab }) {
+  const link = cta?.querySelector('a[href]');
+  if (!text(note) && !link) return null;
+  const footer = document.createElement('div');
+  footer.className = 'colour-explorer-footer';
+  if (text(note)) {
+    const p = document.createElement('p');
+    p.textContent = text(note);
+    footer.append(p);
+  }
+  if (link) {
+    const p = document.createElement('p');
+    p.className = 'colour-explorer-cta-wrapper';
+    const a = document.createElement('a');
+    a.className = 'colour-explorer-cta';
+    a.href = link.getAttribute('href');
+    a.textContent = text(link);
+    if (text(newTab).toLowerCase() === 'true') {
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+    }
+    p.append(a);
+    footer.append(p);
+  }
+  return footer;
 }
 
 export default function decorate(block) {
   const rows = [...block.children].map((row) => [...row.children]);
-  const firstShade = rows.findIndex(isShadeRow);
-  if (firstShade < 0) return;
-  let lastShade = rows.length - 1;
-  while (!isShadeRow(rows[lastShade])) lastShade -= 1;
+  const shades = rows.filter(isShadeRow).map(parseShade);
+  if (!shades.length) return;
 
-  const shades = rows.slice(firstShade, lastShade + 1).filter(isShadeRow).map(parseShade);
-  const intro = firstShade > 0 ? buildCopy(rows.slice(0, firstShade), 'colour-explorer-intro') : null;
-  const footer = lastShade < rows.length - 1
-    ? buildCopy(rows.slice(lastShade + 1), 'colour-explorer-footer') : null;
+  const config = readConfig(rows.filter((cells) => !isShadeRow(cells)));
+  const intro = buildIntro(config);
+  const footer = buildFooter(config);
 
   // the first image is only eager when this block opens the page
   const firstSection = block.closest('.section') === document.querySelector('main .section');

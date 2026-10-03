@@ -1,0 +1,593 @@
+/* match the reference page width: 1440px max with 4% side gutters */
+main > .section.about-us-container > div {
+  max-width: 1440px;
+  padding: 0 4%;
+}
+
+/* the history background bleeds to the section edges; sizing it from the section
+   (not the viewport) keeps it full width under browser zoom and display scaling */
+main > .section.about-us-container {
+  container-type: inline-size;
+  overflow-x: clip;
+  margin-top: -40px;
+}
+
+.about-us {
+  font-family: manrope, sans-serif;
+  font-size: 14px;
+  line-height: 22px;
+  color: #222;
+}
+
+.about-us h1,
+.about-us h2,
+.about-us h3,
+.about-us h4,
+.about-us h5,
+.about-us h6 {
+  font-family: inherit;
+  color: inherit;
+}
+
+/* history */
+.about-us .about-us-history {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0 0 360px;
+  padding: 140px 7% 0 7%;
+}
+
+.about-us .about-us-history::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: -1;
+  width: 100cqw;
+  aspect-ratio: var(--history-bg-ratio, 1366 / 694);
+
+  /* on narrower laptops the content is taller than the image's natural height */
+  min-height: 100%;
+  transform: translateX(-50%);
+  background: var(--history-bg, none) no-repeat top / 100% 100%;
+}
+
+.about-us .about-us-history-heading {
+  margin-top: 30px;
+}
+
+.about-us .about-us-history-heading h5 {
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.about-us .about-us-history-heading h2 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 36px;
+}
+
+.about-us .about-us-history-image picture {
+  display: inline-block;
+  margin-left: -48%;
+}
+
+.about-us .about-us-history-image img {
+  display: block;
+  width: 322px;
+  max-width: none;
+  height: auto;
+}
+
+.about-us .about-us-history-text {
+  padding-top: 30%;
+}
+
+.about-us .about-us-history-text p {
+  width: 130%;
+  margin: 0 0 14px -35%;
+  font-size: 13px;
+  line-height: 26px;
+  letter-spacing: 0.5px;
+}
+
+.about-us .about-us-history-text > :last-child {
+  margin-bottom: 0;
+}
+
+/* highlight panel */
+.about-us .about-us-panel {
+  margin: 0 8% 100px;
+  padding: 50px;
+  border: 1px solid rgb(34 34 34 / 30%);
+  border-radius: 2px;
+  text-align: center;
+}
+
+.about-us .about-us-panel h2 {
+  margin: 0 0 7px;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 30px;
+}
+
+.about-us .about-us-panel h3,
+.about-us .about-us-panel p {
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 1px;
+}
+
+/* grid title */
+.about-us .about-us-title {
+  margin-bottom: 70px;
+  text-align: center;
+}
+
+.about-us .about-us-title > * {
+  margin: 0 0 7px;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 30px;
+}
+
+/* director cards */
+.about-us .about-us-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 30px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-us .about-us-card-image picture {
+  display: block;
+}
+
+.about-us .about-us-card-image img {
+  display: block;
+  width: 100%;
+  height: 290px;
+  object-fit: cover;
+}
+
+.about-us .about-us-card-body {
+  margin-bottom: 70px;
+  padding-top: 10px;
+}
+
+.about-us .about-us-card-body > * {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 1px;
+}
+
+.about-us .about-us-card-body .about-us-card-name,
+.about-us .about-us-card-body .about-us-card-name strong {
+  font-weight: 700;
+}
+
+/* notes / document links */
+.about-us .about-us-notes p {
+  margin: 0 0 14px;
+  letter-spacing: 0.5px;
+}
+
+.about-us .about-us-notes a:any-link {
+  font-weight: 700;
+  color: #00e;
+  text-decoration: underline;
+}
+
+/* corporate information tabs */
+.about-us .about-us-tabs {
+  display: grid;
+  grid-template-columns: 25% 75%;
+  align-items: start;
+  margin-top: 90px;
+  padding-top: 60px;
+  margin-left: -42px;
+  margin-right: -42px;
+}
+
+.about-us .about-us-tablist {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 40px;
+}
+
+.about-us .about-us-tab {
+  margin: 0 0 50px;
+  padding: 0 15px 0 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 13px;
+  text-align: left;
+  text-transform: uppercase;
+  color: #373737;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.about-us .about-us-tab[aria-selected='true'] {
+  color: #222;
+  opacity: 1;
+}
+
+.about-us .about-us-drawer {
+  display: none;
+}
+
+.about-us .about-us-tabpanel {
+  padding: 30px 20px;
+  background: #fff;
+}
+
+.about-us .about-us-tabpanel[hidden] {
+  display: none;
+}
+
+.about-us .about-us-tabpanel-title {
+  margin: 0 0 20px;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 38px;
+  text-align: center;
+}
+
+.about-us .about-us-item {
+  padding: 30px 0;
+  border-bottom: 1px solid #cacbcc;
+}
+
+.about-us .about-us-item-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  list-style: none;
+  color: #373737;
+  cursor: pointer;
+}
+
+.about-us .about-us-item-question::-webkit-details-marker {
+  display: none;
+}
+
+.about-us .about-us-item-label {
+  max-width: 85%;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 23.4px;
+}
+
+.about-us .about-us-item-icon {
+  position: relative;
+  top: 13px;
+  flex: none;
+  width: 12px;
+  height: 12px;
+}
+
+.about-us .about-us-item-icon::before,
+.about-us .about-us-item-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 13px;
+  height: 2px;
+  background: #2f2f2f;
+  transform: translate(-50%, -50%);
+}
+
+.about-us .about-us-item-icon::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.about-us .about-us-item[open] .about-us-item-icon {
+  top: 0;
+  width: 48px;
+  height: 48px;
+  margin-right: -19px;
+  border-radius: 50%;
+  background: #efefef;
+}
+
+.about-us .about-us-item[open] .about-us-item-icon::before {
+  width: 15px;
+  height: 1.5px;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.about-us .about-us-item[open] .about-us-item-icon::after {
+  width: 15px;
+  height: 1.5px;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.about-us .about-us-item-answer {
+  width: 92%;
+}
+
+.about-us .about-us-item-answer > * {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: 0.5px;
+  color: #53565a;
+}
+
+.about-us .about-us-item-answer a:any-link {
+  color: #00e;
+  text-decoration: underline;
+}
+
+/* tables inside answers */
+.about-us .about-us-table {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.about-us .about-us-table table {
+  width: 750px;
+  border: 1px solid #808080;
+  border-collapse: collapse;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+}
+
+.about-us .about-us-table td,
+.about-us .about-us-table th {
+  height: 21px;
+  padding: 0;
+  border: 1px solid #808080;
+  font-weight: inherit;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.about-us .about-us-table td > *,
+.about-us .about-us-table th > * {
+  margin: 0;
+}
+
+/* column widths of the reference manufacturing footprint table */
+.about-us .about-us-table table[data-columns='4'] tr > :nth-child(1) {
+  width: 171px;
+}
+
+.about-us .about-us-table table[data-columns='4'] tr > :nth-child(2) {
+  width: 137px;
+}
+
+.about-us .about-us-table table[data-columns='4'] tr > :nth-child(3) {
+  width: 158px;
+}
+
+.about-us .about-us-table table[data-columns='4'] tr > :nth-child(4) {
+  width: 284px;
+}
+#managing-director--ceo, #managing-director--ceo-1, #managing-director--ceo-2{
+    margin-top: 15px;
+}
+.about-us .about-us-item-answer h4{
+    line-height: 30px;
+}
+.about-us .about-us-item-answer h4 strong{
+    line-height: 30px;
+    color: #222;
+    font-weight: 700;
+    font-size: 14px;
+}
+#contact-csr-cell{
+    color: #222;
+    font-weight: 700;
+}
+@media (width <= 991px) {
+  .about-us .about-us-history {
+    display: block;
+    margin-bottom: 164px;
+    padding: 55px 0 0;
+  }
+
+  /* mobile keeps the reference behaviour: image at its natural height at the top */
+  .about-us .about-us-history::before {
+    min-height: 0;
+    background-size: 100% auto;
+  }
+
+  .about-us .about-us-history-heading {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  .about-us .about-us-history-heading h5 {
+    margin-bottom: 4px;
+    font-size: 12px;
+  }
+
+  .about-us .about-us-history-heading h2 {
+    font-size: 22px;
+    line-height: 24px;
+  }
+
+  .about-us .about-us-history-image {
+    margin-top: 16px;
+    text-align: center;
+  }
+
+  .about-us .about-us-history-image picture {
+    margin-left: 0;
+  }
+
+  .about-us .about-us-history-image img {
+    width: auto;
+    height: 292px;
+    margin: 0 auto;
+  }
+
+  .about-us .about-us-history-text {
+    margin-top: 41px;
+    padding-top: 0;
+  }
+
+  .about-us .about-us-history-text p {
+    width: 100%;
+    margin-left: 0;
+    font-size: 14px;
+  }
+
+  .about-us .about-us-tabs {
+    display: block;
+    margin-top: 168px;
+    padding: 0 42px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: -40px;
+  }
+
+  .about-us .about-us-tablist {
+    display: none;
+  }
+
+  .about-us .about-us-drawer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(100% + 40px);
+    margin: 0 -20px;
+    padding: 18px 20px;
+    border: 0;
+    border-radius: 0;
+    background: #f8f8f8;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 30px;
+    letter-spacing: 1.08px;
+    text-align: left;
+    text-transform: uppercase;
+    color: #373737;
+    cursor: pointer;
+  }
+
+  .about-us .about-us-drawer[aria-expanded='true'] {
+    color: #222;
+  }
+
+  .about-us .about-us-drawer::after {
+    content: '';
+    flex: none;
+    width: 7px;
+    height: 7px;
+    margin: 0 4px 4px 12px;
+    border-right: 1px solid currentcolor;
+    border-bottom: 1px solid currentcolor;
+    transform: rotate(45deg);
+  }
+
+  .about-us .about-us-drawer[aria-expanded='true']::after {
+    margin-bottom: -4px;
+    transform: rotate(-135deg);
+  }
+
+  .about-us .about-us-tabpanel {
+    padding: 4px 0 21px;
+    background: none;
+  }
+
+  .about-us .about-us-tabpanel-title {
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 28px;
+    text-align: left;
+  }
+
+  .about-us .about-us-item-label {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+  }
+
+  .about-us .about-us-item-icon {
+    top: 11px;
+  }
+
+  .about-us .about-us-item[open] .about-us-item-icon {
+    margin: 0 -15px 0 0;
+  }
+
+  .about-us .about-us-item-answer {
+    width: 100%;
+    padding-top: 10px;
+  }
+
+  .about-us .about-us-item-answer > * {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    margin-bottom: 10px;
+  }
+
+  main > .section.about-us-container > div {
+    padding: 0 4.5%;
+  }
+
+  .about-us .about-us-panel {
+    margin: 0 0 50px;
+    padding: 24px;
+  }
+
+  .about-us .about-us-panel h2 {
+    font-size: 22px;
+  }
+
+  .about-us .about-us-panel h3,
+  .about-us .about-us-panel p {
+    font-size: 12px;
+  }
+
+  .about-us .about-us-title {
+    margin-bottom: 30px;
+  }
+
+  .about-us .about-us-title > * {
+    font-size: 22px;
+  }
+
+  .about-us .about-us-list {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 6%;
+  }
+
+  .about-us .about-us-card-image img {
+    height: auto;
+    aspect-ratio: 212 / 201;
+  }
+
+  .about-us .about-us-card-body {
+    margin-bottom: 30px;
+  }
+
+  .about-us .about-us-card-body > * {
+    font-size: 12px;
+  }
+}

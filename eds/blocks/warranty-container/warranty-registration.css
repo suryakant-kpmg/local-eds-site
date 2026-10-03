@@ -1,15 +1,27 @@
-/* loaded on demand with warranty-registration.js */
+/* warranty registration form, loaded on demand with warranty-registration.js; values from the
+   source (asianpaints.com/more/warranty.html, .right-container .form-container), in Manrope */
 .warranty-container .warranty-registration {
-  /* no error colour token in styles.css; 6.5:1 on white */
-  --wr-error: #b3261e;
-  --wr-border: color-mix(in srgb, var(--dark-color) 45%, transparent);
+  /* source colours */
+  --wr-ink: #232426;
+  --wr-muted: #8b8b8e;
+  --wr-border: #75787b;
+  --wr-error: #ff4d00;
+  --wr-tint: #fcedd6;
+  --wr-yellow: #fcaf17;
+  --wr-success: #28a745;
+  --wr-upload-bg: #eeeeef;
+  --wr-upload-border: #8c8e90;
+  --wr-upload-text: #3b3d40;
   --wr-radius: 6px;
+  --wr-gap: 18px;
 
-  padding: 20px 16px;
-  border: 1px solid var(--warranty-container-rule);
-  border-radius: 10px;
-  background-color: var(--background-color);
-  font-size: var(--body-font-size-xs);
+  /* a column so the title's and the box's margins add up, as on the source */
+  display: flex;
+  flex-direction: column;
+  font-family: manrope, var(--body-font-family);
+  font-size: 14px;
+  line-height: 22px;
+  color: #222;
 }
 
 .warranty-container .warranty-registration :is(h2, h3, h4, p, ol, ul, fieldset) {
@@ -17,25 +29,59 @@
 }
 
 .warranty-container .warranty-registration .wr-title {
-  font-family: var(--heading-font-family);
-  font-size: var(--heading-font-size-s);
+  margin-bottom: 10px;
+  font-family: manrope, var(--heading-font-family);
+  font-size: 24px;
   font-weight: 800;
+  line-height: 36px;
+  color: #1d1d1f;
 }
 
-.warranty-container .warranty-registration h3 {
+/* the step headings are for screen readers and focus; the step tabs show the names */
+.warranty-container .wr-panel > h3 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* the form replaces the banner; on mobile it stays within the page padding (the banner image
+   runs edge to edge) */
+.warranty-container .warranty-container-banner.warranty-container-banner-form {
+  margin: 0;
+}
+
+/* tinted box: step tabs above a white card */
+.warranty-container .wr-box {
+  margin: 4px;
+  border-radius: 12px;
+  background-color: var(--wr-tint);
+}
+
+.warranty-container .wr-card {
+  padding: 20px 10px;
+  border-radius: 12px;
+  background-color: #fff;
+}
+
+.warranty-container .warranty-registration .wr-demo-note {
   margin-bottom: 16px;
-  font-family: var(--body-font-family);
-  font-size: 1em;
-  font-weight: 700;
+  padding: 8px 12px;
+  border-left: 3px solid var(--wr-yellow);
+  background-color: #fff8eb;
+  font-size: 12px;
+  line-height: 18px;
 }
 
-/* step indicator (extra class so the margin reset above does not win) */
+/* step tabs (extra class so the margin reset above does not win) */
 .warranty-container .warranty-registration .wr-steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin: 16px 0 24px;
-  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+  margin: 0;
+  padding: 10px 27px;
   list-style: none;
 }
 
@@ -43,87 +89,123 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  font-size: 0.8em;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--wr-muted);
   text-align: center;
-  color: var(--dark-color);
 }
 
 .warranty-container .wr-step-number {
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
-  border: 2px solid var(--wr-border);
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--wr-muted);
   border-radius: 50%;
+  font-size: 12px;
   font-weight: 700;
+  line-height: 13px;
 }
 
-.warranty-container .wr-step[aria-current='step'] {
+.warranty-container .wr-step:is([aria-current='step'], .wr-done) {
   font-weight: 700;
-  color: var(--text-color);
+  color: var(--wr-ink);
 }
 
-.warranty-container .wr-step[aria-current='step'] .wr-step-number {
-  border-color: var(--warranty-container-accent);
-  background-color: var(--warranty-container-accent);
-  color: var(--text-color);
+.warranty-container .wr-step:is([aria-current='step'], .wr-done) .wr-step-number {
+  border-color: var(--wr-ink);
+  background-color: var(--wr-ink);
+  color: #fff;
 }
 
+/* a completed step shows a tick instead of its number */
 .warranty-container .wr-step.wr-done .wr-step-number {
-  border-color: var(--text-color);
-  background-color: var(--text-color);
-  color: var(--background-color);
+  font-size: 0;
 }
 
-/* fields */
+.warranty-container .wr-step.wr-done .wr-step-number::after {
+  content: '✓' / '';
+  font-size: 12px;
+}
+
+/* panels */
 .warranty-container .wr-panel {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--wr-gap);
 }
 
 .warranty-container .wr-panel[hidden],
 .warranty-container .wr-field[hidden],
-.warranty-container .wr-otp[hidden],
-.warranty-container .wr-product[hidden] {
+.warranty-container .wr-product[hidden],
+.warranty-container .warranty-registration .wr-steps[hidden],
+.warranty-container .warranty-registration .wr-button[hidden] {
   display: none;
 }
 
 .warranty-container .wr-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
 }
 
+/* fields: outlined boxes with a label that floats onto the border once the field is used */
 .warranty-container .wr-field {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 6px;
 }
 
-.warranty-container .wr-field label {
-  font-size: 0.85em;
-  font-weight: 700;
+.warranty-container .wr-field > label {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  z-index: 1;
+  max-width: calc(100% - 32px);
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--wr-border);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  pointer-events: none;
+  transition: top 0.15s, font-size 0.15s;
+}
+
+.warranty-container .wr-field:where(:focus-within, :has(input:not(:placeholder-shown)), .wr-field-select, .wr-field-unit) > label {
+  top: -9px;
+  left: 12px;
+  padding: 0 4px;
+  background-color: #fff;
+  font-size: 12px;
+  line-height: 18px;
 }
 
 .warranty-container .wr-optional {
   font-weight: 400;
-  color: var(--dark-color);
 }
 
 .warranty-container .wr-input {
   display: flex;
   align-items: stretch;
-  min-height: 48px;
+  box-sizing: border-box;
+  min-height: 52px;
   border: 1px solid var(--wr-border);
   border-radius: var(--wr-radius);
-  background-color: var(--background-color);
+  background-color: #fff;
 }
 
 .warranty-container .wr-input:focus-within {
-  outline: 2px solid var(--link-color);
-  outline-offset: 1px;
+  border-color: #000;
+  box-shadow: 0 0 0 1px #000;
+}
+
+.warranty-container .wr-field:where(:has([aria-invalid='true'])) > label {
+  color: var(--wr-error);
 }
 
 .warranty-container .wr-input:has([aria-invalid='true']) {
@@ -134,17 +216,28 @@
   flex: 1;
   min-width: 0;
   margin: 0;
-  padding: 10px 12px;
+
+  /* 13px + the box's 1px border = the source's 52px field */
+  padding: 13px 16px;
   border: 0;
   border-radius: var(--wr-radius);
   background: transparent;
-  color: var(--text-color);
+  color: #000;
   font: inherit;
-  font-size: 0.95em;
+  font-size: 16px;
+  line-height: 24px;
 }
 
 .warranty-container .wr-input :is(input, select):focus {
   outline: none;
+}
+
+/* dropdowns with the source's caret */
+.warranty-container .wr-input select {
+  padding-right: 40px;
+  appearance: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' viewBox='0 0 14 8'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23222' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center;
+  cursor: pointer;
 }
 
 .warranty-container .wr-input :is(input, select):disabled {
@@ -153,35 +246,63 @@
 }
 
 .warranty-container .wr-input input:read-only {
-  background-color: var(--light-color);
+  color: #333;
 }
 
+/* "+91" appears in front of the number once the field is in use, as on the source */
 .warranty-container .wr-addon,
 .warranty-container .wr-unit {
   display: flex;
   align-items: center;
-  padding: 0 12px;
-  font-size: 0.9em;
-  color: var(--dark-color);
+  font-size: 16px;
+  line-height: 24px;
+  color: #222;
 }
 
 .warranty-container .wr-addon {
-  border-right: 1px solid var(--wr-border);
+  display: none;
+  padding-left: 16px;
 }
 
-.warranty-container .wr-error {
-  font-size: 0.8em;
+.warranty-container .wr-field-addon:is(:focus-within, :has(input:not(:placeholder-shown))) .wr-addon {
+  display: flex;
+}
+
+.warranty-container .wr-field-addon:is(:focus-within, :has(input:not(:placeholder-shown))) input {
+  padding-left: 6px;
+}
+
+.warranty-container .wr-unit {
+  padding: 0 16px 0 0;
+}
+
+.warranty-container .warranty-registration .wr-error {
+  display: flex;
+  gap: 3px;
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: -0.072px;
   color: var(--wr-error);
 }
 
-.warranty-container .wr-note {
-  font-size: 0.8em;
-  color: var(--dark-color);
+.warranty-container .warranty-registration .wr-error[hidden] {
+  display: none;
 }
 
-.warranty-container .wr-verified {
-  font-size: 0.8em;
+.warranty-container .wr-note {
+  font-size: 12px;
+  line-height: 24px;
+  color: var(--wr-upload-text);
+}
+
+.warranty-container .warranty-registration .wr-verified {
+  margin-top: 8px;
+  font-size: 12px;
   font-weight: 700;
+  line-height: 16px;
+  color: var(--wr-success);
 }
 
 .warranty-container .wr-verified::before {
@@ -189,30 +310,40 @@
   content: '✓ ' / '';
 }
 
+/* OTP and the resend countdown side by side; as on the source, the row keeps its space until
+   the OTP is sent, so Get OTP does not move */
 .warranty-container .wr-otp {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 24px;
 }
 
-.warranty-container .wr-otp .wr-field {
-  width: 100%;
+.warranty-container .wr-otp[hidden] {
+  visibility: hidden;
+}
+
+/* after verification the row is gone for good */
+.warranty-container .wr-panel:has(.wr-verified:not([hidden])) .wr-otp[hidden] {
+  display: none;
 }
 
 /* products */
 .warranty-container .wr-product {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 16px 0 0;
+  gap: var(--wr-gap);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
   border: 0;
-  border-top: 1px solid var(--warranty-container-rule);
 }
 
 .warranty-container .wr-product-heading {
-  font-size: 0.9em;
+  font-size: 20px;
   font-weight: 700;
+  line-height: 28px;
+  color: #2e2f32;
 }
 
 .warranty-container .wr-saved,
@@ -237,21 +368,24 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 10px 14px;
+  border: 1px solid #e9e9e9;
   border-radius: var(--wr-radius);
-  background-color: var(--light-color);
-  font-size: 0.9em;
+  background-color: #fafafa;
+  font-size: 14px;
 }
 
 .warranty-container .wr-saved-name {
   display: flex;
   flex-direction: column;
+  font-weight: 700;
 }
 
 .warranty-container .wr-saved-number,
 .warranty-container .wr-file-date {
-  font-size: 0.85em;
-  color: var(--dark-color);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--wr-border);
 }
 
 .warranty-container .wr-file-name {
@@ -264,90 +398,145 @@
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
-  gap: 4px 10px;
-  font-size: 0.9em;
+  gap: 0 8px;
+  min-height: 36px;
+  font-size: 14px;
+  line-height: 22px;
 }
 
 .warranty-container .wr-terms input[type='checkbox'] {
   width: 20px;
   height: 20px;
   margin: 0;
-  accent-color: var(--text-color);
+  accent-color: var(--wr-ink);
+}
+
+.warranty-container .wr-terms a {
+  color: #222;
+  text-decoration: underline;
 }
 
 .warranty-container .wr-terms .wr-error {
   grid-column: 1 / -1;
 }
 
-/* upload */
+/* invoice upload: the source's dashed drop box; the native input is kept but visually hidden */
 .warranty-container .wr-upload {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 16px;
-  border: 1px dashed var(--wr-border);
-  border-radius: var(--wr-radius);
-}
-
-.warranty-container .wr-upload-title {
-  font-weight: 700;
 }
 
 .warranty-container .wr-file-input {
-  font: inherit;
-  font-size: 0.85em;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
 }
 
-.warranty-container .wr-file-input::file-selector-button {
-  min-height: 40px;
-  margin-right: 12px;
-  padding: 0 16px;
-  border: 1px solid var(--text-color);
-  border-radius: 45px;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  font: inherit;
+.warranty-container .wr-upload label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 122px;
+  margin-bottom: 7px;
+  border: 1px dashed var(--wr-upload-border);
+  border-radius: 12px;
+  background-color: var(--wr-upload-bg);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--wr-upload-text);
   cursor: pointer;
 }
 
-.warranty-container .wr-file-input[aria-invalid='true']::file-selector-button {
+.warranty-container .wr-upload label::before {
+  /* upload arrow */
+  content: '';
+  width: 15px;
+  height: 14px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='14' viewBox='0 0 15 14'%3E%3Cpath d='M7.5 9.5V1.5M4 5l3.5-3.5L11 5M1 9.5v3h13v-3' fill='none' stroke='%233b3d40' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center;
+}
+
+.warranty-container .wr-upload label::after {
+  content: 'format (pdf/jpeg/jpg/png)' / '';
+}
+
+.warranty-container .wr-upload-title {
+  margin-top: 7px;
+  font-weight: 700;
+}
+
+.warranty-container .wr-upload:has(.wr-file-input:focus-visible) label {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+.warranty-container .wr-upload:has(.wr-file-input:disabled) label {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.warranty-container .wr-upload:has(.wr-file-input[aria-invalid='true']) label {
   border-color: var(--wr-error);
 }
 
-/* buttons */
+/* buttons: the source's yellow pill; outlined for secondary actions */
 .warranty-container .wr-actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: flex-end;
   gap: 12px;
+  margin-top: 6px;
 }
 
 .warranty-container .wr-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   min-height: 44px;
   margin: 0;
-  padding: 0 28px;
-  border: 2px solid transparent;
+  padding: 10px 70px;
+  border: 0;
   border-radius: 45px;
   font: inherit;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
   cursor: pointer;
 }
 
 .warranty-container .wr-primary {
-  background-color: var(--warranty-container-accent);
-  color: var(--text-color);
+  background-color: var(--wr-yellow);
+  color: #1e1e1e;
 }
 
 .warranty-container .wr-secondary {
+  min-height: 38px;
+  padding: 7px 24px;
+  border: 1px solid #222;
+  background-color: transparent;
+  color: #222;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.warranty-container .wr-panel > .wr-secondary {
   align-self: flex-start;
-  border-color: var(--text-color);
-  background-color: var(--background-color);
-  color: var(--text-color);
+}
+
+/* not ready yet (still clickable, so a click lists what is missing) */
+.warranty-container .wr-button.wr-pending,
+.warranty-container .wr-button:disabled {
+  opacity: 0.6;
 }
 
 .warranty-container .wr-button:disabled {
   cursor: not-allowed;
-  opacity: 0.55;
 }
 
 .warranty-container .wr-link-button {
@@ -356,40 +545,81 @@
   padding: 4px 0;
   border: 0;
   background: none;
-  color: var(--text-color);
+  color: #53565a;
   font: inherit;
-  font-size: 0.9em;
-  text-decoration: underline;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 21px;
   cursor: pointer;
 }
 
 .warranty-container .wr-link-button:disabled {
+  font-weight: 400;
   cursor: default;
-  text-decoration: none;
-  color: var(--dark-color);
 }
 
-.warranty-container .warranty-registration :is(button, a, input[type='checkbox'], input[type='file']):focus-visible,
+/* the resend countdown beside the OTP field */
+.warranty-container .wr-otp .wr-link-button {
+  min-height: 52px;
+  justify-self: start;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: start;
+  color: #53565a;
+}
+
+.warranty-container .warranty-registration :is(button, a, input[type='checkbox']):focus-visible,
 .warranty-container .warranty-registration :is(h2, h3):focus-visible {
-  outline: 2px solid var(--link-color);
+  outline: 2px solid #000;
   outline-offset: 2px;
 }
 
 /* result */
+.warranty-container .wr-result {
+  gap: 20px;
+}
+
+.warranty-container .wr-result h3 {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 28px;
+}
+
+.warranty-container .wr-success h3 {
+  color: var(--wr-success);
+}
+
+.warranty-container .wr-failure h3 {
+  color: var(--wr-error);
+}
+
+.warranty-container .wr-result p {
+  font-size: 16px;
+  line-height: 24px;
+}
+
 .warranty-container .wr-result .wr-strong {
   font-weight: 700;
 }
 
+.warranty-container .wr-result a {
+  color: #222;
+  text-decoration: underline;
+}
+
+/* the source's tick, drawn instead of its animated GIF */
 .warranty-container .wr-success h3::before {
   content: '✓' / '';
   display: grid;
   place-items: center;
-  width: 56px;
-  height: 56px;
-  margin-bottom: 12px;
+  width: 113px;
+  height: 113px;
+  margin: 0 auto 20px;
   border-radius: 50%;
-  background-color: var(--warranty-container-accent);
-  font-size: 1.6em;
+  background-color: var(--wr-success);
+  color: #fff;
+  font-size: 56px;
+  line-height: 1;
 }
 
 .warranty-container .wr-sr-only {
@@ -403,6 +633,43 @@
 
 @media (width >= 992px) {
   .warranty-container .warranty-registration {
-    padding: 24px;
+    --wr-gap: 24px;
+  }
+
+  .warranty-container .warranty-registration .wr-title {
+    margin-bottom: 20px;
+  }
+
+  .warranty-container .wr-box {
+    margin: 10px;
+    border-radius: 10px;
+  }
+
+  .warranty-container .warranty-registration .wr-steps {
+    gap: 0;
+    padding: 30px 20px;
+  }
+
+  .warranty-container .wr-step {
+    flex-direction: row;
+    gap: 8px;
+    font-size: 16px;
+    text-align: start;
+  }
+
+  .warranty-container .wr-card {
+    padding: 30px 20px;
+  }
+
+  .warranty-container .wr-product {
+    --wr-gap: 18px;
+  }
+
+  .warranty-container .wr-product-heading {
+    line-height: 30px;
+  }
+
+  .warranty-container .wr-actions {
+    margin-top: 25px;
   }
 }

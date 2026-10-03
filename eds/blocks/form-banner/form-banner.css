@@ -22,6 +22,77 @@
   object-fit: contain;
 }
 
+/* ---------- Carousel (Row 1 with more than one slide) ---------- */
+
+/* before Swiper loads: show the first slide only, at its final size */
+.form-banner__media.swiper {
+  overflow: hidden;
+}
+
+.form-banner__media .swiper-wrapper {
+  display: flex;
+  height: 100%;
+}
+
+.form-banner__media .form-banner__slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.form-banner .form-banner__media .form-banner__pagination {
+  position: absolute;
+  z-index: 3;
+  bottom: 28px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #fff;
+  transform: translateX(-50%);
+}
+
+.form-banner .form-banner__media .form-banner__pagination .swiper-pagination-bullet {
+  width: 6px;
+  height: 6px;
+  margin: 0;
+  border-radius: 999px;
+  background: #b9b9b9;
+  opacity: 1;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.form-banner .form-banner__media .form-banner__pagination .swiper-pagination-bullet-active {
+  width: 28px;
+  background: #1d1d1f;
+}
+
+@media (width >= 992px) {
+  /* swiper.css (loaded later) sets .swiper { position: relative } */
+  .form-banner .form-banner__media.swiper {
+    position: absolute;
+    inset: 0;
+  }
+
+  .form-banner .form-banner__media .form-banner__pagination {
+    bottom: 24px;
+    gap: 12px;
+    padding: 11px 16px;
+  }
+
+  .form-banner .form-banner__media .form-banner__pagination .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+  }
+
+  .form-banner .form-banner__media .form-banner__pagination .swiper-pagination-bullet-active {
+    width: 38px;
+  }
+}
+
 .form-banner__overlay {
   position: absolute;
   z-index: 2;
@@ -928,3 +999,235 @@ width: fit-content !important;
   max-width: 90%;
 }
 }
+
+/* ==========================================================
+   BHPS form styling — Start
+   Applies only when "Is it a BHPS form" is true: the block gets
+   .bhps-form (WhatsApp checkbox + BHPS questions).
+   ========================================================== */
+.form-banner.bhps-form .form-banner__form .form-consent-area {
+  gap: 14px;
+}
+
+.form-banner.bhps-form .form-banner__form .form-consent-item--checkbox {
+  gap: 10px;
+}
+
+.form-banner.bhps-form .form-banner__form .form-consent-item--checkbox .form-consent-check {
+  position: relative;
+  flex: 0 0 15px;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #b0b1b3;
+  border-radius: 2px;
+  background: transparent;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.form-banner.bhps-form .form-banner__form .form-consent-item--checkbox .form-consent-input:checked + .form-consent-check {
+  border-color: #75787b;
+  background: #75787b;
+}
+
+.form-banner.bhps-form .form-banner__form .form-consent-item--checkbox .form-consent-input:checked + .form-consent-check::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  width: 5px;
+  height: 8px;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(45deg);
+}
+
+.form-banner.bhps-form .form-banner__form .form-consent-item--checkbox .form-consent-input:focus-visible + .form-consent-check {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+.form-banner.bhps-form .form-banner__form .form-consent-item--checkbox .form-consent-text {
+  color: #000;
+  font-size: 12px;
+  line-height: 19px;
+}
+
+.form-banner.bhps-form .form-banner__form .new-disclaimer-questions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-banner.bhps-form .form-banner__form .disclaimer-group fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.form-banner.bhps-form .form-banner__form .disclaimer-group legend {
+  margin-bottom: 10px;
+  padding: 0;
+  color: #000;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.3px;
+}
+
+.form-banner.bhps-form .form-banner__form .disclaimer-group .form-global__required {
+  color: #ed1c24;
+}
+
+.form-banner.bhps-form .form-banner__form .disclaimer-group .radio-options-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 14px;
+}
+
+.form-banner.bhps-form .form-banner__form .disclaimer-group .disclaimer-radio-label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.form-banner.bhps-form .form-banner__form .disclaimer-group .form-radio-input__field {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.form-banner.bhps-form .form-banner__form .disclaimer-group .form-radio-input__custom-element {
+  position: relative;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #b0b1b3;
+  border-radius: 50%;
+  transition: border-color 0.2s ease;
+}
+
+.form-banner.bhps-form .form-banner__form .disclaimer-group.has-error .form-radio-input__custom-element {
+  border-color: #ff2343;
+}
+
+.form-banner.bhps-form .form-banner__form .disclaimer-group .form-radio-input__field:checked + .form-radio-input__custom-element {
+  border-color: #f47838;
+}
+
+.form-banner.bhps-form .form-banner__form .disclaimer-group .form-radio-input__field:checked + .form-radio-input__custom-element::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #f47838;
+  transform: translate(-50%, -50%);
+}
+
+.form-banner.bhps-form .form-banner__form .disclaimer-group .form-radio-input__field:focus-visible + .form-radio-input__custom-element {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+.form-banner.bhps-form .form-banner__form .disclaimer-group .form-global__custom-label-text {
+  color: #75787b;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.form-banner.bhps-form .form-banner__form .form-consent-note {
+  font-size: 12px;
+  letter-spacing: 0.8px;
+}
+
+/* desktop: the BHPS card is taller, so pin it near the top and tighten its
+   spacing to keep the whole card and the slider dots inside the viewport */
+@media (width >= 992px) {
+  .form-banner.bhps-form .form-banner__wrapper {
+    align-items: flex-start;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .form-banner.bhps-form .form-banner__card {
+    padding-top: 16px;
+  }
+
+  .form-banner.bhps-form .form-banner__card-title {
+    margin-bottom: 12px;
+  }
+
+  .form-banner.bhps-form .form-banner__form .form-consent-area {
+    gap: 10px;
+  }
+
+  .form-banner.bhps-form .form-banner__form .new-disclaimer-questions {
+    gap: 8px;
+  }
+
+  .form-banner.bhps-form .form-banner__form .disclaimer-group legend {
+    margin-bottom: 6px;
+  }
+
+  .form-banner.bhps-form .form-banner__form .form-button-cell {
+    margin-bottom: 8px;
+  }
+}
+
+/* BHPS success popup — thank-you video, styled as in the form block
+   (form.css: .form-popup-overlay--success / .form-popup-success-video /
+   .form-popup-success-cta). The video sets the popup's height. */
+.form-banner.bhps-form .form-popup-overlay--bhps {
+  position: relative;
+  height: auto;
+  border-radius: 20px;
+  background: #ded7cb;
+}
+
+.form-banner.bhps-form .form-popup-overlay--bhps .form-popup-success-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  clip-path: inset(0 round 20px);
+}
+
+/* transparent hotspot over the "Book FREE site visit" button in the video */
+.form-banner.bhps-form .form-popup-overlay--bhps .form-popup-success-cta {
+  position: absolute;
+  z-index: 2;
+  bottom: 50%;
+  right: 6%;
+  width: 31%;
+  height: 16%;
+  border-radius: 100%;
+  opacity: 0;
+  transform: translateY(93%);
+}
+
+/* the popup now takes up space itself, so the room reserved below the
+   absolutely positioned default popup is not needed */
+.form-banner-wrapper:has(.form-popup-overlay--bhps) .form-banner.block.bhps-form {
+  margin-bottom: 0;
+}
+
+@media (width >= 992px) {
+  .form-banner.bhps-form .form-popup-overlay--bhps .form-popup-success-cta {
+    bottom: 36%;
+    right: 7%;
+    width: 11%;
+    height: 33%;
+    transform: none;
+  }
+}
+
+/* BHPS form styling — End */

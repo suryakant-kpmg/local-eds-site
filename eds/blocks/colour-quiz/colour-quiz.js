@@ -1,11 +1,13 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import {
-  readLeadRow, emptyLead, leadSubmitted, buildLeadForm,
+  readLeadRow, emptyLead, leadSubmitted, buildLeadForm, recordAnswer, quizRequest, completeLead,
 } from './lead-form.js';
+import { fetchRecommendations, track } from './lead-api.js';
 
 /**
- * colour-quiz — step-by-step colour quiz with branching questions and results
- * looked up from an authored spreadsheet (DA sheet served as JSON).
+ * colour-quiz — step-by-step colour quiz with branching questions; results
+ * come from the source's recommendation API, or from an authored
+ * spreadsheet (DA sheet served as JSON) when the API is not reachable.
  *
  * Authoring model (see README in colour-quiz.css header). The first cell of
  * each row is a keyword:
@@ -13,11 +15,12 @@ import {
  *   results    | link to results sheet (.json) | heading | restart label
  *   question   | id | step label | display text (optional) | show if | flags
  *   option     | label | image | value (optional, defaults to label)
+ *   config     | key | value   (endpoints, lead and PDF settings, labels)
  * Option rows belong to the question row above them. "show if" is
  * `id=value` (several separated by `;`); flags: `zoom` (image preview button),
  * `icons` (small icon cards). Results sheet: one column per question id
- * (blank or `*` = any) plus `shade N name` / `shade N code` / `shade N hex`.
- * The most specific matching row wins.
+ * (blank or `*` = any) plus shade / texture columns (see results.js
+ * fromSheet). The most specific matching row wins.
  * Optional lead form (last step, before results): `form`, `field`, `choice`
  * and `consent` rows — see lead-form.js.
  */
@@ -59,8 +62,23 @@ function parseCondition(raw) {
 }
 
 function parse(block) {
+  const settings = new Map();
   const config = {
-    results: '', heading: null, restart: 'Do it again', bgMobile: null, bgDesktop: null, lead: emptyLead(),
+    results: '',
+    heading: null,
+    restart: 'Do it again',
+    bgMobile: null,
+    bgDesktop: null,
+    lead: emptyLead(),
+    settings: {
+      // a cell holding only a link is read as the link's URL
+      get: (k) => {
+        const cell = settings.get(k);
+        const link = cell?.querySelector('a[href]');
+        return link && text(link) === text(cell) ? link.getAttribute('href') : text(cell);
+      },
+      img: (k) => settings.get(k)?.querySelector('img') || null,
+    },
   };
   const questions = [];
   [...block.children].forEach((row) => {
@@ -98,13 +116,15 @@ function parse(block) {
       config.restart = text(cells[3]) || config.restart;
     } else if (['form', 'field', 'choice', 'consent'].includes(kind)) {
       readLeadRow(kind, cells, config.lead);
+    } else if (kind === 'config' && norm(text(cells[1]))) {
+      settings.set(norm(text(cells[1])), cells[2] || document.createElement('div'));
     }
   });
   return { config, questions: questions.filter((q) => q.id && q.options.length) };
 }
 
 /** Find the most specific results row matching the answers (blank/* = any). */
-function findResult(rows, answers, ids) {
+function findRow(rows, answers, ids) {
   let best = null;
   let bestScore = -1;
   rows.forEach((row) => {
@@ -119,15 +139,7 @@ function findResult(rows, answers, ids) {
     });
     if (ok && score > bestScore) { best = cols; bestScore = score; }
   });
-  if (!best) return [];
-  const shades = [];
-  for (let n = 1; n <= 6; n += 1) {
-    const name = best[`shade${n}name`];
-    const code = best[`shade${n}code`];
-    const hex = best[`shade${n}hex`];
-    if (name || code || hex) shades.push({ name, code, hex: /^#?[0-9a-f]{6}$/i.test(hex || '') ? `#${hex.replace('#', '')}` : '' });
-  }
-  return shades;
+  return best;
 }
 
 export default function decorate(block) {
@@ -247,21 +259,59 @@ export default function decorate(block) {
     btn.textContent = config.restart;
     return btn;
   };
+  const { settings } = config;
   const headerCta = document.createElement('div');
   headerCta.className = 'colour-quiz-results-actions';
-  headerCta.append(restartButton('colour-quiz-restart-pill'));
+  // "Share on WhatsApp" (mobile only, as on the source)
+  const share = document.createElement('a');
+  share.className = 'colour-quiz-share';
+  share.href = '#';
+  share.target = '_blank';
+  share.rel = 'noopener noreferrer';
+  share.textContent = settings.get('share label') || 'Share on WhatsApp';
+  headerCta.append(restartButton('colour-quiz-restart-pill'), share);
   resultsHeader.append(resultsHeading, headerCta);
-  const shadesList = document.createElement('ul');
-  shadesList.className = 'colour-quiz-shades';
+  const recsSlot = document.createElement('div');
+  recsSlot.className = 'colour-quiz-recs-slot';
   const resultsCta = document.createElement('div');
   resultsCta.className = 'colour-quiz-results-cta';
-  resultsCta.append(restartButton('colour-quiz-restart'));
-  results.append(resultsHeader, shadesList, resultsCta);
+  const download = document.createElement('button');
+  download.type = 'button';
+  download.className = 'colour-quiz-download';
+  download.innerHTML = '<span class="colour-quiz-submit-label"></span><span class="colour-quiz-spinner" aria-hidden="true"></span>';
+  download.firstChild.textContent = settings.get('download label') || 'Download (PDF)';
+  resultsCta.append(restartButton('colour-quiz-restart'), download);
+  const rule = document.createElement('hr');
+  rule.className = 'colour-quiz-results-rule';
+  results.append(resultsHeader, recsSlot, resultsCta, rule);
+
+  // results view + PDF code (results.js) is loaded when results are first shown
+  let view = null; // { module, pdf } once loaded
+  let viewLoading = null;
+  const loadView = () => {
+    viewLoading = viewLoading || import('./results.js').then((module) => {
+      view = { module, pdf: module.pdfController(block, settings) };
+      return view;
+    });
+    return viewLoading;
+  };
+  download.addEventListener('click', async () => {
+    if (download.getAttribute('aria-busy') === 'true') return;
+    download.setAttribute('aria-busy', 'true');
+    try {
+      await (await loadView()).pdf.download();
+    } catch (e) {
+      status.textContent = 'The PDF could not be created. Please try again.';
+    } finally {
+      download.removeAttribute('aria-busy');
+    }
+  });
 
   // --- rendering ---
   let render;
+  let resultsShown = Promise.resolve();
   // lead form: passed once per quiz run (submitted, or skipped for a
-  // visitor who already submitted this session)
+  // visitor who already submitted on this page view)
   const { lead } = config;
   let formCleared = false;
   let leadForm = null;
@@ -269,8 +319,8 @@ export default function decorate(block) {
     if (!leadForm) {
       leadForm = buildLeadForm(lead, {
         uid,
-        getAnswers: () => ({ ...answers }),
-        onDone: () => { formCleared = true; render(true); },
+        settings,
+        onDone: () => { formCleared = true; render(true); return resultsShown; },
       });
     }
     return leadForm;
@@ -279,6 +329,7 @@ export default function decorate(block) {
   const answer = (question, option) => {
     formCleared = false;
     answers[question.id] = option.value;
+    recordAnswer(question.id, option.value);
     // drop answers to questions that are no longer reachable on this branch
     const reachable = new Set(visible().map((q) => q.id));
     Object.keys(answers).forEach((id) => { if (!reachable.has(id)) delete answers[id]; });
@@ -293,44 +344,56 @@ export default function decorate(block) {
     render(true);
   };
 
+  /**
+   * Source order: recommendation API -> results -> PDF made and uploaded ->
+   * Salesforce with the PDF link. If the API fails, Salesforce gets the lead
+   * without a PDF and the authored sheet is used instead.
+   */
   const renderResults = async (moveFocus) => {
+    const {
+      module: { fromApi, fromSheet, buildRecommendations },
+      pdf,
+    } = await loadView();
+    const request = quizRequest();
+    let recs = [];
+    let fromService = false;
+    const api = settings.get('recommendations');
+    const json = api ? await fetchRecommendations(api, request, settings.get('page path')) : null;
+    if (json) {
+      recs = fromApi(json);
+      fromService = recs.some((r) => r.visible);
+    } else {
+      completeLead(settings, '');
+    }
+    if (!fromService) {
+      const row = findRow(await loadResults(), answers, questions.map((q) => q.id));
+      recs = row ? fromSheet(row) : [];
+    }
+    const requestType = json?.requestType || request.requestType;
+    const recsView = buildRecommendations(recs, { settings, requestType });
+
     panel.hidden = true;
     results.hidden = false;
-    shadesList.replaceChildren();
-    const rows = await loadResults();
-    const shades = findResult(rows, answers, questions.map((q) => q.id));
-    if (!shades.length) {
-      const li = document.createElement('li');
-      li.className = 'colour-quiz-shades-empty';
-      li.textContent = 'We couldn’t find a recommendation for these choices yet.';
-      shadesList.append(li);
-    }
-    shades.forEach((shade) => {
-      const li = document.createElement('li');
-      li.className = 'colour-quiz-shade';
-      const chip = document.createElement('span');
-      chip.className = 'colour-quiz-shade-chip';
-      chip.setAttribute('aria-hidden', 'true');
-      if (shade.hex) chip.style.setProperty('--colour-quiz-shade', shade.hex);
-      const name = document.createElement('span');
-      name.className = 'colour-quiz-shade-name';
-      name.textContent = shade.name || '';
-      const code = document.createElement('span');
-      code.className = 'colour-quiz-shade-code';
-      code.textContent = shade.code || '';
-      li.append(chip, name, code);
-      shadesList.append(li);
-    });
-    status.textContent = shades.length
-      ? `${shades.length} recommended shade${shades.length > 1 ? 's' : ''}`
+    recsSlot.replaceChildren(recsView || '');
+    download.hidden = !recsView;
+    pdf.reset(recsView ? {
+      heading: resultsHeading, recs, settings, requestType,
+    } : null);
+    const count = recsView ? recsView.children.length : 0;
+    status.textContent = count
+      ? `${count} recommendation${count > 1 ? 's' : ''}`
       : 'No recommendation found';
     if (moveFocus) resultsHeading.focus();
+    if (fromService) {
+      // no PDF (render failed) means no Salesforce call, as on the source
+      pdf.upload().then((link) => completeLead(settings, link)).catch(() => {});
+    }
   };
 
   render = (moveFocus = false) => {
     const q = current();
     const formStep = !q && lead.enabled && !formCleared;
-    if (!q && !formStep) { renderResults(moveFocus); return; }
+    if (!q && !formStep) { resultsShown = renderResults(moveFocus); return; }
     panel.hidden = false;
     results.hidden = true;
 
@@ -444,12 +507,22 @@ export default function decorate(block) {
     }
   };
 
+  const restart = () => {
+    formCleared = false;
+    Object.keys(answers).forEach((id) => delete answers[id]);
+    view?.pdf.reset(null);
+    track('HCG_doitagain');
+    render(true);
+  };
   results.querySelectorAll('.colour-quiz-restart, .colour-quiz-restart-pill').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      formCleared = false;
-      Object.keys(answers).forEach((id) => delete answers[id]);
-      render(true);
-    });
+    btn.addEventListener('click', restart);
+  });
+  // source: sharing opens WhatsApp in a new tab and restarts the quiz
+  share.addEventListener('click', () => {
+    // results (and so results.js) are on screen whenever the share link is
+    if (view) share.href = view.module.whatsappHref();
+    track('tools_share', { shareType: 'whatsapp' });
+    setTimeout(restart);
   });
 
   block.replaceChildren(panel, results, status, zoom);

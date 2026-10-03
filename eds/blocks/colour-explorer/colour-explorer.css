@@ -1,31 +1,9 @@
 /*
  * colour-explorer — choose a shade from a swatch strip and preview it in place.
  *
- * AUTHORING (Google Doc / Word / DA table). One row per shade:
- *
- *   +-------------------------------------------------------------------------+
- *   | colour-explorer                                                         |
- *   +-------------------------------------------------------------------------+
- *   | ## Popular Shades                                                       |
- *   | Choose a Colour to see How it Looks on the Wall!                        |
- *   +--------------+-------------+-------+---------+--------------------------+
- *   | <mob><desk>  | Sun Screen  | 7868  | #F7F2DA | [details](url)           |
- *   | <mob><desk>  | Cream Pie   | L152  | #F6F3E8 | [details](url)           |
- *   | …one row per shade…                                                     |
- *   +-------------------------------------------------------------------------+
- *   | Didn't find the right shade for your home? …                            |
- *   | [VIEW ALL COLOURS](/colour-catalogue)                                   |
- *   +-------------------------------------------------------------------------+
- *
- * - Shade row: room image(s) | name | code | hex | link (kept for authors; not
- *   rendered). The room image cell takes ONE image (all sizes) or TWO — first
- *   mobile, second desktop (swaps in at >=992px). The swatch tile is pure CSS,
- *   painted from the hex — no image.
- * - Text-only rows are copy: before the shades = intro, after = footer. A link
- *   alone in its paragraph becomes the CTA button.
- * - Clicking a swatch swaps the room image in place (no visible caption, as on
- *   the source); nothing navigates. The first shade is shown by default. The
- *   previewed shade is announced to screen readers via a hidden live region.
+ * AUTHORING: see the "Authoring format" comment at the top of
+ * colour-explorer.js (Title / Sub title / Note / CTA / Open in new tab rows,
+ * then one "Desktop image | Mobile image | Name | Code | Hex" row per shade).
  *
  * VARIANTS (add to the block name, e.g. "colour-explorer (one-row)"):
  *   one-row — single-row swatch strip instead of two rows.
@@ -36,7 +14,7 @@
   --colour-explorer-panel: #f0f0f0;
   --colour-explorer-ink: #2a2a2a;
   --colour-explorer-cta: #431a80;
-  --colour-explorer-cta-hover: #2f1259;
+  --colour-explorer-cta-hover: #5e25b2;
 
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -77,6 +55,11 @@
   margin: 0;
   font-size: 14px;
   line-height: 1.6;
+}
+
+.colour-explorer .colour-explorer-footer p {
+  color: #3b3b3b;
+  letter-spacing: 0.62px;
 }
 
 .colour-explorer .colour-explorer-footer {
@@ -195,7 +178,6 @@
   overflow: hidden;
   border-radius: 0 12px 0 0;
   background-color: var(--colour-explorer-swatch, var(--light-color));
-  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 8%);
 }
 
 /* tick on the active swatch */
@@ -208,7 +190,6 @@
   margin: auto;
   border-radius: 50%;
   background: #fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="%23222" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat center / 20px;
-  box-shadow: 0 1px 4px rgb(0 0 0 / 20%);
 }
 
 .colour-explorer .colour-explorer-swatch-name {

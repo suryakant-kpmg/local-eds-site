@@ -8,10 +8,12 @@
  *      call per product
  * Configuration (page or bulk metadata):
  *   warranty-api-base        origin of the services; empty = same origin (www.asianpaints.com)
- *   warranty-encryption-key  passphrase for field encryption (supplied by Asian Paints)
+ *   warranty-encryption-key  passphrase for field encryption (supplied by Asian Paints); without
+ *                            it the form opens but says online registration is not available
+ *   warranty-demo            "true" simulates the services on preview hosts (see createDemoApi)
  */
 import { getMetadata, loadCSS } from '../../scripts/aem.js';
-import encryptField from '../../scripts/asianpaints-crypto.js';
+import encryptField from './asianpaints-crypto.js';
 
 const ENDPOINTS = {
   products: '/apcolourcatalogue/getProductsList/warrantyRegistration.json',
@@ -35,6 +37,7 @@ const MESSAGES = {
   quantity: (min, unit) => `Minimum quantity is ${min} ${unit}`,
   totalQuantity: (min, unit) => `Total quantity of products must be at least ${min} ${unit}`,
   otpSendFailed: 'We could not send the OTP. Please try again.',
+  notConfigured: 'Online registration is not available on this page yet. Please call 1800-209-5678 to register your warranty.',
   otpVerifyFailed: 'We could not verify the OTP. Please try again.',
   catalogueFailed: 'We could not load the product list.',
   fileCount: `You can upload up to ${MAX_FILES} files`,
@@ -107,10 +110,13 @@ function createField(prefix, {
       // yields 10 digits; maxlength would cut it first
       id, name, type, required, autocomplete, inputmode, maxlength: filter ? undefined : maxlength, spellcheck: type === 'email' ? 'false' : undefined,
     });
+  // an empty placeholder lets the CSS float the label once the field has a value
+  if (!options) control.placeholder = ' ';
   control.setAttribute('aria-describedby', error.id);
-  const labelEl = el('label', { for: id }, label, required ? '' : el('span', { className: 'wr-optional', text: ' (optional)' }));
+  const labelEl = el('label', { for: id }, label, required ? '*' : el('span', { className: 'wr-optional', text: ' (optional)' }));
   const input = el('div', { className: 'wr-input' }, addon ? el('span', { className: 'wr-addon', 'aria-hidden': 'true', text: addon }) : null, control, unit ? el('span', { className: 'wr-unit' }) : null);
-  const wrapper = el('div', { className: `wr-field wr-field-${name}` }, labelEl, input, error);
+  const kind = [options && 'wr-field-select', addon && 'wr-field-addon', unit && 'wr-field-unit'].filter(Boolean).join(' ');
+  const wrapper = el('div', { className: `wr-field wr-field-${name} ${kind}`.trim() }, labelEl, input, error);
 
   const field = {
     name,
@@ -210,10 +216,41 @@ function createApi(base) {
   };
 }
 
+/*
+ * Demo mode, for reviewing the flow on preview hosts where the services are not reachable
+ * (they only accept www.asianpaints.com): no request leaves the page, the OTP is 123456 and the
+ * product list is a snapshot. Opt in with the metadata `warranty-demo: true`; ignored on any
+ * other host, so it can never take effect on the live site.
+ */
+const DEMO_HOSTS = /(\.aem\.(page|live)|^localhost|^127\.0\.0\.1)$/;
+const DEMO_OTP = '123456';
+
+function createDemoApi() {
+  const wait = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
+  let registered = 0;
+  return {
+    products: async () => {
+      const response = await fetch(`${window.hlx.codeBasePath}/blocks/warranty-container/warranty-demo-products.json`);
+      if (!response.ok) throw new Error('demo catalogue missing');
+      return response.json();
+    },
+    sendOtp: async () => { await wait(400); return { status: 'success' }; },
+    verifyOtp: async (otp) => { await wait(300); return { verified: otp === DEMO_OTP }; },
+    register: async () => {
+      await wait(500);
+      registered += 1;
+      return { Warranty_Id: `DEMO-${String(registered).padStart(4, '0')}` };
+    },
+  };
+}
+
 export function getRegistrationConfig() {
+  const demo = /^(true|yes|on)$/i.test(getMetadata('warranty-demo'))
+    && DEMO_HOSTS.test(window.location.hostname);
   return {
     apiBase: getMetadata('warranty-api-base'),
     passphrase: getMetadata('warranty-encryption-key'),
+    demo,
   };
 }
 
@@ -227,8 +264,13 @@ export function getRegistrationConfig() {
 export default async function openRegistration(container, config) {
   formInstances += 1;
   const prefix = `wr-${formInstances}`;
-  const api = createApi(config.apiBase);
-  const encrypt = (value) => encryptField(value, config.passphrase);
+  const api = config.demo ? createDemoApi() : createApi(config.apiBase);
+  // without the passphrase the services can't decrypt the fields, so the form stops at the OTP
+  const passphrase = config.demo ? 'demo' : config.passphrase;
+  const encrypt = (value) => {
+    if (!passphrase) return Promise.reject(new Error('not-configured'));
+    return encryptField(value, passphrase);
+  };
   await loadCSS(`${window.hlx.codeBasePath}/blocks/warranty-container/warranty-registration.css`);
 
   const state = {
@@ -292,9 +334,12 @@ export default async function openRegistration(container, config) {
   const getOtp = el('button', {
     type: 'button', className: 'wr-button wr-primary', text: 'Get OTP',
   });
+  // as on the source, Next appears once the mobile number is verified
   const toProducts = el('button', {
-    type: 'submit', className: 'wr-button wr-primary', text: 'Next',
+    type: 'submit', className: 'wr-button wr-primary', text: 'Next', hidden: true,
   });
+  // form-level problems (e.g. online registration not set up), shown above the buttons
+  const formNotice = el('p', { className: 'wr-error wr-form-notice', role: 'alert', hidden: true });
   const customerForm = el(
     'form',
     { className: 'wr-panel', noValidate: true, 'aria-labelledby': `${prefix}-h-0` },
@@ -305,6 +350,7 @@ export default async function openRegistration(container, config) {
     el('div', { className: 'wr-row' }, customer.city.wrapper, customer.pincode.wrapper),
     customer.mobileNumber.wrapper,
     otpGroup,
+    formNotice,
     el('div', { className: 'wr-actions' }, getOtp, toProducts),
   );
   customerForm.noValidate = true;
@@ -349,9 +395,15 @@ export default async function openRegistration(container, config) {
       announce(`OTP sent to +91 ${customer.mobileNumber.value}`);
       otp.control.focus();
       track('BHS_AA_Phoneno', { flowType: 'Warranty' });
-    } catch {
-      announce(MESSAGES.otpSendFailed);
-      (state.otpSent ? otp : customer.mobileNumber).setError(MESSAGES.otpSendFailed);
+    } catch (error) {
+      if (error?.message === 'not-configured') {
+        // not a problem with the visitor's input, so it is not tied to a field
+        formNotice.textContent = MESSAGES.notConfigured;
+        formNotice.hidden = false;
+      } else {
+        announce(MESSAGES.otpSendFailed);
+        (state.otpSent ? otp : customer.mobileNumber).setError(MESSAGES.otpSendFailed);
+      }
       getOtp.disabled = false;
       resend.disabled = false;
     }
@@ -367,6 +419,7 @@ export default async function openRegistration(container, config) {
         otpGroup.hidden = true;
         customer.mobileNumber.control.readOnly = true;
         verifiedBadge.hidden = false;
+        toProducts.hidden = false;
         announce('Mobile number verified');
         track('BHS_AA_OTP', { flowType: 'Warranty' });
         toProducts.focus();
@@ -388,6 +441,12 @@ export default async function openRegistration(container, config) {
     otp.value = '';
     otp.setError('');
   };
+
+  // as on the source, Get OTP looks inactive until the details are valid; it stays clickable so a
+  // click still lists what is missing
+  const updateOtpButton = () => getOtp.classList.toggle('wr-pending', !customerValid(false));
+  customerForm.addEventListener('input', updateOtpButton);
+  updateOtpButton();
 
   getOtp.addEventListener('click', sendOtp);
   resend.addEventListener('click', () => { otp.value = ''; sendOtp(); });
@@ -716,6 +775,8 @@ export default async function openRegistration(container, config) {
     )));
     fileList.hidden = !state.files.length;
     fileInput.disabled = state.files.length >= MAX_FILES;
+    // looks inactive until an invoice is added, as on the source
+    submit.classList.toggle('wr-pending', !state.files.length);
   };
 
   fileInput.addEventListener('change', async () => {
@@ -806,12 +867,15 @@ export default async function openRegistration(container, config) {
     track('warranty_step2', { warrantyStep2Details: `${state.products.length} || ${state.products.map((i) => i.product).join(' | ')}` });
     goTo(2);
   });
+  const updateBillingButton = () => toBilling.classList.toggle('wr-pending', !terms.checked);
   terms.addEventListener('change', () => {
     if (terms.checked) {
       termsError.hidden = true;
       terms.removeAttribute('aria-invalid');
     }
+    updateBillingButton();
   });
+  updateBillingButton();
 
   const productLines = (item) => [
     item.productCode && {
@@ -915,16 +979,18 @@ export default async function openRegistration(container, config) {
   });
 
   /* ---- mount ---- */
+  const demoNote = config.demo ? el('p', { className: 'wr-demo-note', text: `Demo mode: no OTP is sent and nothing is registered. Use the OTP ${DEMO_OTP}.` }) : null;
+  // as on the source: the title, then a tinted box with the steps above a white card
   root = el(
     'section',
     { className: 'warranty-registration', 'aria-labelledby': `${prefix}-title` },
     title,
-    progress,
-    status,
-    customerForm,
-    productForm,
-    billingForm,
-    result,
+    el(
+      'div',
+      { className: 'wr-box' },
+      progress,
+      el('div', { className: 'wr-card' }, demoNote, status, customerForm, productForm, billingForm, result),
+    ),
   );
   title.id = `${prefix}-title`;
   container.replaceChildren(root);
@@ -934,6 +1000,7 @@ export default async function openRegistration(container, config) {
   renderFiles();
   goTo(0);
   title.focus();
-  // fetch the catalogue early so step 2 is ready, as the source does
-  loadCatalogue();
+  // fetch the catalogue early so step 2 is ready, as the source does (not when registration is
+  // not set up: step 2 can't be reached then)
+  if (passphrase) loadCatalogue();
 }

@@ -7,8 +7,8 @@
       margin-top: 100px !important;
    }
 
-   .desktop-mt-60 {
-      margin-top: 60px;
+   .desktop-mt-80 {
+      margin-top: 80px !important;
    }
 
    .desktop-side-padding-4 {
@@ -19,6 +19,11 @@
    .desktop-side-padding-40 {
       padding-left: 40px;
       padding-right: 40px;
+   }
+
+   .mx-lg-5 {
+      margin-right: 3rem !important;
+      margin-left: 3rem !important;
    }
 }
 

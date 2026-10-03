@@ -1,0 +1,419 @@
+/* PDF pages for budgetcalculatorpbc. Each .pbcpdf-page is one A4 page
+   (595 x 842 CSS px) rendered off-screen to canvas; hex colours only.
+   Sizes follow the Figma design for the pbc quotation PDF. */
+/* @font-face {
+  font-family: pbcpdf-manrope;
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: block;
+  src: url('../../fonts/manrope-latin.woff2') format('woff2');
+} */
+
+.pbcpdf {
+  position: fixed;
+  top: 0;
+  left: -10000px;
+  width: 595px;
+  color: #1d1d1d;
+  font-family: pbcpdf-manrope, var(--body-font-family);
+}
+
+/* Resets the site's global p/h2 margins with single-class specificity, so it
+   beats those element rules while every margin set below still wins. */
+.pbcpdf :where(p, h2, dl, dd) {
+  margin: 0;
+}
+
+.pbcpdf h2 {
+  font-family: inherit;
+  line-height: 1.3;
+}
+
+.pbcpdf-page {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 595px;
+  height: 842px;
+  padding: 42px 50px 26px;
+  overflow: hidden;
+  background: #f3f3f3;
+}
+
+.pbcpdf-page-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.pbcpdf-page-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ---- Greeting header ---- */
+.pbcpdf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.pbcpdf-name {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.pbcpdf-intro {
+  max-width: 250px;
+  color: #6b6b6b;
+  font-size: 8.5px;
+  line-height: 1.5;
+}
+
+.pbcpdf-contact {
+  color: #6b6b6b;
+  font-size: 8.5px;
+  line-height: 1.6;
+  text-align: right;
+}
+
+.pbcpdf-logo {
+  display: block;
+  width: 150px;
+  height: auto;
+  margin: 0 0 10px auto;
+}
+
+.pbcpdf-contact strong {
+  color: #1d1d1d;
+  font-weight: 700;
+}
+
+/* ---- Recommendation panel ---- */
+.pbcpdf-product {
+  position: relative;
+  padding: 24px 20px 14px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.pbcpdf-badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 4px 12px;
+  border-radius: 10px 0;
+  background: var(--gradients-text-gradient, linear-gradient(91deg, #431a80 1.46%, #ee4137 51.38%, #feb940 100%));
+  color: #fff;
+  font-size: 7.5px;
+  font-weight: 700;
+}
+
+.pbcpdf-product-main {
+  display: flex;
+  gap: 22px;
+}
+
+.pbcpdf-packshot {
+  flex: 0 0 auto;
+  width: 90px;
+  height: 110px;
+  object-fit: contain;
+}
+
+.pbcpdf-product-info {
+  flex: 1;
+  padding-top: 4px;
+}
+
+.pbcpdf-product-name {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.pbcpdf-product-subtitle {
+  margin: 2px 0 10px;
+  color: #6b6b6b;
+  font-size: 9px;
+}
+
+.pbcpdf-rows {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 5px 16px;
+  font-size: 9.5px;
+}
+
+.pbcpdf-rows dt {
+  color: #333;
+}
+
+.pbcpdf-rows dd {
+  font-size: 10px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.pbcpdf-rows dd:first-of-type {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.pbcpdf-mark {
+  color: #ed1c24;
+}
+
+.pbcpdf-steps-title {
+  margin: 18px 0 10px;
+  font-size: 9.5px;
+  font-weight: 700;
+}
+
+/* Steps spread evenly across the panel, however many there are. */
+.pbcpdf-steps {
+  display: flex;
+  justify-content: space-around;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pbcpdf-step {
+  width: 96px;
+  text-align: center;
+}
+
+.pbcpdf-step-count {
+  color: #9a9a9a;
+  font-size: 6px;
+  letter-spacing: 0.5px;
+}
+
+.pbcpdf-step-coat {
+  margin-top: 2px;
+  color: #5b2d8e;
+  font-size: 6.5px;
+  font-weight: 700;
+}
+
+.pbcpdf-step-image {
+  display: block;
+  width: 54px;
+  height: 60px;
+  margin: 4px auto;
+  object-fit: contain;
+}
+
+.pbcpdf-step-name {
+  color: #6b6b6b;
+  font-size: 6.5px;
+  text-transform: capitalize;
+}
+
+.pbcpdf-step-qty-label {
+  margin-top: 2px;
+  color: #333;
+  font-size: 6.5px;
+  font-weight: 700;
+}
+
+.pbcpdf-step-qty {
+  font-size: 7px;
+  font-weight: 700;
+}
+
+/* ---- Footer notes ---- */
+.pbcpdf-disclaimer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #6b6b6b;
+  font-size: 7.5px;
+}
+
+.pbcpdf-info-icon {
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  border: 1px solid #6b6b6b;
+  border-radius: 50%;
+  font-size: 6px;
+  font-weight: 700;
+  line-height: 9px;
+  text-align: center;
+}
+
+.pbcpdf-rule {
+  width: 72%;
+  margin: 0 auto;
+  border: 0;
+  border-top: 1px solid #d6d6d6;
+}
+
+.pbcpdf-call {
+  color: #6b6b6b;
+  font-size: 9px;
+  text-align: center;
+}
+
+.pbcpdf-phone {
+  margin: 0 4px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  background: #d8f3e3;
+  color: #0b5d33;
+  font-weight: 700;
+}
+
+.pbcpdf-call-plans {
+  font-size: 12.5px;
+}
+
+/* ---- Why choose us / How it works ---- */
+.pbcpdf-panel {
+  padding: 24px 30px 28px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.pbcpdf-panel-title {
+  margin-bottom: 26px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.pbcpdf-features {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 28px;
+}
+
+.pbcpdf-feature {
+  display: flex;
+  gap: 10px;
+}
+
+.pbcpdf-feature-icon {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.pbcpdf-feature-title {
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.pbcpdf-feature-description {
+  margin-top: 4px;
+  color: #6b6b6b;
+  font-size: 7.5px;
+  line-height: 1.5;
+}
+
+/* ---- Plans ---- */
+.pbcpdf-plans-title {
+  margin: 0 0 10px;
+  font-size: 14.5px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* The three plans share one height, as in the design. */
+.pbcpdf-plans {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 11px;
+  min-height: 444px;
+}
+
+.pbcpdf-plan {
+  --plan-colour: #5cb85c;
+
+  padding-bottom: 18px;
+  border-top: 4px solid var(--plan-colour);
+  border-radius: 4px;
+  background: #fff;
+}
+
+.pbcpdf-plan-2 {
+  --plan-colour: #f0b43c;
+}
+
+.pbcpdf-plan-3 {
+  --plan-colour: #1f2a5c;
+}
+
+.pbcpdf-plan-head {
+  padding: 14px 14px 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.pbcpdf-plan-icon {
+  display: block;
+  width: 22px;
+  height: 22px;
+  margin-bottom: 8px;
+}
+
+.pbcpdf-plan-name {
+  color: var(--plan-colour);
+  font-size: 9.5px;
+  font-weight: 600;
+}
+
+.pbcpdf-plan-heading {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 14px 14px 0;
+  font-size: 8px;
+  font-weight: 600;
+}
+
+.pbcpdf-plan-heading-icon {
+  width: 11px;
+  height: 11px;
+}
+
+/* Bullets are drawn as text: canvas rendering places native list markers
+   poorly at these small sizes. */
+.pbcpdf-plan-list {
+  margin: 0;
+  padding: 6px 14px 0 26px;
+  color: #6b6b6b;
+  font-size: 7.5px;
+  line-height: 1.5;
+  list-style: none;
+}
+
+.pbcpdf-plan-list li {
+  position: relative;
+}
+
+.pbcpdf-plan-list li::before {
+  content: '•';
+  position: absolute;
+  left: -8px;
+}
+
+
+.pbcpdf .pbcpdf-header {
+  position: static;
+  inset: auto;
+  z-index: auto;
+  width: auto;
+  height: auto;
+  visibility: visible;
+  transform: none;
+  background: none;
+  box-shadow: none;
+}

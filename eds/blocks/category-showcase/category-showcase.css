@@ -114,13 +114,86 @@
 }
 
 /* =============================================
+   VARIANT: side-cta-variant
+   Left-aligned heading with a text CTA; mobile cards loop with dots.
+   ============================================= */
+.category-showcase.side-cta-variant {
+  --cs-cta-underline: #5e25b2;
+
+  /* mobile: cards run edge to edge; the header and dots carry their own padding */
+  padding-left: 0;
+}
+
+.category-showcase.side-cta-variant .category-showcase-header {
+  padding: 0 4%;
+}
+
+.category-showcase.side-cta-variant .category-showcase-heading {
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 28px;
+}
+
+.category-showcase.side-cta-variant .category-showcase-cta-wrapper {
+  margin: 0;
+  line-height: 1;
+}
+
+.category-showcase.side-cta-variant .category-showcase-cta {
+  display: inline-block;
+  padding-bottom: 3px;
+  border-bottom: 2px solid var(--cs-cta-underline);
+  border-radius: 2px;
+  color: var(--cs-text);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.category-showcase.side-cta-variant .category-showcase-cards {
+  gap: 10px;
+  padding: 0 12px;
+  scroll-padding-inline: 12px;
+}
+
+.category-showcase.side-cta-variant .category-showcase-card {
+  flex-basis: calc(100% - 40px);
+}
+
+.category-showcase.side-cta-variant .category-showcase-image img {
+  height: auto;
+  aspect-ratio: 300 / 255;
+}
+
+.category-showcase.side-cta-variant .category-showcase-title {
+  margin: 12px 0 0;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.08;
+  letter-spacing: 0.6px;
+}
+
+.category-showcase.side-cta-variant .category-showcase-dots {
+  gap: 6px;
+  padding: 0 4%;
+}
+
+.category-showcase.side-cta-variant .category-showcase-dot {
+  width: 6px;
+  height: 6px;
+}
+
+.category-showcase.side-cta-variant .category-showcase-dot.active {
+  width: 16px;
+}
+
+/* =============================================
    DESKTOP
    ============================================= */
 @media (width >= 900px) {
-  .category-showcase {
-    padding: 0 40px;
-  }
-
   .category-showcase .category-showcase-header {
     margin-bottom: 32px;
     text-align: center;
@@ -163,5 +236,59 @@
   .category-showcase .category-showcase-desc {
     font-size: 14px;
     line-height: 18px;
+  }
+}
+
+@media (width >= 900px) {
+  .category-showcase.side-cta-variant {
+    padding-left: 4%;
+  }
+
+  .category-showcase.side-cta-variant .category-showcase-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 30px;
+    padding: 0;
+    text-align: left;
+  }
+
+  .category-showcase.side-cta-variant .category-showcase-heading {
+    margin: 0;
+    font-size: 30px;
+    line-height: 40px;
+    letter-spacing: 0;
+  }
+
+  .category-showcase.side-cta-variant .category-showcase-cta-wrapper {
+    flex-shrink: 0;
+    margin: 0;
+  }
+
+  .category-showcase.side-cta-variant .category-showcase-cta {
+    font-size: 13px;
+  }
+
+  .category-showcase.side-cta-variant .category-showcase-cards {
+    gap: 4%;
+    padding: 0;
+  }
+
+  .category-showcase.side-cta-variant .category-showcase-clone {
+    display: none;
+  }
+
+  .category-showcase.side-cta-variant .category-showcase-image img {
+    height: auto;
+    aspect-ratio: 387 / 330;
+  }
+
+  .category-showcase.side-cta-variant .category-showcase-title {
+    margin: 18px 0 0;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.88px;
   }
 }

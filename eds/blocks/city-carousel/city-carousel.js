@@ -259,7 +259,8 @@ function initVariant2(block, Swiper) {
 
   const swiper = new Swiper(cardsEl, {
     slidesPerView: 'auto',
-    spaceBetween: 20,
+    spaceBetween: 16,
+    breakpoints: { 992: { spaceBetween: 20 } },
     watchOverflow: true,
     watchSlidesProgress: true,
     navigation: {
