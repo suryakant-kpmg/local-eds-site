@@ -864,8 +864,11 @@
   --cs-ink: var(--dark-color);
 }
 
+/* source block is 91% wide (92% on desktop) and centred; text sits 14px above the images */
 .collage-slideshow.images .collage-slideshow__wrapper {
-  padding-inline: 18px;
+  gap: 14px;
+  padding-top: 5px;
+  padding-inline: 4.5%;
 }
 
 .collage-slideshow.images .collage-slideshow__collage--images {
@@ -1036,6 +1039,9 @@
   height: 6px;
   margin: 0;
   line-height: 0;
+
+  /* the source draws each dot 6px inside its slot */
+  transform: translateX(6px);
 }
 
 .collage-slideshow.images .collage-slideshow__pagination .swiper-pagination-bullet {
@@ -1064,10 +1070,11 @@
 
 /* text panel: source type scale, gradient title */
 .collage-slideshow-container .collage-slideshow-wrapper .collage-slideshow.images .collage-slideshow__right .collage-slideshow__content .collage-slideshow__eyebrow {
+  min-height: 24px;
   margin: 0 0 14px;
   font-size: 20px;
   font-weight: 800;
-  line-height: 24px;
+  line-height: 22px;
 }
 
 .collage-slideshow-container .collage-slideshow-wrapper .collage-slideshow.images .collage-slideshow__right .collage-slideshow__content .collage-slideshow__title-line {
@@ -1077,6 +1084,9 @@
 
 .collage-slideshow.images .collage-slideshow__title-line strong {
   font-weight: 800;
+}
+
+.collage-slideshow.images .collage-slideshow__title-word {
   background: var(--cs-title-gradient);
   background-clip: text;
   color: transparent;
@@ -1087,12 +1097,13 @@
   margin: 0;
   font-size: 12px;
   font-weight: 500;
-  line-height: 16.4px;
+  line-height: 22px;
+  color: #000;
 }
 
 /* CTA: outlined pill as on the source */
 .collage-slideshow.images .collage-slideshow__cta {
-  gap: 12px;
+  gap: 10px;
   height: auto;
   min-height: 38px;
   margin-top: 12px;
@@ -1100,7 +1111,16 @@
   border: 1px solid var(--cs-ink);
   background: none;
   color: var(--text-color);
+  letter-spacing: normal;
   outline: 0;
+}
+
+/* source arrow: 17x20 image, no offset */
+.collage-slideshow.images .collage-slideshow__cta::after {
+  flex: none;
+  width: 17px;
+  height: 20px;
+  margin: 0;
 }
 
 .collage-slideshow.images .collage-slideshow__cta:hover {
@@ -1109,14 +1129,22 @@
   outline: 0;
 }
 
+/* the source arrow stays put on hover */
+.collage-slideshow.images .collage-slideshow__cta:hover::after {
+  transform: none;
+}
+
 .collage-slideshow.images .collage-slideshow__cta:focus-visible {
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
 }
 
 @media (width >= 992px) {
+  /* images in the first 60%, text from 60%: no column gap */
   .collage-slideshow.images .collage-slideshow__wrapper {
-    padding-inline: 50px;
+    gap: 0;
+    padding-top: 20px;
+    padding-inline: 4%;
   }
 
   .collage-slideshow.images .collage-slideshow__collage--images {
@@ -1150,8 +1178,9 @@
   }
 
   .collage-slideshow-container .collage-slideshow-wrapper .collage-slideshow.images .collage-slideshow__right .collage-slideshow__content .collage-slideshow__eyebrow {
+    min-height: 29px;
     font-size: 32px;
-    line-height: 29px;
+    line-height: 22px;
   }
 
   .collage-slideshow-container .collage-slideshow-wrapper .collage-slideshow.images .collage-slideshow__right .collage-slideshow__content .collage-slideshow__title-line {
@@ -1161,7 +1190,7 @@
   .collage-slideshow-container .collage-slideshow-wrapper .collage-slideshow.images .collage-slideshow__right .collage-slideshow__content .collage-slideshow__description {
     margin-bottom: 14px;
     font-size: 16px;
-    line-height: 21.9px;
+    line-height: 22px;
   }
 
   .collage-slideshow.images .collage-slideshow__cta {
