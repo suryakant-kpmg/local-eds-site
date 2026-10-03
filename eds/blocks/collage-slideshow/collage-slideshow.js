@@ -642,7 +642,12 @@ function buildOptimizedMedia(cell, index) {
   media.className = `collage-slideshow__media collage-slideshow__media--cell-${index + 1}`;
   if (index === 0) media.classList.add('collage-slideshow__media--logo');
   const picture = createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]);
-  moveInstrumentation(img, picture.querySelector('img'));
+  const optimized = picture.querySelector('img');
+  // keep the authored size so logos and the tall image hold their proportions before loading
+  ['width', 'height'].forEach((attr) => {
+    if (img.getAttribute(attr)) optimized.setAttribute(attr, img.getAttribute(attr));
+  });
+  moveInstrumentation(img, optimized);
   media.append(picture);
   return media;
 }
