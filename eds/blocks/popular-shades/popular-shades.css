@@ -413,17 +413,28 @@
   display: contents;
 }
 
+/* below desktop the source text column is at most 698.42px wide, centred */
+.popular-shades.exterior .popular-shades__title,
+.popular-shades.exterior .popular-shades__description {
+  box-sizing: border-box;
+  justify-self: center;
+  width: 100%;
+  max-width: calc(698.42px + 2 * var(--pse-inline));
+}
+
+/* mobile: as on the source, the picture follows the text, pulled 115px up under it */
 .popular-shades.exterior .popular-shades__media {
-  grid-area: 1 / 1 / 4 / 2;
-  padding: 18px 0 0;
+  grid-area: 3 / 1;
+  margin-top: -115px;
+  padding: 0;
 }
 
 .popular-shades.exterior .popular-shades__image-wrap {
   position: relative;
   width: auto;
-  height: auto;
+  height: 440px;
   min-height: 0;
-  aspect-ratio: 368 / 440;
+  aspect-ratio: auto;
   margin: 0 var(--pse-inline);
   padding: 0;
 }
@@ -460,8 +471,7 @@
   position: relative;
   z-index: 2;
   grid-area: 2 / 1;
-  max-width: none;
-  margin: 12px 0 0;
+  margin: 12px 0 14px;
   padding: 0 var(--pse-inline);
   font-size: 11px;
   font-weight: 400;
@@ -587,6 +597,7 @@
   .popular-shades.exterior .popular-shades__media {
     grid-area: 1 / 1 / 5 / 2;
     width: auto;
+    margin-top: 0;
     padding: 0;
   }
 
@@ -605,6 +616,12 @@
 
   .popular-shades.exterior .popular-shades__picture img {
     object-fit: fill;
+  }
+
+  .popular-shades.exterior .popular-shades__title,
+  .popular-shades.exterior .popular-shades__description {
+    justify-self: stretch;
+    max-width: none;
   }
 
   .popular-shades.exterior .popular-shades__title {
@@ -640,6 +657,14 @@
 
   .popular-shades.exterior .popular-shades__cta {
     padding: 0 20px;
+  }
+}
+
+/* source: compact CTA on the narrowest phones */
+@media (width <= 360px) {
+  .popular-shades.exterior .popular-shades__cta {
+    gap: 4px;
+    padding: 0 10px;
   }
 }
 

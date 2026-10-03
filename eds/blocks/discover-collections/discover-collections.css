@@ -499,7 +499,21 @@
 .discover-collections.single .discover-collections__block-title {
   margin: 0;
   line-height: 24px;
+  letter-spacing: 0.5px;
   text-align: center;
+}
+
+/* source: a plain space between "LuxIndica" and the gradient words, no extra margin */
+.discover-collections.single .discover-collections__block-title-gradient {
+  margin-left: 0;
+}
+
+/* source text column: 20px side padding on mobile */
+.discover-collections.single .discover-collections__block-title,
+.discover-collections.single .discover-collections__block-subtitle {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 20px;
 }
 
 .discover-collections.single .discover-collections__block-subtitle {
@@ -507,6 +521,7 @@
   font-size: 14px;
   font-weight: 400;
   line-height: 22px;
+  letter-spacing: 0.5px;
   color: var(--dc-ink);
   text-align: center;
 }
@@ -579,11 +594,6 @@
     min-width: 0;
   }
 
-  /* the source wraps this line at ~300px */
-  .discover-collections.single .discover-collections__block-subtitle {
-    max-width: 300px;
-  }
-
   /* the images on the right start 40px above the end of the text column, as on the source */
   .discover-collections.single .discover-collections__text {
     padding-bottom: 10px;
@@ -599,8 +609,14 @@
     margin: 26px 0 72px;
   }
 
+  /* source desktop text column: 733px, no side padding */
+  .discover-collections.single .discover-collections__block-title,
+  .discover-collections.single .discover-collections__block-subtitle {
+    max-width: 733px;
+    padding: 0;
+  }
+
   .discover-collections.single .discover-collections__block-title {
-    max-width: 600px;
     line-height: 29px;
   }
 
