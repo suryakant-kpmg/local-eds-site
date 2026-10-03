@@ -1762,12 +1762,12 @@
   display: flex;
   justify-content: center;
   gap: 50px;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
 }
 
 .cards.tabs .cards-tabs-tab {
   position: relative;
-  padding: 0 0 10px;
+  padding: 0;
   font-family: var(--heading-font-family);
   font-size: 16px;
   font-weight: 400;
@@ -1780,10 +1780,11 @@
   font-weight: 800;
 }
 
+/* active bar sits 10px below the label, outside its box */
 .cards.tabs .cards-tabs-tab[aria-selected="true"]::after {
   content: '';
   position: absolute;
-  bottom: 0;
+  bottom: -10px;
   left: 50%;
   width: 40px;
   height: 3px;
@@ -1867,15 +1868,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 71px;
+  min-height: 85px;
 }
 
 .cards.tabs .cards-tabs-title {
-  margin-bottom: 8px;
+  margin-bottom: 13px;
   font-family: var(--heading-font-family);
   font-size: 20px;
   font-weight: 800;
-  line-height: 1.3;
+  line-height: 1.4;
   color: var(--cards-tabs-title);
 }
 
@@ -1892,14 +1893,19 @@
   vertical-align: -1px;
 }
 
-.cards.tabs .cards-tabs-info p:nth-of-type(2) {
-  font-size: 10px;
-  font-weight: 700;
+.cards.tabs .cards-tabs-info p:first-of-type {
+  margin-bottom: 6px;
+  line-height: 26px;
 }
 
-/* card CTA: arrow-only circle on mobile, pill on desktop; stretched over the card */
+.cards.tabs .cards-tabs-info p:nth-of-type(2) {
+  font-size: 10px;
+  line-height: 12px;
+}
+
+/* card CTA: arrow-only circle on mobile (stretched over the card), pill on desktop (pill only) */
 .cards.tabs .cards-tabs-body .cards-tabs-cta {
-  margin-top: 12px;
+  margin-top: 11px;
 }
 
 .cards.tabs .cards-tabs-cta a {
@@ -2012,7 +2018,7 @@
   }
 
   .cards.tabs .cards-tabs-list {
-    margin-bottom: 40px;
+    margin-bottom: 50px;
   }
 
   .cards.tabs .cards-tabs-tab {
@@ -2038,13 +2044,14 @@
   }
 
   .cards.tabs .cards-tabs-title {
-    margin-bottom: 1px;
+    margin-bottom: 0;
     font-size: 32px;
     line-height: 1.35;
   }
 
   .cards.tabs .cards-tabs-info p:first-of-type {
     margin-bottom: 5px;
+    line-height: 1.4;
   }
 
   .cards.tabs .cards-tabs-body p strong {
@@ -2053,6 +2060,7 @@
 
   .cards.tabs .cards-tabs-info p:nth-of-type(2) {
     font-size: 12px;
+    font-weight: 700;
     line-height: 1.17;
   }
 
@@ -2066,6 +2074,10 @@
     height: auto;
     min-height: 38px;
     padding: 7px 20px;
+  }
+
+  .cards.tabs .cards-tabs-cta a::after {
+    content: none;
   }
 
   .cards.tabs .cards-tabs-cta-label {
