@@ -775,7 +775,19 @@ export default async function decorate(block) {
   leftSection.append(swiperEl, controls);
 
   const contentPanel = createContentPanel(contentRow);
-  if (isImages) moveInstrumentation(contentRow, contentPanel);
+  if (isImages) {
+    moveInstrumentation(contentRow, contentPanel);
+    // the source paints the title gradient once per word, so each word gets its own span
+    contentPanel.querySelectorAll('.collage-slideshow__title-line strong').forEach((strong) => {
+      const words = strong.textContent.trim().split(/\s+/).filter(Boolean);
+      strong.replaceChildren(...words.flatMap((word, i) => {
+        const span = document.createElement('span');
+        span.className = 'collage-slideshow__title-word';
+        span.textContent = word;
+        return i ? [' ', span] : [span];
+      }));
+    });
+  }
   rightSection.appendChild(contentPanel);
 
   // MOBILE: move CTA below left section
