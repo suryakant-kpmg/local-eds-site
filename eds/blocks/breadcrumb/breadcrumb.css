@@ -153,24 +153,3 @@ main>.section:has(.breadcrumb):has(.hero-form) .breadcrumb-wrapper {
   line-height: 16px;
   color: #cfc4ab;
 }
-
-/* section style "breadcrumb-brown" (exterior wall paints): the source's warm-brown crumbs,
-   current page included, with beige separators */
-/* stylelint-disable no-descending-specificity -- page style layered over the base colours */
-.section.breadcrumb-brown .breadcrumb .slash-icon ul li a,
-.section.breadcrumb-brown .breadcrumb .slash-icon ul li span,
-.section.breadcrumb-brown .breadcrumb .slash-icon ul li:last-child span[aria-current="page"] {
-  color: #5d4f43 !important;
-}
-/* stylelint-enable no-descending-specificity */
-
-/* source: text 0.75rem (10.5px) from the top, and the space its markup leaves before the "/".
-   The bottom keeps the block 54px tall, the height the image-carousel overlay slides under. */
-.section.breadcrumb-brown .breadcrumb.block {
-  padding: 10.5px 0 13.5px;
-}
-
-.section.breadcrumb-brown .breadcrumb .slash-icon ul li:not(:last-child)::after {
-  margin-left: 2.64px;
-  color: #cfc4ab;
-}
