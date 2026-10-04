@@ -15,7 +15,7 @@
   display: block;
   background: transparent !important;
   margin-bottom: 0;
-  padding: 0.75rem 0;
+  padding: var(--breadcrumb-padding, 0.75rem 0);
 
   @media (width <=991px) {
     display: none !important;
@@ -70,7 +70,7 @@ main>.section:has(.breadcrumb):has(.hero-form) .breadcrumb-wrapper {
 
 .breadcrumb .slash-icon ul li a,
 .breadcrumb .slash-icon ul li span {
-  color: rgb(0 0 0 / 48%) !important;
+  color: var(--breadcrumb-link-color, rgb(0 0 0 / 48%)) !important;
   font-family: Manrope, sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -78,7 +78,7 @@ main>.section:has(.breadcrumb):has(.hero-form) .breadcrumb-wrapper {
 }
 
 .breadcrumb .slash-icon ul li:last-child span[aria-current="page"] {
-  color: rgb(0 0 0 / 85%) !important;
+  color: var(--breadcrumb-current-color, rgb(0 0 0 / 85%)) !important;
   font-weight: 500;
 }
 
@@ -92,7 +92,8 @@ main>.section:has(.breadcrumb):has(.hero-form) .breadcrumb-wrapper {
 
 .breadcrumb .slash-icon ul li:not(:last-child)::after {
   content: "/";
-  color: rgb(0 0 0 / 48%);
+  margin-left: var(--breadcrumb-separator-gap, 0);
+  color: var(--breadcrumb-separator-color, rgb(0 0 0 / 48%));
   font-family: Manrope, sans-serif;
   font-size: 12px;
   font-weight: 400;
@@ -154,21 +155,17 @@ main>.section:has(.breadcrumb):has(.hero-form) .breadcrumb-wrapper {
   color: #cfc4ab;
 }
 
-/* section style "breadcrumb-exterior" (section-metadata Style): the exterior wall paints
-   breadcrumb in its own strip, #000000d9 crumbs with the source's beige "/" and spacing */
-.section.breadcrumb-exterior .breadcrumb.block {
-  padding: 10.5px 0;
-}
+/* Configurable from a section style (section-metadata Style): the slash breadcrumb reads
+   these variables, so a page sets its look without stacking extra !important rules.
+     --breadcrumb-padding, --breadcrumb-link-color, --breadcrumb-current-color,
+     --breadcrumb-separator-color, --breadcrumb-separator-gap */
 
-/* stylelint-disable no-descending-specificity -- page style layered over the base colours */
-.section.breadcrumb-exterior .breadcrumb .slash-icon ul li a,
-.section.breadcrumb-exterior .breadcrumb .slash-icon ul li span,
-.section.breadcrumb-exterior .breadcrumb .slash-icon ul li:last-child span[aria-current="page"] {
-  color: #000000d9 !important;
-}
-/* stylelint-enable no-descending-specificity */
-
-.section.breadcrumb-exterior .breadcrumb .slash-icon ul li:not(:last-child)::after {
-  margin-left: 2.64px;
-  color: #cfc4ab;
+/* "breadcrumb-exterior" (exterior wall paints): #000000d9 crumbs, the source's beige "/",
+   its 10.5px padding and the space its markup leaves before the "/" */
+.section.breadcrumb-exterior {
+  --breadcrumb-padding: 10.5px 0;
+  --breadcrumb-link-color: #000000d9;
+  --breadcrumb-current-color: #000000d9;
+  --breadcrumb-separator-color: #cfc4ab;
+  --breadcrumb-separator-gap: 2.64px;
 }
