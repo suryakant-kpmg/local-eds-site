@@ -1,4 +1,4 @@
-const VERSION = 'image-carousel@v5 (per-slide CTA label, new tab, alignment)';
+const VERSION = 'image-carousel@v6 (per-slide title, subtitle, text and CTA alignment)';
 
 /*
 ** Authoring format **
@@ -8,9 +8,13 @@ autoplay  → true / false
 interval  → slide interval in ms (min 1000)
 Overlay breadcrumb → true / false, default false. Overlays the breadcrumb block from
                      the same section on top of the banner (desktop only)
+Title heading → h1 … h6, default h2. Heading level of the slide titles
+Mobile max width → widest viewport (px) that shows the mobile image, default 767
 
-Header row (ignored by code)
+Header row (optional). Its labels pick the column of each value, so columns
+can be reordered or left out; without it the order below is used.
 Desktop image | Mobile image | Redirection link | CTA Label | Open in new tab | CTA alignment
+| Title | Subtitle | Text alignment
 
 Slide rows (one per slide)
 Col 1 → Desktop image (picture)
@@ -21,6 +25,12 @@ Col 4 → CTA Label, optional. Shown as a button over the slide when a
         redirection link is set.
 Col 5 → Open in new tab (true / false), optional, default false
 Col 6 → CTA alignment (left / center / right), optional, default center
+Col 7 → Title, optional. Live text over the image (use a plain image)
+Col 8 → Subtitle, optional. Line breaks (Shift+Enter) are kept
+Col 9 → Text alignment (left / center / right), optional, default center.
+        Places the title / subtitle / CTA box on the banner and aligns its text.
+        With a title or subtitle the CTA sits under them (also on mobile);
+        without them the CTA keeps its desktop-only spot on the image.
 */
 
 // Right-pointing arrow; the prev button mirrors it via CSS
@@ -61,6 +71,36 @@ function escapeHTML(str) {
     .replace(/"/g, '&quot;');
 }
 
+// Slide columns in their default order; a header row with these labels overrides it
+const SLIDE_COLUMNS = {
+  'desktop image': 'desktopPic',
+  'mobile image': 'mobilePic',
+  'redirection link': 'link',
+  'cta label': 'ctaLabel',
+  'open in new tab': 'newTab',
+  'cta alignment': 'ctaAlign',
+  title: 'title',
+  subtitle: 'subtitle',
+  'text alignment': 'textAlign',
+};
+const DEFAULT_COLUMNS = Object.values(SLIDE_COLUMNS);
+
+// Authored copy of a cell: paragraphs joined by line breaks, keeping <br>,
+// bold and italic; any other markup is reduced to its text.
+function cellInlineHTML(cell) {
+  if (!cell) return '';
+  const inline = (node) => [...node.childNodes].map((n) => {
+    if (n.nodeType === Node.TEXT_NODE) return escapeHTML(n.textContent);
+    if (n.nodeType !== Node.ELEMENT_NODE) return '';
+    const tag = n.tagName.toLowerCase();
+    if (tag === 'br') return '<br>';
+    if (['strong', 'b', 'em', 'i'].includes(tag)) return `<${tag}>${inline(n)}</${tag}>`;
+    return inline(n);
+  }).join('');
+  const paras = cell.querySelector(':scope > p') ? qsa(cell, ':scope > p') : [cell];
+  return paras.map((p) => inline(p).replace(/\s+/g, ' ').trim()).filter(Boolean).join('<br>');
+}
+
 function splitUrls(raw) {
   return String(raw || '')
     .split(',')
@@ -78,7 +118,8 @@ function parseConfig(block) {
     ctaLink: '',
     overlaySubtitle: '',
     overlayTitle: '',
-    // slide rows authored as pictures: { desktopPic, mobilePic, link }
+    titleHeading: 'h2',
+    // slide rows authored as pictures: { desktopPic, mobilePic, link, ... }
     slides: [],
     // legacy URL lists
     desktopImages: [],
@@ -108,18 +149,34 @@ function parseConfig(block) {
       .map((r) => [...r.children]);
   };
 
+  let columns = DEFAULT_COLUMNS;
+
   readRows().forEach((cells) => {
-    // Slide row: Desktop image | Mobile image | Redirection link
-    //           | CTA Label | Open in new tab | CTA alignment
+    // Header row: maps each slide field to its column
+    const labels = cells.map((c) => cellText(c).toLowerCase());
+    if (labels[0] === 'desktop image') {
+      columns = labels.map((l) => SLIDE_COLUMNS[l] || '');
+      return;
+    }
+
+    // Slide row: Desktop image | Mobile image | Redirection link | CTA Label
+    //   | Open in new tab | CTA alignment | Title | Subtitle | Text alignment
     if (cells.some((c) => c.querySelector('picture, img'))) {
       const getPic = (c) => c?.querySelector('picture') || c?.querySelector('img');
+      const col = (field) => {
+        const i = columns.indexOf(field);
+        return i < 0 ? null : cells[i];
+      };
       cfg.slides.push({
-        desktopPic: getPic(cells[0]),
-        mobilePic: getPic(cells[1]),
-        link: cellHrefOrText(cells[2]),
-        ctaLabel: cellText(cells[3]),
-        newTab: yesNo(cellText(cells[4]), false),
-        ctaAlign: ctaAlignment(cellText(cells[5])),
+        desktopPic: getPic(col('desktopPic')),
+        mobilePic: getPic(col('mobilePic')),
+        link: cellHrefOrText(col('link')),
+        ctaLabel: cellText(col('ctaLabel')),
+        newTab: yesNo(cellText(col('newTab')), false),
+        ctaAlign: ctaAlignment(cellText(col('ctaAlign'))),
+        title: cellInlineHTML(col('title')),
+        subtitle: cellInlineHTML(col('subtitle')),
+        textAlign: ctaAlignment(cellText(col('textAlign'))),
       });
       return;
     }
@@ -141,9 +198,10 @@ function parseConfig(block) {
     if (key === 'ctalink') cfg.ctaLink = valHrefOrText;
     if (key === 'overlaysubtitle') cfg.overlaySubtitle = valText;
     if (key === 'overlaytitle') cfg.overlayTitle = valText;
+    if (key === 'title heading' && /^h[1-6]$/i.test(valText)) cfg.titleHeading = valText.toLowerCase();
 
     // optional breakpoint override
-    if (key === 'mobilemaxwidth') {
+    if (key.replace(/\s+/g, '') === 'mobilemaxwidth') {
       const n = Number(valText);
       if (!Number.isNaN(n) && n >= 320) cfg.mobileMaxWidth = n;
     }
@@ -285,9 +343,27 @@ mobileImage  | https://.../banner-mobile.png
 
     // CTA sits inside the slide link (a nested <a> is invalid), so it is a
     // button-styled span and the whole slide stays clickable.
-    const cta = href && s.ctaLabel
-      ? `<div class="carousel__cta-wrap carousel__cta-wrap--${s.ctaAlign || 'center'}"><span class="carousel__cta">${escapeHTML(s.ctaLabel)}${ARROW_SVG}</span></div>`
+    const ctaAlign = s.ctaAlign || 'center';
+    const ctaPill = href && s.ctaLabel
+      ? `<span class="carousel__cta">${escapeHTML(s.ctaLabel)}<span class="carousel__cta-arrow" aria-hidden="true"></span></span>`
       : '';
+
+    // Live title / subtitle over a plain image, with the CTA under them;
+    // without them the CTA keeps its own spot (copy is part of the image)
+    let text = '';
+    let cta = ctaPill ? `<div class="carousel__cta-wrap carousel__cta-wrap--${ctaAlign}">${ctaPill}</div>` : '';
+    if (s.title || s.subtitle) {
+      const tag = cfg.titleHeading;
+      text = `
+        <div class="carousel__text carousel__text--${s.textAlign || 'center'}">
+          <div class="carousel__text-box">
+            ${s.title ? `<${tag} class="carousel__title">${s.title}</${tag}>` : ''}
+            ${s.subtitle ? `<p class="carousel__subtitle">${s.subtitle}</p>` : ''}
+            ${ctaPill ? `<div class="carousel__text-cta carousel__text-cta--${ctaAlign}">${ctaPill}</div>` : ''}
+          </div>
+        </div>`;
+      cta = '';
+    }
 
     const wrapEnd = href ? '</a>' : '</div>';
 
@@ -295,7 +371,7 @@ mobileImage  | https://.../banner-mobile.png
       <div class="swiper-slide carousel__slide" data-i="${i}">
         <div class="bannerImgWithLeftTextComp bannerWithGreybackground">
           ${wrapStart}
-            <div class="prodBannerImage">${pic}</div>
+            <div class="prodBannerImage">${pic}${text}</div>
             ${overlay}
             ${cta}
           ${wrapEnd}
