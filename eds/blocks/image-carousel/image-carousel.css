@@ -118,156 +118,34 @@
     justify-content: flex-end;
 }
 
-/* as the source "animated-btn-yellow" CTA: 38px pill, Manrope 14/700/22, 17x20 arrow */
 .image-carousel .carousel__cta {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    box-sizing: border-box;
     height: 38px;
     padding: 0 20px;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 45px;
     background: var(--gradient, linear-gradient(180deg, #fec940, #f90));
     color: #1e1e1e;
-    font-family: Manrope, sans-serif;
     font-size: 14px;
     font-weight: 700;
-    line-height: 22px;
-    letter-spacing: normal;
-    text-transform: capitalize;
+    line-height: 1;
     white-space: nowrap;
     pointer-events: auto;
-    transition: color 250ms ease, box-shadow 250ms ease;
+    transition: color 250ms ease, border-color 250ms ease;
 }
 
-/* source arrow image, black on the yellow pill and white on hover */
-.image-carousel .carousel__cta-arrow {
+.image-carousel .carousel__cta svg {
+    width: 16px;
+    height: 16px;
     flex-shrink: 0;
-    width: 17px;
-    height: 20px;
-    background: url('/eds/icons/arrow-icon-new.svg') no-repeat;
-    filter: contrast(10) invert(1) sepia(1) saturate(100) hue-rotate(90deg);
-    transition: transform 0.2s ease-in;
 }
 
-/* white outline on hover, drawn inside so the pill keeps its size */
 .image-carousel .carousel__cta:hover {
     color: #fff;
     background: transparent;
-    box-shadow: inset 0 0 0 1px #fff;
-}
-
-.image-carousel .carousel__cta:hover .carousel__cta-arrow {
-    filter: none;
-    transform: translateX(6px);
-}
-
-/* Live title / subtitle / CTA over a plain image (Title, Subtitle columns).
-   Source: a 60% wide box, centred on the banner (.prodBannerImage) by default */
-.image-carousel .carousel__text {
-    position: absolute;
-    inset: 0;
-    z-index: 4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-bottom: 10px;
-    pointer-events: none;
-}
-
-.image-carousel .carousel__text--left {
-    justify-content: flex-start;
-}
-
-.image-carousel .carousel__text--right {
-    justify-content: flex-end;
-}
-
-.image-carousel .carousel__text-box {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 0 15px;
-    color: #fff;
-    text-align: center;
-}
-
-.image-carousel .carousel__text--left .carousel__text-box {
-    text-align: left;
-}
-
-.image-carousel .carousel__text--right .carousel__text-box {
-    text-align: right;
-}
-
-.image-carousel .carousel__text .carousel__title {
-    margin: 0 0 10px;
-    color: #fff;
-    font-family: Manrope, sans-serif;
-    font-size: 32px;
-    font-weight: 800;
-    line-height: 35.2px;
-    letter-spacing: 0.5px;
-}
-
-.image-carousel .carousel__text .carousel__subtitle {
-    margin: 0 0 10px;
-    color: #fff;
-    font-family: Manrope, sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 23px;
-    letter-spacing: 0.5px;
-}
-
-.image-carousel .carousel__text-cta {
-    display: flex;
-    justify-content: center;
-}
-
-.image-carousel .carousel__text-cta--left {
-    justify-content: flex-start;
-}
-
-.image-carousel .carousel__text-cta--right {
-    justify-content: flex-end;
-}
-
-.image-carousel .carousel__text-cta .carousel__cta {
-    padding: 0 18px;
-}
-
-@media (width >= 768px) {
-    .image-carousel .carousel__text-box {
-        width: 90%;
-        padding: 0 60px;
-    }
-
-    .image-carousel .carousel__text .carousel__title,
-    .image-carousel .carousel__text .carousel__subtitle {
-        margin-bottom: 0;
-    }
-}
-
-@media (width >= 992px) {
-    .image-carousel .carousel__text-box {
-        width: 60%;
-    }
-
-    .image-carousel .carousel__text .carousel__title {
-        font-size: 64px;
-        line-height: 70.4px;
-    }
-
-    .image-carousel .carousel__text .carousel__subtitle {
-        font-size: 20px;
-        font-weight: 700;
-        line-height: 24px;
-    }
-
-    .image-carousel .carousel__text-cta .carousel__cta {
-        padding: 0 20px;
-    }
+    border-color: #fff;
 }
 
 @media (width <=767px) {
@@ -442,7 +320,6 @@
 }
 
 .image-carousel .prodBannerImage {
-    position: relative;
     width: 100%;
     height: auto;
 }
@@ -469,4 +346,145 @@
     z-index: 3;
     margin-bottom: -54px;
   }
+}
+
+/* =============================
+   Variant "single-image": a plain image with live title / subtitle / CTA,
+   as the asianpaints.com bannerTextDesc (60% wide box, centred by default)
+   ============================= */
+.image-carousel.single-image .prodBannerImage {
+    position: relative;
+}
+
+.image-carousel.single-image .carousel__text {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 10px;
+    pointer-events: none;
+}
+
+.image-carousel.single-image .carousel__text--left {
+    justify-content: flex-start;
+}
+
+.image-carousel.single-image .carousel__text--right {
+    justify-content: flex-end;
+}
+
+.image-carousel.single-image .carousel__text-box {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 15px;
+    color: #fff;
+    text-align: center;
+}
+
+.image-carousel.single-image .carousel__text--left .carousel__text-box {
+    text-align: left;
+}
+
+.image-carousel.single-image .carousel__text--right .carousel__text-box {
+    text-align: right;
+}
+
+.image-carousel.single-image .carousel__title {
+    margin: 0 0 10px;
+    color: #fff;
+    font-family: Manrope, sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 35.2px;
+    letter-spacing: 0.5px;
+}
+
+.image-carousel.single-image .carousel__subtitle {
+    margin: 0 0 10px;
+    color: #fff;
+    font-family: Manrope, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 23px;
+    letter-spacing: 0.5px;
+}
+
+.image-carousel.single-image .carousel__text-cta {
+    display: flex;
+    justify-content: center;
+}
+
+.image-carousel.single-image .carousel__text-cta--left {
+    justify-content: flex-start;
+}
+
+.image-carousel.single-image .carousel__text-cta--right {
+    justify-content: flex-end;
+}
+
+/* source "animated-btn-yellow" CTA: 38px pill, Manrope 14/700/22, 17x20 arrow image */
+.image-carousel.single-image .carousel__cta {
+    box-sizing: border-box;
+    padding: 0 18px;
+    border: 0;
+    font-family: Manrope, sans-serif;
+    line-height: 22px;
+    letter-spacing: normal;
+    text-transform: capitalize;
+    transition: color 250ms ease, box-shadow 250ms ease;
+}
+
+/* black on the yellow pill, white on hover */
+.image-carousel.single-image .carousel__cta-arrow {
+    flex-shrink: 0;
+    width: 17px;
+    height: 20px;
+    background: url('/eds/icons/arrow-icon-new.svg') no-repeat;
+    filter: contrast(10) invert(1) sepia(1) saturate(100) hue-rotate(90deg);
+    transition: transform 0.2s ease-in;
+}
+
+/* white outline on hover, drawn inside so the pill keeps its size */
+.image-carousel.single-image .carousel__cta:hover {
+    box-shadow: inset 0 0 0 1px #fff;
+}
+
+.image-carousel.single-image .carousel__cta:hover .carousel__cta-arrow {
+    filter: none;
+    transform: translateX(6px);
+}
+
+@media (width >= 768px) {
+    .image-carousel.single-image .carousel__text-box {
+        width: 90%;
+        padding: 0 60px;
+    }
+
+    .image-carousel.single-image .carousel__title,
+    .image-carousel.single-image .carousel__subtitle {
+        margin-bottom: 0;
+    }
+}
+
+@media (width >= 992px) {
+    .image-carousel.single-image .carousel__text-box {
+        width: 60%;
+    }
+
+    .image-carousel.single-image .carousel__title {
+        font-size: 64px;
+        line-height: 70.4px;
+    }
+
+    .image-carousel.single-image .carousel__subtitle {
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 24px;
+    }
+
+    .image-carousel.single-image .carousel__cta {
+        padding: 0 20px;
+    }
 }

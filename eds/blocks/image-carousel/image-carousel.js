@@ -1,4 +1,4 @@
-const VERSION = 'image-carousel@v6 (per-slide title, subtitle, text and CTA alignment)';
+const VERSION = 'image-carousel@v6 (v5 + "single-image" variant with live title / subtitle)';
 
 /*
 ** Authoring format **
@@ -8,13 +8,9 @@ autoplay  → true / false
 interval  → slide interval in ms (min 1000)
 Overlay breadcrumb → true / false, default false. Overlays the breadcrumb block from
                      the same section on top of the banner (desktop only)
-Title heading → h1 … h6, default h2. Heading level of the slide titles
-Mobile max width → widest viewport (px) that shows the mobile image, default 767
 
-Header row (optional). Its labels pick the column of each value, so columns
-can be reordered or left out; without it the order below is used.
+Header row (ignored by code)
 Desktop image | Mobile image | Redirection link | CTA Label | Open in new tab | CTA alignment
-| Title | Subtitle | Text alignment
 
 Slide rows (one per slide)
 Col 1 → Desktop image (picture)
@@ -25,12 +21,25 @@ Col 4 → CTA Label, optional. Shown as a button over the slide when a
         redirection link is set.
 Col 5 → Open in new tab (true / false), optional, default false
 Col 6 → CTA alignment (left / center / right), optional, default center
-Col 7 → Title, optional. Live text over the image (use a plain image)
-Col 8 → Subtitle, optional. Line breaks (Shift+Enter) are kept
+
+** Variant "Image Carousel (single-image)" **
+A plain image with live title / subtitle / CTA over it (the default version
+expects the copy to be part of the image). Same table, plus:
+
+Config rows
+Title heading    → h1 … h6, default h2. Heading level of the slide titles
+Mobile max width → widest viewport (px) that shows the mobile image, default 767
+
+Header row: its labels pick the column of each value, so columns can be
+reordered or left out; without one the order below is used.
+Desktop image | Mobile image | Redirection link | CTA Label | Open in new tab | CTA alignment
+| Title | Subtitle | Text alignment
+
+Col 7 → Title, optional
+Col 8 → Subtitle (or "Sub Title"), optional. Line breaks (Shift+Enter) are kept
 Col 9 → Text alignment (left / center / right), optional, default center.
         Places the title / subtitle / CTA box on the banner and aligns its text.
-        With a title or subtitle the CTA sits under them (also on mobile);
-        without them the CTA keeps its desktop-only spot on the image.
+        The CTA sits under the text and also shows on mobile.
 */
 
 // Right-pointing arrow; the prev button mirrors it via CSS
@@ -71,7 +80,8 @@ function escapeHTML(str) {
     .replace(/"/g, '&quot;');
 }
 
-// Slide columns in their default order; a header row with these labels overrides it
+// "single-image" variant: slide columns in their default order; a header row
+// with these labels overrides it
 const SLIDE_COLUMNS = {
   'desktop image': 'desktopPic',
   'mobile image': 'mobilePic',
@@ -81,9 +91,10 @@ const SLIDE_COLUMNS = {
   'cta alignment': 'ctaAlign',
   title: 'title',
   subtitle: 'subtitle',
+  'sub title': 'subtitle',
   'text alignment': 'textAlign',
 };
-const DEFAULT_COLUMNS = Object.values(SLIDE_COLUMNS);
+const DEFAULT_COLUMNS = ['desktopPic', 'mobilePic', 'link', 'ctaLabel', 'newTab', 'ctaAlign', 'title', 'subtitle', 'textAlign'];
 
 // Authored copy of a cell: paragraphs joined by line breaks, keeping <br>,
 // bold and italic; any other markup is reduced to its text.
@@ -108,7 +119,7 @@ function splitUrls(raw) {
     .filter(Boolean);
 }
 
-function parseConfig(block) {
+function parseConfig(block, singleImage) {
   const cfg = {
     autoplay: true,
     interval: 5000,
@@ -152,16 +163,14 @@ function parseConfig(block) {
   let columns = DEFAULT_COLUMNS;
 
   readRows().forEach((cells) => {
-    // Header row: maps each slide field to its column
+    // single-image: the header row maps each slide field to its column
     const labels = cells.map((c) => cellText(c).toLowerCase());
-    if (labels[0] === 'desktop image') {
+    if (singleImage && labels[0] === 'desktop image') {
       columns = labels.map((l) => SLIDE_COLUMNS[l] || '');
       return;
     }
 
-    // Slide row: Desktop image | Mobile image | Redirection link | CTA Label
-    //   | Open in new tab | CTA alignment | Title | Subtitle | Text alignment
-    if (cells.some((c) => c.querySelector('picture, img'))) {
+    if (singleImage && cells.some((c) => c.querySelector('picture, img'))) {
       const getPic = (c) => c?.querySelector('picture') || c?.querySelector('img');
       const col = (field) => {
         const i = columns.indexOf(field);
@@ -177,6 +186,21 @@ function parseConfig(block) {
         title: cellInlineHTML(col('title')),
         subtitle: cellInlineHTML(col('subtitle')),
         textAlign: ctaAlignment(cellText(col('textAlign'))),
+      });
+      return;
+    }
+
+    // Slide row: Desktop image | Mobile image | Redirection link
+    //           | CTA Label | Open in new tab | CTA alignment
+    if (cells.some((c) => c.querySelector('picture, img'))) {
+      const getPic = (c) => c?.querySelector('picture') || c?.querySelector('img');
+      cfg.slides.push({
+        desktopPic: getPic(cells[0]),
+        mobilePic: getPic(cells[1]),
+        link: cellHrefOrText(cells[2]),
+        ctaLabel: cellText(cells[3]),
+        newTab: yesNo(cellText(cells[4]), false),
+        ctaAlign: ctaAlignment(cellText(cells[5])),
       });
       return;
     }
@@ -198,10 +222,10 @@ function parseConfig(block) {
     if (key === 'ctalink') cfg.ctaLink = valHrefOrText;
     if (key === 'overlaysubtitle') cfg.overlaySubtitle = valText;
     if (key === 'overlaytitle') cfg.overlayTitle = valText;
-    if (key === 'title heading' && /^h[1-6]$/i.test(valText)) cfg.titleHeading = valText.toLowerCase();
+    if (singleImage && key === 'title heading' && /^h[1-6]$/i.test(valText)) cfg.titleHeading = valText.toLowerCase();
 
-    // optional breakpoint override
-    if (key.replace(/\s+/g, '') === 'mobilemaxwidth') {
+    // optional breakpoint override ("Mobile max width" too in single-image)
+    if (key === 'mobilemaxwidth' || (singleImage && key === 'mobile max width')) {
       const n = Number(valText);
       if (!Number.isNaN(n) && n >= 320) cfg.mobileMaxWidth = n;
     }
@@ -284,7 +308,8 @@ function getSwiperClass() {
 }
 
 export default async function decorate(block) {
-  const cfg = parseConfig(block);
+  const singleImage = block.classList.contains('single-image');
+  const cfg = parseConfig(block, singleImage);
 
   // Compute slides: authored picture rows first, legacy URL lists as fallback
   const slides = cfg.slides.length
@@ -343,25 +368,26 @@ mobileImage  | https://.../banner-mobile.png
 
     // CTA sits inside the slide link (a nested <a> is invalid), so it is a
     // button-styled span and the whole slide stays clickable.
-    const ctaAlign = s.ctaAlign || 'center';
-    const ctaPill = href && s.ctaLabel
-      ? `<span class="carousel__cta">${escapeHTML(s.ctaLabel)}<span class="carousel__cta-arrow" aria-hidden="true"></span></span>`
+    let cta = href && s.ctaLabel
+      ? `<div class="carousel__cta-wrap carousel__cta-wrap--${s.ctaAlign || 'center'}"><span class="carousel__cta">${escapeHTML(s.ctaLabel)}${ARROW_SVG}</span></div>`
       : '';
 
-    // Live title / subtitle over a plain image, with the CTA under them;
-    // without them the CTA keeps its own spot (copy is part of the image)
+    // single-image: live title / subtitle over the plain image, the CTA under them
     let text = '';
-    let cta = ctaPill ? `<div class="carousel__cta-wrap carousel__cta-wrap--${ctaAlign}">${ctaPill}</div>` : '';
-    if (s.title || s.subtitle) {
+    if (singleImage) {
       const tag = cfg.titleHeading;
-      text = `
+      const align = s.ctaAlign || 'center';
+      const pill = href && s.ctaLabel
+        ? `<div class="carousel__text-cta carousel__text-cta--${align}"><span class="carousel__cta">${escapeHTML(s.ctaLabel)}<span class="carousel__cta-arrow" aria-hidden="true"></span></span></div>`
+        : '';
+      text = (s.title || s.subtitle || pill) ? `
         <div class="carousel__text carousel__text--${s.textAlign || 'center'}">
           <div class="carousel__text-box">
             ${s.title ? `<${tag} class="carousel__title">${s.title}</${tag}>` : ''}
             ${s.subtitle ? `<p class="carousel__subtitle">${s.subtitle}</p>` : ''}
-            ${ctaPill ? `<div class="carousel__text-cta carousel__text-cta--${ctaAlign}">${ctaPill}</div>` : ''}
+            ${pill}
           </div>
-        </div>`;
+        </div>` : '';
       cta = '';
     }
 
