@@ -489,6 +489,9 @@
 .discover-collections.single {
   --dc-ink: var(--text-color);
   --dc-hover-bg: #feeecf;
+
+  /* source: the collage is always 92% of the page width (no 1440px cap) */
+  max-width: none;
 }
 
 .discover-collections.single .discover-collections__block-header {
@@ -545,12 +548,14 @@
   object-position: left top;
 }
 
+/* source description: black, 20px clear on the right on mobile */
 .discover-collections.single .discover-collections__subtitle {
   max-width: none;
   margin: 20px 0 40px;
-  padding-right: 0;
+  padding-right: 20px;
   font-size: 14px;
   line-height: 21px;
+  color: #000;
 }
 
 /* Download PDF as an outlined pill with the icon after the label */
@@ -565,6 +570,18 @@
   color: var(--dc-ink);
   text-decoration: none !important;
   transition: background-color 0.2s ease;
+}
+
+/* the source download icon: 17x20, recoloured as on the source */
+.discover-collections.single .discover-collections__download-icon {
+  width: 17px;
+  height: 20px;
+  background: url('/eds/icons/download-icon-new.svg') no-repeat;
+  filter: contrast(10) invert(1) sepia(1) saturate(100) hue-rotate(90deg);
+}
+
+.discover-collections.single .discover-collections__download-icon img {
+  display: none;
 }
 
 .discover-collections.single .discover-collections__download:hover {
@@ -626,6 +643,7 @@
 
   .discover-collections.single .discover-collections__subtitle {
     margin: 27px 0 40px;
+    padding-right: 0;
     font-size: 16px;
     line-height: 24px;
   }
