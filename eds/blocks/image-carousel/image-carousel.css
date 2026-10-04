@@ -1,3 +1,5 @@
+/* stylelint-disable selector-class-pattern -- this block uses BEM (__/--) and the source's camelCase class names */
+
 /* =============================
    AP tokens (from globalStylesVariables)
    Keep only what this block needs
@@ -7,12 +9,8 @@
     --ap-background: #f8f8f8;
     --ap-link-border: #8839ff;
     --ap-dark-purple: #431a80;
-}
 
-/* =============================
-   Carousel base (EDS)
-   ============================= */
-.image-carousel {
+    /* Carousel base (EDS) */
     position: relative;
 }
 
@@ -34,6 +32,7 @@
 
 .image-carousel.carousel--peek .carousel__slide {
     flex: 0 0 93.5%;
+
     /* ~1.07 slides visible */
 }
 
@@ -272,7 +271,6 @@
 }
 
 @media (width <=767px) {
-
     /* CTA is desktop-only */
     .image-carousel .carousel__cta-wrap {
         display: none;
@@ -297,16 +295,45 @@
    Legacy banner styles (ported from your SCSS + matches existing compiled)
    ============================= */
 
+/* Overlay block (legacy) */
+.image-carousel .bannerTextDesc {
+    position: absolute;
+    width: 60%;
+    padding: 0 60px;
+}
+
+/* smallScreen() */
+@media (width >= 320px) and (width <= 767px) {
+    .image-carousel .bannerTextDesc {
+        width: 100%;
+        padding: 0 15px;
+    }
+}
+
+/* semi-mediumScreen() */
+@media (width >= 768px) and (width <= 991px) {
+    .image-carousel .bannerTextDesc {
+        width: 65%;
+    }
+}
+
+/* mediumLargeScreen() (matches your mixin) */
+@media (width >= 991px) and (width <= 1200px) {
+    .image-carousel .bannerTextDesc {
+        width: 62%;
+    }
+}
+
 /* .bannerWithGreybackground */
 .image-carousel .bannerWithGreybackground {
     margin: 0 auto;
     position: relative;
-    margin-bottom: 0px;
-    padding-bottom: 0px;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 /* forAllMobileScreen() */
-@media (min-width: 320px) and (max-width: 991px) {
+@media (width >= 320px) and (width <= 991px) {
     .image-carousel .bannerWithGreybackground {
         width: 100%;
         margin: 0;
@@ -324,14 +351,13 @@
 .image-carousel .bannerWithGreybackground .image-component {
     position: relative;
     z-index: 9;
-    margin-top: 30px;
     margin: auto;
     width: 80%;
     text-align: center;
 }
 
 /* forAllMobileScreen() */
-@media (min-width: 320px) and (max-width: 991px) {
+@media (width >= 320px) and (width <= 991px) {
     .image-carousel .bannerWithGreybackground .image-component {
         width: 90%;
     }
@@ -354,14 +380,14 @@
 }
 
 /* forAllMobileScreen() */
-@media (min-width: 320px) and (max-width: 991px) {
+@media (width >= 320px) and (width <= 991px) {
     .image-carousel .bannerWithGreybackground .image-component .bannerTextDesc h2 {
         font-size: 24px;
     }
 }
 
 /* semi-mediumScreen() */
-@media (min-width: 768px) and (max-width: 991px) {
+@media (width >= 768px) and (width <= 991px) {
     .image-carousel .bannerWithGreybackground .image-component .bannerTextDesc h2 {
         font-size: 30px;
     }
@@ -389,7 +415,7 @@
 }
 
 /* smallScreen() */
-@media (min-width: 320px) and (max-width: 767px) {
+@media (width >= 320px) and (width <= 767px) {
     .image-carousel .bannerWithGreybackground .image-backgroundCT {
         display: none;
     }
@@ -419,35 +445,6 @@
     position: relative;
     width: 100%;
     height: auto;
-}
-
-/* Overlay block (legacy) */
-.image-carousel .bannerTextDesc {
-    position: absolute;
-    width: 60%;
-    padding: 0 60px;
-}
-
-/* smallScreen() */
-@media (min-width: 320px) and (max-width: 767px) {
-    .image-carousel .bannerTextDesc {
-        width: 100%;
-        padding: 0 15px;
-    }
-}
-
-/* semi-mediumScreen() */
-@media (min-width: 768px) and (max-width: 991px) {
-    .image-carousel .bannerTextDesc {
-        width: 65%;
-    }
-}
-
-/* mediumLargeScreen() (matches your mixin) */
-@media (min-width: 991px) and (max-width: 1200px) {
-    .image-carousel .bannerTextDesc {
-        width: 62%;
-    }
 }
 
 /* Clickable overlay like your jQuery sets */
